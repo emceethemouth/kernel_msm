@@ -703,6 +703,7 @@ do { \
 	**************  MIPS  *****************
 	***************************************/
 #if defined(__mips__) && W_TYPE_SIZE == 32
+<<<<<<< HEAD
 #if __GNUC__ >= 4 && __GNUC_MINOR__ >= 4
 #define umul_ppmm(w1, w0, u, v)			\
 do {						\
@@ -711,6 +712,9 @@ do {						\
 	w0 = __ll;				\
 } while (0)
 #elif __GNUC__ > 2 || __GNUC_MINOR__ >= 7
+=======
+#if __GNUC__ > 2 || __GNUC_MINOR__ >= 7
+>>>>>>> 7175f4b... Truncated history
 #define umul_ppmm(w1, w0, u, v) \
 	__asm__ ("multu %2,%3" \
 	: "=l" ((USItype)(w0)), \
@@ -735,6 +739,7 @@ do {						\
 	**************  MIPS/64  **************
 	***************************************/
 #if (defined(__mips) && __mips >= 3) && W_TYPE_SIZE == 64
+<<<<<<< HEAD
 #if __GNUC__ >= 4 && __GNUC_MINOR__ >= 4
 #define umul_ppmm(w1, w0, u, v) \
 do {									\
@@ -744,6 +749,9 @@ do {									\
 	w0 = __ll;							\
 } while (0)
 #elif __GNUC__ > 2 || __GNUC_MINOR__ >= 7
+=======
+#if __GNUC__ > 2 || __GNUC_MINOR__ >= 7
+>>>>>>> 7175f4b... Truncated history
 #define umul_ppmm(w1, w0, u, v) \
 	__asm__ ("dmultu %2,%3" \
 	: "=l" ((UDItype)(w0)), \

@@ -38,6 +38,12 @@ jiffies = jiffies_64 + 4;
 #endif
 SECTIONS
 {
+<<<<<<< HEAD
+=======
+	. = 0;
+	reloc_start = .;
+
+>>>>>>> 7175f4b... Truncated history
 	. = KERNELBASE;
 
 /*

@@ -334,6 +334,7 @@ finish:
 	return retval;
 }
 
+<<<<<<< HEAD
 static void sctp_packet_release_owner(struct sk_buff *skb)
 {
 	sk_free(skb->sk);
@@ -353,6 +354,8 @@ static void sctp_packet_set_owner_w(struct sk_buff *skb, struct sock *sk)
 	atomic_inc(&sk->sk_wmem_alloc);
 }
 
+=======
+>>>>>>> 7175f4b... Truncated history
 /* All packets are sent to the network through this function from
  * sctp_outq_tail().
  *
@@ -394,7 +397,11 @@ int sctp_packet_transmit(struct sctp_packet *packet)
 	/* Set the owning socket so that we know where to get the
 	 * destination IP address.
 	 */
+<<<<<<< HEAD
 	sctp_packet_set_owner_w(nskb, sk);
+=======
+	skb_set_owner_w(nskb, sk);
+>>>>>>> 7175f4b... Truncated history
 
 	if (!sctp_transport_dst_check(tp)) {
 		sctp_transport_route(tp, NULL, sctp_sk(sk));
@@ -518,8 +525,12 @@ int sctp_packet_transmit(struct sctp_packet *packet)
 	 * by CRC32-C as described in <draft-ietf-tsvwg-sctpcsum-02.txt>.
 	 */
 	if (!sctp_checksum_disable) {
+<<<<<<< HEAD
 		if (!(dst->dev->features & NETIF_F_SCTP_CSUM) ||
 		    (dst_xfrm(dst) != NULL) || packet->ipfragok) {
+=======
+		if (!(dst->dev->features & NETIF_F_SCTP_CSUM)) {
+>>>>>>> 7175f4b... Truncated history
 			__u32 crc32 = sctp_start_cksum((__u8 *)sh, cksum_buf_len);
 
 			/* 3) Put the resultant value into the checksum field in the

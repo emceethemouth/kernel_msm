@@ -38,12 +38,15 @@
 
 #include "../staging/android/timed_output.h"
 
+<<<<<<< HEAD
 #define ANDROID_VIBRATOR_USE_WORKQUEUE
 
 #ifdef ANDROID_VIBRATOR_USE_WORKQUEUE
 static struct workqueue_struct *vibrator_workqueue;
 #endif
 
+=======
+>>>>>>> 7175f4b... Truncated history
 /* gpio and clock control for vibrator */
 static void __iomem *virt_base;
 
@@ -66,6 +69,7 @@ static void __iomem *virt_base;
 
 static DEFINE_MUTEX(vib_lock);
 
+<<<<<<< HEAD
 enum {
 	VIB_STAT_STOP = 0,
 	VIB_STAT_BRAKING,
@@ -97,6 +101,25 @@ struct timed_vibrator_data {
 	ktime_t last_time;     /* time stamp */
 	struct delayed_work work_vibrator_off;
 	struct delayed_work work_vibrator_on;
+=======
+struct timed_vibrator_data {
+	struct timed_output_dev dev;
+	struct hrtimer timer;
+	struct mutex lock;
+	int max_timeout;
+	int ms_time;            /* vibrator duration */
+	atomic_t vib_status;    /* on/off */
+	int vibe_gain;          /* default max gain */
+	int vibe_pwm;
+	atomic_t gp1_clk_flag;
+	int amp;
+	int vibe_n_value;
+	int haptic_en_gpio;
+	int motor_pwm_gpio;
+	int vibe_warmup_delay; /* in ms */
+	struct work_struct work_vibrator_off;
+	struct work_struct work_vibrator_on;
+>>>>>>> 7175f4b... Truncated history
 	bool use_vdd_supply;
 	struct regulator *vdd_reg;
 };
@@ -212,6 +235,7 @@ static int vibrator_pwm_set(int enable, int amp, int n_value)
 }
 
 #ifdef ANDROID_VIBRATOR_USE_WORKQUEUE
+<<<<<<< HEAD
 static inline void vibrator_schedule_work(struct delayed_work *work,
 		unsigned long delay)
 {
@@ -320,6 +344,78 @@ static int msm8974_pwm_vibrator_force_set(struct timed_vibrator_data *vib,
 		hrtimer_start(&vib->timer,
 			ns_to_ktime((u64)vib_duration_ms * NSEC_PER_MSEC),
 			HRTIMER_MODE_REL);
+=======
+static inline void vibrator_work_on(struct work_struct *work)
+{
+	queue_work(vibrator_workqueue, work);
+}
+
+static inline void vibrator_work_off(struct work_struct *work)
+{
+	if (!work_pending(work))
+		queue_work(vibrator_workqueue, work);
+}
+#else
+static inline void vibrator_work_on(struct work_struct *work)
+{
+	schedule_work(work);
+}
+
+static inline void vibrator_work_off(struct work_struct *work)
+{
+	if (!work_pending(work))
+		schedule_work(work);
+}
+#endif
+
+static int msm8974_pwm_vibrator_force_set(struct timed_vibrator_data *vib,
+		int nForce, int n_value)
+{
+	/* Check the Force value with Max and Min force value */
+	int vib_duration_ms = 0;
+
+	if (vib->vibe_warmup_delay > 0) { /*warmup delay isn't used now */
+		if (atomic_read(&vib->vib_status))
+			usleep(vib->vibe_warmup_delay * 1000);
+	}
+
+	/* TODO: control the gain of vibrator */
+	if (nForce == 0) {
+		vibrator_ic_enable_set(0, vib);
+		vibrator_pwm_set(0, 0, n_value);
+		/* should be checked for vibrator response time */
+		vibrator_set_power(0, vib);
+		atomic_set(&vib->vib_status, false);
+
+		mutex_lock(&vib_lock);
+		if (atomic_read(&vib->gp1_clk_flag) == 1) {
+			clk_disable_unprepare(cam_gp1_clk);
+			atomic_set(&vib->gp1_clk_flag, 0);
+		}
+		mutex_unlock(&vib_lock);
+	} else {
+		mutex_lock(&vib_lock);
+		if (atomic_read(&vib->gp1_clk_flag) == 0) {
+			clk_prepare_enable(cam_gp1_clk);
+			atomic_set(&vib->gp1_clk_flag, 1);
+		}
+		mutex_unlock(&vib_lock);
+
+		if (work_pending(&vib->work_vibrator_off))
+			cancel_work_sync(&vib->work_vibrator_off);
+		hrtimer_cancel(&vib->timer);
+
+		vib_duration_ms = vib->ms_time;
+		/* should be checked for vibrator response time */
+		vibrator_set_power(1, vib);
+		vibrator_pwm_set(1, nForce, n_value);
+		vibrator_ic_enable_set(1, vib);
+		atomic_set(&vib->vib_status, true);
+
+		hrtimer_start(&vib->timer,
+				ns_to_ktime((u64)vib_duration_ms * NSEC_PER_MSEC),
+				HRTIMER_MODE_REL);
+>>>>>>> 7175f4b... Truncated history
 	}
 
 	return 0;
@@ -327,6 +423,7 @@ static int msm8974_pwm_vibrator_force_set(struct timed_vibrator_data *vib,
 
 static void msm8974_pwm_vibrator_on(struct work_struct *work)
 {
+<<<<<<< HEAD
 	struct delayed_work *delayed_work = to_delayed_work(work);
 	struct timed_vibrator_data *vib =
 		container_of(delayed_work, struct timed_vibrator_data,
@@ -335,17 +432,35 @@ static void msm8974_pwm_vibrator_on(struct work_struct *work)
 	int pwm = vib->pwm;
 
 	pr_debug("%s: gain = %d pwm = %d\n", __func__, gain, pwm);
+=======
+	struct timed_vibrator_data *vib =
+		container_of(work, struct timed_vibrator_data,
+				work_vibrator_on);
+	int gain = vib->vibe_gain;
+	int pwm = vib->vibe_pwm;
+	/* suspend /resume logging test */
+	pr_debug("%s: gain = %d pwm = %d\n", __func__, gain, pwm);
+
+>>>>>>> 7175f4b... Truncated history
 	msm8974_pwm_vibrator_force_set(vib, gain, pwm);
 }
 
 static void msm8974_pwm_vibrator_off(struct work_struct *work)
 {
+<<<<<<< HEAD
 	struct delayed_work *delayed_work = to_delayed_work(work);
 	struct timed_vibrator_data *vib =
 		container_of(delayed_work, struct timed_vibrator_data,
 				work_vibrator_off);
 
 	msm8974_pwm_vibrator_force_set(vib, 0, vib->pwm);
+=======
+	struct timed_vibrator_data *vib =
+		container_of(work, struct timed_vibrator_data,
+				work_vibrator_off);
+
+	msm8974_pwm_vibrator_force_set(vib, 0, vib->vibe_n_value);
+>>>>>>> 7175f4b... Truncated history
 }
 
 static enum hrtimer_restart vibrator_timer_func(struct hrtimer *timer)
@@ -353,10 +468,14 @@ static enum hrtimer_restart vibrator_timer_func(struct hrtimer *timer)
 	struct timed_vibrator_data *vib =
 		container_of(timer, struct timed_vibrator_data, timer);
 
+<<<<<<< HEAD
 	if (vib->status == VIB_STAT_DRIVING)
 		vibrator_schedule_work(&vib->work_vibrator_on, 0);
 	else
 		vibrator_schedule_work(&vib->work_vibrator_off, 0);
+=======
+	vibrator_work_off(&vib->work_vibrator_off);
+>>>>>>> 7175f4b... Truncated history
 	return HRTIMER_NORESTART;
 }
 
@@ -364,6 +483,7 @@ static int vibrator_get_time(struct timed_output_dev *dev)
 {
 	struct timed_vibrator_data *vib =
 		container_of(dev, struct timed_vibrator_data, dev);
+<<<<<<< HEAD
 	int ms;
 
 	if (hrtimer_active(&vib->timer)) {
@@ -372,6 +492,12 @@ static int vibrator_get_time(struct timed_output_dev *dev)
 		if (ms < 0)
 			ms = 0;
 		return min(ms, vib->ms_time);
+=======
+
+	if (hrtimer_active(&vib->timer)) {
+		ktime_t r = hrtimer_get_remaining(&vib->timer);
+		return ktime_to_ms(r);
+>>>>>>> 7175f4b... Truncated history
 	}
 	return 0;
 }
@@ -380,6 +506,7 @@ static void vibrator_enable(struct timed_output_dev *dev, int value)
 {
 	struct timed_vibrator_data *vib =
 		container_of(dev, struct timed_vibrator_data, dev);
+<<<<<<< HEAD
 	unsigned long flags;
 	ktime_t now;
 
@@ -420,6 +547,21 @@ static void vibrator_enable(struct timed_output_dev *dev, int value)
 				msecs_to_jiffies(vib->warmup_ms));
 	}
 	spin_unlock_irqrestore(&vib->spinlock, flags);
+=======
+
+	mutex_lock(&vib->lock);
+	if (value > 0) {
+		if (value > vib->max_timeout)
+			value = vib->max_timeout;
+
+		vib->ms_time = value;
+
+		vibrator_work_on(&vib->work_vibrator_on);
+	} else {
+		vibrator_work_off(&vib->work_vibrator_off);
+	}
+	mutex_unlock(&vib->lock);
+>>>>>>> 7175f4b... Truncated history
 }
 
 static int vibrator_gpio_init(struct timed_vibrator_data *vib)
@@ -470,13 +612,21 @@ static int vibrator_parse_dt(struct device *dev,
 	}
 	vib->motor_pwm_gpio = ret;
 
+<<<<<<< HEAD
 	ret = of_property_read_u32(np, "motor-amp", &vib->gain);
+=======
+	ret = of_property_read_u32(np, "motor-amp", &vib->amp);
+>>>>>>> 7175f4b... Truncated history
 	if (ret < 0) {
 		pr_err("%s: motor-amp failed\n", __func__);
 		return ret;
 	}
 
+<<<<<<< HEAD
 	ret = of_property_read_u32(np, "n-value", &vib->pwm);
+=======
+	ret = of_property_read_u32(np, "n-value", &vib->vibe_n_value);
+>>>>>>> 7175f4b... Truncated history
 	if (ret < 0) {
 		pr_err("%s: n-value failed\n", __func__);
 		return ret;
@@ -484,6 +634,7 @@ static int vibrator_parse_dt(struct device *dev,
 
 	vib->use_vdd_supply = of_property_read_bool(np, "use-vdd-supply");
 
+<<<<<<< HEAD
 	pr_debug("%s: motor_gpio_en %d, motor_gpio_pwm %d, "
 		 "amp(gain) %d, n_value(pwm) %d vdd %d\n", __func__,
 			vib->haptic_en_gpio,
@@ -514,6 +665,20 @@ static int vibrator_parse_dt(struct device *dev,
 	if (!ret)
 		pr_debug("%s: vibe_driving_ms %d ms\n", __func__,
 				vib->braking_ms);
+=======
+	pr_debug("%s: motor_en %d, motor_pwm %d, amp %d, n_value %d vdd %d\n",
+			__func__,
+			vib->haptic_en_gpio,
+			vib->motor_pwm_gpio,
+			vib->amp, vib->vibe_n_value,
+			vib->use_vdd_supply);
+
+	ret = of_property_read_u32(np, "vibe-warmup-delay",
+			&vib->vibe_warmup_delay);
+	if (!ret)
+		pr_debug("%s: vibe_warmup_delay %d ms\n", __func__,
+				vib->vibe_warmup_delay);
+>>>>>>> 7175f4b... Truncated history
 
 	return 0;
 }
@@ -524,7 +689,11 @@ static ssize_t vibrator_amp_show(struct device *dev,
 	struct timed_output_dev *_dev = dev_get_drvdata(dev);
 	struct timed_vibrator_data *vib =
 		container_of(_dev, struct timed_vibrator_data, dev);
+<<<<<<< HEAD
 	int gain = vib->gain;
+=======
+	int gain = vib->vibe_gain;
+>>>>>>> 7175f4b... Truncated history
 
 	return sprintf(buf, "%d\n", gain);
 }
@@ -535,6 +704,7 @@ static ssize_t vibrator_amp_store(struct device *dev,
 	struct timed_output_dev *_dev = dev_get_drvdata(dev);
 	struct timed_vibrator_data *vib =
 		container_of(_dev, struct timed_vibrator_data, dev);
+<<<<<<< HEAD
 	long r;
 	int ret;
 
@@ -550,6 +720,12 @@ static ssize_t vibrator_amp_store(struct device *dev,
 	}
 
 	vib->gain = r;
+=======
+	int gain;
+
+	sscanf(buf, "%d", &gain);
+	vib->vibe_gain = gain;
+>>>>>>> 7175f4b... Truncated history
 
 	return size;
 }
@@ -560,7 +736,11 @@ static ssize_t vibrator_pwm_show(struct device *dev, struct device_attribute *at
 	struct timed_vibrator_data *vib =
 		container_of(_dev, struct timed_vibrator_data, dev);
 
+<<<<<<< HEAD
 	return sprintf(buf, "%d\n", vib->pwm);
+=======
+	return sprintf(buf, "%d\n", vib->vibe_pwm);
+>>>>>>> 7175f4b... Truncated history
 }
 
 static ssize_t vibrator_pwm_store(struct device *dev, struct device_attribute *attr, const char *buf, size_t size)
@@ -568,6 +748,7 @@ static ssize_t vibrator_pwm_store(struct device *dev, struct device_attribute *a
 	struct timed_output_dev *_dev = dev_get_drvdata(dev);
 	struct timed_vibrator_data *vib =
 		container_of(_dev, struct timed_vibrator_data, dev);
+<<<<<<< HEAD
 	long r;
 	int ret;
 
@@ -723,6 +904,12 @@ static ssize_t vibrator_warmup_ms_store(struct device *dev,
 	}
 
 	vib->warmup_ms = r;
+=======
+	int pwm;
+
+	sscanf(buf, "%d", &pwm);
+	vib->vibe_pwm = pwm;
+>>>>>>> 7175f4b... Truncated history
 
 	return size;
 }
@@ -730,6 +917,7 @@ static ssize_t vibrator_warmup_ms_store(struct device *dev,
 static struct device_attribute vibrator_device_attrs[] = {
 	__ATTR(amp, S_IRUGO | S_IWUSR, vibrator_amp_show, vibrator_amp_store),
 	__ATTR(n_val, S_IRUGO | S_IWUSR, vibrator_pwm_show, vibrator_pwm_store),
+<<<<<<< HEAD
 	__ATTR(braking_gain, S_IRUGO | S_IWUSR,
 		vibrator_braking_gain_show, vibrator_braking_gain_store),
 	__ATTR(braking_ms, S_IRUGO | S_IWUSR,
@@ -738,6 +926,8 @@ static struct device_attribute vibrator_device_attrs[] = {
 		vibrator_driving_ms_show, vibrator_driving_ms_store),
 	__ATTR(warmup_ms, S_IRUGO | S_IWUSR,
 		vibrator_warmup_ms_show, vibrator_warmup_ms_store),
+=======
+>>>>>>> 7175f4b... Truncated history
 };
 
 static struct timed_vibrator_data msm8974_pwm_vibrator_data = {
@@ -787,6 +977,7 @@ static int msm8974_pwm_vibrator_probe(struct platform_device *pdev)
 	}
 	clk_set_rate(cam_gp1_clk, 29268);
 
+<<<<<<< HEAD
 	vib->status = VIB_STAT_STOP;
 	vib->gp1_clk_flag = 0;
 
@@ -796,6 +987,18 @@ static int msm8974_pwm_vibrator_probe(struct platform_device *pdev)
 	vib->timer.function = vibrator_timer_func;
 	mutex_init(&vib->lock);
 	spin_lock_init(&vib->spinlock);
+=======
+	vib->vibe_gain = vib->amp;
+	vib->vibe_pwm = vib->vibe_n_value;
+	atomic_set(&vib->vib_status, false);
+	atomic_set(&vib->gp1_clk_flag, 0);
+
+	INIT_WORK(&vib->work_vibrator_off, msm8974_pwm_vibrator_off);
+	INIT_WORK(&vib->work_vibrator_on, msm8974_pwm_vibrator_on);
+	hrtimer_init(&vib->timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
+	vib->timer.function = vibrator_timer_func;
+	mutex_init(&vib->lock);
+>>>>>>> 7175f4b... Truncated history
 
 	ret = timed_output_dev_register(&vib->dev);
 	if (ret < 0) {
@@ -835,7 +1038,11 @@ static int msm8974_pwm_vibrator_remove(struct platform_device *pdev)
 	struct timed_vibrator_data *vib = platform_get_drvdata(pdev);
 	int i;
 
+<<<<<<< HEAD
 	msm8974_pwm_vibrator_force_set(vib, 0, vib->pwm);
+=======
+	msm8974_pwm_vibrator_force_set(vib, 0, vib->vibe_n_value);
+>>>>>>> 7175f4b... Truncated history
 	for (i = ARRAY_SIZE(vibrator_device_attrs); i >= 0; i--) {
 		device_remove_file(vib->dev.dev,
 				&vibrator_device_attrs[i]);
@@ -853,7 +1060,11 @@ static int msm8974_pwm_vibrator_suspend(struct platform_device *pdev,
 {
 	struct timed_vibrator_data *vib = platform_get_drvdata(pdev);
 
+<<<<<<< HEAD
 	msm8974_pwm_vibrator_force_set(vib, 0, vib->pwm);
+=======
+	msm8974_pwm_vibrator_force_set(vib, 0, vib->vibe_n_value);
+>>>>>>> 7175f4b... Truncated history
 
 	gpio_tlmm_config(GPIO_CFG(vib->motor_pwm_gpio, 0, GPIO_CFG_OUTPUT,
 		GPIO_CFG_PULL_DOWN, GPIO_CFG_2MA), GPIO_CFG_ENABLE);
@@ -866,7 +1077,11 @@ static int msm8974_pwm_vibrator_resume(struct platform_device *pdev)
 {
 	struct timed_vibrator_data *vib = platform_get_drvdata(pdev);
 
+<<<<<<< HEAD
 	msm8974_pwm_vibrator_force_set(vib, 0, vib->pwm);
+=======
+	msm8974_pwm_vibrator_force_set(vib, 0, vib->vibe_n_value);
+>>>>>>> 7175f4b... Truncated history
 
 	gpio_tlmm_config(GPIO_CFG(vib->motor_pwm_gpio, 6, GPIO_CFG_INPUT,
 		GPIO_CFG_NO_PULL, GPIO_CFG_2MA), GPIO_CFG_ENABLE);
@@ -881,7 +1096,11 @@ static void msm8974_pwm_vibrator_shutdown(struct platform_device *pdev)
 	struct timed_vibrator_data *vib;
 
 	vib = (struct timed_vibrator_data *)platform_get_drvdata(pdev);
+<<<<<<< HEAD
 	msm8974_pwm_vibrator_force_set(vib, 0, vib->pwm);
+=======
+	msm8974_pwm_vibrator_force_set(vib, 0, vib->vibe_n_value);
+>>>>>>> 7175f4b... Truncated history
 }
 
 static struct of_device_id vibrator_match_table[] = {

@@ -56,6 +56,7 @@ static int vma_shareable(struct vm_area_struct *vma, unsigned long addr)
 }
 
 /*
+<<<<<<< HEAD
  * Search for a shareable pmd page for hugetlb. In any case calls pmd_alloc()
  * and returns the corresponding pte. While this is not necessary for the
  * !shared pmd case because we can allocate the pmd later as well, it makes the
@@ -66,6 +67,11 @@ static int vma_shareable(struct vm_area_struct *vma, unsigned long addr)
  */
 static pte_t *
 huge_pmd_share(struct mm_struct *mm, unsigned long addr, pud_t *pud)
+=======
+ * search for a shareable pmd page for hugetlb.
+ */
+static void huge_pmd_share(struct mm_struct *mm, unsigned long addr, pud_t *pud)
+>>>>>>> 7175f4b... Truncated history
 {
 	struct vm_area_struct *vma = find_vma(mm, addr);
 	struct address_space *mapping = vma->vm_file->f_mapping;
@@ -75,10 +81,16 @@ huge_pmd_share(struct mm_struct *mm, unsigned long addr, pud_t *pud)
 	struct vm_area_struct *svma;
 	unsigned long saddr;
 	pte_t *spte = NULL;
+<<<<<<< HEAD
 	pte_t *pte;
 
 	if (!vma_shareable(vma, addr))
 		return (pte_t *)pmd_alloc(mm, pud, addr);
+=======
+
+	if (!vma_shareable(vma, addr))
+		return;
+>>>>>>> 7175f4b... Truncated history
 
 	mutex_lock(&mapping->i_mmap_mutex);
 	vma_prio_tree_foreach(svma, &iter, &mapping->i_mmap, idx, idx) {
@@ -105,9 +117,13 @@ huge_pmd_share(struct mm_struct *mm, unsigned long addr, pud_t *pud)
 		put_page(virt_to_page(spte));
 	spin_unlock(&mm->page_table_lock);
 out:
+<<<<<<< HEAD
 	pte = (pte_t *)pmd_alloc(mm, pud, addr);
 	mutex_unlock(&mapping->i_mmap_mutex);
 	return pte;
+=======
+	mutex_unlock(&mapping->i_mmap_mutex);
+>>>>>>> 7175f4b... Truncated history
 }
 
 /*
@@ -152,9 +168,14 @@ pte_t *huge_pte_alloc(struct mm_struct *mm,
 		} else {
 			BUG_ON(sz != PMD_SIZE);
 			if (pud_none(*pud))
+<<<<<<< HEAD
 				pte = huge_pmd_share(mm, addr, pud);
 			else
 				pte = (pte_t *)pmd_alloc(mm, pud, addr);
+=======
+				huge_pmd_share(mm, addr, pud);
+			pte = (pte_t *) pmd_alloc(mm, pud, addr);
+>>>>>>> 7175f4b... Truncated history
 		}
 	}
 	BUG_ON(pte && !pte_none(*pte) && !pte_huge(*pte));

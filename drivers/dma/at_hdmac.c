@@ -664,7 +664,11 @@ atc_prep_slave_sg(struct dma_chan *chan, struct scatterlist *sgl,
 			flags);
 
 	if (unlikely(!atslave || !sg_len)) {
+<<<<<<< HEAD
 		dev_dbg(chan2dev(chan), "prep_slave_sg: sg length is zero!\n");
+=======
+		dev_dbg(chan2dev(chan), "prep_dma_memcpy: length is zero!\n");
+>>>>>>> 7175f4b... Truncated history
 		return NULL;
 	}
 
@@ -691,11 +695,14 @@ atc_prep_slave_sg(struct dma_chan *chan, struct scatterlist *sgl,
 
 			mem = sg_dma_address(sg);
 			len = sg_dma_len(sg);
+<<<<<<< HEAD
 			if (unlikely(!len)) {
 				dev_dbg(chan2dev(chan),
 					"prep_slave_sg: sg(%d) data length is zero\n", i);
 				goto err;
 			}
+=======
+>>>>>>> 7175f4b... Truncated history
 			mem_width = 2;
 			if (unlikely(mem & 3 || len & 3))
 				mem_width = 0;
@@ -731,11 +738,14 @@ atc_prep_slave_sg(struct dma_chan *chan, struct scatterlist *sgl,
 
 			mem = sg_dma_address(sg);
 			len = sg_dma_len(sg);
+<<<<<<< HEAD
 			if (unlikely(!len)) {
 				dev_dbg(chan2dev(chan),
 					"prep_slave_sg: sg(%d) data length is zero\n", i);
 				goto err;
 			}
+=======
+>>>>>>> 7175f4b... Truncated history
 			mem_width = 2;
 			if (unlikely(mem & 3 || len & 3))
 				mem_width = 0;
@@ -769,7 +779,10 @@ atc_prep_slave_sg(struct dma_chan *chan, struct scatterlist *sgl,
 
 err_desc_get:
 	dev_err(chan2dev(chan), "not enough descriptors available\n");
+<<<<<<< HEAD
 err:
+=======
+>>>>>>> 7175f4b... Truncated history
 	atc_desc_put(atchan, first);
 	return NULL;
 }

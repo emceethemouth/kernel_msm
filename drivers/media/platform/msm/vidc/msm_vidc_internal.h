@@ -234,7 +234,10 @@ struct msm_vidc_inst {
 	u32 output_alloc_mode;
 	struct list_head registered_bufs;
 	bool map_output_buffer;
+<<<<<<< HEAD
 	atomic_t get_seq_hdr_cnt;
+=======
+>>>>>>> 7175f4b... Truncated history
 };
 
 extern struct msm_vidc_drv *vidc_driver;

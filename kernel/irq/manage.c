@@ -572,9 +572,15 @@ int can_request_irq(unsigned int irq, unsigned long irqflags)
 		return 0;
 
 	if (irq_settings_can_request(desc)) {
+<<<<<<< HEAD
 		if (!desc->action ||
 		    irqflags & desc->action->flags & IRQF_SHARED)
 			canrequest = 1;
+=======
+		if (desc->action)
+			if (irqflags & desc->action->flags & IRQF_SHARED)
+				canrequest =1;
+>>>>>>> 7175f4b... Truncated history
 	}
 	irq_put_desc_unlock(desc, flags);
 	return canrequest;
@@ -734,7 +740,10 @@ static void
 irq_thread_check_affinity(struct irq_desc *desc, struct irqaction *action)
 {
 	cpumask_var_t mask;
+<<<<<<< HEAD
 	bool valid = true;
+=======
+>>>>>>> 7175f4b... Truncated history
 
 	if (!test_and_clear_bit(IRQTF_AFFINITY, &action->thread_flags))
 		return;
@@ -749,6 +758,7 @@ irq_thread_check_affinity(struct irq_desc *desc, struct irqaction *action)
 	}
 
 	raw_spin_lock_irq(&desc->lock);
+<<<<<<< HEAD
 	/*
 	 * This code is triggered unconditionally. Check the affinity
 	 * mask pointer. For CPU_MASK_OFFSTACK=n this is optimized out.
@@ -761,6 +771,12 @@ irq_thread_check_affinity(struct irq_desc *desc, struct irqaction *action)
 
 	if (valid)
 		set_cpus_allowed_ptr(current, mask);
+=======
+	cpumask_copy(mask, desc->irq_data.affinity);
+	raw_spin_unlock_irq(&desc->lock);
+
+	set_cpus_allowed_ptr(current, mask);
+>>>>>>> 7175f4b... Truncated history
 	free_cpumask_var(mask);
 }
 #else
@@ -968,6 +984,7 @@ __setup_irq(unsigned int irq, struct irq_desc *desc, struct irqaction *new)
 		 */
 		get_task_struct(t);
 		new->thread = t;
+<<<<<<< HEAD
 		/*
 		 * Tell the thread to set its affinity. This is
 		 * important for shared interrupt handlers as we do
@@ -978,6 +995,8 @@ __setup_irq(unsigned int irq, struct irq_desc *desc, struct irqaction *new)
 		 * on which the requesting code placed the interrupt.
 		 */
 		set_bit(IRQTF_AFFINITY, &new->thread_flags);
+=======
+>>>>>>> 7175f4b... Truncated history
 	}
 
 	if (!alloc_cpumask_var(&mask, GFP_KERNEL)) {

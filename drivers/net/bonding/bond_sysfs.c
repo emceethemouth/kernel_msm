@@ -183,11 +183,14 @@ int bond_create_slave_symlinks(struct net_device *master,
 	sprintf(linkname, "slave_%s", slave->name);
 	ret = sysfs_create_link(&(master->dev.kobj), &(slave->dev.kobj),
 				linkname);
+<<<<<<< HEAD
 
 	/* free the master link created earlier in case of error */
 	if (ret)
 		sysfs_remove_link(&(slave->dev.kobj), "master");
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	return ret;
 
 }
@@ -518,8 +521,11 @@ static ssize_t bonding_store_arp_interval(struct device *d,
 	int new_value, ret = count;
 	struct bonding *bond = to_bond(d);
 
+<<<<<<< HEAD
 	if (!rtnl_trylock())
 		return restart_syscall();
+=======
+>>>>>>> 7175f4b... Truncated history
 	if (sscanf(buf, "%d", &new_value) != 1) {
 		pr_err("%s: no arp_interval value specified.\n",
 		       bond->dev->name);
@@ -527,15 +533,24 @@ static ssize_t bonding_store_arp_interval(struct device *d,
 		goto out;
 	}
 	if (new_value < 0) {
+<<<<<<< HEAD
 		pr_err("%s: Invalid arp_interval value %d not in range 0-%d; rejected.\n",
+=======
+		pr_err("%s: Invalid arp_interval value %d not in range 1-%d; rejected.\n",
+>>>>>>> 7175f4b... Truncated history
 		       bond->dev->name, new_value, INT_MAX);
 		ret = -EINVAL;
 		goto out;
 	}
 	if (bond->params.mode == BOND_MODE_ALB ||
+<<<<<<< HEAD
 	    bond->params.mode == BOND_MODE_TLB ||
 	    bond->params.mode == BOND_MODE_8023AD) {
 		pr_info("%s: ARP monitoring cannot be used with ALB/TLB/802.3ad. Only MII monitoring is supported on %s.\n",
+=======
+	    bond->params.mode == BOND_MODE_TLB) {
+		pr_info("%s: ARP monitoring cannot be used with ALB/TLB. Only MII monitoring is supported on %s.\n",
+>>>>>>> 7175f4b... Truncated history
 			bond->dev->name, bond->dev->name);
 		ret = -EINVAL;
 		goto out;
@@ -543,6 +558,7 @@ static ssize_t bonding_store_arp_interval(struct device *d,
 	pr_info("%s: Setting ARP monitoring interval to %d.\n",
 		bond->dev->name, new_value);
 	bond->params.arp_interval = new_value;
+<<<<<<< HEAD
 	if (new_value) {
 		if (bond->params.miimon) {
 			pr_info("%s: ARP monitoring cannot be used with MII monitoring. %s Disabling MII monitoring.\n",
@@ -552,6 +568,20 @@ static ssize_t bonding_store_arp_interval(struct device *d,
 		if (!bond->params.arp_targets[0])
 			pr_info("%s: ARP monitoring has been set up, but no ARP targets have been specified.\n",
 				bond->dev->name);
+=======
+	if (bond->params.miimon) {
+		pr_info("%s: ARP monitoring cannot be used with MII monitoring. %s Disabling MII monitoring.\n",
+			bond->dev->name, bond->dev->name);
+		bond->params.miimon = 0;
+		if (delayed_work_pending(&bond->mii_work)) {
+			cancel_delayed_work(&bond->mii_work);
+			flush_workqueue(bond->wq);
+		}
+	}
+	if (!bond->params.arp_targets[0]) {
+		pr_info("%s: ARP monitoring has been set up, but no ARP targets have been specified.\n",
+			bond->dev->name);
+>>>>>>> 7175f4b... Truncated history
 	}
 	if (bond->dev->flags & IFF_UP) {
 		/* If the interface is up, we may need to fire off
@@ -559,6 +589,7 @@ static ssize_t bonding_store_arp_interval(struct device *d,
 		 * timer will get fired off when the open function
 		 * is called.
 		 */
+<<<<<<< HEAD
 		if (!new_value) {
 			cancel_delayed_work_sync(&bond->arp_work);
 		} else {
@@ -568,6 +599,21 @@ static ssize_t bonding_store_arp_interval(struct device *d,
 	}
 out:
 	rtnl_unlock();
+=======
+		if (!delayed_work_pending(&bond->arp_work)) {
+			if (bond->params.mode == BOND_MODE_ACTIVEBACKUP)
+				INIT_DELAYED_WORK(&bond->arp_work,
+						  bond_activebackup_arp_mon);
+			else
+				INIT_DELAYED_WORK(&bond->arp_work,
+						  bond_loadbalance_arp_mon);
+
+			queue_delayed_work(bond->wq, &bond->arp_work, 0);
+		}
+	}
+
+out:
+>>>>>>> 7175f4b... Truncated history
 	return ret;
 }
 static DEVICE_ATTR(arp_interval, S_IRUGO | S_IWUSR,
@@ -693,8 +739,11 @@ static ssize_t bonding_store_downdelay(struct device *d,
 	int new_value, ret = count;
 	struct bonding *bond = to_bond(d);
 
+<<<<<<< HEAD
 	if (!rtnl_trylock())
 		return restart_syscall();
+=======
+>>>>>>> 7175f4b... Truncated history
 	if (!(bond->params.miimon)) {
 		pr_err("%s: Unable to set down delay as MII monitoring is disabled\n",
 		       bond->dev->name);
@@ -709,7 +758,11 @@ static ssize_t bonding_store_downdelay(struct device *d,
 	}
 	if (new_value < 0) {
 		pr_err("%s: Invalid down delay value %d not in range %d-%d; rejected.\n",
+<<<<<<< HEAD
 		       bond->dev->name, new_value, 0, INT_MAX);
+=======
+		       bond->dev->name, new_value, 1, INT_MAX);
+>>>>>>> 7175f4b... Truncated history
 		ret = -EINVAL;
 		goto out;
 	} else {
@@ -728,7 +781,10 @@ static ssize_t bonding_store_downdelay(struct device *d,
 	}
 
 out:
+<<<<<<< HEAD
 	rtnl_unlock();
+=======
+>>>>>>> 7175f4b... Truncated history
 	return ret;
 }
 static DEVICE_ATTR(downdelay, S_IRUGO | S_IWUSR,
@@ -751,8 +807,11 @@ static ssize_t bonding_store_updelay(struct device *d,
 	int new_value, ret = count;
 	struct bonding *bond = to_bond(d);
 
+<<<<<<< HEAD
 	if (!rtnl_trylock())
 		return restart_syscall();
+=======
+>>>>>>> 7175f4b... Truncated history
 	if (!(bond->params.miimon)) {
 		pr_err("%s: Unable to set up delay as MII monitoring is disabled\n",
 		       bond->dev->name);
@@ -767,8 +826,13 @@ static ssize_t bonding_store_updelay(struct device *d,
 		goto out;
 	}
 	if (new_value < 0) {
+<<<<<<< HEAD
 		pr_err("%s: Invalid up delay value %d not in range %d-%d; rejected.\n",
 		       bond->dev->name, new_value, 0, INT_MAX);
+=======
+		pr_err("%s: Invalid down delay value %d not in range %d-%d; rejected.\n",
+		       bond->dev->name, new_value, 1, INT_MAX);
+>>>>>>> 7175f4b... Truncated history
 		ret = -EINVAL;
 		goto out;
 	} else {
@@ -786,7 +850,10 @@ static ssize_t bonding_store_updelay(struct device *d,
 	}
 
 out:
+<<<<<<< HEAD
 	rtnl_unlock();
+=======
+>>>>>>> 7175f4b... Truncated history
 	return ret;
 }
 static DEVICE_ATTR(updelay, S_IRUGO | S_IWUSR,
@@ -969,8 +1036,11 @@ static ssize_t bonding_store_miimon(struct device *d,
 	int new_value, ret = count;
 	struct bonding *bond = to_bond(d);
 
+<<<<<<< HEAD
 	if (!rtnl_trylock())
 		return restart_syscall();
+=======
+>>>>>>> 7175f4b... Truncated history
 	if (sscanf(buf, "%d", &new_value) != 1) {
 		pr_err("%s: no miimon value specified.\n",
 		       bond->dev->name);
@@ -979,6 +1049,7 @@ static ssize_t bonding_store_miimon(struct device *d,
 	}
 	if (new_value < 0) {
 		pr_err("%s: Invalid miimon value %d not in range %d-%d; rejected.\n",
+<<<<<<< HEAD
 		       bond->dev->name, new_value, 0, INT_MAX);
 		ret = -EINVAL;
 		goto out;
@@ -1016,6 +1087,52 @@ static ssize_t bonding_store_miimon(struct device *d,
 	}
 out:
 	rtnl_unlock();
+=======
+		       bond->dev->name, new_value, 1, INT_MAX);
+		ret = -EINVAL;
+		goto out;
+	} else {
+		pr_info("%s: Setting MII monitoring interval to %d.\n",
+			bond->dev->name, new_value);
+		bond->params.miimon = new_value;
+		if (bond->params.updelay)
+			pr_info("%s: Note: Updating updelay (to %d) since it is a multiple of the miimon value.\n",
+				bond->dev->name,
+				bond->params.updelay * bond->params.miimon);
+		if (bond->params.downdelay)
+			pr_info("%s: Note: Updating downdelay (to %d) since it is a multiple of the miimon value.\n",
+				bond->dev->name,
+				bond->params.downdelay * bond->params.miimon);
+		if (bond->params.arp_interval) {
+			pr_info("%s: MII monitoring cannot be used with ARP monitoring. Disabling ARP monitoring...\n",
+				bond->dev->name);
+			bond->params.arp_interval = 0;
+			if (bond->params.arp_validate) {
+				bond->params.arp_validate =
+					BOND_ARP_VALIDATE_NONE;
+			}
+			if (delayed_work_pending(&bond->arp_work)) {
+				cancel_delayed_work(&bond->arp_work);
+				flush_workqueue(bond->wq);
+			}
+		}
+
+		if (bond->dev->flags & IFF_UP) {
+			/* If the interface is up, we may need to fire off
+			 * the MII timer. If the interface is down, the
+			 * timer will get fired off when the open function
+			 * is called.
+			 */
+			if (!delayed_work_pending(&bond->mii_work)) {
+				INIT_DELAYED_WORK(&bond->mii_work,
+						  bond_mii_monitor);
+				queue_delayed_work(bond->wq,
+						   &bond->mii_work, 0);
+			}
+		}
+	}
+out:
+>>>>>>> 7175f4b... Truncated history
 	return ret;
 }
 static DEVICE_ATTR(miimon, S_IRUGO | S_IWUSR,
@@ -1580,7 +1697,10 @@ static ssize_t bonding_store_slaves_active(struct device *d,
 		goto out;
 	}
 
+<<<<<<< HEAD
 	read_lock(&bond->lock);
+=======
+>>>>>>> 7175f4b... Truncated history
 	bond_for_each_slave(bond, slave, i) {
 		if (!bond_is_active_slave(slave)) {
 			if (new_value)
@@ -1589,7 +1709,10 @@ static ssize_t bonding_store_slaves_active(struct device *d,
 				slave->inactive = 1;
 		}
 	}
+<<<<<<< HEAD
 	read_unlock(&bond->lock);
+=======
+>>>>>>> 7175f4b... Truncated history
 out:
 	return ret;
 }

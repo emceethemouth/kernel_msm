@@ -470,7 +470,10 @@ struct transaction_s
 		T_COMMIT,
 		T_COMMIT_DFLUSH,
 		T_COMMIT_JFLUSH,
+<<<<<<< HEAD
 		T_COMMIT_CALLBACK,
+=======
+>>>>>>> 7175f4b... Truncated history
 		T_FINISHED
 	}			t_state;
 
@@ -1092,7 +1095,10 @@ extern int	   jbd2_journal_destroy    (journal_t *);
 extern int	   jbd2_journal_recover    (journal_t *journal);
 extern int	   jbd2_journal_wipe       (journal_t *, int);
 extern int	   jbd2_journal_skip_recovery	(journal_t *);
+<<<<<<< HEAD
 extern void	   jbd2_journal_update_sb_errno(journal_t *);
+=======
+>>>>>>> 7175f4b... Truncated history
 extern void	   jbd2_journal_update_sb_log_tail	(journal_t *, tid_t,
 				unsigned long, int);
 extern void	   __jbd2_journal_abort_hard	(journal_t *);

@@ -698,11 +698,16 @@ static int compact_zone(struct zone *zone, struct compact_control *cc)
 		if (err) {
 			putback_lru_pages(&cc->migratepages);
 			cc->nr_migratepages = 0;
+<<<<<<< HEAD
 			if (err == -ENOMEM) {
 				ret = COMPACT_PARTIAL;
 				goto out;
 			}
 		}
+=======
+		}
+
+>>>>>>> 7175f4b... Truncated history
 	}
 
 out:
@@ -846,7 +851,11 @@ static int compact_node(int nid)
 }
 
 /* Compact all nodes in the system */
+<<<<<<< HEAD
 static void compact_nodes(void)
+=======
+static int compact_nodes(void)
+>>>>>>> 7175f4b... Truncated history
 {
 	int nid;
 
@@ -855,6 +864,11 @@ static void compact_nodes(void)
 
 	for_each_online_node(nid)
 		compact_node(nid);
+<<<<<<< HEAD
+=======
+
+	return COMPACT_COMPLETE;
+>>>>>>> 7175f4b... Truncated history
 }
 
 /* The written value is actually unused, all memory is compacted */
@@ -865,7 +879,11 @@ int sysctl_compaction_handler(struct ctl_table *table, int write,
 			void __user *buffer, size_t *length, loff_t *ppos)
 {
 	if (write)
+<<<<<<< HEAD
 		compact_nodes();
+=======
+		return compact_nodes();
+>>>>>>> 7175f4b... Truncated history
 
 	return 0;
 }

@@ -571,11 +571,14 @@ static inline u16 be_get_tx_vlan_tag(struct be_adapter *adapter,
 	return vlan_tag;
 }
 
+<<<<<<< HEAD
 static int be_vlan_tag_chk(struct be_adapter *adapter, struct sk_buff *skb)
 {
 	return vlan_tx_tag_present(skb) || adapter->pvid;
 }
 
+=======
+>>>>>>> 7175f4b... Truncated history
 static void wrb_fill_hdr(struct be_adapter *adapter, struct be_eth_hdr_wrb *hdr,
 		struct sk_buff *skb, u32 wrb_cnt, u32 len)
 {
@@ -703,6 +706,7 @@ dma_err:
 	return 0;
 }
 
+<<<<<<< HEAD
 static struct sk_buff *be_insert_vlan_in_pkt(struct be_adapter *adapter,
 					     struct sk_buff *skb)
 {
@@ -721,12 +725,15 @@ static struct sk_buff *be_insert_vlan_in_pkt(struct be_adapter *adapter,
 	return skb;
 }
 
+=======
+>>>>>>> 7175f4b... Truncated history
 static netdev_tx_t be_xmit(struct sk_buff *skb,
 			struct net_device *netdev)
 {
 	struct be_adapter *adapter = netdev_priv(netdev);
 	struct be_tx_obj *txo = &adapter->tx_obj[skb_get_queue_mapping(skb)];
 	struct be_queue_info *txq = &txo->q;
+<<<<<<< HEAD
 	struct iphdr *ip = NULL;
 	u32 wrb_cnt = 0, copied = 0;
 	u32 start = txq->head, eth_hdr_len;
@@ -753,14 +760,40 @@ static netdev_tx_t be_xmit(struct sk_buff *skb,
 		skb = be_insert_vlan_in_pkt(adapter, skb);
 		if (unlikely(!skb))
 			goto tx_drop;
+=======
+	u32 wrb_cnt = 0, copied = 0;
+	u32 start = txq->head;
+	bool dummy_wrb, stopped = false;
+
+	/* For vlan tagged pkts, BE
+	 * 1) calculates checksum even when CSO is not requested
+	 * 2) calculates checksum wrongly for padded pkt less than
+	 * 60 bytes long.
+	 * As a workaround disable TX vlan offloading in such cases.
+	 */
+	if (unlikely(vlan_tx_tag_present(skb) &&
+		     (skb->ip_summed != CHECKSUM_PARTIAL || skb->len <= 60))) {
+		skb = skb_share_check(skb, GFP_ATOMIC);
+		if (unlikely(!skb))
+			goto tx_drop;
+
+		skb = __vlan_put_tag(skb, be_get_tx_vlan_tag(adapter, skb));
+		if (unlikely(!skb))
+			goto tx_drop;
+
+		skb->vlan_tci = 0;
+>>>>>>> 7175f4b... Truncated history
 	}
 
 	wrb_cnt = wrb_cnt_for_skb(adapter, skb, &dummy_wrb);
 
 	copied = make_tx_wrbs(adapter, txq, skb, wrb_cnt, dummy_wrb);
 	if (copied) {
+<<<<<<< HEAD
 		int gso_segs = skb_shinfo(skb)->gso_segs;
 
+=======
+>>>>>>> 7175f4b... Truncated history
 		/* record the sent skb in the sent_skb table */
 		BUG_ON(txo->sent_skb_list[start]);
 		txo->sent_skb_list[start] = skb;
@@ -778,7 +811,12 @@ static netdev_tx_t be_xmit(struct sk_buff *skb,
 
 		be_txq_notify(adapter, txq->id, wrb_cnt);
 
+<<<<<<< HEAD
 		be_tx_stats_update(txo, wrb_cnt, copied, gso_segs, stopped);
+=======
+		be_tx_stats_update(txo, wrb_cnt, copied,
+				skb_shinfo(skb)->gso_segs, stopped);
+>>>>>>> 7175f4b... Truncated history
 	} else {
 		txq->head = start;
 		dev_kfree_skb_any(skb);

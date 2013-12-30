@@ -1692,18 +1692,28 @@ static int vidioc_streamoff(struct file *file, void *priv,
 			(AUVI_INPUT(i).audio_setup)(dev, 0);
 		}
 
+<<<<<<< HEAD
 		if (res_check(fh, AU0828_RESOURCE_VIDEO)) {
 			videobuf_streamoff(&fh->vb_vidq);
 			res_free(fh, AU0828_RESOURCE_VIDEO);
 		}
+=======
+		videobuf_streamoff(&fh->vb_vidq);
+		res_free(fh, AU0828_RESOURCE_VIDEO);
+>>>>>>> 7175f4b... Truncated history
 	} else if (fh->type == V4L2_BUF_TYPE_VBI_CAPTURE) {
 		dev->vbi_timeout_running = 0;
 		del_timer_sync(&dev->vbi_timeout);
 
+<<<<<<< HEAD
 		if (res_check(fh, AU0828_RESOURCE_VBI)) {
 			videobuf_streamoff(&fh->vb_vbiq);
 			res_free(fh, AU0828_RESOURCE_VBI);
 		}
+=======
+		videobuf_streamoff(&fh->vb_vbiq);
+		res_free(fh, AU0828_RESOURCE_VBI);
+>>>>>>> 7175f4b... Truncated history
 	}
 
 	return 0;

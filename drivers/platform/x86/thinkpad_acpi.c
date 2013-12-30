@@ -8662,6 +8662,7 @@ static int __must_check __init get_thinkpad_model_data(
 		tp->model_str = kstrdup(s, GFP_KERNEL);
 		if (!tp->model_str)
 			return -ENOMEM;
+<<<<<<< HEAD
 	} else {
 		s = dmi_get_system_info(DMI_BIOS_VENDOR);
 		if (s && !(strnicmp(s, "Lenovo", 6))) {
@@ -8669,6 +8670,8 @@ static int __must_check __init get_thinkpad_model_data(
 			if (!tp->model_str)
 				return -ENOMEM;
 		}
+=======
+>>>>>>> 7175f4b... Truncated history
 	}
 
 	s = dmi_get_system_info(DMI_PRODUCT_NAME);

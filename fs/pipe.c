@@ -860,9 +860,12 @@ pipe_rdwr_open(struct inode *inode, struct file *filp)
 {
 	int ret = -ENOENT;
 
+<<<<<<< HEAD
 	if (!(filp->f_mode & (FMODE_READ|FMODE_WRITE)))
 		return -EINVAL;
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	mutex_lock(&inode->i_mutex);
 
 	if (inode->i_pipe) {

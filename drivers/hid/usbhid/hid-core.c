@@ -399,6 +399,7 @@ static int hid_submit_ctrl(struct hid_device *hid)
  * Output interrupt completion handler.
  */
 
+<<<<<<< HEAD
 static int irq_out_pump_restart(struct hid_device *hid)
 {
 	struct usbhid_device *usbhid = hid->driver_data;
@@ -409,6 +410,8 @@ static int irq_out_pump_restart(struct hid_device *hid)
 		return -1;
 }
 
+=======
+>>>>>>> 7175f4b... Truncated history
 static void hid_irq_out(struct urb *urb)
 {
 	struct hid_device *hid = urb->context;
@@ -438,7 +441,11 @@ static void hid_irq_out(struct urb *urb)
 	else
 		usbhid->outtail = (usbhid->outtail + 1) & (HID_OUTPUT_FIFO_SIZE - 1);
 
+<<<<<<< HEAD
 	if (!irq_out_pump_restart(hid)) {
+=======
+	if (usbhid->outhead != usbhid->outtail && !hid_submit_out(hid)) {
+>>>>>>> 7175f4b... Truncated history
 		/* Successfully submitted next urb in queue */
 		spin_unlock_irqrestore(&usbhid->lock, flags);
 		return;
@@ -453,6 +460,7 @@ static void hid_irq_out(struct urb *urb)
 /*
  * Control pipe completion handler.
  */
+<<<<<<< HEAD
 static int ctrl_pump_restart(struct hid_device *hid)
 {
 	struct usbhid_device *usbhid = hid->driver_data;
@@ -462,6 +470,8 @@ static int ctrl_pump_restart(struct hid_device *hid)
 	else
 		return -1;
 }
+=======
+>>>>>>> 7175f4b... Truncated history
 
 static void hid_ctrl(struct urb *urb)
 {
@@ -495,7 +505,11 @@ static void hid_ctrl(struct urb *urb)
 	else
 		usbhid->ctrltail = (usbhid->ctrltail + 1) & (HID_CONTROL_FIFO_SIZE - 1);
 
+<<<<<<< HEAD
 	if (!ctrl_pump_restart(hid)) {
+=======
+	if (usbhid->ctrlhead != usbhid->ctrltail && !hid_submit_ctrl(hid)) {
+>>>>>>> 7175f4b... Truncated history
 		/* Successfully submitted next urb in queue */
 		spin_unlock(&usbhid->lock);
 		return;
@@ -554,6 +568,7 @@ static void __usbhid_submit_report(struct hid_device *hid, struct hid_report *re
 			 * the queue is known to run
 			 * but an earlier request may be stuck
 			 * we may need to time out
+<<<<<<< HEAD
 			 * no race because the URB is blocked under
 			 * spinlock
 			 */
@@ -575,6 +590,13 @@ static void __usbhid_submit_report(struct hid_device *hid, struct hid_report *re
 
 
 			}
+=======
+			 * no race because this is called under
+			 * spinlock
+			 */
+			if (time_after(jiffies, usbhid->last_out + HZ * 5))
+				usb_unlink_urb(usbhid->urbout);
+>>>>>>> 7175f4b... Truncated history
 		}
 		return;
 	}
@@ -618,6 +640,7 @@ static void __usbhid_submit_report(struct hid_device *hid, struct hid_report *re
 		 * the queue is known to run
 		 * but an earlier request may be stuck
 		 * we may need to time out
+<<<<<<< HEAD
 		 * no race because the URB is blocked under
 		 * spinlock
 		 */
@@ -637,6 +660,13 @@ static void __usbhid_submit_report(struct hid_device *hid, struct hid_report *re
 				if (!ctrl_pump_restart(hid))
 					set_bit(HID_CTRL_RUNNING, &usbhid->iofl);
 		}
+=======
+		 * no race because this is called under
+		 * spinlock
+		 */
+		if (time_after(jiffies, usbhid->last_ctrl + HZ * 5))
+			usb_unlink_urb(usbhid->urbctrl);
+>>>>>>> 7175f4b... Truncated history
 	}
 }
 

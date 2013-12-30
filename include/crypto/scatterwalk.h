@@ -36,7 +36,10 @@ static inline void scatterwalk_sg_chain(struct scatterlist *sg1, int num,
 {
 	sg_set_page(&sg1[num - 1], (void *)sg2, 0, 0);
 	sg1[num - 1].page_link &= ~0x02;
+<<<<<<< HEAD
 	sg1[num - 1].page_link |= 0x01;
+=======
+>>>>>>> 7175f4b... Truncated history
 }
 
 static inline struct scatterlist *scatterwalk_sg_next(struct scatterlist *sg)
@@ -44,7 +47,11 @@ static inline struct scatterlist *scatterwalk_sg_next(struct scatterlist *sg)
 	if (sg_is_last(sg))
 		return NULL;
 
+<<<<<<< HEAD
 	return (++sg)->length ? sg : sg_chain_ptr(sg);
+=======
+	return (++sg)->length ? sg : (void *)sg_page(sg);
+>>>>>>> 7175f4b... Truncated history
 }
 
 static inline void scatterwalk_crypto_chain(struct scatterlist *head,

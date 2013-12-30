@@ -362,8 +362,12 @@ static int lis3lv02d_suspend(struct acpi_device *device, pm_message_t state)
 
 static int lis3lv02d_resume(struct acpi_device *device)
 {
+<<<<<<< HEAD
 	lis3lv02d_poweron(&lis3_dev);
 	return 0;
+=======
+	return lis3lv02d_poweron(&lis3_dev);
+>>>>>>> 7175f4b... Truncated history
 }
 #else
 #define lis3lv02d_suspend NULL

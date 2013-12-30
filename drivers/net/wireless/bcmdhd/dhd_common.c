@@ -1860,9 +1860,15 @@ dhd_get_suspend_bcn_li_dtim(dhd_pub_t *dhd)
 {
 	int bcn_li_dtim = 1; /* deafult no dtim skip setting */
 	int ret = -1;
+<<<<<<< HEAD
 	int dtim_period = 0;
 	int ap_beacon = 0;
 	int allowed_skip_dtim_cnt = 0;
+=======
+	int dtim_assoc = 0;
+	int ap_beacon = 0;
+
+>>>>>>> 7175f4b... Truncated history
 	/* Check if associated */
 	if (dhd_is_associated(dhd, NULL, NULL) == FALSE) {
 		DHD_TRACE(("%s NOT assoc ret %d\n", __FUNCTION__, ret));
@@ -1877,20 +1883,32 @@ dhd_get_suspend_bcn_li_dtim(dhd_pub_t *dhd)
 	}
 
 	/* if associated APs Beacon more  that 100msec do no dtim skip */
+<<<<<<< HEAD
 	if (ap_beacon > MAX_DTIM_SKIP_BEACON_INTERVAL) {
+=======
+	if (ap_beacon > MAX_DTIM_SKIP_BEACON_ITERVAL) {
+>>>>>>> 7175f4b... Truncated history
 		DHD_ERROR(("%s NO dtim skip for AP with beacon %d ms\n", __FUNCTION__, ap_beacon));
 		goto exit;
 	}
 
 	/* read associated ap's dtim setup */
 	if ((ret = dhd_wl_ioctl_cmd(dhd, WLC_GET_DTIMPRD,
+<<<<<<< HEAD
 		&dtim_period, sizeof(dtim_period), FALSE, 0)) < 0) {
+=======
+		&dtim_assoc, sizeof(dtim_assoc), FALSE, 0)) < 0) {
+>>>>>>> 7175f4b... Truncated history
 		DHD_ERROR(("%s failed code %d\n", __FUNCTION__, ret));
 		goto exit;
 	}
 
 	/* if not assocated just eixt */
+<<<<<<< HEAD
 	if (dtim_period == 0) {
+=======
+	if (dtim_assoc == 0) {
+>>>>>>> 7175f4b... Truncated history
 		goto exit;
 	}
 
@@ -1898,6 +1916,7 @@ dhd_get_suspend_bcn_li_dtim(dhd_pub_t *dhd)
 	bcn_li_dtim = dhd->suspend_bcn_li_dtim;
 
 	/* check if sta listen interval fits into AP dtim */
+<<<<<<< HEAD
 	if (dtim_period > CUSTOM_LISTEN_INTERVAL) {
 		/* AP DTIM to big for our Listen Interval : no dtim skiping */
 		bcn_li_dtim = NO_DTIM_SKIP;
@@ -1914,11 +1933,28 @@ dhd_get_suspend_bcn_li_dtim(dhd_pub_t *dhd)
 	if ((bcn_li_dtim * dtim_period) > CUSTOM_LISTEN_INTERVAL) {
 		/* Round up dtim_skip to fit into STAs Listen Interval */
 		bcn_li_dtim = (int)(CUSTOM_LISTEN_INTERVAL / dtim_period);
+=======
+	if (dtim_assoc > CUSTOM_LISTEN_INTERVAL) {
+		/* AP DTIM to big for our Listen Interval : no dtim skiping */
+		bcn_li_dtim = 1;
+		DHD_ERROR(("%s DTIM=%d > Listen=%d : too big ...\n",
+			__FUNCTION__, dtim_assoc, CUSTOM_LISTEN_INTERVAL));
+		goto exit;
+	}
+
+	if ((bcn_li_dtim * dtim_assoc) > CUSTOM_LISTEN_INTERVAL) {
+		/* Round up dtim_skip to fit into STAs Listen Interval */
+		bcn_li_dtim = (int)(CUSTOM_LISTEN_INTERVAL / dtim_assoc);
+>>>>>>> 7175f4b... Truncated history
 		DHD_TRACE(("%s agjust dtim_skip as %d\n", __FUNCTION__, bcn_li_dtim));
 	}
 
 	DHD_ERROR(("%s beacon=%d bcn_li_dtim=%d DTIM=%d Listen=%d\n",
+<<<<<<< HEAD
 		__FUNCTION__, ap_beacon, bcn_li_dtim, dtim_period, CUSTOM_LISTEN_INTERVAL));
+=======
+		__FUNCTION__, ap_beacon, bcn_li_dtim, dtim_assoc, CUSTOM_LISTEN_INTERVAL));
+>>>>>>> 7175f4b... Truncated history
 
 exit:
 	return bcn_li_dtim;

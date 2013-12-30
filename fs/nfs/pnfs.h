@@ -161,7 +161,11 @@ extern int nfs4_proc_getdevicelist(struct nfs_server *server,
 				   struct pnfs_devicelist *devlist);
 extern int nfs4_proc_getdeviceinfo(struct nfs_server *server,
 				   struct pnfs_device *dev);
+<<<<<<< HEAD
 extern int nfs4_proc_layoutget(struct nfs4_layoutget *lgp, gfp_t gfp_flags);
+=======
+extern int nfs4_proc_layoutget(struct nfs4_layoutget *lgp);
+>>>>>>> 7175f4b... Truncated history
 extern int nfs4_proc_layoutreturn(struct nfs4_layoutreturn *lrp);
 
 /* pnfs.c */

@@ -8,7 +8,11 @@ PIT Timer required properties:
   shared across all System Controller members.
 
 TC/TCLIB Timer required properties:
+<<<<<<< HEAD
 - compatible: Should be "atmel,<chip>-tcb".
+=======
+- compatible: Should be "atmel,<chip>-pit".
+>>>>>>> 7175f4b... Truncated history
   <chip> can be "at91rm9200" or "at91sam9x5"
 - reg: Should contain registers location and length
 - interrupts: Should contain all interrupts for the TC block

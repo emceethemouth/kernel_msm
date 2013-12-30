@@ -151,6 +151,10 @@ static int __devinit pcie_portdrv_probe(struct pci_dev *dev,
 static void pcie_portdrv_remove(struct pci_dev *dev)
 {
 	pcie_port_device_remove(dev);
+<<<<<<< HEAD
+=======
+	pci_disable_device(dev);
+>>>>>>> 7175f4b... Truncated history
 }
 
 static int error_detected_iter(struct device *device, void *data)

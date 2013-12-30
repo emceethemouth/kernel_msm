@@ -6,7 +6,11 @@
 #include "bonding.h"
 #include "bond_alb.h"
 
+<<<<<<< HEAD
 #if defined(CONFIG_DEBUG_FS) && !defined(CONFIG_NET_NS)
+=======
+#ifdef CONFIG_DEBUG_FS
+>>>>>>> 7175f4b... Truncated history
 
 #include <linux/debugfs.h>
 #include <linux/seq_file.h>

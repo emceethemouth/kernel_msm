@@ -174,6 +174,7 @@ get_lvds_dvo_timing(const struct bdb_lvds_lfp_data *lvds_lfp_data,
 	return (struct lvds_dvo_timing *)(entry + dvo_timing_offset);
 }
 
+<<<<<<< HEAD
 /* get lvds_fp_timing entry
  * this function may return NULL if the corresponding entry is invalid
  */
@@ -196,6 +197,8 @@ get_lvds_fp_timing(const struct bdb_header *bdb,
 	return (const struct lvds_fp_timing *)((const u8 *)bdb + ofs);
 }
 
+=======
+>>>>>>> 7175f4b... Truncated history
 /* Try to find integrated panel data */
 static void
 parse_lfp_panel_data(struct drm_i915_private *dev_priv,
@@ -205,7 +208,10 @@ parse_lfp_panel_data(struct drm_i915_private *dev_priv,
 	const struct bdb_lvds_lfp_data *lvds_lfp_data;
 	const struct bdb_lvds_lfp_data_ptrs *lvds_lfp_data_ptrs;
 	const struct lvds_dvo_timing *panel_dvo_timing;
+<<<<<<< HEAD
 	const struct lvds_fp_timing *fp_timing;
+=======
+>>>>>>> 7175f4b... Truncated history
 	struct drm_display_mode *panel_fixed_mode;
 	int i, downclock;
 
@@ -267,6 +273,7 @@ parse_lfp_panel_data(struct drm_i915_private *dev_priv,
 			      "Normal Clock %dKHz, downclock %dKHz\n",
 			      panel_fixed_mode->clock, 10*downclock);
 	}
+<<<<<<< HEAD
 
 	fp_timing = get_lvds_fp_timing(bdb, lvds_lfp_data,
 				       lvds_lfp_data_ptrs,
@@ -280,6 +287,8 @@ parse_lfp_panel_data(struct drm_i915_private *dev_priv,
 				      dev_priv->bios_lvds_val);
 		}
 	}
+=======
+>>>>>>> 7175f4b... Truncated history
 }
 
 /* Try to find sdvo panel data */
@@ -495,8 +504,17 @@ parse_edp(struct drm_i915_private *dev_priv, struct bdb_header *bdb)
 
 	edp = find_section(bdb, BDB_EDP);
 	if (!edp) {
+<<<<<<< HEAD
 		if (SUPPORTS_EDP(dev_priv->dev) && dev_priv->edp.support)
 			DRM_DEBUG_KMS("No eDP BDB found but eDP panel supported.\n");
+=======
+		if (SUPPORTS_EDP(dev_priv->dev) && dev_priv->edp.support) {
+			DRM_DEBUG_KMS("No eDP BDB found but eDP panel "
+				      "supported, assume %dbpp panel color "
+				      "depth.\n",
+				      dev_priv->edp.bpp);
+		}
+>>>>>>> 7175f4b... Truncated history
 		return;
 	}
 
@@ -649,6 +667,12 @@ init_vbt_defaults(struct drm_i915_private *dev_priv)
 	dev_priv->lvds_use_ssc = 1;
 	dev_priv->lvds_ssc_freq = intel_bios_ssc_frequency(dev, 1);
 	DRM_DEBUG_KMS("Set default to SSC at %dMHz\n", dev_priv->lvds_ssc_freq);
+<<<<<<< HEAD
+=======
+
+	/* eDP data */
+	dev_priv->edp.bpp = 18;
+>>>>>>> 7175f4b... Truncated history
 }
 
 static int __init intel_no_opregion_vbt_callback(const struct dmi_system_id *id)

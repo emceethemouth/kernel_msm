@@ -20,16 +20,20 @@
 
 #define STACK_TRACE_ENTRIES 500
 
+<<<<<<< HEAD
 #ifdef CC_USING_FENTRY
 # define fentry		1
 #else
 # define fentry		0
 #endif
 
+=======
+>>>>>>> 7175f4b... Truncated history
 static unsigned long stack_dump_trace[STACK_TRACE_ENTRIES+1] =
 	 { [0 ... (STACK_TRACE_ENTRIES)] = ULONG_MAX };
 static unsigned stack_dump_index[STACK_TRACE_ENTRIES];
 
+<<<<<<< HEAD
 /*
  * Reserve one entry for the passed in ip. This will allow
  * us to remove most or all of the stack size overhead
@@ -38,6 +42,11 @@ static unsigned stack_dump_index[STACK_TRACE_ENTRIES];
 static struct stack_trace max_stack_trace = {
 	.max_entries		= STACK_TRACE_ENTRIES - 1,
 	.entries		= &stack_dump_trace[1],
+=======
+static struct stack_trace max_stack_trace = {
+	.max_entries		= STACK_TRACE_ENTRIES,
+	.entries		= stack_dump_trace,
+>>>>>>> 7175f4b... Truncated history
 };
 
 static unsigned long max_stack_size;
@@ -51,6 +60,7 @@ static DEFINE_MUTEX(stack_sysctl_mutex);
 int stack_tracer_enabled;
 static int last_stack_tracer_enabled;
 
+<<<<<<< HEAD
 static inline void
 check_stack(unsigned long ip, unsigned long *stack)
 {
@@ -64,21 +74,38 @@ check_stack(unsigned long ip, unsigned long *stack)
 	this_size = THREAD_SIZE - this_size;
 	/* Remove the frame of the tracer */
 	this_size -= frame_size;
+=======
+static inline void check_stack(void)
+{
+	unsigned long this_size, flags;
+	unsigned long *p, *top, *start;
+	int i;
+
+	this_size = ((unsigned long)&this_size) & (THREAD_SIZE-1);
+	this_size = THREAD_SIZE - this_size;
+>>>>>>> 7175f4b... Truncated history
 
 	if (this_size <= max_stack_size)
 		return;
 
 	/* we do not handle interrupt stacks yet */
+<<<<<<< HEAD
 	if (!object_is_on_stack(stack))
+=======
+	if (!object_is_on_stack(&this_size))
+>>>>>>> 7175f4b... Truncated history
 		return;
 
 	local_irq_save(flags);
 	arch_spin_lock(&max_stack_lock);
 
+<<<<<<< HEAD
 	/* In case another CPU set the tracer_frame on us */
 	if (unlikely(!frame_size))
 		this_size -= tracer_frame;
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	/* a race could have already updated it */
 	if (this_size <= max_stack_size)
 		goto out;
@@ -91,6 +118,7 @@ check_stack(unsigned long ip, unsigned long *stack)
 	save_stack_trace(&max_stack_trace);
 
 	/*
+<<<<<<< HEAD
 	 * Add the passed in ip from the function tracer.
 	 * Searching for this on the stack will skip over
 	 * most of the overhead from the stack tracer itself.
@@ -103,6 +131,12 @@ check_stack(unsigned long ip, unsigned long *stack)
 	 */
 	i = 0;
 	start = stack;
+=======
+	 * Now find where in the stack these are.
+	 */
+	i = 0;
+	start = &this_size;
+>>>>>>> 7175f4b... Truncated history
 	top = (unsigned long *)
 		(((unsigned long)start & ~(THREAD_SIZE-1)) + THREAD_SIZE);
 
@@ -126,6 +160,7 @@ check_stack(unsigned long ip, unsigned long *stack)
 				found = 1;
 				/* Start the search from here */
 				start = p + 1;
+<<<<<<< HEAD
 				/*
 				 * We do not want to show the overhead
 				 * of the stack tracer stack in the
@@ -138,6 +173,8 @@ check_stack(unsigned long ip, unsigned long *stack)
 						sizeof(unsigned long);
 					max_stack_size -= tracer_frame;
 				}
+=======
+>>>>>>> 7175f4b... Truncated history
 			}
 		}
 
@@ -153,7 +190,10 @@ check_stack(unsigned long ip, unsigned long *stack)
 static void
 stack_trace_call(unsigned long ip, unsigned long parent_ip)
 {
+<<<<<<< HEAD
 	unsigned long stack;
+=======
+>>>>>>> 7175f4b... Truncated history
 	int cpu;
 
 	if (unlikely(!ftrace_enabled || stack_trace_disabled))
@@ -166,6 +206,7 @@ stack_trace_call(unsigned long ip, unsigned long parent_ip)
 	if (per_cpu(trace_active, cpu)++ != 0)
 		goto out;
 
+<<<<<<< HEAD
 	/*
 	 * When fentry is used, the traced function does not get
 	 * its stack frame set up, and we lose the parent.
@@ -186,6 +227,9 @@ stack_trace_call(unsigned long ip, unsigned long parent_ip)
 		ip += MCOUNT_INSN_SIZE;
 
 	check_stack(ip, &stack);
+=======
+	check_stack();
+>>>>>>> 7175f4b... Truncated history
 
  out:
 	per_cpu(trace_active, cpu)--;
@@ -384,7 +428,11 @@ static const struct file_operations stack_trace_filter_fops = {
 	.open = stack_trace_filter_open,
 	.read = seq_read,
 	.write = ftrace_filter_write,
+<<<<<<< HEAD
 	.llseek = ftrace_filter_lseek,
+=======
+	.llseek = ftrace_regex_lseek,
+>>>>>>> 7175f4b... Truncated history
 	.release = ftrace_regex_release,
 };
 
@@ -433,8 +481,11 @@ static __init int stack_trace_init(void)
 	struct dentry *d_tracer;
 
 	d_tracer = tracing_init_dentry();
+<<<<<<< HEAD
 	if (!d_tracer)
 		return 0;
+=======
+>>>>>>> 7175f4b... Truncated history
 
 	trace_create_file("stack_max_size", 0644, d_tracer,
 			&max_stack_size, &stack_max_size_fops);

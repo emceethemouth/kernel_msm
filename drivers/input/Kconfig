@@ -71,7 +71,11 @@ config INPUT_SPARSEKMAP
 comment "Userland interfaces"
 
 config INPUT_MOUSEDEV
+<<<<<<< HEAD
 	tristate "Mouse interface"
+=======
+	tristate "Mouse interface" if EXPERT
+>>>>>>> 7175f4b... Truncated history
 	default y
 	help
 	  Say Y here if you want your mouse to be accessible as char devices

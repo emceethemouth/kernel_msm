@@ -405,7 +405,10 @@ static void __sco_sock_close(struct sock *sk)
 			sco_chan_del(sk, ECONNRESET);
 		break;
 
+<<<<<<< HEAD
 	case BT_CONNECT2:
+=======
+>>>>>>> 7175f4b... Truncated history
 	case BT_CONNECT:
 	case BT_DISCONN:
 		sco_chan_del(sk, ECONNRESET);

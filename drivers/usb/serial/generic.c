@@ -223,7 +223,18 @@ retry:
 		return result;
 	}
 
+<<<<<<< HEAD
 	goto retry;	/* try sending off another urb */
+=======
+	/* Try sending off another urb, unless in irq context (in which case
+	 * there will be no free urb). */
+	if (!in_irq())
+		goto retry;
+
+	clear_bit_unlock(USB_SERIAL_WRITE_BUSY, &port->flags);
+
+	return 0;
+>>>>>>> 7175f4b... Truncated history
 }
 
 /**

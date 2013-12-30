@@ -755,6 +755,7 @@ buf_error:
 	return rc;
 }
 
+<<<<<<< HEAD
 static void msm_isp_process_frame_drop(struct vfe_device *vfe_dev,
 	struct msm_vfe_axi_stream *stream_info,
 	struct msm_isp_timestamp *ts)
@@ -774,6 +775,8 @@ static void msm_isp_process_frame_drop(struct vfe_device *vfe_dev,
 	msm_isp_send_event(vfe_dev, ISP_EVENT_FRAME_DROP, &buf_event);
 }
 
+=======
+>>>>>>> 7175f4b... Truncated history
 static void msm_isp_process_done_buf(struct vfe_device *vfe_dev,
 	struct msm_vfe_axi_stream *stream_info, struct msm_isp_buffer *buf,
 	struct msm_isp_timestamp *ts)
@@ -1296,10 +1299,13 @@ void msm_isp_process_axi_irq(struct vfe_device *vfe_dev,
 				if (done_buf && !rc)
 					msm_isp_process_done_buf(vfe_dev,
 					stream_info, done_buf, ts);
+<<<<<<< HEAD
 				if (done_buf && rc)
 					/* Propagate frame drop */
 					msm_isp_process_frame_drop(vfe_dev,
 					stream_info, ts);
+=======
+>>>>>>> 7175f4b... Truncated history
 			}
 		}
 		wm_mask &= ~(comp_info->stream_composite_mask);
@@ -1345,10 +1351,13 @@ void msm_isp_process_axi_irq(struct vfe_device *vfe_dev,
 				if (done_buf && !rc)
 					msm_isp_process_done_buf(vfe_dev,
 					stream_info, done_buf, ts);
+<<<<<<< HEAD
 				if (done_buf && rc)
 					/* Propagate frame drop */
 					msm_isp_process_frame_drop(vfe_dev,
 					stream_info, ts);
+=======
+>>>>>>> 7175f4b... Truncated history
 			}
 		}
 	}

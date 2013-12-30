@@ -4,6 +4,7 @@
 
 #include <asm/kexec.h>
 
+<<<<<<< HEAD
 #ifdef CONFIG_KEXEC_HARDBOOT
 #include <asm/memory.h>
 #if defined(CONFIG_ARCH_TEGRA_2x_SOC) || defined(CONFIG_ARCH_TEGRA_3x_SOC)
@@ -13,6 +14,8 @@
 #endif
 #endif
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	.globl relocate_new_kernel
 relocate_new_kernel:
 
@@ -61,12 +64,15 @@ relocate_new_kernel:
 	b 0b
 
 2:
+<<<<<<< HEAD
 #ifdef CONFIG_KEXEC_HARDBOOT
 	ldr	r0, kexec_hardboot
 	teq	r0, #0
 	bne	hardboot
 #endif
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	/* Jump to relocated kernel */
 	mov lr,r1
 	mov r0,#0
@@ -75,6 +81,7 @@ relocate_new_kernel:
  ARM(	mov pc, lr	)
  THUMB(	bx lr		)
 
+<<<<<<< HEAD
 #ifdef CONFIG_KEXEC_HARDBOOT
 hardboot:
 	/* Stash boot arguments in hardboot page:
@@ -121,6 +128,8 @@ loop:	b	loop
 
 	.ltorg
 #endif
+=======
+>>>>>>> 7175f4b... Truncated history
 	.align
 
 	.globl kexec_start_address
@@ -140,6 +149,7 @@ kexec_mach_type:
 kexec_boot_atags:
 	.long	0x0
 
+<<<<<<< HEAD
 #ifdef CONFIG_KEXEC_HARDBOOT
 	.globl kexec_boot_atags_len
 kexec_boot_atags_len:
@@ -154,6 +164,8 @@ kexec_hardboot:
 	.long	0x0
 #endif
 
+=======
+>>>>>>> 7175f4b... Truncated history
 relocate_new_kernel_end:
 
 	.globl relocate_new_kernel_size

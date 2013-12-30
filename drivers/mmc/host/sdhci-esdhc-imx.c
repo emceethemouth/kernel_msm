@@ -232,6 +232,7 @@ static void esdhc_writel_le(struct sdhci_host *host, u32 val, int reg)
 
 static u16 esdhc_readw_le(struct sdhci_host *host, int reg)
 {
+<<<<<<< HEAD
 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
 	struct pltfm_imx_data *imx_data = pltfm_host->priv;
 
@@ -244,6 +245,17 @@ static u16 esdhc_readw_le(struct sdhci_host *host, int reg)
 			 */
 			return SDHCI_SPEC_300;
 		}
+=======
+	if (unlikely(reg == SDHCI_HOST_VERSION)) {
+		u16 val = readw(host->ioaddr + (reg ^ 2));
+		/*
+		 * uSDHC supports SDHCI v3.0, but it's encoded as value
+		 * 0x3 in host controller version register, which violates
+		 * SDHCI_SPEC_300 definition.  Work it around here.
+		 */
+		if ((val & SDHCI_SPEC_VER_MASK) == 3)
+			return --val;
+>>>>>>> 7175f4b... Truncated history
 	}
 
 	return readw(host->ioaddr + reg);

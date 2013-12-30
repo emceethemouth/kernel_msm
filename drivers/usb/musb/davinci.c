@@ -34,7 +34,10 @@
 #include <linux/dma-mapping.h>
 
 #include <mach/cputype.h>
+<<<<<<< HEAD
 #include <mach/hardware.h>
+=======
+>>>>>>> 7175f4b... Truncated history
 
 #include <asm/mach-types.h>
 

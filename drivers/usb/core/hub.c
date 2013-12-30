@@ -517,6 +517,7 @@ resubmit:
 static inline int
 hub_clear_tt_buffer (struct usb_device *hdev, u16 devinfo, u16 tt)
 {
+<<<<<<< HEAD
 	/* Need to clear both directions for control ep */
 	if (((devinfo >> 11) & USB_ENDPOINT_XFERTYPE_MASK) ==
 			USB_ENDPOINT_XFER_CONTROL) {
@@ -526,6 +527,8 @@ hub_clear_tt_buffer (struct usb_device *hdev, u16 devinfo, u16 tt)
 		if (status)
 			return status;
 	}
+=======
+>>>>>>> 7175f4b... Truncated history
 	return usb_control_msg(hdev, usb_sndctrlpipe(hdev, 0),
 			       HUB_CLEAR_TT_BUFFER, USB_RT_PORT, devinfo,
 			       tt, NULL, 0, 1000);
@@ -545,16 +548,23 @@ static void hub_tt_work(struct work_struct *work)
 	int			limit = 100;
 
 	spin_lock_irqsave (&hub->tt.lock, flags);
+<<<<<<< HEAD
 	while (!list_empty(&hub->tt.clear_list)) {
+=======
+	while (--limit && !list_empty (&hub->tt.clear_list)) {
+>>>>>>> 7175f4b... Truncated history
 		struct list_head	*next;
 		struct usb_tt_clear	*clear;
 		struct usb_device	*hdev = hub->hdev;
 		const struct hc_driver	*drv;
 		int			status;
 
+<<<<<<< HEAD
 		if (!hub->quiescing && --limit < 0)
 			break;
 
+=======
+>>>>>>> 7175f4b... Truncated history
 		next = hub->tt.clear_list.next;
 		clear = list_entry (next, struct usb_tt_clear, clear_list);
 		list_del (&clear->clear_list);
@@ -682,6 +692,7 @@ static int hub_hub_status(struct usb_hub *hub,
 	return ret;
 }
 
+<<<<<<< HEAD
 static int hub_set_port_link_state(struct usb_hub *hub, int port1,
 			unsigned int link_status)
 {
@@ -736,6 +747,8 @@ static int hub_usb3_port_disable(struct usb_hub *hub, int port1)
 	return hub_set_port_link_state(hub, port1, USB_SS_PORT_LS_RX_DETECT);
 }
 
+=======
+>>>>>>> 7175f4b... Truncated history
 static int hub_port_disable(struct usb_hub *hub, int port1, int set_state)
 {
 	struct usb_device *hdev = hub->hdev;
@@ -744,6 +757,7 @@ static int hub_port_disable(struct usb_hub *hub, int port1, int set_state)
 	if (hdev->children[port1-1] && set_state)
 		usb_set_device_state(hdev->children[port1-1],
 				USB_STATE_NOTATTACHED);
+<<<<<<< HEAD
 	if (!hub->error) {
 		if (hub_is_superspeed(hub->hdev))
 			ret = hub_usb3_port_disable(hub, port1);
@@ -751,6 +765,10 @@ static int hub_port_disable(struct usb_hub *hub, int port1, int set_state)
 			ret = clear_port_feature(hdev, port1,
 					USB_PORT_FEAT_ENABLE);
 	}
+=======
+	if (!hub->error && !hub_is_superspeed(hub->hdev))
+		ret = clear_port_feature(hdev, port1, USB_PORT_FEAT_ENABLE);
+>>>>>>> 7175f4b... Truncated history
 	if (ret)
 		dev_err(hub->intfdev, "cannot disable port %d (err = %d)\n",
 				port1, ret);
@@ -1087,7 +1105,11 @@ static void hub_quiesce(struct usb_hub *hub, enum hub_quiescing_type type)
 	if (hub->has_indicators)
 		cancel_delayed_work_sync(&hub->leds);
 	if (hub->tt.hub)
+<<<<<<< HEAD
 		flush_work_sync(&hub->tt.clear_work);
+=======
+		cancel_work_sync(&hub->tt.clear_work);
+>>>>>>> 7175f4b... Truncated history
 }
 
 /* caller has locked the hub device */
@@ -1373,7 +1395,10 @@ static int hub_configure(struct usb_hub *hub,
 	return 0;
 
 fail:
+<<<<<<< HEAD
 	hdev->maxchild = 0;
+=======
+>>>>>>> 7175f4b... Truncated history
 	dev_err (hub_dev, "config failed, %s (err %d)\n",
 			message, ret);
 	/* hub_disconnect() frees urb and descriptor */
@@ -2265,11 +2290,16 @@ static unsigned hub_is_wusb(struct usb_hub *hub)
 #define HUB_SHORT_RESET_TIME	10
 #define HUB_BH_RESET_TIME	50
 #define HUB_LONG_RESET_TIME	200
+<<<<<<< HEAD
 #define HUB_RESET_TIMEOUT	800
+=======
+#define HUB_RESET_TIMEOUT	500
+>>>>>>> 7175f4b... Truncated history
 
 static int hub_port_reset(struct usb_hub *hub, int port1,
 			struct usb_device *udev, unsigned int delay, bool warm);
 
+<<<<<<< HEAD
 /* Is a USB 3.0 port in the Inactive or Complinance Mode state?
  * Port worm reset is required to recover
  */
@@ -2280,13 +2310,26 @@ static bool hub_port_warm_reset_required(struct usb_hub *hub, u16 portstatus)
 		  USB_SS_PORT_LS_SS_INACTIVE) ||
 		 ((portstatus & USB_PORT_STAT_LINK_STATE) ==
 		  USB_SS_PORT_LS_COMP_MOD)) ;
+=======
+/* Is a USB 3.0 port in the Inactive state? */
+static bool hub_port_inactive(struct usb_hub *hub, u16 portstatus)
+{
+	return hub_is_superspeed(hub->hdev) &&
+		(portstatus & USB_PORT_STAT_LINK_STATE) ==
+		USB_SS_PORT_LS_SS_INACTIVE;
+>>>>>>> 7175f4b... Truncated history
 }
 
 static int hub_port_wait_reset(struct usb_hub *hub, int port1,
 			struct usb_device *udev, unsigned int delay, bool warm)
 {
 	int delay_time, ret;
+<<<<<<< HEAD
 	u16 portstatus = 0, portchange = 0;
+=======
+	u16 portstatus;
+	u16 portchange;
+>>>>>>> 7175f4b... Truncated history
 
 	for (delay_time = 0;
 			delay_time < HUB_RESET_TIMEOUT;
@@ -2299,6 +2342,7 @@ static int hub_port_wait_reset(struct usb_hub *hub, int port1,
 		if (ret < 0)
 			return ret;
 
+<<<<<<< HEAD
 		/* The port state is unknown until the reset completes. */
 		if ((portstatus & USB_PORT_STAT_RESET))
 			goto delay;
@@ -2336,6 +2380,75 @@ static int hub_port_wait_reset(struct usb_hub *hub, int port1,
 		}
 
 delay:
+=======
+		/*
+		 * Some buggy devices require a warm reset to be issued even
+		 * when the port appears not to be connected.
+		 */
+		if (!warm) {
+			/*
+			 * Some buggy devices can cause an NEC host controller
+			 * to transition to the "Error" state after a hot port
+			 * reset.  This will show up as the port state in
+			 * "Inactive", and the port may also report a
+			 * disconnect.  Forcing a warm port reset seems to make
+			 * the device work.
+			 *
+			 * See https://bugzilla.kernel.org/show_bug.cgi?id=41752
+			 */
+			if (hub_port_inactive(hub, portstatus)) {
+				int ret;
+
+				if ((portchange & USB_PORT_STAT_C_CONNECTION))
+					clear_port_feature(hub->hdev, port1,
+							USB_PORT_FEAT_C_CONNECTION);
+				if (portchange & USB_PORT_STAT_C_LINK_STATE)
+					clear_port_feature(hub->hdev, port1,
+							USB_PORT_FEAT_C_PORT_LINK_STATE);
+				if (portchange & USB_PORT_STAT_C_RESET)
+					clear_port_feature(hub->hdev, port1,
+							USB_PORT_FEAT_C_RESET);
+				dev_dbg(hub->intfdev, "hot reset failed, warm reset port %d\n",
+						port1);
+				ret = hub_port_reset(hub, port1,
+						udev, HUB_BH_RESET_TIME,
+						true);
+				if ((portchange & USB_PORT_STAT_C_CONNECTION))
+					clear_port_feature(hub->hdev, port1,
+							USB_PORT_FEAT_C_CONNECTION);
+				return ret;
+			}
+			/* Device went away? */
+			if (!(portstatus & USB_PORT_STAT_CONNECTION))
+				return -ENOTCONN;
+
+			/* bomb out completely if the connection bounced */
+			if ((portchange & USB_PORT_STAT_C_CONNECTION))
+				return -ENOTCONN;
+
+			/* if we`ve finished resetting, then break out of
+			 * the loop
+			 */
+			if (!(portstatus & USB_PORT_STAT_RESET) &&
+			    (portstatus & USB_PORT_STAT_ENABLE)) {
+				if (hub_is_wusb(hub))
+					udev->speed = USB_SPEED_WIRELESS;
+				else if (hub_is_superspeed(hub->hdev))
+					udev->speed = USB_SPEED_SUPER;
+				else if (portstatus & USB_PORT_STAT_HIGH_SPEED)
+					udev->speed = USB_SPEED_HIGH;
+				else if (portstatus & USB_PORT_STAT_LOW_SPEED)
+					udev->speed = USB_SPEED_LOW;
+				else
+					udev->speed = USB_SPEED_FULL;
+				return 0;
+			}
+		} else {
+			if (portchange & USB_PORT_STAT_C_BH_RESET)
+				return 0;
+		}
+
+>>>>>>> 7175f4b... Truncated history
 		/* switch to the long delay after two short delay failures */
 		if (delay_time >= 2 * HUB_SHORT_RESET_TIME)
 			delay = HUB_LONG_RESET_TIME;
@@ -2349,6 +2462,7 @@ delay:
 }
 
 static void hub_port_finish_reset(struct usb_hub *hub, int port1,
+<<<<<<< HEAD
 			struct usb_device *udev, int *status)
 {
 	switch (*status) {
@@ -2364,17 +2478,43 @@ static void hub_port_finish_reset(struct usb_hub *hub, int port1,
 			 */
 			if (hcd->driver->reset_device)
 				hcd->driver->reset_device(hcd, udev);
+=======
+			struct usb_device *udev, int *status, bool warm)
+{
+	switch (*status) {
+	case 0:
+		if (!warm) {
+			struct usb_hcd *hcd;
+			/* TRSTRCY = 10 ms; plus some extra */
+			msleep(10 + 40);
+			update_devnum(udev, 0);
+			hcd = bus_to_hcd(udev->bus);
+			if (hcd->driver->reset_device) {
+				*status = hcd->driver->reset_device(hcd, udev);
+				if (*status < 0) {
+					dev_err(&udev->dev, "Cannot reset "
+							"HCD device state\n");
+					break;
+				}
+			}
+>>>>>>> 7175f4b... Truncated history
 		}
 		/* FALL THROUGH */
 	case -ENOTCONN:
 	case -ENODEV:
 		clear_port_feature(hub->hdev,
 				port1, USB_PORT_FEAT_C_RESET);
+<<<<<<< HEAD
 		if (hub_is_superspeed(hub->hdev)) {
+=======
+		/* FIXME need disconnect() for NOTATTACHED device */
+		if (warm) {
+>>>>>>> 7175f4b... Truncated history
 			clear_port_feature(hub->hdev, port1,
 					USB_PORT_FEAT_C_BH_PORT_RESET);
 			clear_port_feature(hub->hdev, port1,
 					USB_PORT_FEAT_C_PORT_LINK_STATE);
+<<<<<<< HEAD
 			clear_port_feature(hub->hdev, port1,
 					USB_PORT_FEAT_C_CONNECTION);
 		}
@@ -2382,6 +2522,13 @@ static void hub_port_finish_reset(struct usb_hub *hub, int port1,
 			usb_set_device_state(udev, *status
 					? USB_STATE_NOTATTACHED
 					: USB_STATE_DEFAULT);
+=======
+		} else {
+			usb_set_device_state(udev, *status
+					? USB_STATE_NOTATTACHED
+					: USB_STATE_DEFAULT);
+		}
+>>>>>>> 7175f4b... Truncated history
 		break;
 	}
 }
@@ -2391,6 +2538,7 @@ static int hub_port_reset(struct usb_hub *hub, int port1,
 			struct usb_device *udev, unsigned int delay, bool warm)
 {
 	int i, status;
+<<<<<<< HEAD
 	u16 portchange, portstatus;
 
 	if (!hub_is_superspeed(hub->hdev)) {
@@ -2399,10 +2547,15 @@ static int hub_port_reset(struct usb_hub *hub, int port1,
 						"warm reset\n");
 			return -EINVAL;
 		}
+=======
+
+	if (!warm) {
+>>>>>>> 7175f4b... Truncated history
 		/* Block EHCI CF initialization during the port reset.
 		 * Some companion controllers don't like it when they mix.
 		 */
 		down_read(&ehci_cf_port_reset_rwsem);
+<<<<<<< HEAD
 	} else if (!warm) {
 		/*
 		 * If the caller hasn't explicitly requested a warm reset,
@@ -2415,6 +2568,14 @@ static int hub_port_reset(struct usb_hub *hub, int port1,
 
 		if (hub_port_warm_reset_required(hub, portstatus))
 			warm = true;
+=======
+	} else {
+		if (!hub_is_superspeed(hub->hdev)) {
+			dev_err(hub->intfdev, "only USB3 hub support "
+						"warm reset\n");
+			return -EINVAL;
+		}
+>>>>>>> 7175f4b... Truncated history
 	}
 
 	/* Reset the port */
@@ -2435,6 +2596,7 @@ static int hub_port_reset(struct usb_hub *hub, int port1,
 						status);
 		}
 
+<<<<<<< HEAD
 		/* Check for disconnect or reset */
 		if (status == 0 || status == -ENOTCONN || status == -ENODEV) {
 			hub_port_finish_reset(hub, port1, udev, &status);
@@ -2462,6 +2624,12 @@ static int hub_port_reset(struct usb_hub *hub, int port1,
 						port1);
 				warm = true;
 			}
+=======
+		/* return on disconnect or reset */
+		if (status == 0 || status == -ENOTCONN || status == -ENODEV) {
+			hub_port_finish_reset(hub, port1, udev, &status, warm);
+			goto done;
+>>>>>>> 7175f4b... Truncated history
 		}
 
 		dev_dbg (hub->intfdev,
@@ -2475,7 +2643,11 @@ static int hub_port_reset(struct usb_hub *hub, int port1,
 		port1);
 
 done:
+<<<<<<< HEAD
 	if (!hub_is_superspeed(hub->hdev))
+=======
+	if (!warm)
+>>>>>>> 7175f4b... Truncated history
 		up_read(&ehci_cf_port_reset_rwsem);
 
 	return status;
@@ -2560,6 +2732,7 @@ static int check_port_resume_type(struct usb_device *udev,
 }
 
 #ifdef	CONFIG_USB_SUSPEND
+<<<<<<< HEAD
 /*
  * usb_disable_function_remotewakeup - disable usb3.0
  * device's function remote wakeup
@@ -2577,6 +2750,8 @@ static int usb_disable_function_remotewakeup(struct usb_device *udev)
 				USB_INTRF_FUNC_SUSPEND,	0, NULL, 0,
 				USB_CTRL_SET_TIMEOUT);
 }
+=======
+>>>>>>> 7175f4b... Truncated history
 
 /*
  * usb_port_suspend - suspend a usb device's upstream port
@@ -2699,6 +2874,7 @@ int usb_port_suspend(struct usb_device *udev, pm_message_t msg)
 		dev_dbg(hub->intfdev, "can't suspend port %d, status %d\n",
 				port1, status);
 		/* paranoia:  "should not happen" */
+<<<<<<< HEAD
 		if (udev->do_remote_wakeup) {
 			if (!hub_is_superspeed(hub->hdev)) {
 				(void) usb_control_msg(udev,
@@ -2716,6 +2892,14 @@ int usb_port_suspend(struct usb_device *udev, pm_message_t msg)
 		/* Try to enable USB2 hardware LPM again */
 		if (udev->usb2_hw_lpm_capable == 1)
 			usb_set_usb2_hardware_lpm(udev, 1);
+=======
+		if (udev->do_remote_wakeup)
+			(void) usb_control_msg(udev, usb_sndctrlpipe(udev, 0),
+				USB_REQ_CLEAR_FEATURE, USB_RECIP_DEVICE,
+				USB_DEVICE_REMOTE_WAKEUP, 0,
+				NULL, 0,
+				USB_CTRL_SET_TIMEOUT);
+>>>>>>> 7175f4b... Truncated history
 
 		/* System sleep transitions should never fail */
 		if (!PMSG_IS_AUTO(msg))
@@ -2746,7 +2930,11 @@ int usb_port_suspend(struct usb_device *udev, pm_message_t msg)
 static int finish_port_resume(struct usb_device *udev)
 {
 	int	status = 0;
+<<<<<<< HEAD
 	u16	devstatus = 0;
+=======
+	u16	devstatus;
+>>>>>>> 7175f4b... Truncated history
 
 	/* caller owns the udev device lock */
 	dev_dbg(&udev->dev, "%s\n",
@@ -2791,6 +2979,7 @@ static int finish_port_resume(struct usb_device *udev)
 	if (status) {
 		dev_dbg(&udev->dev, "gone after usb resume? status %d\n",
 				status);
+<<<<<<< HEAD
 	/*
 	 * There are a few quirky devices which violate the standard
 	 * by claiming to have remote wakeup enabled after a reset,
@@ -2822,6 +3011,23 @@ static int finish_port_resume(struct usb_device *udev)
 			dev_dbg(&udev->dev,
 				"disable remote wakeup, status %d\n",
 				status);
+=======
+	} else if (udev->actconfig) {
+		le16_to_cpus(&devstatus);
+		if (devstatus & (1 << USB_DEVICE_REMOTE_WAKEUP)) {
+			status = usb_control_msg(udev,
+					usb_sndctrlpipe(udev, 0),
+					USB_REQ_CLEAR_FEATURE,
+						USB_RECIP_DEVICE,
+					USB_DEVICE_REMOTE_WAKEUP, 0,
+					NULL, 0,
+					USB_CTRL_SET_TIMEOUT);
+			if (status)
+				dev_dbg(&udev->dev,
+					"disable remote wakeup, status %d\n",
+					status);
+		}
+>>>>>>> 7175f4b... Truncated history
 		status = 0;
 	}
 	return status;
@@ -2866,7 +3072,11 @@ int usb_port_resume(struct usb_device *udev, pm_message_t msg)
 	struct usb_hub	*hub = hdev_to_hub(udev->parent);
 	int		port1 = udev->portnum;
 	int		status;
+<<<<<<< HEAD
 	u16		portchange = 0, portstatus = 0;
+=======
+	u16		portchange, portstatus;
+>>>>>>> 7175f4b... Truncated history
 
 	/* Skip the initial Clear-Suspend step for a remote wakeup */
 	status = hub_port_status(hub, port1, &portstatus, &portchange);
@@ -2972,7 +3182,11 @@ int usb_port_resume(struct usb_device *udev, pm_message_t msg)
 	struct usb_hub	*hub = hdev_to_hub(udev->parent);
 	int		port1 = udev->portnum;
 	int		status;
+<<<<<<< HEAD
 	u16		portchange = 0, portstatus = 0;
+=======
+	u16		portchange, portstatus;
+>>>>>>> 7175f4b... Truncated history
 
 	status = hub_port_status(hub, port1, &portstatus, &portchange);
 	status = check_port_resume_type(udev,
@@ -3090,7 +3304,11 @@ static int hub_port_debounce(struct usb_hub *hub, int port1)
 {
 	int ret;
 	int total_time, stable_time = 0;
+<<<<<<< HEAD
 	u16 portchange = 0, portstatus = 0;
+=======
+	u16 portchange, portstatus;
+>>>>>>> 7175f4b... Truncated history
 	unsigned connection = 0xffff;
 
 	for (total_time = 0; ; total_time += HUB_DEBOUNCE_STEP) {
@@ -3855,10 +4073,17 @@ static void hub_events(void)
 	struct usb_interface *intf;
 	struct usb_hub *hub;
 	struct device *hub_dev;
+<<<<<<< HEAD
 	u16 hubstatus = 0;
 	u16 hubchange = 0;
 	u16 portstatus = 0;
 	u16 portchange = 0;
+=======
+	u16 hubstatus;
+	u16 hubchange;
+	u16 portstatus;
+	u16 portchange;
+>>>>>>> 7175f4b... Truncated history
 	int i, ret;
 #if defined(CONFIG_USB_PEHCI_HCD) || defined(CONFIG_USB_PEHCI_HCD_MODULE)
 	int j;
@@ -4202,6 +4427,7 @@ static void hub_events(void)
 			/* Warm reset a USB3 protocol port if it's in
 			 * SS.Inactive state.
 			 */
+<<<<<<< HEAD
 			if (hub_port_warm_reset_required(hub, portstatus)) {
 				int status;
 				struct usb_device *udev =
@@ -4222,6 +4448,14 @@ static void hub_events(void)
 					usb_unlock_device(udev);
 					connect_change = 0;
 				}
+=======
+			if (hub_is_superspeed(hub->hdev) &&
+				(portstatus & USB_PORT_STAT_LINK_STATE)
+					== USB_SS_PORT_LS_SS_INACTIVE) {
+				dev_dbg(hub_dev, "warm reset port %d\n", i);
+				hub_port_reset(hub, i, NULL,
+						HUB_BH_RESET_TIME, true);
+>>>>>>> 7175f4b... Truncated history
 			}
 
 			if (connect_change) {

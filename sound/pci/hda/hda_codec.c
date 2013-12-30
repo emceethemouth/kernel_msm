@@ -165,7 +165,11 @@ const char *snd_hda_get_jack_type(u32 cfg)
 		"Line Out", "Speaker", "HP Out", "CD",
 		"SPDIF Out", "Digital Out", "Modem Line", "Modem Hand",
 		"Line In", "Aux", "Mic", "Telephony",
+<<<<<<< HEAD
 		"SPDIF In", "Digital In", "Reserved", "Other"
+=======
+		"SPDIF In", "Digitial In", "Reserved", "Other"
+>>>>>>> 7175f4b... Truncated history
 	};
 
 	return jack_types[(cfg & AC_DEFCFG_DEVICE)
@@ -617,9 +621,12 @@ int snd_hda_queue_unsol_event(struct hda_bus *bus, u32 res, u32 res_ex)
 	struct hda_bus_unsolicited *unsol;
 	unsigned int wp;
 
+<<<<<<< HEAD
 	if (!bus || !bus->workq)
 		return 0;
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	trace_hda_unsol_event(bus, res, res_ex);
 	unsol = bus->unsol;
 	if (!unsol)
@@ -1195,7 +1202,10 @@ static void snd_hda_codec_free(struct hda_codec *codec)
 {
 	if (!codec)
 		return;
+<<<<<<< HEAD
 	snd_hda_jack_tbl_clear(codec);
+=======
+>>>>>>> 7175f4b... Truncated history
 	restore_init_pincfgs(codec);
 #ifdef CONFIG_SND_HDA_POWER_SAVE
 	cancel_delayed_work(&codec->power_work);
@@ -1204,7 +1214,10 @@ static void snd_hda_codec_free(struct hda_codec *codec)
 	list_del(&codec->list);
 	snd_array_free(&codec->mixers);
 	snd_array_free(&codec->nids);
+<<<<<<< HEAD
 	snd_array_free(&codec->cvt_setups);
+=======
+>>>>>>> 7175f4b... Truncated history
 	snd_array_free(&codec->conn_lists);
 	snd_array_free(&codec->spdif_out);
 	codec->bus->caddr_tbl[codec->addr] = NULL;
@@ -2282,7 +2295,10 @@ int snd_hda_codec_reset(struct hda_codec *codec)
 	}
 	if (codec->patch_ops.free)
 		codec->patch_ops.free(codec);
+<<<<<<< HEAD
 	memset(&codec->patch_ops, 0, sizeof(codec->patch_ops));
+=======
+>>>>>>> 7175f4b... Truncated history
 	snd_hda_jack_tbl_clear(codec);
 	codec->proc_widget_hook = NULL;
 	codec->spec = NULL;
@@ -2296,6 +2312,10 @@ int snd_hda_codec_reset(struct hda_codec *codec)
 	codec->num_pcms = 0;
 	codec->pcm_info = NULL;
 	codec->preset = NULL;
+<<<<<<< HEAD
+=======
+	memset(&codec->patch_ops, 0, sizeof(codec->patch_ops));
+>>>>>>> 7175f4b... Truncated history
 	codec->slave_dig_outs = NULL;
 	codec->spdif_status_reset = 0;
 	module_put(codec->owner);
@@ -2913,7 +2933,11 @@ static unsigned int convert_to_spdif_status(unsigned short val)
 	if (val & AC_DIG1_PROFESSIONAL)
 		sbits |= IEC958_AES0_PROFESSIONAL;
 	if (sbits & IEC958_AES0_PROFESSIONAL) {
+<<<<<<< HEAD
 		if (val & AC_DIG1_EMPHASIS)
+=======
+		if (sbits & AC_DIG1_EMPHASIS)
+>>>>>>> 7175f4b... Truncated history
 			sbits |= IEC958_AES0_PRO_EMPHASIS_5015;
 	} else {
 		if (val & AC_DIG1_EMPHASIS)

@@ -686,7 +686,10 @@ int m2p_add_override(unsigned long mfn, struct page *page,
 	unsigned long uninitialized_var(address);
 	unsigned level;
 	pte_t *ptep = NULL;
+<<<<<<< HEAD
 	int ret = 0;
+=======
+>>>>>>> 7175f4b... Truncated history
 
 	pfn = page_to_pfn(page);
 	if (!PageHighMem(page)) {
@@ -714,11 +717,18 @@ int m2p_add_override(unsigned long mfn, struct page *page,
 
 			xen_mc_issue(PARAVIRT_LAZY_MMU);
 		}
+<<<<<<< HEAD
+=======
+		/* let's use dev_bus_addr to record the old mfn instead */
+		kmap_op->dev_bus_addr = page->index;
+		page->index = (unsigned long) kmap_op;
+>>>>>>> 7175f4b... Truncated history
 	}
 	spin_lock_irqsave(&m2p_override_lock, flags);
 	list_add(&page->lru,  &m2p_overrides[mfn_hash(mfn)]);
 	spin_unlock_irqrestore(&m2p_override_lock, flags);
 
+<<<<<<< HEAD
 	/* p2m(m2p(mfn)) == mfn: the mfn is already present somewhere in
 	 * this domain. Set the FOREIGN_FRAME_BIT in the p2m for the other
 	 * pfn so that the following mfn_to_pfn(mfn) calls will return the
@@ -742,6 +752,12 @@ int m2p_add_override(unsigned long mfn, struct page *page,
 EXPORT_SYMBOL_GPL(m2p_add_override);
 int m2p_remove_override(struct page *page,
 		struct gnttab_map_grant_ref *kmap_op)
+=======
+	return 0;
+}
+EXPORT_SYMBOL_GPL(m2p_add_override);
+int m2p_remove_override(struct page *page, bool clear_pte)
+>>>>>>> 7175f4b... Truncated history
 {
 	unsigned long flags;
 	unsigned long mfn;
@@ -749,7 +765,10 @@ int m2p_remove_override(struct page *page,
 	unsigned long uninitialized_var(address);
 	unsigned level;
 	pte_t *ptep = NULL;
+<<<<<<< HEAD
 	int ret = 0;
+=======
+>>>>>>> 7175f4b... Truncated history
 
 	pfn = page_to_pfn(page);
 	mfn = get_phys_to_machine(pfn);
@@ -771,8 +790,15 @@ int m2p_remove_override(struct page *page,
 	WARN_ON(!PagePrivate(page));
 	ClearPagePrivate(page);
 
+<<<<<<< HEAD
 	set_phys_to_machine(pfn, page->index);
 	if (kmap_op != NULL) {
+=======
+	if (clear_pte) {
+		struct gnttab_map_grant_ref *map_op =
+			(struct gnttab_map_grant_ref *) page->index;
+		set_phys_to_machine(pfn, map_op->dev_bus_addr);
+>>>>>>> 7175f4b... Truncated history
 		if (!PageHighMem(page)) {
 			struct multicall_space mcs;
 			struct gnttab_unmap_grant_ref *unmap_op;
@@ -784,6 +810,7 @@ int m2p_remove_override(struct page *page,
 			 * issued. In this case handle is going to -1 because
 			 * it hasn't been modified yet.
 			 */
+<<<<<<< HEAD
 			if (kmap_op->handle == -1)
 				xen_mc_flush();
 			/*
@@ -791,6 +818,15 @@ int m2p_remove_override(struct page *page,
 			 * hypercall actually returned an error.
 			 */
 			if (kmap_op->handle == GNTST_general_error) {
+=======
+			if (map_op->handle == -1)
+				xen_mc_flush();
+			/*
+			 * Now if map_op->handle is negative it means that the
+			 * hypercall actually returned an error.
+			 */
+			if (map_op->handle == GNTST_general_error) {
+>>>>>>> 7175f4b... Truncated history
 				printk(KERN_WARNING "m2p_remove_override: "
 						"pfn %lx mfn %lx, failed to modify kernel mappings",
 						pfn, mfn);
@@ -800,8 +836,13 @@ int m2p_remove_override(struct page *page,
 			mcs = xen_mc_entry(
 					sizeof(struct gnttab_unmap_grant_ref));
 			unmap_op = mcs.args;
+<<<<<<< HEAD
 			unmap_op->host_addr = kmap_op->host_addr;
 			unmap_op->handle = kmap_op->handle;
+=======
+			unmap_op->host_addr = map_op->host_addr;
+			unmap_op->handle = map_op->handle;
+>>>>>>> 7175f4b... Truncated history
 			unmap_op->dev_bus_addr = 0;
 
 			MULTI_grant_table_op(mcs.mc,
@@ -812,6 +853,7 @@ int m2p_remove_override(struct page *page,
 			set_pte_at(&init_mm, address, ptep,
 					pfn_pte(pfn, PAGE_KERNEL));
 			__flush_tlb_single(address);
+<<<<<<< HEAD
 			kmap_op->host_addr = 0;
 		}
 	}
@@ -831,6 +873,12 @@ int m2p_remove_override(struct page *page,
 	if (ret == 0 && get_phys_to_machine(pfn) == FOREIGN_FRAME(mfn) &&
 			m2p_find_override(mfn) == NULL)
 		set_phys_to_machine(pfn, mfn);
+=======
+			map_op->host_addr = 0;
+		}
+	} else
+		set_phys_to_machine(pfn, page->index);
+>>>>>>> 7175f4b... Truncated history
 
 	return 0;
 }

@@ -357,6 +357,7 @@ static int igbvf_set_coalesce(struct net_device *netdev,
 	struct igbvf_adapter *adapter = netdev_priv(netdev);
 	struct e1000_hw *hw = &adapter->hw;
 
+<<<<<<< HEAD
 	if ((ec->rx_coalesce_usecs >= IGBVF_MIN_ITR_USECS) &&
 	     (ec->rx_coalesce_usecs <= IGBVF_MAX_ITR_USECS)) {
 		adapter->current_itr = ec->rx_coalesce_usecs << 2;
@@ -379,6 +380,23 @@ static int igbvf_set_coalesce(struct net_device *netdev,
 					(adapter->current_itr * 256);
 	} else
 		return -EINVAL;
+=======
+	if ((ec->rx_coalesce_usecs > IGBVF_MAX_ITR_USECS) ||
+	    ((ec->rx_coalesce_usecs > 3) &&
+	     (ec->rx_coalesce_usecs < IGBVF_MIN_ITR_USECS)) ||
+	    (ec->rx_coalesce_usecs == 2))
+		return -EINVAL;
+
+	/* convert to rate of irq's per second */
+	if (ec->rx_coalesce_usecs && ec->rx_coalesce_usecs <= 3) {
+		adapter->current_itr = IGBVF_START_ITR;
+		adapter->requested_itr = ec->rx_coalesce_usecs;
+	} else {
+		adapter->current_itr = ec->rx_coalesce_usecs << 2;
+		adapter->requested_itr = 1000000000 /
+					(adapter->current_itr * 256);
+	}
+>>>>>>> 7175f4b... Truncated history
 
 	writel(adapter->current_itr,
 	       hw->hw_addr + adapter->rx_ring->itr_register);

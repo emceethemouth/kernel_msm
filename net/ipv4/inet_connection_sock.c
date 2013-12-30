@@ -659,6 +659,7 @@ void inet_csk_destroy_sock(struct sock *sk)
 }
 EXPORT_SYMBOL(inet_csk_destroy_sock);
 
+<<<<<<< HEAD
 /* This function allows to force a closure of a socket after the call to
  * tcp/dccp_create_openreq_child().
  */
@@ -675,6 +676,8 @@ void inet_csk_prepare_forced_close(struct sock *sk)
 }
 EXPORT_SYMBOL(inet_csk_prepare_forced_close);
 
+=======
+>>>>>>> 7175f4b... Truncated history
 int inet_csk_listen_start(struct sock *sk, const int nr_table_entries)
 {
 	struct inet_sock *inet = inet_sk(sk);

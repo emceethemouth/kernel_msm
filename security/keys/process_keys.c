@@ -54,7 +54,11 @@ int install_user_keyrings(void)
 
 	kenter("%p{%u}", user, user->uid);
 
+<<<<<<< HEAD
 	if (user->uid_keyring && user->session_keyring) {
+=======
+	if (user->uid_keyring) {
+>>>>>>> 7175f4b... Truncated history
 		kleave(" = 0 [exist]");
 		return 0;
 	}

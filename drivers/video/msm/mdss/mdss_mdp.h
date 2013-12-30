@@ -131,12 +131,15 @@ enum mdss_mdp_wb_ctl_type {
 	MDSS_MDP_WB_CTL_TYPE_LINE
 };
 
+<<<<<<< HEAD
 struct mdss_mdp_perf_params {
 	u64 ib_quota;
 	u64 ab_quota;
 	u32 mdp_clk_rate;
 };
 
+=======
+>>>>>>> 7175f4b... Truncated history
 struct mdss_mdp_ctl {
 	u32 num;
 	char __iomem *base;
@@ -160,8 +163,15 @@ struct mdss_mdp_ctl {
 	u32 dst_format;
 	bool is_secure;
 
+<<<<<<< HEAD
 	struct mdss_mdp_perf_params cur_perf;
 	struct mdss_mdp_perf_params new_perf;
+=======
+	u32 bus_ab_quota;
+	u32 bus_ib_quota;
+	u32 clk_rate;
+	u32 perf_changed;
+>>>>>>> 7175f4b... Truncated history
 
 	struct mdss_data_type *mdata;
 	struct msm_fb_data_type *mfd;
@@ -400,6 +410,15 @@ struct mdss_overlay_private {
 	int retire_cnt;
 };
 
+<<<<<<< HEAD
+=======
+struct mdss_mdp_perf_params {
+	u32 ib_quota;
+	u32 ab_quota;
+	u32 mdp_clk_rate;
+};
+
+>>>>>>> 7175f4b... Truncated history
 #define is_vig_pipe(_pipe_id_) ((_pipe_id_) <= MDSS_MDP_SSPP_VIG2)
 static inline void mdss_mdp_ctl_write(struct mdss_mdp_ctl *ctl,
 				      u32 reg, u32 val)
@@ -552,7 +571,10 @@ int mdss_mdp_pipe_map(struct mdss_mdp_pipe *pipe);
 void mdss_mdp_pipe_unmap(struct mdss_mdp_pipe *pipe);
 struct mdss_mdp_pipe *mdss_mdp_pipe_alloc_dma(struct mdss_mdp_mixer *mixer);
 
+<<<<<<< HEAD
 u32 mdss_mdp_smp_get_size(struct mdss_mdp_pipe *pipe);
+=======
+>>>>>>> 7175f4b... Truncated history
 int mdss_mdp_smp_reserve(struct mdss_mdp_pipe *pipe);
 void mdss_mdp_smp_unreserve(struct mdss_mdp_pipe *pipe);
 void mdss_mdp_smp_release(struct mdss_mdp_pipe *pipe);

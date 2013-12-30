@@ -514,8 +514,13 @@ static int verity_map(struct dm_target *ti, struct bio *bio,
 /*
  * Status: V (valid) or C (corruption found)
  */
+<<<<<<< HEAD
 static void verity_status(struct dm_target *ti, status_type_t type,
 			  char *result, unsigned maxlen)
+=======
+static int verity_status(struct dm_target *ti, status_type_t type,
+			 char *result, unsigned maxlen)
+>>>>>>> 7175f4b... Truncated history
 {
 	struct dm_verity *v = ti->private;
 	unsigned sz = 0;
@@ -546,6 +551,11 @@ static void verity_status(struct dm_target *ti, status_type_t type,
 				DMEMIT("%02x", v->salt[x]);
 		break;
 	}
+<<<<<<< HEAD
+=======
+
+	return 0;
+>>>>>>> 7175f4b... Truncated history
 }
 
 static int verity_ioctl(struct dm_target *ti, unsigned cmd,
@@ -811,8 +821,14 @@ static int verity_ctr(struct dm_target *ti, unsigned argc, char **argv)
 	for (i = v->levels - 1; i >= 0; i--) {
 		sector_t s;
 		v->hash_level_block[i] = hash_position;
+<<<<<<< HEAD
 		s = (v->data_blocks + ((sector_t)1 << ((i + 1) * v->hash_per_block_bits)) - 1)
 					>> ((i + 1) * v->hash_per_block_bits);
+=======
+		s = verity_position_at_level(v, v->data_blocks, i);
+		s = (s >> v->hash_per_block_bits) +
+		    !!(s & ((1 << v->hash_per_block_bits) - 1));
+>>>>>>> 7175f4b... Truncated history
 		if (hash_position + s < hash_position) {
 			ti->error = "Hash device offset overflow";
 			r = -E2BIG;

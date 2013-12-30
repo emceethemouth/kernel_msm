@@ -142,6 +142,7 @@ static int k2_sata_scr_write(struct ata_link *link,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int k2_sata_softreset(struct ata_link *link,
 			     unsigned int *class, unsigned long deadline)
 {
@@ -175,6 +176,8 @@ static int k2_sata_hardreset(struct ata_link *link,
 
 	return sata_sff_hardreset(link, class, deadline);
 }
+=======
+>>>>>>> 7175f4b... Truncated history
 
 static void k2_sata_tf_load(struct ata_port *ap, const struct ata_taskfile *tf)
 {
@@ -379,8 +382,11 @@ static struct scsi_host_template k2_sata_sht = {
 
 static struct ata_port_operations k2_sata_ops = {
 	.inherits		= &ata_bmdma_port_ops,
+<<<<<<< HEAD
 	.softreset              = k2_sata_softreset,
 	.hardreset              = k2_sata_hardreset,
+=======
+>>>>>>> 7175f4b... Truncated history
 	.sff_tf_load		= k2_sata_tf_load,
 	.sff_tf_read		= k2_sata_tf_read,
 	.sff_check_status	= k2_stat_check_status,

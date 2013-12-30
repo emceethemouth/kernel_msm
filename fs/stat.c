@@ -57,7 +57,11 @@ EXPORT_SYMBOL(vfs_getattr);
 
 int vfs_fstat(unsigned int fd, struct kstat *stat)
 {
+<<<<<<< HEAD
 	struct file *f = fget_raw(fd);
+=======
+	struct file *f = fget(fd);
+>>>>>>> 7175f4b... Truncated history
 	int error = -EBADF;
 
 	if (f) {

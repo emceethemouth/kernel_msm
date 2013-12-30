@@ -452,6 +452,7 @@ static void raid10_end_write_request(struct bio *bio, int error)
 		sector_t first_bad;
 		int bad_sectors;
 
+<<<<<<< HEAD
 		/*
 		 * Do not set R10BIO_Uptodate if the current device is
 		 * rebuilding or Faulty. This is because we cannot use
@@ -463,6 +464,9 @@ static void raid10_end_write_request(struct bio *bio, int error)
 		if (test_bit(In_sync, &rdev->flags) &&
 		    !test_bit(Faulty, &rdev->flags))
 			set_bit(R10BIO_Uptodate, &r10_bio->state);
+=======
+		set_bit(R10BIO_Uptodate, &r10_bio->state);
+>>>>>>> 7175f4b... Truncated history
 
 		/* Maybe we can clear some bad blocks. */
 		if (is_badblock(rdev,
@@ -948,17 +952,29 @@ static void allow_barrier(struct r10conf *conf)
 	wake_up(&conf->wait_barrier);
 }
 
+<<<<<<< HEAD
 static void freeze_array(struct r10conf *conf, int extra)
+=======
+static void freeze_array(struct r10conf *conf)
+>>>>>>> 7175f4b... Truncated history
 {
 	/* stop syncio and normal IO and wait for everything to
 	 * go quiet.
 	 * We increment barrier and nr_waiting, and then
+<<<<<<< HEAD
 	 * wait until nr_pending match nr_queued+extra
+=======
+	 * wait until nr_pending match nr_queued+1
+>>>>>>> 7175f4b... Truncated history
 	 * This is called in the context of one normal IO request
 	 * that has failed. Thus any sync request that might be pending
 	 * will be blocked by nr_pending, and we need to wait for
 	 * pending IO requests to complete or be queued for re-try.
+<<<<<<< HEAD
 	 * Thus the number queued (nr_queued) plus this request (extra)
+=======
+	 * Thus the number queued (nr_queued) plus this request (1)
+>>>>>>> 7175f4b... Truncated history
 	 * must match the number of pending IOs (nr_pending) before
 	 * we continue.
 	 */
@@ -966,7 +982,11 @@ static void freeze_array(struct r10conf *conf, int extra)
 	conf->barrier++;
 	conf->nr_waiting++;
 	wait_event_lock_irq(conf->wait_barrier,
+<<<<<<< HEAD
 			    conf->nr_pending == conf->nr_queued+extra,
+=======
+			    conf->nr_pending == conf->nr_queued+1,
+>>>>>>> 7175f4b... Truncated history
 			    conf->resync_lock,
 			    flush_pending_writes(conf));
 
@@ -1113,7 +1133,11 @@ read_again:
 			/* Could not read all from this device, so we will
 			 * need another r10_bio.
 			 */
+<<<<<<< HEAD
 			sectors_handled = (r10_bio->sector + max_sectors
+=======
+			sectors_handled = (r10_bio->sectors + max_sectors
+>>>>>>> 7175f4b... Truncated history
 					   - bio->bi_sector);
 			r10_bio->sectors = max_sectors;
 			spin_lock_irq(&conf->device_lock);
@@ -1121,7 +1145,11 @@ read_again:
 				bio->bi_phys_segments = 2;
 			else
 				bio->bi_phys_segments++;
+<<<<<<< HEAD
 			spin_unlock_irq(&conf->device_lock);
+=======
+			spin_unlock(&conf->device_lock);
+>>>>>>> 7175f4b... Truncated history
 			/* Cannot call generic_make_request directly
 			 * as that will be queued in __generic_make_request
 			 * and subsequent mempool_alloc might block
@@ -1524,7 +1552,10 @@ static int raid10_spare_active(struct mddev *mddev)
 			}
 			sysfs_notify_dirent_safe(tmp->replacement->sysfs_state);
 		} else if (tmp->rdev
+<<<<<<< HEAD
 			   && tmp->rdev->recovery_offset == MaxSector
+=======
+>>>>>>> 7175f4b... Truncated history
 			   && !test_bit(Faulty, &tmp->rdev->flags)
 			   && !test_and_set_bit(In_sync, &tmp->rdev->flags)) {
 			count++;
@@ -1610,8 +1641,13 @@ static int raid10_add_disk(struct mddev *mddev, struct md_rdev *rdev)
 		 * we wait for all outstanding requests to complete.
 		 */
 		synchronize_sched();
+<<<<<<< HEAD
 		freeze_array(conf, 0);
 		unfreeze_array(conf);
+=======
+		raise_barrier(conf, 0);
+		lower_barrier(conf);
+>>>>>>> 7175f4b... Truncated history
 		clear_bit(Unmerged, &rdev->flags);
 	}
 	md_integrity_add_rdev(rdev, mddev);
@@ -2020,18 +2056,25 @@ static void recovery_request_write(struct mddev *mddev, struct r10bio *r10_bio)
 	d = r10_bio->devs[1].devnum;
 	wbio = r10_bio->devs[1].bio;
 	wbio2 = r10_bio->devs[1].repl_bio;
+<<<<<<< HEAD
 	/* Need to test wbio2->bi_end_io before we call
 	 * generic_make_request as if the former is NULL,
 	 * the latter is free to free wbio2.
 	 */
 	if (wbio2 && !wbio2->bi_end_io)
 		wbio2 = NULL;
+=======
+>>>>>>> 7175f4b... Truncated history
 	if (wbio->bi_end_io) {
 		atomic_inc(&conf->mirrors[d].rdev->nr_pending);
 		md_sync_acct(conf->mirrors[d].rdev->bdev, wbio->bi_size >> 9);
 		generic_make_request(wbio);
 	}
+<<<<<<< HEAD
 	if (wbio2) {
+=======
+	if (wbio2 && wbio2->bi_end_io) {
+>>>>>>> 7175f4b... Truncated history
 		atomic_inc(&conf->mirrors[d].replacement->nr_pending);
 		md_sync_acct(conf->mirrors[d].replacement->bdev,
 			     wbio2->bi_size >> 9);
@@ -2401,7 +2444,11 @@ static void handle_read_error(struct mddev *mddev, struct r10bio *r10_bio)
 	r10_bio->devs[slot].bio = NULL;
 
 	if (mddev->ro == 0) {
+<<<<<<< HEAD
 		freeze_array(conf, 1);
+=======
+		freeze_array(conf);
+>>>>>>> 7175f4b... Truncated history
 		fix_read_error(conf, mddev, r10_bio);
 		unfreeze_array(conf);
 	} else
@@ -2927,6 +2974,13 @@ static sector_t sync_request(struct mddev *mddev, sector_t sector_nr,
 			if (j == conf->copies) {
 				/* Cannot recover, so abort the recovery or
 				 * record a bad block */
+<<<<<<< HEAD
+=======
+				put_buf(r10_bio);
+				if (rb2)
+					atomic_dec(&rb2->remaining);
+				r10_bio = rb2;
+>>>>>>> 7175f4b... Truncated history
 				if (any_working) {
 					/* problem is that there are bad blocks
 					 * on other device(s)
@@ -2958,10 +3012,13 @@ static sector_t sync_request(struct mddev *mddev, sector_t sector_nr,
 					mirror->recovery_disabled
 						= mddev->recovery_disabled;
 				}
+<<<<<<< HEAD
 				put_buf(r10_bio);
 				if (rb2)
 					atomic_dec(&rb2->remaining);
 				r10_bio = rb2;
+=======
+>>>>>>> 7175f4b... Truncated history
 				break;
 			}
 		}

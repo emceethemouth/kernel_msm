@@ -110,7 +110,11 @@ begintw:
 				goto out;
 			}
 			if (!INET6_TW_MATCH(sk, net, hash, saddr, daddr, ports, dif)) {
+<<<<<<< HEAD
 				inet_twsk_put(inet_twsk(sk));
+=======
+				sock_put(sk);
+>>>>>>> 7175f4b... Truncated history
 				goto begintw;
 			}
 			goto out;

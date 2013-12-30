@@ -162,7 +162,11 @@ notrace unsigned int __check_irq_replay(void)
 	 * in case we also had a rollover while hard disabled
 	 */
 	local_paca->irq_happened &= ~PACA_IRQ_DEC;
+<<<<<<< HEAD
 	if ((happened & PACA_IRQ_DEC) || decrementer_check_overflow())
+=======
+	if (decrementer_check_overflow())
+>>>>>>> 7175f4b... Truncated history
 		return 0x900;
 
 	/* Finally check if an external interrupt happened */

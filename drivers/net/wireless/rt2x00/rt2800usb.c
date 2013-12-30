@@ -143,8 +143,11 @@ static bool rt2800usb_txstatus_timeout(struct rt2x00_dev *rt2x00dev)
 	return false;
 }
 
+<<<<<<< HEAD
 #define TXSTATUS_READ_INTERVAL 1000000
 
+=======
+>>>>>>> 7175f4b... Truncated history
 static bool rt2800usb_tx_sta_fifo_read_completed(struct rt2x00_dev *rt2x00dev,
 						 int urb_status, u32 tx_status)
 {
@@ -172,9 +175,14 @@ static bool rt2800usb_tx_sta_fifo_read_completed(struct rt2x00_dev *rt2x00dev,
 		queue_work(rt2x00dev->workqueue, &rt2x00dev->txdone_work);
 
 	if (rt2800usb_txstatus_pending(rt2x00dev)) {
+<<<<<<< HEAD
 		/* Read register after 1 ms */
 		hrtimer_start(&rt2x00dev->txstatus_timer,
 			      ktime_set(0, TXSTATUS_READ_INTERVAL),
+=======
+		/* Read register after 250 us */
+		hrtimer_start(&rt2x00dev->txstatus_timer, ktime_set(0, 250000),
+>>>>>>> 7175f4b... Truncated history
 			      HRTIMER_MODE_REL);
 		return false;
 	}
@@ -199,9 +207,14 @@ static void rt2800usb_async_read_tx_status(struct rt2x00_dev *rt2x00dev)
 	if (test_and_set_bit(TX_STATUS_READING, &rt2x00dev->flags))
 		return;
 
+<<<<<<< HEAD
 	/* Read TX_STA_FIFO register after 2 ms */
 	hrtimer_start(&rt2x00dev->txstatus_timer,
 		      ktime_set(0, 2*TXSTATUS_READ_INTERVAL),
+=======
+	/* Read TX_STA_FIFO register after 500 us */
+	hrtimer_start(&rt2x00dev->txstatus_timer, ktime_set(0, 500000),
+>>>>>>> 7175f4b... Truncated history
 		      HRTIMER_MODE_REL);
 }
 
@@ -671,6 +684,7 @@ static void rt2800usb_fill_rxdone(struct queue_entry *entry,
 	skb_pull(entry->skb, RXINFO_DESC_SIZE);
 
 	/*
+<<<<<<< HEAD
 	 * Check for rx_pkt_len validity. Return if invalid, leaving
 	 * rxdesc->size zeroed out by the upper level.
 	 */
@@ -681,6 +695,10 @@ static void rt2800usb_fill_rxdone(struct queue_entry *entry,
 		return;
 	}
 
+=======
+	 * FIXME: we need to check for rx_pkt_len validity
+	 */
+>>>>>>> 7175f4b... Truncated history
 	rxd = (__le32 *)(entry->skb->data + rx_pkt_len);
 
 	/*
@@ -748,7 +766,10 @@ static int rt2800usb_validate_eeprom(struct rt2x00_dev *rt2x00dev)
 static int rt2800usb_probe_hw(struct rt2x00_dev *rt2x00dev)
 {
 	int retval;
+<<<<<<< HEAD
 	u32 reg;
+=======
+>>>>>>> 7175f4b... Truncated history
 
 	/*
 	 * Allocate eeprom data.
@@ -762,6 +783,7 @@ static int rt2800usb_probe_hw(struct rt2x00_dev *rt2x00dev)
 		return retval;
 
 	/*
+<<<<<<< HEAD
 	 * Enable rfkill polling by setting GPIO direction of the
 	 * rfkill switch GPIO pin correctly.
 	 */
@@ -770,6 +792,8 @@ static int rt2800usb_probe_hw(struct rt2x00_dev *rt2x00dev)
 	rt2x00usb_register_write(rt2x00dev, GPIO_CTRL_CFG, reg);
 
 	/*
+=======
+>>>>>>> 7175f4b... Truncated history
 	 * Initialize hw specifications.
 	 */
 	retval = rt2800_probe_hw_mode(rt2x00dev);
@@ -943,7 +967,10 @@ static struct usb_device_id rt2800usb_device_table[] = {
 	{ USB_DEVICE(0x1482, 0x3c09) },
 	/* AirTies */
 	{ USB_DEVICE(0x1eda, 0x2012) },
+<<<<<<< HEAD
 	{ USB_DEVICE(0x1eda, 0x2210) },
+=======
+>>>>>>> 7175f4b... Truncated history
 	{ USB_DEVICE(0x1eda, 0x2310) },
 	/* Allwin */
 	{ USB_DEVICE(0x8516, 0x2070) },
@@ -992,7 +1019,10 @@ static struct usb_device_id rt2800usb_device_table[] = {
 	{ USB_DEVICE(0x0411, 0x015d) },
 	{ USB_DEVICE(0x0411, 0x016f) },
 	{ USB_DEVICE(0x0411, 0x01a2) },
+<<<<<<< HEAD
 	{ USB_DEVICE(0x0411, 0x01ee) },
+=======
+>>>>>>> 7175f4b... Truncated history
 	/* Corega */
 	{ USB_DEVICE(0x07aa, 0x002f) },
 	{ USB_DEVICE(0x07aa, 0x003c) },
@@ -1014,7 +1044,10 @@ static struct usb_device_id rt2800usb_device_table[] = {
 	/* DVICO */
 	{ USB_DEVICE(0x0fe9, 0xb307) },
 	/* Edimax */
+<<<<<<< HEAD
 	{ USB_DEVICE(0x7392, 0x4085) },
+=======
+>>>>>>> 7175f4b... Truncated history
 	{ USB_DEVICE(0x7392, 0x7711) },
 	{ USB_DEVICE(0x7392, 0x7717) },
 	{ USB_DEVICE(0x7392, 0x7718) },
@@ -1090,7 +1123,10 @@ static struct usb_device_id rt2800usb_device_table[] = {
 	/* Philips */
 	{ USB_DEVICE(0x0471, 0x200f) },
 	/* Planex */
+<<<<<<< HEAD
 	{ USB_DEVICE(0x2019, 0x5201) },
+=======
+>>>>>>> 7175f4b... Truncated history
 	{ USB_DEVICE(0x2019, 0xab25) },
 	{ USB_DEVICE(0x2019, 0xed06) },
 	/* Quanta */
@@ -1159,12 +1195,15 @@ static struct usb_device_id rt2800usb_device_table[] = {
 #ifdef CONFIG_RT2800USB_RT33XX
 	/* Belkin */
 	{ USB_DEVICE(0x050d, 0x945b) },
+<<<<<<< HEAD
 	/* D-Link */
 	{ USB_DEVICE(0x2001, 0x3c17) },
 	/* Panasonic */
 	{ USB_DEVICE(0x083a, 0xb511) },
 	/* Philips */
 	{ USB_DEVICE(0x0471, 0x20dd) },
+=======
+>>>>>>> 7175f4b... Truncated history
 	/* Ralink */
 	{ USB_DEVICE(0x148f, 0x3370) },
 	{ USB_DEVICE(0x148f, 0x8070) },
@@ -1176,10 +1215,13 @@ static struct usb_device_id rt2800usb_device_table[] = {
 	{ USB_DEVICE(0x8516, 0x3572) },
 	/* Askey */
 	{ USB_DEVICE(0x1690, 0x0744) },
+<<<<<<< HEAD
 	{ USB_DEVICE(0x1690, 0x0761) },
 	{ USB_DEVICE(0x1690, 0x0764) },
 	/* ASUS */
 	{ USB_DEVICE(0x0b05, 0x179d) },
+=======
+>>>>>>> 7175f4b... Truncated history
 	/* Cisco */
 	{ USB_DEVICE(0x167b, 0x4001) },
 	/* EnGenius */
@@ -1194,25 +1236,37 @@ static struct usb_device_id rt2800usb_device_table[] = {
 	/* Sitecom */
 	{ USB_DEVICE(0x0df6, 0x0041) },
 	{ USB_DEVICE(0x0df6, 0x0062) },
+<<<<<<< HEAD
 	{ USB_DEVICE(0x0df6, 0x0065) },
 	{ USB_DEVICE(0x0df6, 0x0066) },
 	{ USB_DEVICE(0x0df6, 0x0068) },
+=======
+>>>>>>> 7175f4b... Truncated history
 	/* Toshiba */
 	{ USB_DEVICE(0x0930, 0x0a07) },
 	/* Zinwell */
 	{ USB_DEVICE(0x5a57, 0x0284) },
 #endif
 #ifdef CONFIG_RT2800USB_RT53XX
+<<<<<<< HEAD
+=======
+	/* Alpha */
+	{ USB_DEVICE(0x2001, 0x3c15) },
+	{ USB_DEVICE(0x2001, 0x3c19) },
+>>>>>>> 7175f4b... Truncated history
 	/* Arcadyan */
 	{ USB_DEVICE(0x043e, 0x7a12) },
 	/* Azurewave */
 	{ USB_DEVICE(0x13d3, 0x3329) },
 	{ USB_DEVICE(0x13d3, 0x3365) },
+<<<<<<< HEAD
 	/* D-Link */
 	{ USB_DEVICE(0x2001, 0x3c15) },
 	{ USB_DEVICE(0x2001, 0x3c19) },
 	{ USB_DEVICE(0x2001, 0x3c1c) },
 	{ USB_DEVICE(0x2001, 0x3c1d) },
+=======
+>>>>>>> 7175f4b... Truncated history
 	/* LG innotek */
 	{ USB_DEVICE(0x043e, 0x7a22) },
 	/* Panasonic */
@@ -1245,6 +1299,10 @@ static struct usb_device_id rt2800usb_device_table[] = {
 	{ USB_DEVICE(0x0b05, 0x1760) },
 	{ USB_DEVICE(0x0b05, 0x1761) },
 	{ USB_DEVICE(0x0b05, 0x1790) },
+<<<<<<< HEAD
+=======
+	{ USB_DEVICE(0x0b05, 0x179d) },
+>>>>>>> 7175f4b... Truncated history
 	/* AzureWave */
 	{ USB_DEVICE(0x13d3, 0x3262) },
 	{ USB_DEVICE(0x13d3, 0x3284) },
@@ -1262,8 +1320,18 @@ static struct usb_device_id rt2800usb_device_table[] = {
 	/* D-Link */
 	{ USB_DEVICE(0x07d1, 0x3c0b) },
 	{ USB_DEVICE(0x07d1, 0x3c17) },
+<<<<<<< HEAD
 	/* Encore */
 	{ USB_DEVICE(0x203d, 0x14a1) },
+=======
+	{ USB_DEVICE(0x2001, 0x3c17) },
+	/* Edimax */
+	{ USB_DEVICE(0x7392, 0x4085) },
+	/* Encore */
+	{ USB_DEVICE(0x203d, 0x14a1) },
+	/* Fujitsu Stylistic 550 */
+	{ USB_DEVICE(0x1690, 0x0761) },
+>>>>>>> 7175f4b... Truncated history
 	/* Gemtek */
 	{ USB_DEVICE(0x15a9, 0x0010) },
 	/* Gigabyte */
@@ -1284,6 +1352,10 @@ static struct usb_device_id rt2800usb_device_table[] = {
 	{ USB_DEVICE(0x05a6, 0x0101) },
 	{ USB_DEVICE(0x1d4d, 0x0010) },
 	/* Planex */
+<<<<<<< HEAD
+=======
+	{ USB_DEVICE(0x2019, 0x5201) },
+>>>>>>> 7175f4b... Truncated history
 	{ USB_DEVICE(0x2019, 0xab24) },
 	/* Qcom */
 	{ USB_DEVICE(0x18e8, 0x6259) },

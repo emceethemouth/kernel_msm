@@ -1232,7 +1232,10 @@ static int musb_gadget_disable(struct usb_ep *ep)
 	}
 
 	musb_ep->desc = NULL;
+<<<<<<< HEAD
 	musb_ep->end_point.desc = NULL;
+=======
+>>>>>>> 7175f4b... Truncated history
 
 	/* abort all pending DMA and requests */
 	nuke(musb_ep, -ESHUTDOWN);

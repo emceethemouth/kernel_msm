@@ -645,6 +645,7 @@ int vmw_kms_readback(struct vmw_private *dev_priv,
 int vmw_kms_update_layout_ioctl(struct drm_device *dev, void *data,
 				struct drm_file *file_priv);
 
+<<<<<<< HEAD
 int vmw_dumb_create(struct drm_file *file_priv,
 		    struct drm_device *dev,
 		    struct drm_mode_create_dumb *args);
@@ -655,6 +656,8 @@ int vmw_dumb_map_offset(struct drm_file *file_priv,
 int vmw_dumb_destroy(struct drm_file *file_priv,
 		     struct drm_device *dev,
 		     uint32_t handle);
+=======
+>>>>>>> 7175f4b... Truncated history
 /**
  * Overlay control - vmwgfx_overlay.c
  */

@@ -194,12 +194,15 @@ static int r520_startup(struct radeon_device *rdev)
 	}
 
 	/* Enable IRQ */
+<<<<<<< HEAD
 	if (!rdev->irq.installed) {
 		r = radeon_irq_kms_init(rdev);
 		if (r)
 			return r;
 	}
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	rs600_irq_set(rdev);
 	rdev->config.r300.hdp_cntl = RREG32(RADEON_HOST_PATH_CNTL);
 	/* 1M ring buffer */
@@ -307,6 +310,12 @@ int r520_init(struct radeon_device *rdev)
 	r = radeon_fence_driver_init(rdev);
 	if (r)
 		return r;
+<<<<<<< HEAD
+=======
+	r = radeon_irq_kms_init(rdev);
+	if (r)
+		return r;
+>>>>>>> 7175f4b... Truncated history
 	/* Memory manager */
 	r = radeon_bo_init(rdev);
 	if (r)

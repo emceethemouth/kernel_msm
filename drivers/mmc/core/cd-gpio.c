@@ -111,9 +111,12 @@ void mmc_cd_gpio_free(struct mmc_host *host)
 {
 	struct mmc_cd_gpio *cd = host->hotplug.handler_priv;
 
+<<<<<<< HEAD
 	if (!cd)
 		return;
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	free_irq(host->hotplug.irq, host);
 	gpio_free(cd->gpio);
 	kfree(cd);

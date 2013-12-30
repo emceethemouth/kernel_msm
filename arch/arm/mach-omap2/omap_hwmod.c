@@ -317,7 +317,11 @@ static int _set_clockactivity(struct omap_hwmod *oh, u8 clockact, u32 *v)
 }
 
 /**
+<<<<<<< HEAD
  * _set_softreset: set OCP_SYSCONFIG.SOFTRESET bit in @v
+=======
+ * _set_softreset: set OCP_SYSCONFIG.CLOCKACTIVITY bits in @v
+>>>>>>> 7175f4b... Truncated history
  * @oh: struct omap_hwmod *
  * @v: pointer to register contents to modify
  *
@@ -1378,6 +1382,7 @@ static int _read_hardreset(struct omap_hwmod *oh, const char *name)
 }
 
 /**
+<<<<<<< HEAD
  * _clear_softreset: clear OCP_SYSCONFIG.SOFTRESET bit in @v
  * @oh: struct omap_hwmod *
  * @v: pointer to register contents to modify
@@ -1408,6 +1413,8 @@ static int _clear_softreset(struct omap_hwmod *oh, u32 *v)
 }
 
 /**
+=======
+>>>>>>> 7175f4b... Truncated history
  * _ocp_softreset - reset an omap_hwmod via the OCP_SYSCONFIG bit
  * @oh: struct omap_hwmod *
  *
@@ -1450,12 +1457,15 @@ static int _ocp_softreset(struct omap_hwmod *oh)
 	ret = _set_softreset(oh, &v);
 	if (ret)
 		goto dis_opt_clks;
+<<<<<<< HEAD
 
 	_write_sysconfig(v, oh);
 	ret = _clear_softreset(oh, &v);
 	if (ret)
 		goto dis_opt_clks;
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	_write_sysconfig(v, oh);
 
 	if (oh->class->sysc->srst_udelay)
@@ -1954,11 +1964,14 @@ int omap_hwmod_softreset(struct omap_hwmod *oh)
 		goto error;
 	_write_sysconfig(v, oh);
 
+<<<<<<< HEAD
 	ret = _clear_softreset(oh, &v);
 	if (ret)
 		goto error;
 	_write_sysconfig(v, oh);
 
+=======
+>>>>>>> 7175f4b... Truncated history
 error:
 	return ret;
 }

@@ -53,6 +53,10 @@ int mwifiex_copy_mcast_addr(struct mwifiex_multicast_list *mlist,
  */
 int mwifiex_wait_queue_complete(struct mwifiex_adapter *adapter)
 {
+<<<<<<< HEAD
+=======
+	bool cancel_flag = false;
+>>>>>>> 7175f4b... Truncated history
 	int status;
 	struct cmd_ctrl_node *cmd_queued;
 
@@ -69,11 +73,22 @@ int mwifiex_wait_queue_complete(struct mwifiex_adapter *adapter)
 	queue_work(adapter->workqueue, &adapter->main_work);
 
 	/* Wait for completion */
+<<<<<<< HEAD
 	status = wait_event_interruptible(adapter->cmd_wait_q.wait,
 					  *(cmd_queued->condition));
 	if (status) {
 		dev_err(adapter->dev, "cmd_wait_q terminated: %d\n", status);
 		return status;
+=======
+	wait_event_interruptible(adapter->cmd_wait_q.wait,
+				 *(cmd_queued->condition));
+	if (!*(cmd_queued->condition))
+		cancel_flag = true;
+
+	if (cancel_flag) {
+		mwifiex_cancel_pending_ioctl(adapter);
+		dev_dbg(adapter->dev, "cmd cancel\n");
+>>>>>>> 7175f4b... Truncated history
 	}
 
 	status = adapter->cmd_wait_q.status;
@@ -105,7 +120,11 @@ int mwifiex_request_set_multicast_list(struct mwifiex_private *priv,
 	} else {
 		/* Multicast */
 		priv->curr_pkt_filter &= ~HostCmd_ACT_MAC_PROMISCUOUS_ENABLE;
+<<<<<<< HEAD
 		if (mcast_list->mode == MWIFIEX_ALL_MULTI_MODE) {
+=======
+		if (mcast_list->mode == MWIFIEX_MULTICAST_MODE) {
+>>>>>>> 7175f4b... Truncated history
 			dev_dbg(priv->adapter->dev,
 				"info: Enabling All Multicast!\n");
 			priv->curr_pkt_filter |=
@@ -117,11 +136,28 @@ int mwifiex_request_set_multicast_list(struct mwifiex_private *priv,
 				dev_dbg(priv->adapter->dev,
 					"info: Set multicast list=%d\n",
 				       mcast_list->num_multicast_addr);
+<<<<<<< HEAD
 				/* Send multicast addresses to firmware */
 				ret = mwifiex_send_cmd_async(priv,
 					HostCmd_CMD_MAC_MULTICAST_ADR,
 					HostCmd_ACT_GEN_SET, 0,
 					mcast_list);
+=======
+				/* Set multicast addresses to firmware */
+				if (old_pkt_filter == priv->curr_pkt_filter) {
+					/* Send request to firmware */
+					ret = mwifiex_send_cmd_async(priv,
+						HostCmd_CMD_MAC_MULTICAST_ADR,
+						HostCmd_ACT_GEN_SET, 0,
+						mcast_list);
+				} else {
+					/* Send request to firmware */
+					ret = mwifiex_send_cmd_async(priv,
+						HostCmd_CMD_MAC_MULTICAST_ADR,
+						HostCmd_ACT_GEN_SET, 0,
+						mcast_list);
+				}
+>>>>>>> 7175f4b... Truncated history
 			}
 		}
 	}
@@ -423,11 +459,16 @@ int mwifiex_enable_hs(struct mwifiex_adapter *adapter)
 		return false;
 	}
 
+<<<<<<< HEAD
 	if (wait_event_interruptible(adapter->hs_activate_wait_q,
 				     adapter->hs_activate_wait_q_woken)) {
 		dev_err(adapter->dev, "hs_activate_wait_q terminated\n");
 		return false;
 	}
+=======
+	wait_event_interruptible(adapter->hs_activate_wait_q,
+				 adapter->hs_activate_wait_q_woken);
+>>>>>>> 7175f4b... Truncated history
 
 	return true;
 }

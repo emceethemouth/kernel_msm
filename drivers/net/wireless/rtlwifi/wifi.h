@@ -1555,7 +1555,10 @@ struct rtl_locks {
 	spinlock_t rf_ps_lock;
 	spinlock_t rf_lock;
 	spinlock_t waitq_lock;
+<<<<<<< HEAD
 	spinlock_t usb_lock;
+=======
+>>>>>>> 7175f4b... Truncated history
 
 	/*Dual mac*/
 	spinlock_t cck_and_rw_pagea_lock;
@@ -1638,7 +1641,11 @@ struct rtl_priv {
 	   that it points to the data allocated
 	   beyond  this structure like:
 	   rtl_pci_priv or rtl_usb_priv */
+<<<<<<< HEAD
 	u8 priv[0] __aligned(sizeof(void *));
+=======
+	u8 priv[0];
+>>>>>>> 7175f4b... Truncated history
 };
 
 #define rtl_priv(hw)		(((struct rtl_priv *)(hw)->priv))

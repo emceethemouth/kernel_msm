@@ -17,7 +17,10 @@
 #include <linux/fadvise.h>
 #include <linux/writeback.h>
 #include <linux/syscalls.h>
+<<<<<<< HEAD
 #include <linux/swap.h>
+=======
+>>>>>>> 7175f4b... Truncated history
 
 #include <asm/unistd.h>
 
@@ -125,6 +128,7 @@ SYSCALL_DEFINE(fadvise64_64)(int fd, loff_t offset, loff_t len, int advice)
 		start_index = (offset+(PAGE_CACHE_SIZE-1)) >> PAGE_CACHE_SHIFT;
 		end_index = (endbyte >> PAGE_CACHE_SHIFT);
 
+<<<<<<< HEAD
 		if (end_index >= start_index) {
 			unsigned long count = invalidate_mapping_pages(mapping,
 						start_index, end_index);
@@ -141,6 +145,11 @@ SYSCALL_DEFINE(fadvise64_64)(int fd, loff_t offset, loff_t len, int advice)
 						end_index);
 			}
 		}
+=======
+		if (end_index >= start_index)
+			invalidate_mapping_pages(mapping, start_index,
+						end_index);
+>>>>>>> 7175f4b... Truncated history
 		break;
 	default:
 		ret = -EINVAL;

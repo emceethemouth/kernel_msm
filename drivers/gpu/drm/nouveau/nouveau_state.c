@@ -47,7 +47,10 @@ static int nouveau_init_engine_ptrs(struct drm_device *dev)
 {
 	struct drm_nouveau_private *dev_priv = dev->dev_private;
 	struct nouveau_engine *engine = &dev_priv->engine;
+<<<<<<< HEAD
 	u32 pclass = dev->pdev->class >> 8;
+=======
+>>>>>>> 7175f4b... Truncated history
 
 	switch (dev_priv->chipset & 0xf0) {
 	case 0x00:
@@ -527,8 +530,12 @@ static int nouveau_init_engine_ptrs(struct drm_device *dev)
 	}
 
 	/* headless mode */
+<<<<<<< HEAD
 	if (nouveau_modeset == 2 ||
 	    (nouveau_modeset < 0 && pclass != PCI_CLASS_DISPLAY_VGA)) {
+=======
+	if (nouveau_modeset == 2) {
+>>>>>>> 7175f4b... Truncated history
 		engine->display.early_init = nouveau_stub_init;
 		engine->display.late_takedown = nouveau_stub_takedown;
 		engine->display.create = nouveau_stub_init;

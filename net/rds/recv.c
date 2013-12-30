@@ -485,7 +485,10 @@ int rds_recvmsg(struct kiocb *iocb, struct socket *sock, struct msghdr *msg,
 			sin->sin_port = inc->i_hdr.h_sport;
 			sin->sin_addr.s_addr = inc->i_saddr;
 			memset(sin->sin_zero, 0, sizeof(sin->sin_zero));
+<<<<<<< HEAD
 			msg->msg_namelen = sizeof(*sin);
+=======
+>>>>>>> 7175f4b... Truncated history
 		}
 		break;
 	}

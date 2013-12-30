@@ -445,6 +445,7 @@ static void nbd_clear_que(struct nbd_device *nbd)
 		req->errors++;
 		nbd_end_request(req);
 	}
+<<<<<<< HEAD
 
 	while (!list_empty(&nbd->waiting_queue)) {
 		req = list_entry(nbd->waiting_queue.next, struct request,
@@ -453,6 +454,8 @@ static void nbd_clear_que(struct nbd_device *nbd)
 		req->errors++;
 		nbd_end_request(req);
 	}
+=======
+>>>>>>> 7175f4b... Truncated history
 }
 
 
@@ -602,7 +605,10 @@ static int __nbd_ioctl(struct block_device *bdev, struct nbd_device *nbd,
 		nbd->file = NULL;
 		nbd_clear_que(nbd);
 		BUG_ON(!list_empty(&nbd->queue_head));
+<<<<<<< HEAD
 		BUG_ON(!list_empty(&nbd->waiting_queue));
+=======
+>>>>>>> 7175f4b... Truncated history
 		if (file)
 			fput(file);
 		return 0;
@@ -666,8 +672,12 @@ static int __nbd_ioctl(struct block_device *bdev, struct nbd_device *nbd,
 
 		mutex_unlock(&nbd->tx_lock);
 
+<<<<<<< HEAD
 		thread = kthread_create(nbd_thread, nbd, "%s",
 					nbd->disk->disk_name);
+=======
+		thread = kthread_create(nbd_thread, nbd, nbd->disk->disk_name);
+>>>>>>> 7175f4b... Truncated history
 		if (IS_ERR(thread)) {
 			mutex_lock(&nbd->tx_lock);
 			return PTR_ERR(thread);

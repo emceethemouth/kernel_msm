@@ -214,7 +214,11 @@ static int nfs_dns_parse(struct cache_detail *cd, char *buf, int buflen)
 {
 	char buf1[NFS_DNS_HOSTNAME_MAXLEN+1];
 	struct nfs_dns_ent key, *item;
+<<<<<<< HEAD
 	unsigned int ttl;
+=======
+	unsigned long ttl;
+>>>>>>> 7175f4b... Truncated history
 	ssize_t len;
 	int ret = -EINVAL;
 
@@ -237,8 +241,12 @@ static int nfs_dns_parse(struct cache_detail *cd, char *buf, int buflen)
 	key.namelen = len;
 	memset(&key.h, 0, sizeof(key.h));
 
+<<<<<<< HEAD
 	if (get_uint(&buf, &ttl) < 0)
 		goto out;
+=======
+	ttl = get_expiry(&buf);
+>>>>>>> 7175f4b... Truncated history
 	if (ttl == 0)
 		goto out;
 	key.h.expiry_time = ttl + seconds_since_boot();

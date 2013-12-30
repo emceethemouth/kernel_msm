@@ -58,8 +58,12 @@ static struct ft_tport *ft_tport_create(struct fc_lport *lport)
 	struct ft_tport *tport;
 	int i;
 
+<<<<<<< HEAD
 	tport = rcu_dereference_protected(lport->prov[FC_TYPE_FCP],
 					  lockdep_is_held(&ft_lport_lock));
+=======
+	tport = rcu_dereference(lport->prov[FC_TYPE_FCP]);
+>>>>>>> 7175f4b... Truncated history
 	if (tport && tport->tpg)
 		return tport;
 
@@ -356,11 +360,19 @@ static int ft_prli_locked(struct fc_rport_priv *rdata, u32 spp_len,
 
 	tport = ft_tport_create(rdata->local_port);
 	if (!tport)
+<<<<<<< HEAD
 		goto not_target;	/* not a target for this local port */
 
 	acl = ft_acl_get(tport->tpg, rdata);
 	if (!acl)
 		goto not_target;	/* no target for this remote */
+=======
+		return 0;	/* not a target for this local port */
+
+	acl = ft_acl_get(tport->tpg, rdata);
+	if (!acl)
+		return 0;
+>>>>>>> 7175f4b... Truncated history
 
 	if (!rspp)
 		goto fill;
@@ -397,6 +409,7 @@ static int ft_prli_locked(struct fc_rport_priv *rdata, u32 spp_len,
 
 	/*
 	 * OR in our service parameters with other provider (initiator), if any.
+<<<<<<< HEAD
 	 */
 fill:
 	fcp_parm = ntohl(spp->spp_params);
@@ -409,6 +422,14 @@ not_target:
 	fcp_parm &= ~FCP_SPPF_TARG_FCN;
 	spp->spp_params = htonl(fcp_parm);
 	return 0;
+=======
+	 * TBD XXX - indicate RETRY capability?
+	 */
+fill:
+	fcp_parm = ntohl(spp->spp_params);
+	spp->spp_params = htonl(fcp_parm | FCP_SPPF_TARG_FCN);
+	return FC_SPP_RESP_ACK;
+>>>>>>> 7175f4b... Truncated history
 }
 
 /**
@@ -437,6 +458,10 @@ static void ft_sess_rcu_free(struct rcu_head *rcu)
 {
 	struct ft_sess *sess = container_of(rcu, struct ft_sess, rcu);
 
+<<<<<<< HEAD
+=======
+	transport_deregister_session(sess->se_sess);
+>>>>>>> 7175f4b... Truncated history
 	kfree(sess);
 }
 
@@ -444,7 +469,10 @@ static void ft_sess_free(struct kref *kref)
 {
 	struct ft_sess *sess = container_of(kref, struct ft_sess, kref);
 
+<<<<<<< HEAD
 	transport_deregister_session(sess->se_sess);
+=======
+>>>>>>> 7175f4b... Truncated history
 	call_rcu(&sess->rcu, ft_sess_rcu_free);
 }
 

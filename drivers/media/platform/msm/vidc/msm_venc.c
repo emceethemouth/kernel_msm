@@ -755,6 +755,7 @@ static struct msm_vidc_ctrl msm_venc_ctrls[] = {
 			V4L2_MPEG_VIDC_VIDEO_PRESERVE_TEXT_QUALITY_DISABLED,
 		.cluster = 0,
 	},
+<<<<<<< HEAD
 	{
 		.id = V4L2_CID_MPEG_VIDC_VIDEO_REQUEST_SEQ_HEADER,
 		.name = "Request Seq Header",
@@ -767,6 +768,8 @@ static struct msm_vidc_ctrl msm_venc_ctrls[] = {
 		.qmenu = NULL,
 		.cluster = 0,
 	}
+=======
+>>>>>>> 7175f4b... Truncated history
 };
 
 #define NUM_CTRLS ARRAY_SIZE(msm_venc_ctrls)
@@ -1941,9 +1944,12 @@ static int try_set_ctrl(struct msm_vidc_inst *inst, struct v4l2_ctrl *ctrl)
 		preserve_text_quality.enable = ctrl->val;
 		pdata = &preserve_text_quality;
 		break;
+<<<<<<< HEAD
 	case V4L2_CID_MPEG_VIDC_VIDEO_REQUEST_SEQ_HEADER:
 		atomic_inc(&inst->get_seq_hdr_cnt);
 		break;
+=======
+>>>>>>> 7175f4b... Truncated history
 	default:
 		rc = -ENOTSUPP;
 		break;

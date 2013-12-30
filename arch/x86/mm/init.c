@@ -29,6 +29,7 @@ int direct_gbpages
 #endif
 ;
 
+<<<<<<< HEAD
 struct map_range {
 	unsigned long start;
 	unsigned long end;
@@ -79,6 +80,39 @@ static void __init find_early_table_space(struct map_range *mr, int nr_range)
 	tables += roundup(pmds * sizeof(pmd_t), PAGE_SIZE);
 	tables += roundup(ptes * sizeof(pte_t), PAGE_SIZE);
 	tables += (pgd_extra * PAGE_SIZE);
+=======
+static void __init find_early_table_space(unsigned long end, int use_pse,
+					  int use_gbpages)
+{
+	unsigned long puds, pmds, ptes, tables, start = 0, good_end = end;
+	phys_addr_t base;
+
+	puds = (end + PUD_SIZE - 1) >> PUD_SHIFT;
+	tables = roundup(puds * sizeof(pud_t), PAGE_SIZE);
+
+	if (use_gbpages) {
+		unsigned long extra;
+
+		extra = end - ((end>>PUD_SHIFT) << PUD_SHIFT);
+		pmds = (extra + PMD_SIZE - 1) >> PMD_SHIFT;
+	} else
+		pmds = (end + PMD_SIZE - 1) >> PMD_SHIFT;
+
+	tables += roundup(pmds * sizeof(pmd_t), PAGE_SIZE);
+
+	if (use_pse) {
+		unsigned long extra;
+
+		extra = end - ((end>>PMD_SHIFT) << PMD_SHIFT);
+#ifdef CONFIG_X86_32
+		extra += PMD_SIZE;
+#endif
+		ptes = (extra + PAGE_SIZE - 1) >> PAGE_SHIFT;
+	} else
+		ptes = (end + PAGE_SIZE - 1) >> PAGE_SHIFT;
+
+	tables += roundup(ptes * sizeof(pte_t), PAGE_SIZE);
+>>>>>>> 7175f4b... Truncated history
 
 #ifdef CONFIG_X86_32
 	/* for fixmap */
@@ -94,9 +128,14 @@ static void __init find_early_table_space(struct map_range *mr, int nr_range)
 	pgt_buf_end = pgt_buf_start;
 	pgt_buf_top = pgt_buf_start + (tables >> PAGE_SHIFT);
 
+<<<<<<< HEAD
  	printk(KERN_DEBUG "kernel direct mapping tables up to %#lx @ [mem %#010lx-%#010lx]\n",
 		mr[nr_range - 1].end - 1, pgt_buf_start << PAGE_SHIFT,
  		(pgt_buf_top << PAGE_SHIFT) - 1);
+=======
+	printk(KERN_DEBUG "kernel direct mapping tables up to %lx @ %lx-%lx\n",
+		end, pgt_buf_start << PAGE_SHIFT, pgt_buf_top << PAGE_SHIFT);
+>>>>>>> 7175f4b... Truncated history
 }
 
 void __init native_pagetable_reserve(u64 start, u64 end)
@@ -104,6 +143,15 @@ void __init native_pagetable_reserve(u64 start, u64 end)
 	memblock_reserve(start, end - start);
 }
 
+<<<<<<< HEAD
+=======
+struct map_range {
+	unsigned long start;
+	unsigned long end;
+	unsigned page_size_mask;
+};
+
+>>>>>>> 7175f4b... Truncated history
 #ifdef CONFIG_X86_32
 #define NR_RANGE_MR 3
 #else /* CONFIG_X86_64 */
@@ -275,7 +323,11 @@ unsigned long __init_refok init_memory_mapping(unsigned long start,
 	 * nodes are discovered.
 	 */
 	if (!after_bootmem)
+<<<<<<< HEAD
 		find_early_table_space(mr, nr_range);
+=======
+		find_early_table_space(end, use_pse, use_gbpages);
+>>>>>>> 7175f4b... Truncated history
 
 	for (i = 0; i < nr_range; i++)
 		ret = kernel_physical_mapping_init(mr[i].start, mr[i].end,

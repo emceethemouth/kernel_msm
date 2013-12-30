@@ -1262,6 +1262,7 @@ void psb_intel_crtc_destroy(struct drm_crtc *crtc)
 	kfree(psb_intel_crtc);
 }
 
+<<<<<<< HEAD
 static void psb_intel_crtc_disable(struct drm_crtc *crtc)
 {
 	struct gtt_range *gt;
@@ -1275,6 +1276,8 @@ static void psb_intel_crtc_disable(struct drm_crtc *crtc)
 	}
 }
 
+=======
+>>>>>>> 7175f4b... Truncated history
 const struct drm_crtc_helper_funcs psb_intel_helper_funcs = {
 	.dpms = psb_intel_crtc_dpms,
 	.mode_fixup = psb_intel_crtc_mode_fixup,
@@ -1282,7 +1285,10 @@ const struct drm_crtc_helper_funcs psb_intel_helper_funcs = {
 	.mode_set_base = psb_intel_pipe_set_base,
 	.prepare = psb_intel_crtc_prepare,
 	.commit = psb_intel_crtc_commit,
+<<<<<<< HEAD
 	.disable = psb_intel_crtc_disable,
+=======
+>>>>>>> 7175f4b... Truncated history
 };
 
 const struct drm_crtc_funcs psb_intel_crtc_funcs = {

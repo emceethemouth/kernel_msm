@@ -1,9 +1,14 @@
 snd-soc-core-objs := soc-core.o soc-dapm.o soc-jack.o soc-cache.o soc-utils.o
 snd-soc-core-objs += soc-pcm.o soc-compress.o soc-io.o
 
+<<<<<<< HEAD
 ifneq ($(CONFIG_SND_SOC_DMAENGINE_PCM),)
 snd-soc-core-objs += soc-dmaengine-pcm.o
 endif
+=======
+snd-soc-dmaengine-pcm-objs := soc-dmaengine-pcm.o
+obj-$(CONFIG_SND_SOC_DMAENGINE_PCM) += snd-soc-dmaengine-pcm.o
+>>>>>>> 7175f4b... Truncated history
 
 obj-$(CONFIG_SND_SOC)	+= snd-soc-core.o
 obj-$(CONFIG_SND_SOC)	+= codecs/

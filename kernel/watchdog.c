@@ -112,7 +112,11 @@ static unsigned long get_timestamp(int this_cpu)
 	return cpu_clock(this_cpu) >> 30LL;  /* 2^30 ~= 10^9 */
 }
 
+<<<<<<< HEAD
 static u64 get_sample_period(void)
+=======
+static unsigned long get_sample_period(void)
+>>>>>>> 7175f4b... Truncated history
 {
 	/*
 	 * convert watchdog_thresh from seconds to ns
@@ -121,7 +125,11 @@ static u64 get_sample_period(void)
 	 * and hard thresholds) to increment before the
 	 * hardlockup detector generates a warning
 	 */
+<<<<<<< HEAD
 	return get_softlockup_thresh() * ((u64)NSEC_PER_SEC / 5);
+=======
+	return get_softlockup_thresh() * (NSEC_PER_SEC / 5);
+>>>>>>> 7175f4b... Truncated history
 }
 
 /* Commands for resetting the watchdog */

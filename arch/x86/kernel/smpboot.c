@@ -66,8 +66,11 @@
 #include <asm/mwait.h>
 #include <asm/apic.h>
 #include <asm/io_apic.h>
+<<<<<<< HEAD
 #include <asm/i387.h>
 #include <asm/fpu-internal.h>
+=======
+>>>>>>> 7175f4b... Truncated history
 #include <asm/setup.h>
 #include <asm/uv/uv.h>
 #include <linux/mc146818rtc.h>
@@ -853,9 +856,12 @@ int __cpuinit native_cpu_up(unsigned int cpu)
 
 	per_cpu(cpu_state, cpu) = CPU_UP_PREPARE;
 
+<<<<<<< HEAD
 	/* the FPU context is blank, nobody can own it */
 	__cpu_disable_lazy_restore(cpu);
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	err = do_boot_cpu(apicid, cpu);
 	if (err) {
 		pr_debug("do_boot_cpu failed %d\n", err);

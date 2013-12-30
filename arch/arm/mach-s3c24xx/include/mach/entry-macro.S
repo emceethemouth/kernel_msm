@@ -31,10 +31,17 @@
 
 		@@ try the interrupt offset register, since it is there
 
+<<<<<<< HEAD
 		ldr	\irqstat, [\base, #INTPND ]
 		teq	\irqstat, #0
 		beq	1002f
 		ldr	\irqnr, [\base, #INTOFFSET ]
+=======
+		ldr	\irqstat, [ \base, #INTPND ]
+		teq	\irqstat, #0
+		beq	1002f
+		ldr	\irqnr, [ \base, #INTOFFSET ]
+>>>>>>> 7175f4b... Truncated history
 		mov	\tmp, #1
 		tst	\irqstat, \tmp, lsl \irqnr
 		bne	1001f

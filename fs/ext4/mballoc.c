@@ -1980,11 +1980,15 @@ repeat:
 		group = ac->ac_g_ex.fe_group;
 
 		for (i = 0; i < ngroups; group++, i++) {
+<<<<<<< HEAD
 			/*
 			 * Artificially restricted ngroups for non-extent
 			 * files makes group > ngroups possible on first loop.
 			 */
 			if (group >= ngroups)
+=======
+			if (group == ngroups)
+>>>>>>> 7175f4b... Truncated history
 				group = 0;
 
 			/* This now checks without needing the buddy page */
@@ -2521,9 +2525,12 @@ int ext4_mb_release(struct super_block *sb)
 	struct ext4_sb_info *sbi = EXT4_SB(sb);
 	struct kmem_cache *cachep = get_groupinfo_cache(sb->s_blocksize_bits);
 
+<<<<<<< HEAD
 	if (sbi->s_proc)
 		remove_proc_entry("mb_groups", sbi->s_proc);
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	if (sbi->s_group_info) {
 		for (i = 0; i < ngroups; i++) {
 			grinfo = ext4_get_group_info(sb, i);
@@ -2571,6 +2578,11 @@ int ext4_mb_release(struct super_block *sb)
 	}
 
 	free_percpu(sbi->s_locality_groups);
+<<<<<<< HEAD
+=======
+	if (sbi->s_proc)
+		remove_proc_entry("mb_groups", sbi->s_proc);
+>>>>>>> 7175f4b... Truncated history
 
 	return 0;
 }
@@ -2817,8 +2829,13 @@ ext4_mb_mark_diskspace_used(struct ext4_allocation_context *ac,
 	if (sbi->s_log_groups_per_flex) {
 		ext4_group_t flex_group = ext4_flex_group(sbi,
 							  ac->ac_b_ex.fe_group);
+<<<<<<< HEAD
 		atomic64_sub(ac->ac_b_ex.fe_len,
 			     &sbi->s_flex_groups[flex_group].free_clusters);
+=======
+		atomic_sub(ac->ac_b_ex.fe_len,
+			   &sbi->s_flex_groups[flex_group].free_clusters);
+>>>>>>> 7175f4b... Truncated history
 	}
 
 	err = ext4_handle_dirty_metadata(handle, NULL, bitmap_bh);
@@ -3326,9 +3343,12 @@ static void ext4_mb_pa_callback(struct rcu_head *head)
 {
 	struct ext4_prealloc_space *pa;
 	pa = container_of(head, struct ext4_prealloc_space, u.pa_rcu);
+<<<<<<< HEAD
 
 	BUG_ON(atomic_read(&pa->pa_count));
 	BUG_ON(pa->pa_deleted == 0);
+=======
+>>>>>>> 7175f4b... Truncated history
 	kmem_cache_free(ext4_pspace_cachep, pa);
 }
 
@@ -3342,6 +3362,7 @@ static void ext4_mb_put_pa(struct ext4_allocation_context *ac,
 	ext4_group_t grp;
 	ext4_fsblk_t grp_blk;
 
+<<<<<<< HEAD
 	/* in this short window concurrent discard can set pa_deleted */
 	spin_lock(&pa->pa_lock);
 	if (!atomic_dec_and_test(&pa->pa_count) || pa->pa_free != 0) {
@@ -3349,6 +3370,13 @@ static void ext4_mb_put_pa(struct ext4_allocation_context *ac,
 		return;
 	}
 
+=======
+	if (!atomic_dec_and_test(&pa->pa_count) || pa->pa_free != 0)
+		return;
+
+	/* in this short window concurrent discard can set pa_deleted */
+	spin_lock(&pa->pa_lock);
+>>>>>>> 7175f4b... Truncated history
 	if (pa->pa_deleted == 1) {
 		spin_unlock(&pa->pa_lock);
 		return;
@@ -3442,7 +3470,11 @@ ext4_mb_new_inode_pa(struct ext4_allocation_context *ac)
 			win = offs;
 
 		ac->ac_b_ex.fe_logical = ac->ac_o_ex.fe_logical -
+<<<<<<< HEAD
 			EXT4_NUM_B2C(sbi, win);
+=======
+			EXT4_B2C(sbi, win);
+>>>>>>> 7175f4b... Truncated history
 		BUG_ON(ac->ac_o_ex.fe_logical < ac->ac_b_ex.fe_logical);
 		BUG_ON(ac->ac_o_ex.fe_len > ac->ac_b_ex.fe_len);
 	}
@@ -4135,7 +4167,11 @@ static void ext4_mb_add_n_trim(struct ext4_allocation_context *ac)
 		/* The max size of hash table is PREALLOC_TB_SIZE */
 		order = PREALLOC_TB_SIZE - 1;
 	/* Add the prealloc space to lg */
+<<<<<<< HEAD
 	spin_lock(&lg->lg_prealloc_lock);
+=======
+	rcu_read_lock();
+>>>>>>> 7175f4b... Truncated history
 	list_for_each_entry_rcu(tmp_pa, &lg->lg_prealloc_list[order],
 						pa_inode_list) {
 		spin_lock(&tmp_pa->pa_lock);
@@ -4159,12 +4195,20 @@ static void ext4_mb_add_n_trim(struct ext4_allocation_context *ac)
 	if (!added)
 		list_add_tail_rcu(&pa->pa_inode_list,
 					&lg->lg_prealloc_list[order]);
+<<<<<<< HEAD
 	spin_unlock(&lg->lg_prealloc_lock);
+=======
+	rcu_read_unlock();
+>>>>>>> 7175f4b... Truncated history
 
 	/* Now trim the list to be not more than 8 elements */
 	if (lg_prealloc_count > 8) {
 		ext4_mb_discard_lg_preallocations(sb, lg,
+<<<<<<< HEAD
 						  order, lg_prealloc_count);
+=======
+						order, lg_prealloc_count);
+>>>>>>> 7175f4b... Truncated history
 		return;
 	}
 	return ;
@@ -4445,11 +4489,19 @@ ext4_mb_free_metadata(handle_t *handle, struct ext4_buddy *e4b,
 	node = rb_prev(new_node);
 	if (node) {
 		entry = rb_entry(node, struct ext4_free_data, efd_node);
+<<<<<<< HEAD
 		if (can_merge(entry, new_entry) &&
 		    ext4_journal_callback_try_del(handle, &entry->efd_jce)) {
 			new_entry->efd_start_cluster = entry->efd_start_cluster;
 			new_entry->efd_count += entry->efd_count;
 			rb_erase(node, &(db->bb_free_root));
+=======
+		if (can_merge(entry, new_entry)) {
+			new_entry->efd_start_cluster = entry->efd_start_cluster;
+			new_entry->efd_count += entry->efd_count;
+			rb_erase(node, &(db->bb_free_root));
+			ext4_journal_callback_del(handle, &entry->efd_jce);
+>>>>>>> 7175f4b... Truncated history
 			kmem_cache_free(ext4_free_data_cachep, entry);
 		}
 	}
@@ -4457,10 +4509,17 @@ ext4_mb_free_metadata(handle_t *handle, struct ext4_buddy *e4b,
 	node = rb_next(new_node);
 	if (node) {
 		entry = rb_entry(node, struct ext4_free_data, efd_node);
+<<<<<<< HEAD
 		if (can_merge(new_entry, entry) &&
 		    ext4_journal_callback_try_del(handle, &entry->efd_jce)) {
 			new_entry->efd_count += entry->efd_count;
 			rb_erase(node, &(db->bb_free_root));
+=======
+		if (can_merge(new_entry, entry)) {
+			new_entry->efd_count += entry->efd_count;
+			rb_erase(node, &(db->bb_free_root));
+			ext4_journal_callback_del(handle, &entry->efd_jce);
+>>>>>>> 7175f4b... Truncated history
 			kmem_cache_free(ext4_free_data_cachep, entry);
 		}
 	}
@@ -4586,7 +4645,11 @@ do_more:
 			EXT4_BLOCKS_PER_GROUP(sb);
 		count -= overflow;
 	}
+<<<<<<< HEAD
 	count_clusters = EXT4_NUM_B2C(sbi, count);
+=======
+	count_clusters = EXT4_B2C(sbi, count);
+>>>>>>> 7175f4b... Truncated history
 	bitmap_bh = ext4_read_block_bitmap(sb, block_group);
 	if (!bitmap_bh) {
 		err = -EIO;
@@ -4644,6 +4707,7 @@ do_more:
 		 * blocks being freed are metadata. these blocks shouldn't
 		 * be used until this transaction is committed
 		 */
+<<<<<<< HEAD
 	retry:
 		new_entry = kmem_cache_alloc(ext4_free_data_cachep, GFP_NOFS);
 		if (!new_entry) {
@@ -4654,6 +4718,12 @@ do_more:
 			cond_resched();
 			congestion_wait(BLK_RW_ASYNC, HZ/50);
 			goto retry;
+=======
+		new_entry = kmem_cache_alloc(ext4_free_data_cachep, GFP_NOFS);
+		if (!new_entry) {
+			err = -ENOMEM;
+			goto error_return;
+>>>>>>> 7175f4b... Truncated history
 		}
 		new_entry->efd_start_cluster = bit;
 		new_entry->efd_group = block_group;
@@ -4681,8 +4751,13 @@ do_more:
 
 	if (sbi->s_log_groups_per_flex) {
 		ext4_group_t flex_group = ext4_flex_group(sbi, block_group);
+<<<<<<< HEAD
 		atomic64_add(count_clusters,
 			     &sbi->s_flex_groups[flex_group].free_clusters);
+=======
+		atomic_add(count_clusters,
+			   &sbi->s_flex_groups[flex_group].free_clusters);
+>>>>>>> 7175f4b... Truncated history
 	}
 
 	ext4_mb_unload_buddy(&e4b);
@@ -4822,12 +4897,21 @@ int ext4_group_add_blocks(handle_t *handle, struct super_block *sb,
 	desc->bg_checksum = ext4_group_desc_csum(sbi, block_group, desc);
 	ext4_unlock_group(sb, block_group);
 	percpu_counter_add(&sbi->s_freeclusters_counter,
+<<<<<<< HEAD
 			   EXT4_NUM_B2C(sbi, blocks_freed));
 
 	if (sbi->s_log_groups_per_flex) {
 		ext4_group_t flex_group = ext4_flex_group(sbi, block_group);
 		atomic64_add(EXT4_NUM_B2C(sbi, blocks_freed),
 			     &sbi->s_flex_groups[flex_group].free_clusters);
+=======
+			   EXT4_B2C(sbi, blocks_freed));
+
+	if (sbi->s_log_groups_per_flex) {
+		ext4_group_t flex_group = ext4_flex_group(sbi, block_group);
+		atomic_add(EXT4_B2C(sbi, blocks_freed),
+			   &sbi->s_flex_groups[flex_group].free_clusters);
+>>>>>>> 7175f4b... Truncated history
 	}
 
 	ext4_mb_unload_buddy(&e4b);
@@ -4998,9 +5082,14 @@ int ext4_trim_fs(struct super_block *sb, struct fstrim_range *range)
 	end = start + (range->len >> sb->s_blocksize_bits) - 1;
 	minlen = range->minlen >> sb->s_blocksize_bits;
 
+<<<<<<< HEAD
 	if (minlen > EXT4_CLUSTERS_PER_GROUP(sb) ||
 	    start >= max_blks ||
 	    range->len < sb->s_blocksize)
+=======
+	if (unlikely(minlen > EXT4_CLUSTERS_PER_GROUP(sb)) ||
+	    unlikely(start >= max_blks))
+>>>>>>> 7175f4b... Truncated history
 		return -EINVAL;
 	if (end >= max_blks)
 		end = max_blks - 1;

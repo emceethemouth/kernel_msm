@@ -46,8 +46,11 @@
 
 static int smp_distribute_keys(struct l2cap_conn *conn, __u8 force);
 
+<<<<<<< HEAD
 #define AUTH_REQ_MASK   0x07
 
+=======
+>>>>>>> 7175f4b... Truncated history
 static inline void swap128(u8 src[16], u8 dst[16])
 {
 	int i;
@@ -250,7 +253,10 @@ static void build_pairing_cmd(struct l2cap_conn *conn,
 				req->io_capability, req->oob_flag,
 				req->auth_req, req->max_key_size,
 				req->init_key_dist, req->resp_key_dist);
+<<<<<<< HEAD
 		req->auth_req = (authreq & AUTH_REQ_MASK);
+=======
+>>>>>>> 7175f4b... Truncated history
 		return;
 	}
 
@@ -270,7 +276,10 @@ static void build_pairing_cmd(struct l2cap_conn *conn,
 			req->io_capability, req->oob_flag, req->auth_req,
 			req->max_key_size, req->init_key_dist,
 			req->resp_key_dist);
+<<<<<<< HEAD
 	rsp->auth_req = (authreq & AUTH_REQ_MASK);
+=======
+>>>>>>> 7175f4b... Truncated history
 }
 
 static u8 check_enc_key_size(struct l2cap_conn *conn, __u8 max_key_size)

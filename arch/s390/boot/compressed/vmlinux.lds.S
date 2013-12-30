@@ -5,7 +5,11 @@ OUTPUT_FORMAT("elf64-s390", "elf64-s390", "elf64-s390")
 OUTPUT_ARCH(s390:64-bit)
 #else
 OUTPUT_FORMAT("elf32-s390", "elf32-s390", "elf32-s390")
+<<<<<<< HEAD
 OUTPUT_ARCH(s390:31-bit)
+=======
+OUTPUT_ARCH(s390)
+>>>>>>> 7175f4b... Truncated history
 #endif
 
 ENTRY(startup)

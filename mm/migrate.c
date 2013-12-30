@@ -146,7 +146,11 @@ static int remove_migration_pte(struct page *new, struct vm_area_struct *vma,
 	if (PageHuge(new))
 		pte = pte_mkhuge(pte);
 #endif
+<<<<<<< HEAD
 	flush_dcache_page(new);
+=======
+	flush_cache_page(vma, addr, pte_pfn(pte));
+>>>>>>> 7175f4b... Truncated history
 	set_pte_at(mm, addr, ptep, pte);
 
 	if (PageHuge(new)) {
@@ -181,6 +185,7 @@ static void remove_migration_ptes(struct page *old, struct page *new)
  * get to the page and wait until migration is finished.
  * When we return from this function the fault will be retried.
  */
+<<<<<<< HEAD
 static void __migration_entry_wait(struct mm_struct *mm, pte_t *ptep,
 				spinlock_t *ptl)
 {
@@ -189,6 +194,17 @@ static void __migration_entry_wait(struct mm_struct *mm, pte_t *ptep,
 	struct page *page;
 
 	spin_lock(ptl);
+=======
+void migration_entry_wait(struct mm_struct *mm, pmd_t *pmd,
+				unsigned long address)
+{
+	pte_t *ptep, pte;
+	spinlock_t *ptl;
+	swp_entry_t entry;
+	struct page *page;
+
+	ptep = pte_offset_map_lock(mm, pmd, address, &ptl);
+>>>>>>> 7175f4b... Truncated history
 	pte = *ptep;
 	if (!is_swap_pte(pte))
 		goto out;
@@ -216,6 +232,7 @@ out:
 	pte_unmap_unlock(ptep, ptl);
 }
 
+<<<<<<< HEAD
 void migration_entry_wait(struct mm_struct *mm, pmd_t *pmd,
 				unsigned long address)
 {
@@ -230,6 +247,8 @@ void migration_entry_wait_huge(struct mm_struct *mm, pte_t *pte)
 	__migration_entry_wait(mm, pte, ptl);
 }
 
+=======
+>>>>>>> 7175f4b... Truncated history
 #ifdef CONFIG_BLOCK
 /* Returns true if all buffers are successfully locked */
 static bool buffer_migrate_lock_buffers(struct buffer_head *head,

@@ -324,7 +324,10 @@ static int scan_read_raw_oob(struct mtd_info *mtd, uint8_t *buf, loff_t offs,
 
 		buf += mtd->oobsize + mtd->writesize;
 		len -= mtd->writesize;
+<<<<<<< HEAD
 		offs += mtd->writesize;
+=======
+>>>>>>> 7175f4b... Truncated history
 	}
 	return 0;
 }
@@ -390,7 +393,11 @@ static int read_abs_bbts(struct mtd_info *mtd, uint8_t *buf,
 	/* Read the mirror version, if available */
 	if (md && (md->options & NAND_BBT_VERSION)) {
 		scan_read_raw(mtd, buf, (loff_t)md->pages[0] << this->page_shift,
+<<<<<<< HEAD
 			      mtd->writesize, md);
+=======
+			      mtd->writesize, td);
+>>>>>>> 7175f4b... Truncated history
 		md->version[0] = buf[bbt_get_ver_offs(mtd, md)];
 		pr_info("Bad block table at page %d, version 0x%02X\n",
 			 md->pages[0], md->version[0]);

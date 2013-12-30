@@ -187,7 +187,11 @@ enum port {
 };
 
 struct cx25821_board {
+<<<<<<< HEAD
 	const char *name;
+=======
+	char *name;
+>>>>>>> 7175f4b... Truncated history
 	enum port porta;
 	enum port portb;
 	enum port portc;

@@ -25,6 +25,10 @@ static void check_preempt_curr_idle(struct rq *rq, struct task_struct *p, int fl
 static struct task_struct *pick_next_task_idle(struct rq *rq)
 {
 	schedstat_inc(rq, sched_goidle);
+<<<<<<< HEAD
+=======
+	calc_load_account_idle(rq);
+>>>>>>> 7175f4b... Truncated history
 	return rq->idle;
 }
 

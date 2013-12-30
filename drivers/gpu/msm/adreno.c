@@ -161,12 +161,15 @@ static const struct {
 	unsigned int pfp_jt_idx;
 	/* PFP jump table load addr */
 	unsigned int pfp_jt_addr;
+<<<<<<< HEAD
 	/* PM4 bootstrap loader size */
 	unsigned int pm4_bstrp_size;
 	/* PFP bootstrap loader size */
 	unsigned int pfp_bstrp_size;
 	/* PFP bootstrap loader supported version */
 	unsigned int pfp_bstrp_ver;
+=======
+>>>>>>> 7175f4b... Truncated history
 
 } adreno_gpulist[] = {
 	{ ADRENO_REV_A200, 0, 2, ANY_ID, ANY_ID,
@@ -204,8 +207,12 @@ static const struct {
 		512, 0, 2, SZ_512K, 0x3FF037, 0x3FF016 },
 	{ ADRENO_REV_A330, 3, 3, 0, ANY_ID,
 		"a330_pm4.fw", "a330_pfp.fw", &adreno_a3xx_gpudev,
+<<<<<<< HEAD
 		512, 0, 2, SZ_1M, NO_VER, NO_VER, 0x8AD, 0x2E4, 0x201, 0x200,
 		0x6, 0x20, 0x330020 },
+=======
+		512, 0, 2, SZ_1M, NO_VER, NO_VER, 0x8AD, 0x2E4, 0x201, 0x200 },
+>>>>>>> 7175f4b... Truncated history
 	{ ADRENO_REV_A305B, 3, 0, 5, 0x10,
 		"a330_pm4.fw", "a330_pfp.fw", &adreno_a3xx_gpudev,
 		512, 0, 2, SZ_128K, NO_VER, NO_VER, 0x8AD, 0x2E4,
@@ -1191,11 +1198,16 @@ adreno_identify_gpu(struct adreno_device *adreno_dev)
 	adreno_dev->gmem_size = adreno_gpulist[i].gmem_size;
 	adreno_dev->pm4_jt_idx = adreno_gpulist[i].pm4_jt_idx;
 	adreno_dev->pm4_jt_addr = adreno_gpulist[i].pm4_jt_addr;
+<<<<<<< HEAD
 	adreno_dev->pm4_bstrp_size = adreno_gpulist[i].pm4_bstrp_size;
 	adreno_dev->pfp_jt_idx = adreno_gpulist[i].pfp_jt_idx;
 	adreno_dev->pfp_jt_addr = adreno_gpulist[i].pfp_jt_addr;
 	adreno_dev->pfp_bstrp_size = adreno_gpulist[i].pfp_bstrp_size;
 	adreno_dev->pfp_bstrp_ver = adreno_gpulist[i].pfp_bstrp_ver;
+=======
+	adreno_dev->pfp_jt_idx = adreno_gpulist[i].pfp_jt_idx;
+	adreno_dev->pfp_jt_addr = adreno_gpulist[i].pfp_jt_addr;
+>>>>>>> 7175f4b... Truncated history
 	adreno_dev->gpulist_index = i;
 	/*
 	 * Initialize uninitialzed gpu registers, only needs to be done once
@@ -1745,7 +1757,11 @@ static int adreno_start(struct kgsl_device *device)
 	kgsl_pwrctrl_irq(device, KGSL_PWRFLAGS_ON);
 	device->ftbl->irqctrl(device, 1);
 
+<<<<<<< HEAD
 	status = adreno_ringbuffer_cold_start(&adreno_dev->ringbuffer);
+=======
+	status = adreno_ringbuffer_start(&adreno_dev->ringbuffer);
+>>>>>>> 7175f4b... Truncated history
 	if (status)
 		goto error_irq_off;
 
@@ -1754,7 +1770,11 @@ static int adreno_start(struct kgsl_device *device)
 		goto error_rb_stop;
 
 	/* Start the dispatcher */
+<<<<<<< HEAD
 	adreno_dispatcher_start(device);
+=======
+	adreno_dispatcher_start(adreno_dev);
+>>>>>>> 7175f4b... Truncated history
 
 	device->reset_counter++;
 
@@ -2343,7 +2363,11 @@ int adreno_soft_reset(struct kgsl_device *device)
 	if (adreno_dev->pm4_jt_idx)
 		ret = adreno_ringbuffer_warm_start(&adreno_dev->ringbuffer);
 	else
+<<<<<<< HEAD
 		ret = adreno_ringbuffer_cold_start(&adreno_dev->ringbuffer);
+=======
+		ret = adreno_ringbuffer_start(&adreno_dev->ringbuffer);
+>>>>>>> 7175f4b... Truncated history
 
 	if (ret)
 		return ret;
@@ -2426,6 +2450,7 @@ int adreno_idle(struct kgsl_device *device)
  * adreno_drain() - Drain the dispatch queue
  * @device: Pointer to the KGSL device structure for the GPU
  *
+<<<<<<< HEAD
  * Drain the dispatcher of existing command batches.  This halts
  * additional commands from being issued until the gate is completed.
  */
@@ -2433,6 +2458,16 @@ static int adreno_drain(struct kgsl_device *device)
 {
 	INIT_COMPLETION(device->cmdbatch_gate);
 
+=======
+ * Tell the dispatcher to pause - this has the effect of draining the inflight
+ * command batches
+ */
+static int adreno_drain(struct kgsl_device *device)
+{
+	struct adreno_device *adreno_dev = ADRENO_DEVICE(device);
+
+	adreno_dispatcher_pause(adreno_dev);
+>>>>>>> 7175f4b... Truncated history
 	return 0;
 }
 
@@ -2743,6 +2778,7 @@ static long adreno_ioctl(struct kgsl_device_private *dev_priv,
 	}
 	case IOCTL_KGSL_PERFCOUNTER_GET: {
 		struct kgsl_perfcounter_get *get = data;
+<<<<<<< HEAD
 		/*
 		 * adreno_perfcounter_get() is called by kernel clients
 		 * during start(), so it is not safe to take an
@@ -2754,6 +2790,10 @@ static long adreno_ioctl(struct kgsl_device_private *dev_priv,
 		result = adreno_perfcounter_get(adreno_dev, get->groupid,
 			get->countable, &get->offset, PERFCOUNTER_FLAG_NONE);
 		kgsl_active_count_put(device);
+=======
+		result = adreno_perfcounter_get(adreno_dev, get->groupid,
+			get->countable, &get->offset, PERFCOUNTER_FLAG_NONE);
+>>>>>>> 7175f4b... Truncated history
 		break;
 	}
 	case IOCTL_KGSL_PERFCOUNTER_PUT: {
@@ -2771,12 +2811,17 @@ static long adreno_ioctl(struct kgsl_device_private *dev_priv,
 	}
 	case IOCTL_KGSL_PERFCOUNTER_READ: {
 		struct kgsl_perfcounter_read *read = data;
+<<<<<<< HEAD
 		result = kgsl_active_count_get(device);
 		if (result)
 			break;
 		result = adreno_perfcounter_read_group(adreno_dev,
 			read->reads, read->count);
 		kgsl_active_count_put(device);
+=======
+		result = adreno_perfcounter_read_group(adreno_dev,
+			read->reads, read->count);
+>>>>>>> 7175f4b... Truncated history
 		break;
 	}
 	default:
@@ -2853,6 +2898,16 @@ static unsigned int adreno_gpuid(struct kgsl_device *device,
 	return (0x0003 << 16) | ((int) adreno_dev->gpurev);
 }
 
+<<<<<<< HEAD
+=======
+static void adreno_resume(struct kgsl_device *device)
+{
+	struct adreno_device *adreno_dev = ADRENO_DEVICE(device);
+
+	adreno_dispatcher_resume(adreno_dev);
+}
+
+>>>>>>> 7175f4b... Truncated history
 static const struct kgsl_functable adreno_functable = {
 	/* Mandatory functions */
 	.regread = adreno_regread,
@@ -2884,7 +2939,11 @@ static const struct kgsl_functable adreno_functable = {
 	.setproperty = adreno_setproperty,
 	.postmortem_dump = adreno_dump,
 	.drawctxt_sched = adreno_drawctxt_sched,
+<<<<<<< HEAD
 	.resume = adreno_dispatcher_start,
+=======
+	.resume = adreno_resume,
+>>>>>>> 7175f4b... Truncated history
 };
 
 static struct platform_driver adreno_platform_driver = {

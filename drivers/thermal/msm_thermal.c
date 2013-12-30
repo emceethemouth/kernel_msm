@@ -1190,6 +1190,7 @@ int __devinit msm_thermal_init(struct msm_thermal_data *pdata)
 		return -EINVAL;
 
 	enabled = 1;
+<<<<<<< HEAD
 	INIT_DELAYED_WORK(&check_temp_work, check_temp);
 	schedule_delayed_work(&check_temp_work, 0);
 
@@ -1200,6 +1201,15 @@ int __devinit msm_thermal_init(struct msm_thermal_data *pdata)
 		update_offline_cores(cpus_offlined);
 		mutex_unlock(&core_control_mutex);
 	}
+=======
+	if (num_possible_cpus() > 1)
+		core_control_enabled = 1;
+	INIT_DELAYED_WORK(&check_temp_work, check_temp);
+	schedule_delayed_work(&check_temp_work, 0);
+
+	if (num_possible_cpus() > 1)
+		register_cpu_notifier(&msm_thermal_cpu_notifier);
+>>>>>>> 7175f4b... Truncated history
 
 	return ret;
 }

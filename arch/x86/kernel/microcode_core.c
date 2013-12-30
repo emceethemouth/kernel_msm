@@ -298,6 +298,7 @@ static ssize_t reload_store(struct device *dev,
 			    const char *buf, size_t size)
 {
 	unsigned long val;
+<<<<<<< HEAD
 	int cpu;
 	ssize_t ret = 0, tmp_ret;
 
@@ -323,6 +324,22 @@ static ssize_t reload_store(struct device *dev,
 			ret = tmp_ret;
 	}
 	put_online_cpus();
+=======
+	int cpu = dev->id;
+	int ret = 0;
+	char *end;
+
+	val = simple_strtoul(buf, &end, 0);
+	if (end == buf)
+		return -EINVAL;
+
+	if (val == 1) {
+		get_online_cpus();
+		if (cpu_online(cpu))
+			ret = reload_for_cpu(cpu);
+		put_online_cpus();
+	}
+>>>>>>> 7175f4b... Truncated history
 
 	if (!ret)
 		ret = size;

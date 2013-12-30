@@ -56,7 +56,10 @@
 #include <linux/mmu_notifier.h>
 #include <linux/migrate.h>
 #include <linux/hugetlb.h>
+<<<<<<< HEAD
 #include <linux/backing-dev.h>
+=======
+>>>>>>> 7175f4b... Truncated history
 
 #include <asm/tlbflush.h>
 
@@ -623,11 +626,15 @@ pte_t *__page_check_address(struct page *page, struct mm_struct *mm,
 	spinlock_t *ptl;
 
 	if (unlikely(PageHuge(page))) {
+<<<<<<< HEAD
 		/* when pud is not present, pte will be NULL */
 		pte = huge_pte_offset(mm, address);
 		if (!pte)
 			return NULL;
 
+=======
+		pte = huge_pte_offset(mm, address);
+>>>>>>> 7175f4b... Truncated history
 		ptl = &mm->page_table_lock;
 		goto check;
 	}
@@ -982,8 +989,16 @@ int page_mkclean(struct page *page)
 
 	if (page_mapped(page)) {
 		struct address_space *mapping = page_mapping(page);
+<<<<<<< HEAD
 		if (mapping)
 			ret = page_mkclean_file(mapping, page);
+=======
+		if (mapping) {
+			ret = page_mkclean_file(mapping, page);
+			if (page_test_and_clear_dirty(page_to_pfn(page), 1))
+				ret = 1;
+		}
+>>>>>>> 7175f4b... Truncated history
 	}
 
 	return ret;
@@ -1169,7 +1184,10 @@ void page_add_file_rmap(struct page *page)
  */
 void page_remove_rmap(struct page *page)
 {
+<<<<<<< HEAD
 	struct address_space *mapping = page_mapping(page);
+=======
+>>>>>>> 7175f4b... Truncated history
 	bool anon = PageAnon(page);
 	bool locked;
 	unsigned long flags;
@@ -1192,6 +1210,7 @@ void page_remove_rmap(struct page *page)
 	 * this if the page is anon, so about to be freed; but perhaps
 	 * not if it's in swapcache - there might be another pte slot
 	 * containing the swap entry, but page not yet written to swap.
+<<<<<<< HEAD
 	 *
 	 * And we can skip it on file pages, so long as the filesystem
 	 * participates in dirty tracking; but need to catch shm and tmpfs
@@ -1205,6 +1224,10 @@ void page_remove_rmap(struct page *page)
 	 * to &swapper_space when PageSwapCache(page).
 	 */
 	if (mapping && !mapping_cap_account_dirty(mapping) &&
+=======
+	 */
+	if ((!anon || PageSwapCache(page)) &&
+>>>>>>> 7175f4b... Truncated history
 	    page_test_and_clear_dirty(page_to_pfn(page), 1))
 		set_page_dirty(page);
 	/*

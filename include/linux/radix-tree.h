@@ -368,11 +368,16 @@ radix_tree_next_slot(void **slot, struct radix_tree_iter *iter, unsigned flags)
 			iter->index++;
 			if (likely(*slot))
 				return slot;
+<<<<<<< HEAD
 			if (flags & RADIX_TREE_ITER_CONTIG) {
 				/* forbid switching to the next chunk */
 				iter->next_index = 0;
 				break;
 			}
+=======
+			if (flags & RADIX_TREE_ITER_CONTIG)
+				break;
+>>>>>>> 7175f4b... Truncated history
 		}
 	}
 	return NULL;

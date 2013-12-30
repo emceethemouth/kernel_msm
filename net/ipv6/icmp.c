@@ -932,6 +932,7 @@ static const struct icmp6_err {
 		.err	= ECONNREFUSED,
 		.fatal	= 1,
 	},
+<<<<<<< HEAD
 	{	/* POLICY_FAIL */
 		.err	= EACCES,
 		.fatal	= 1,
@@ -940,6 +941,8 @@ static const struct icmp6_err {
 		.err	= EACCES,
 		.fatal	= 1,
 	},
+=======
+>>>>>>> 7175f4b... Truncated history
 };
 
 int icmpv6_err_convert(u8 type, u8 code, int *err)
@@ -951,7 +954,11 @@ int icmpv6_err_convert(u8 type, u8 code, int *err)
 	switch (type) {
 	case ICMPV6_DEST_UNREACH:
 		fatal = 1;
+<<<<<<< HEAD
 		if (code < ARRAY_SIZE(tab_unreach)) {
+=======
+		if (code <= ICMPV6_PORT_UNREACH) {
+>>>>>>> 7175f4b... Truncated history
 			*err  = tab_unreach[code].err;
 			fatal = tab_unreach[code].fatal;
 		}

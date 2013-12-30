@@ -215,6 +215,7 @@ void smp_muxed_ipi_message_pass(int cpu, int msg)
 	struct cpu_messages *info = &per_cpu(ipi_message, cpu);
 	char *message = (char *)&info->messages;
 
+<<<<<<< HEAD
 	/*
 	 * Order previous accesses before accesses in the IPI handler.
 	 */
@@ -224,6 +225,10 @@ void smp_muxed_ipi_message_pass(int cpu, int msg)
 	 * cause_ipi functions are required to include a full barrier
 	 * before doing whatever causes the IPI.
 	 */
+=======
+	message[msg] = 1;
+	mb();
+>>>>>>> 7175f4b... Truncated history
 	smp_ops->cause_ipi(cpu, info->data);
 }
 
@@ -235,7 +240,11 @@ irqreturn_t smp_ipi_demux(void)
 	mb();	/* order any irq clear */
 
 	do {
+<<<<<<< HEAD
 		all = xchg(&info->messages, 0);
+=======
+		all = xchg_local(&info->messages, 0);
+>>>>>>> 7175f4b... Truncated history
 
 #ifdef __BIG_ENDIAN
 		if (all & (1 << (24 - 8 * PPC_MSG_CALL_FUNCTION)))

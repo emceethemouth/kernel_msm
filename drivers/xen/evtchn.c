@@ -269,6 +269,7 @@ static int evtchn_bind_to_user(struct per_user_data *u, int port)
 				       u->name, (void *)(unsigned long)port);
 	if (rc >= 0)
 		rc = evtchn_make_refcounted(port);
+<<<<<<< HEAD
 	else {
 		/* bind failed, should close the port now */
 		struct evtchn_close close;
@@ -277,6 +278,8 @@ static int evtchn_bind_to_user(struct per_user_data *u, int port)
 			BUG();
 		set_port_user(port, NULL);
 	}
+=======
+>>>>>>> 7175f4b... Truncated history
 
 	return rc;
 }
@@ -285,8 +288,11 @@ static void evtchn_unbind_from_user(struct per_user_data *u, int port)
 {
 	int irq = irq_from_evtchn(port);
 
+<<<<<<< HEAD
 	BUG_ON(irq < 0);
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	unbind_from_irqhandler(irq, (void *)(unsigned long)port);
 
 	set_port_user(port, NULL);
@@ -377,12 +383,27 @@ static long evtchn_ioctl(struct file *file,
 		if (unbind.port >= NR_EVENT_CHANNELS)
 			break;
 
+<<<<<<< HEAD
 		rc = -ENOTCONN;
 		if (get_port_user(unbind.port) != u)
 			break;
 
 		disable_irq(irq_from_evtchn(unbind.port));
 
+=======
+		spin_lock_irq(&port_user_lock);
+
+		rc = -ENOTCONN;
+		if (get_port_user(unbind.port) != u) {
+			spin_unlock_irq(&port_user_lock);
+			break;
+		}
+
+		disable_irq(irq_from_evtchn(unbind.port));
+
+		spin_unlock_irq(&port_user_lock);
+
+>>>>>>> 7175f4b... Truncated history
 		evtchn_unbind_from_user(u, unbind.port);
 
 		rc = 0;
@@ -482,15 +503,36 @@ static int evtchn_release(struct inode *inode, struct file *filp)
 	int i;
 	struct per_user_data *u = filp->private_data;
 
+<<<<<<< HEAD
+=======
+	spin_lock_irq(&port_user_lock);
+
+	free_page((unsigned long)u->ring);
+
+>>>>>>> 7175f4b... Truncated history
 	for (i = 0; i < NR_EVENT_CHANNELS; i++) {
 		if (get_port_user(i) != u)
 			continue;
 
 		disable_irq(irq_from_evtchn(i));
+<<<<<<< HEAD
 		evtchn_unbind_from_user(get_port_user(i), i);
 	}
 
 	free_page((unsigned long)u->ring);
+=======
+	}
+
+	spin_unlock_irq(&port_user_lock);
+
+	for (i = 0; i < NR_EVENT_CHANNELS; i++) {
+		if (get_port_user(i) != u)
+			continue;
+
+		evtchn_unbind_from_user(get_port_user(i), i);
+	}
+
+>>>>>>> 7175f4b... Truncated history
 	kfree(u->name);
 	kfree(u);
 

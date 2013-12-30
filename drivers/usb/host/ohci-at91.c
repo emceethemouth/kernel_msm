@@ -223,7 +223,11 @@ static void __devexit usb_hcd_at91_remove(struct usb_hcd *hcd,
 /*-------------------------------------------------------------------------*/
 
 static int __devinit
+<<<<<<< HEAD
 ohci_at91_reset (struct usb_hcd *hcd)
+=======
+ohci_at91_start (struct usb_hcd *hcd)
+>>>>>>> 7175f4b... Truncated history
 {
 	struct at91_usbh_data	*board = hcd->self.controller->platform_data;
 	struct ohci_hcd		*ohci = hcd_to_ohci (hcd);
@@ -233,6 +237,7 @@ ohci_at91_reset (struct usb_hcd *hcd)
 		return ret;
 
 	ohci->num_ports = board->ports;
+<<<<<<< HEAD
 	return 0;
 }
 
@@ -241,6 +246,8 @@ ohci_at91_start (struct usb_hcd *hcd)
 {
 	struct ohci_hcd		*ohci = hcd_to_ohci (hcd);
 	int			ret;
+=======
+>>>>>>> 7175f4b... Truncated history
 
 	if ((ret = ohci_run(ohci)) < 0) {
 		err("can't start %s", hcd->self.bus_name);
@@ -426,7 +433,10 @@ static const struct hc_driver ohci_at91_hc_driver = {
 	/*
 	 * basic lifecycle operations
 	 */
+<<<<<<< HEAD
 	.reset =		ohci_at91_reset,
+=======
+>>>>>>> 7175f4b... Truncated history
 	.start =		ohci_at91_start,
 	.stop =			ohci_stop,
 	.shutdown =		ohci_shutdown,
@@ -466,8 +476,12 @@ static irqreturn_t ohci_hcd_at91_overcurrent_irq(int irq, void *data)
 	/* From the GPIO notifying the over-current situation, find
 	 * out the corresponding port */
 	at91_for_each_port(port) {
+<<<<<<< HEAD
 		if (gpio_is_valid(pdata->overcurrent_pin[port]) &&
 				gpio_to_irq(pdata->overcurrent_pin[port]) == irq) {
+=======
+		if (gpio_to_irq(pdata->overcurrent_pin[port]) == irq) {
+>>>>>>> 7175f4b... Truncated history
 			gpio = pdata->overcurrent_pin[port];
 			break;
 		}
@@ -570,6 +584,7 @@ static int __devinit ohci_hcd_at91_drv_probe(struct platform_device *pdev)
 
 	if (pdata) {
 		at91_for_each_port(i) {
+<<<<<<< HEAD
 			/*
 			 * do not configure PIO if not in relation with
 			 * real USB port on board
@@ -580,6 +595,8 @@ static int __devinit ohci_hcd_at91_drv_probe(struct platform_device *pdev)
 				break;
 			}
 
+=======
+>>>>>>> 7175f4b... Truncated history
 			if (!gpio_is_valid(pdata->vbus_pin[i]))
 				continue;
 			gpio = pdata->vbus_pin[i];

@@ -686,8 +686,12 @@ static int cxacru_cm_get_array(struct cxacru_data *instance, enum cxacru_cm_requ
 {
 	int ret, len;
 	__le32 *buf;
+<<<<<<< HEAD
 	int offb;
 	unsigned int offd;
+=======
+	int offb, offd;
+>>>>>>> 7175f4b... Truncated history
 	const int stride = CMD_PACKET_SIZE / (4 * 2) - 1;
 	int buflen =  ((size - 1) / stride + 1 + size * 2) * 4;
 

@@ -1404,9 +1404,12 @@ static struct ib_qp *nes_create_qp(struct ib_pd *ibpd,
 	}
 
 	nesqp->sig_all = (init_attr->sq_sig_type == IB_SIGNAL_ALL_WR);
+<<<<<<< HEAD
 	init_timer(&nesqp->terminate_timer);
 	nesqp->terminate_timer.function = nes_terminate_timeout;
 	nesqp->terminate_timer.data = (unsigned long)nesqp;
+=======
+>>>>>>> 7175f4b... Truncated history
 
 	/* update the QP table */
 	nesdev->nesadapter->qp_table[nesqp->hwqp.qp_id-NES_FIRST_QPN] = nesqp;
@@ -1416,6 +1419,10 @@ static struct ib_qp *nes_create_qp(struct ib_pd *ibpd,
 	return &nesqp->ibqp;
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 7175f4b... Truncated history
 /**
  * nes_clean_cq
  */
@@ -2561,11 +2568,14 @@ static struct ib_mr *nes_reg_user_mr(struct ib_pd *pd, u64 start, u64 length,
 			return ibmr;
 		case IWNES_MEMREG_TYPE_QP:
 		case IWNES_MEMREG_TYPE_CQ:
+<<<<<<< HEAD
 			if (!region->length) {
 				nes_debug(NES_DBG_MR, "Unable to register zero length region for CQ\n");
 				ib_umem_release(region);
 				return ERR_PTR(-EINVAL);
 			}
+=======
+>>>>>>> 7175f4b... Truncated history
 			nespbl = kzalloc(sizeof(*nespbl), GFP_KERNEL);
 			if (!nespbl) {
 				nes_debug(NES_DBG_MR, "Unable to allocate PBL\n");

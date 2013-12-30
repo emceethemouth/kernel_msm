@@ -1029,7 +1029,11 @@ static void eeh_add_device_early(struct device_node *dn)
 {
 	struct pci_controller *phb;
 
+<<<<<<< HEAD
 	if (!of_node_to_eeh_dev(dn))
+=======
+	if (!dn || !of_node_to_eeh_dev(dn))
+>>>>>>> 7175f4b... Truncated history
 		return;
 	phb = of_node_to_eeh_dev(dn)->phb;
 

@@ -220,7 +220,11 @@ static int nfsd_startup(unsigned short port, int nrservs)
 	ret = nfsd_init_socks(port);
 	if (ret)
 		goto out_racache;
+<<<<<<< HEAD
 	ret = lockd_up(&init_net);
+=======
+	ret = lockd_up();
+>>>>>>> 7175f4b... Truncated history
 	if (ret)
 		goto out_racache;
 	ret = nfs4_state_start();
@@ -229,7 +233,11 @@ static int nfsd_startup(unsigned short port, int nrservs)
 	nfsd_up = true;
 	return 0;
 out_lockd:
+<<<<<<< HEAD
 	lockd_down(&init_net);
+=======
+	lockd_down();
+>>>>>>> 7175f4b... Truncated history
 out_racache:
 	nfsd_racache_shutdown();
 	return ret;
@@ -246,13 +254,22 @@ static void nfsd_shutdown(void)
 	if (!nfsd_up)
 		return;
 	nfs4_state_shutdown();
+<<<<<<< HEAD
 	lockd_down(&init_net);
+=======
+	lockd_down();
+>>>>>>> 7175f4b... Truncated history
 	nfsd_racache_shutdown();
 	nfsd_up = false;
 }
 
 static void nfsd_last_thread(struct svc_serv *serv, struct net *net)
 {
+<<<<<<< HEAD
+=======
+	/* When last nfsd thread exits we need to do some clean-up */
+	nfsd_serv = NULL;
+>>>>>>> 7175f4b... Truncated history
 	nfsd_shutdown();
 
 	svc_rpcb_cleanup(serv, net);
@@ -328,9 +345,12 @@ static int nfsd_get_default_max_blksize(void)
 
 int nfsd_create_serv(void)
 {
+<<<<<<< HEAD
 	int error;
 	struct net *net = &init_net;
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	WARN_ON(!mutex_is_locked(&nfsd_mutex));
 	if (nfsd_serv) {
 		svc_get(nfsd_serv);
@@ -344,12 +364,15 @@ int nfsd_create_serv(void)
 	if (nfsd_serv == NULL)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	error = svc_bind(nfsd_serv, net);
 	if (error < 0) {
 		svc_destroy(nfsd_serv);
 		return error;
 	}
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	set_max_drc();
 	do_gettimeofday(&nfssvc_boot);		/* record boot time */
 	return 0;
@@ -380,7 +403,10 @@ int nfsd_set_nrthreads(int n, int *nthreads)
 	int i = 0;
 	int tot = 0;
 	int err = 0;
+<<<<<<< HEAD
 	struct net *net = &init_net;
+=======
+>>>>>>> 7175f4b... Truncated history
 
 	WARN_ON(!mutex_is_locked(&nfsd_mutex));
 
@@ -425,7 +451,12 @@ int nfsd_set_nrthreads(int n, int *nthreads)
 		if (err)
 			break;
 	}
+<<<<<<< HEAD
 	nfsd_destroy(net);
+=======
+	svc_destroy(nfsd_serv);
+
+>>>>>>> 7175f4b... Truncated history
 	return err;
 }
 
@@ -439,7 +470,10 @@ nfsd_svc(unsigned short port, int nrservs)
 {
 	int	error;
 	bool	nfsd_up_before;
+<<<<<<< HEAD
 	struct net *net = &init_net;
+=======
+>>>>>>> 7175f4b... Truncated history
 
 	mutex_lock(&nfsd_mutex);
 	dprintk("nfsd: creating service\n");
@@ -472,7 +506,11 @@ out_shutdown:
 	if (error < 0 && !nfsd_up_before)
 		nfsd_shutdown();
 out_destroy:
+<<<<<<< HEAD
 	nfsd_destroy(net);		/* Release server */
+=======
+	svc_destroy(nfsd_serv);		/* Release server */
+>>>>>>> 7175f4b... Truncated history
 out:
 	mutex_unlock(&nfsd_mutex);
 	return error;
@@ -555,6 +593,7 @@ nfsd(void *vrqstp)
 	nfsdstats.th_cnt --;
 
 out:
+<<<<<<< HEAD
 	rqstp->rq_server = NULL;
 
 	/* Release the thread */
@@ -562,6 +601,11 @@ out:
 
 	nfsd_destroy(&init_net);
 
+=======
+	/* Release the thread */
+	svc_exit_thread(rqstp);
+
+>>>>>>> 7175f4b... Truncated history
 	/* Release module */
 	mutex_unlock(&nfsd_mutex);
 	module_put_and_exit(0);
@@ -649,7 +693,11 @@ nfsd_dispatch(struct svc_rqst *rqstp, __be32 *statp)
 	}
 
 	/* Store reply in cache. */
+<<<<<<< HEAD
 	nfsd_cache_update(rqstp, rqstp->rq_cachetype, statp + 1);
+=======
+	nfsd_cache_update(rqstp, proc->pc_cachetype, statp + 1);
+>>>>>>> 7175f4b... Truncated history
 	return 1;
 }
 
@@ -671,11 +719,17 @@ int nfsd_pool_stats_open(struct inode *inode, struct file *file)
 int nfsd_pool_stats_release(struct inode *inode, struct file *file)
 {
 	int ret = seq_release(inode, file);
+<<<<<<< HEAD
 	struct net *net = &init_net;
 
 	mutex_lock(&nfsd_mutex);
 	/* this function really, really should have been called svc_put() */
 	nfsd_destroy(net);
+=======
+	mutex_lock(&nfsd_mutex);
+	/* this function really, really should have been called svc_put() */
+	svc_destroy(nfsd_serv);
+>>>>>>> 7175f4b... Truncated history
 	mutex_unlock(&nfsd_mutex);
 	return ret;
 }

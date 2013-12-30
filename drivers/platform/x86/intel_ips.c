@@ -72,7 +72,10 @@
 #include <linux/string.h>
 #include <linux/tick.h>
 #include <linux/timer.h>
+<<<<<<< HEAD
 #include <linux/dmi.h>
+=======
+>>>>>>> 7175f4b... Truncated history
 #include <drm/i915_drm.h>
 #include <asm/msr.h>
 #include <asm/processor.h>
@@ -1486,6 +1489,7 @@ static DEFINE_PCI_DEVICE_TABLE(ips_id_table) = {
 
 MODULE_DEVICE_TABLE(pci, ips_id_table);
 
+<<<<<<< HEAD
 static int ips_blacklist_callback(const struct dmi_system_id *id)
 {
 	pr_info("Blacklisted intel_ips for %s\n", id->ident);
@@ -1504,6 +1508,8 @@ static const struct dmi_system_id ips_blacklist[] = {
 	{ }	/* terminating entry */
 };
 
+=======
+>>>>>>> 7175f4b... Truncated history
 static int ips_probe(struct pci_dev *dev, const struct pci_device_id *id)
 {
 	u64 platform_info;
@@ -1513,9 +1519,12 @@ static int ips_probe(struct pci_dev *dev, const struct pci_device_id *id)
 	u16 htshi, trc, trc_required_mask;
 	u8 tse;
 
+<<<<<<< HEAD
 	if (dmi_check_system(ips_blacklist))
 		return -ENODEV;
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	ips = kzalloc(sizeof(struct ips_driver), GFP_KERNEL);
 	if (!ips)
 		return -ENOMEM;

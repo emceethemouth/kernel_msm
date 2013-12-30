@@ -1401,6 +1401,7 @@ static inline bool cfs_bandwidth_used(void)
 	return static_key_false(&__cfs_bandwidth_used);
 }
 
+<<<<<<< HEAD
 void cfs_bandwidth_usage_inc(void)
 {
 	static_key_slow_inc(&__cfs_bandwidth_used);
@@ -1409,6 +1410,15 @@ void cfs_bandwidth_usage_inc(void)
 void cfs_bandwidth_usage_dec(void)
 {
 	static_key_slow_dec(&__cfs_bandwidth_used);
+=======
+void account_cfs_bandwidth_used(int enabled, int was_enabled)
+{
+	/* only need to count groups transitioning between enabled/!enabled */
+	if (enabled && !was_enabled)
+		static_key_slow_inc(&__cfs_bandwidth_used);
+	else if (!enabled && was_enabled)
+		static_key_slow_dec(&__cfs_bandwidth_used);
+>>>>>>> 7175f4b... Truncated history
 }
 #else /* HAVE_JUMP_LABEL */
 static bool cfs_bandwidth_used(void)
@@ -1416,8 +1426,12 @@ static bool cfs_bandwidth_used(void)
 	return true;
 }
 
+<<<<<<< HEAD
 void cfs_bandwidth_usage_inc(void) {}
 void cfs_bandwidth_usage_dec(void) {}
+=======
+void account_cfs_bandwidth_used(int enabled, int was_enabled) {}
+>>>>>>> 7175f4b... Truncated history
 #endif /* HAVE_JUMP_LABEL */
 
 /*
@@ -1665,8 +1679,11 @@ static void throttle_cfs_rq(struct cfs_rq *cfs_rq)
 	cfs_rq->throttled_timestamp = rq->clock;
 	raw_spin_lock(&cfs_b->lock);
 	list_add_tail_rcu(&cfs_rq->throttled_list, &cfs_b->throttled_cfs_rq);
+<<<<<<< HEAD
 	if (!cfs_b->timer_active)
 		__start_cfs_bandwidth(cfs_b);
+=======
+>>>>>>> 7175f4b... Truncated history
 	raw_spin_unlock(&cfs_b->lock);
 }
 
@@ -1779,6 +1796,7 @@ static int do_sched_cfs_period_timer(struct cfs_bandwidth *cfs_b, int overrun)
 	if (idle)
 		goto out_unlock;
 
+<<<<<<< HEAD
 	/*
 	 * if we have relooped after returning idle once, we need to update our
 	 * status as actually running, so that other cpus doing
@@ -1786,6 +1804,8 @@ static int do_sched_cfs_period_timer(struct cfs_bandwidth *cfs_b, int overrun)
 	 */
 	cfs_b->timer_active = 1;
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	__refill_cfs_bandwidth_runtime(cfs_b);
 
 	if (!throttled) {
@@ -1846,6 +1866,7 @@ static const u64 min_bandwidth_expiration = 2 * NSEC_PER_MSEC;
 /* how long we wait to gather additional slack before distributing */
 static const u64 cfs_bandwidth_slack_period = 5 * NSEC_PER_MSEC;
 
+<<<<<<< HEAD
 /*
  * Are we near the end of the current quota period?
  *
@@ -1853,6 +1874,9 @@ static const u64 cfs_bandwidth_slack_period = 5 * NSEC_PER_MSEC;
  * hrtimer base being cleared by __hrtimer_start_range_ns. In the case of
  * migrate_hrtimers, base is never cleared, so we are fine.
  */
+=======
+/* are we near the end of the current quota period? */
+>>>>>>> 7175f4b... Truncated history
 static int runtime_refresh_within(struct cfs_bandwidth *cfs_b, u64 min_expire)
 {
 	struct hrtimer *refresh_timer = &cfs_b->period_timer;
@@ -1928,12 +1952,19 @@ static void do_sched_cfs_slack_timer(struct cfs_bandwidth *cfs_b)
 	u64 expires;
 
 	/* confirm we're still not at a refresh boundary */
+<<<<<<< HEAD
 	raw_spin_lock(&cfs_b->lock);
 	if (runtime_refresh_within(cfs_b, min_bandwidth_expiration)) {
 		raw_spin_unlock(&cfs_b->lock);
 		return;
 	}
 
+=======
+	if (runtime_refresh_within(cfs_b, min_bandwidth_expiration))
+		return;
+
+	raw_spin_lock(&cfs_b->lock);
+>>>>>>> 7175f4b... Truncated history
 	if (cfs_b->quota != RUNTIME_INF && cfs_b->runtime > slice) {
 		runtime = cfs_b->runtime;
 		cfs_b->runtime = 0;
@@ -2058,11 +2089,19 @@ void __start_cfs_bandwidth(struct cfs_bandwidth *cfs_b)
 	 * (timer_active==0 becomes visible before the hrtimer call-back
 	 * terminates).  In either case we ensure that it's re-programmed
 	 */
+<<<<<<< HEAD
 	while (unlikely(hrtimer_active(&cfs_b->period_timer)) &&
 	       hrtimer_try_to_cancel(&cfs_b->period_timer) < 0) {
 		/* bounce the lock to allow do_sched_cfs_period_timer to run */
 		raw_spin_unlock(&cfs_b->lock);
 		cpu_relax();
+=======
+	while (unlikely(hrtimer_active(&cfs_b->period_timer))) {
+		raw_spin_unlock(&cfs_b->lock);
+		/* ensure cfs_b->lock is available while we wait */
+		hrtimer_cancel(&cfs_b->period_timer);
+
+>>>>>>> 7175f4b... Truncated history
 		raw_spin_lock(&cfs_b->lock);
 		/* if someone else restarted the timer then we're done */
 		if (cfs_b->timer_active)
@@ -5246,6 +5285,7 @@ static void task_fork_fair(struct task_struct *p)
 	cfs_rq = task_cfs_rq(current);
 	curr = cfs_rq->curr;
 
+<<<<<<< HEAD
 	/*
 	 * Not only the cpu but also the task_group of the parent might have
 	 * been changed after parent->se.parent,cfs_rq were copied to
@@ -5255,6 +5295,13 @@ static void task_fork_fair(struct task_struct *p)
 	rcu_read_lock();
 	__set_task_cpu(p, this_cpu);
 	rcu_read_unlock();
+=======
+	if (unlikely(task_cpu(p) != this_cpu)) {
+		rcu_read_lock();
+		__set_task_cpu(p, this_cpu);
+		rcu_read_unlock();
+	}
+>>>>>>> 7175f4b... Truncated history
 
 	update_curr(cfs_rq);
 
@@ -5507,8 +5554,12 @@ void init_tg_cfs_entry(struct task_group *tg, struct cfs_rq *cfs_rq,
 		se->cfs_rq = parent->my_q;
 
 	se->my_q = cfs_rq;
+<<<<<<< HEAD
 	/* guarantee group entities always have weight */
 	update_load_set(&se->load, NICE_0_LOAD);
+=======
+	update_load_set(&se->load, 0);
+>>>>>>> 7175f4b... Truncated history
 	se->parent = parent;
 }
 
@@ -5572,7 +5623,11 @@ static unsigned int get_rr_interval_fair(struct rq *rq, struct task_struct *task
 	 * idle runqueue:
 	 */
 	if (rq->cfs.load.weight)
+<<<<<<< HEAD
 		rr_interval = NS_TO_JIFFIES(sched_slice(cfs_rq_of(se), se));
+=======
+		rr_interval = NS_TO_JIFFIES(sched_slice(&rq->cfs, se));
+>>>>>>> 7175f4b... Truncated history
 
 	return rr_interval;
 }

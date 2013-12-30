@@ -180,6 +180,7 @@ void rpcb_put_local(struct net *net)
 	struct sunrpc_net *sn = net_generic(net, sunrpc_net_id);
 	struct rpc_clnt *clnt = sn->rpcb_local_clnt;
 	struct rpc_clnt *clnt4 = sn->rpcb_local_clnt4;
+<<<<<<< HEAD
 	int shutdown = 0;
 
 	spin_lock(&sn->rpcb_clnt_lock);
@@ -190,6 +191,16 @@ void rpcb_put_local(struct net *net)
 		}
 		shutdown = !sn->rpcb_users;
 	}
+=======
+	int shutdown;
+
+	spin_lock(&sn->rpcb_clnt_lock);
+	if (--sn->rpcb_users == 0) {
+		sn->rpcb_local_clnt = NULL;
+		sn->rpcb_local_clnt4 = NULL;
+	}
+	shutdown = !sn->rpcb_users;
+>>>>>>> 7175f4b... Truncated history
 	spin_unlock(&sn->rpcb_clnt_lock);
 
 	if (shutdown) {
@@ -251,7 +262,11 @@ static int rpcb_create_local_unix(struct net *net)
 	if (IS_ERR(clnt)) {
 		dprintk("RPC:       failed to create AF_LOCAL rpcbind "
 				"client (errno %ld).\n", PTR_ERR(clnt));
+<<<<<<< HEAD
 		result = PTR_ERR(clnt);
+=======
+		result = -PTR_ERR(clnt);
+>>>>>>> 7175f4b... Truncated history
 		goto out;
 	}
 
@@ -298,7 +313,11 @@ static int rpcb_create_local_net(struct net *net)
 	if (IS_ERR(clnt)) {
 		dprintk("RPC:       failed to create local rpcbind "
 				"client (errno %ld).\n", PTR_ERR(clnt));
+<<<<<<< HEAD
 		result = PTR_ERR(clnt);
+=======
+		result = -PTR_ERR(clnt);
+>>>>>>> 7175f4b... Truncated history
 		goto out;
 	}
 

@@ -68,8 +68,12 @@ static void __init ms_hyperv_init_platform(void)
 	printk(KERN_INFO "HyperV: features 0x%x, hints 0x%x\n",
 	       ms_hyperv.features, ms_hyperv.hints);
 
+<<<<<<< HEAD
 	if (ms_hyperv.features & HV_X64_MSR_TIME_REF_COUNT_AVAILABLE)
 		clocksource_register_hz(&hyperv_cs, NSEC_PER_SEC/100);
+=======
+	clocksource_register_hz(&hyperv_cs, NSEC_PER_SEC/100);
+>>>>>>> 7175f4b... Truncated history
 }
 
 const __refconst struct hypervisor_x86 x86_hyper_ms_hyperv = {

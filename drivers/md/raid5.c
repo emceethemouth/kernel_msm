@@ -3314,7 +3314,10 @@ static void handle_stripe(struct stripe_head *sh)
 	if (test_and_clear_bit(STRIPE_SYNC_REQUESTED, &sh->state)) {
 		set_bit(STRIPE_SYNCING, &sh->state);
 		clear_bit(STRIPE_INSYNC, &sh->state);
+<<<<<<< HEAD
 		clear_bit(STRIPE_REPLACED, &sh->state);
+=======
+>>>>>>> 7175f4b... Truncated history
 	}
 	clear_bit(STRIPE_DELAYED, &sh->state);
 
@@ -3454,6 +3457,7 @@ static void handle_stripe(struct stripe_head *sh)
 			handle_parity_checks5(conf, sh, &s, disks);
 	}
 
+<<<<<<< HEAD
 	if ((s.replacing || s.syncing) && s.locked == 0
 	    && !test_bit(STRIPE_COMPUTE_RUN, &sh->state)
 	    && !test_bit(STRIPE_REPLACED, &sh->state)) {
@@ -3461,16 +3465,30 @@ static void handle_stripe(struct stripe_head *sh)
 		for (i = 0; i < conf->raid_disks; i++)
 			if (test_bit(R5_NeedReplace, &sh->dev[i].flags)) {
 				WARN_ON(!test_bit(R5_UPTODATE, &sh->dev[i].flags));
+=======
+	if (s.replacing && s.locked == 0
+	    && !test_bit(STRIPE_INSYNC, &sh->state)) {
+		/* Write out to replacement devices where possible */
+		for (i = 0; i < conf->raid_disks; i++)
+			if (test_bit(R5_UPTODATE, &sh->dev[i].flags) &&
+			    test_bit(R5_NeedReplace, &sh->dev[i].flags)) {
+>>>>>>> 7175f4b... Truncated history
 				set_bit(R5_WantReplace, &sh->dev[i].flags);
 				set_bit(R5_LOCKED, &sh->dev[i].flags);
 				s.locked++;
 			}
+<<<<<<< HEAD
 		if (s.replacing)
 			set_bit(STRIPE_INSYNC, &sh->state);
 		set_bit(STRIPE_REPLACED, &sh->state);
 	}
 	if ((s.syncing || s.replacing) && s.locked == 0 &&
 	    !test_bit(STRIPE_COMPUTE_RUN, &sh->state) &&
+=======
+		set_bit(STRIPE_INSYNC, &sh->state);
+	}
+	if ((s.syncing || s.replacing) && s.locked == 0 &&
+>>>>>>> 7175f4b... Truncated history
 	    test_bit(STRIPE_INSYNC, &sh->state)) {
 		md_done_sync(conf->mddev, STRIPE_SECTORS, 1);
 		clear_bit(STRIPE_SYNCING, &sh->state);

@@ -51,8 +51,12 @@ enum mdss_mdp_wb_node_state {
 	REGISTERED,
 	IN_FREE_QUEUE,
 	IN_BUSY_QUEUE,
+<<<<<<< HEAD
 	WITH_CLIENT,
 	WB_BUFFER_READY,
+=======
+	WITH_CLIENT
+>>>>>>> 7175f4b... Truncated history
 };
 
 struct mdss_mdp_wb_data {
@@ -61,14 +65,20 @@ struct mdss_mdp_wb_data {
 	struct msmfb_data buf_info;
 	struct mdss_mdp_data buf_data;
 	int state;
+<<<<<<< HEAD
 	bool user_alloc;
+=======
+>>>>>>> 7175f4b... Truncated history
 };
 
 static DEFINE_MUTEX(mdss_mdp_wb_buf_lock);
 static struct mdss_mdp_wb mdss_mdp_wb_info;
 
+<<<<<<< HEAD
 static void mdss_mdp_wb_free_node(struct mdss_mdp_wb_data *node);
 
+=======
+>>>>>>> 7175f4b... Truncated history
 #ifdef DEBUG_WRITEBACK
 /* for debugging: writeback output buffer to allocated memory */
 static inline
@@ -246,7 +256,10 @@ static int mdss_mdp_wb_terminate(struct msm_fb_data_type *mfd)
 		struct mdss_mdp_wb_data *node, *temp;
 		list_for_each_entry_safe(node, temp, &wb->register_queue,
 					 registered_entry) {
+<<<<<<< HEAD
 			mdss_mdp_wb_free_node(node);
+=======
+>>>>>>> 7175f4b... Truncated history
 			list_del(&node->registered_entry);
 			kfree(node);
 		}
@@ -363,6 +376,7 @@ static struct mdss_mdp_wb_data *get_user_node(struct msm_fb_data_type *mfd,
 	struct mdss_mdp_img_data *buf;
 	int ret;
 
+<<<<<<< HEAD
 	if (!list_empty(&wb->register_queue)) {
 		list_for_each_entry(node, &wb->register_queue, registered_entry)
 			if ((node->buf_info.memory_id == data->memory_id) &&
@@ -374,13 +388,18 @@ static struct mdss_mdp_wb_data *get_user_node(struct msm_fb_data_type *mfd,
 			}
 	}
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	node = kzalloc(sizeof(struct mdss_mdp_wb_data), GFP_KERNEL);
 	if (node == NULL) {
 		pr_err("out of memory\n");
 		return NULL;
 	}
 
+<<<<<<< HEAD
 	node->user_alloc = true;
+=======
+>>>>>>> 7175f4b... Truncated history
 	node->buf_data.num_planes = 1;
 	buf = &node->buf_data.p[0];
 	if (wb->is_secure)
@@ -408,6 +427,7 @@ register_fail:
 	return NULL;
 }
 
+<<<<<<< HEAD
 static void mdss_mdp_wb_free_node(struct mdss_mdp_wb_data *node)
 {
 	struct mdss_mdp_img_data *buf;
@@ -424,6 +444,8 @@ static void mdss_mdp_wb_free_node(struct mdss_mdp_wb_data *node)
 	}
 }
 
+=======
+>>>>>>> 7175f4b... Truncated history
 static int mdss_mdp_wb_queue(struct msm_fb_data_type *mfd,
 				struct msmfb_data *data, int local)
 {
@@ -444,6 +466,7 @@ static int mdss_mdp_wb_queue(struct msm_fb_data_type *mfd,
 	if (node == NULL)
 		node = get_user_node(mfd, data);
 
+<<<<<<< HEAD
 	if (!node) {
 		pr_err("memory not registered\n");
 		ret = -ENOENT;
@@ -475,6 +498,15 @@ static int mdss_mdp_wb_queue(struct msm_fb_data_type *mfd,
 			ret = -EINVAL;
 			break;
 		}
+=======
+	if (!node || node->state == IN_BUSY_QUEUE ||
+	    node->state == IN_FREE_QUEUE) {
+		pr_err("memory not registered or Buffer already with us\n");
+		ret = -EINVAL;
+	} else {
+		list_add_tail(&node->active_entry, &wb->free_queue);
+		node->state = IN_FREE_QUEUE;
+>>>>>>> 7175f4b... Truncated history
 	}
 	mutex_unlock(&wb->lock);
 
@@ -600,7 +632,10 @@ int mdss_mdp_wb_kickoff(struct msm_fb_data_type *mfd)
 	if (wb && node) {
 		mutex_lock(&wb->lock);
 		list_add_tail(&node->active_entry, &wb->busy_queue);
+<<<<<<< HEAD
 		node->state = WB_BUFFER_READY;
+=======
+>>>>>>> 7175f4b... Truncated history
 		mutex_unlock(&wb->lock);
 		wake_up(&wb->wait_q);
 	}

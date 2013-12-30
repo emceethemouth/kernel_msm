@@ -297,12 +297,50 @@ commit_metadata(struct svc_fh *fhp)
 }
 
 /*
+<<<<<<< HEAD
  * Go over the attributes and take care of the small differences between
  * NFS semantics and what Linux expects.
  */
 static void
 nfsd_sanitize_attrs(struct inode *inode, struct iattr *iap)
 {
+=======
+ * Set various file attributes.
+ * N.B. After this call fhp needs an fh_put
+ */
+__be32
+nfsd_setattr(struct svc_rqst *rqstp, struct svc_fh *fhp, struct iattr *iap,
+	     int check_guard, time_t guardtime)
+{
+	struct dentry	*dentry;
+	struct inode	*inode;
+	int		accmode = NFSD_MAY_SATTR;
+	umode_t		ftype = 0;
+	__be32		err;
+	int		host_err;
+	int		size_change = 0;
+
+	if (iap->ia_valid & (ATTR_ATIME | ATTR_MTIME | ATTR_SIZE))
+		accmode |= NFSD_MAY_WRITE|NFSD_MAY_OWNER_OVERRIDE;
+	if (iap->ia_valid & ATTR_SIZE)
+		ftype = S_IFREG;
+
+	/* Get inode */
+	err = fh_verify(rqstp, fhp, ftype, accmode);
+	if (err)
+		goto out;
+
+	dentry = fhp->fh_dentry;
+	inode = dentry->d_inode;
+
+	/* Ignore any mode updates on symlinks */
+	if (S_ISLNK(inode->i_mode))
+		iap->ia_valid &= ~ATTR_MODE;
+
+	if (!iap->ia_valid)
+		goto out;
+
+>>>>>>> 7175f4b... Truncated history
 	/*
 	 * NFSv2 does not differentiate between "set-[ac]time-to-now"
 	 * which only requires access, and "set-[ac]time-to-X" which
@@ -312,7 +350,12 @@ nfsd_sanitize_attrs(struct inode *inode, struct iattr *iap)
 	 * convert to "set to now" instead of "set to explicit time"
 	 *
 	 * We only call inode_change_ok as the last test as technically
+<<<<<<< HEAD
 	 * it is not an interface that we should be using.
+=======
+	 * it is not an interface that we should be using.  It is only
+	 * valid if the filesystem does not define it's own i_op->setattr.
+>>>>>>> 7175f4b... Truncated history
 	 */
 #define BOTH_TIME_SET (ATTR_ATIME_SET | ATTR_MTIME_SET)
 #define	MAX_TOUCH_TIME_ERROR (30*60)
@@ -338,6 +381,33 @@ nfsd_sanitize_attrs(struct inode *inode, struct iattr *iap)
 			iap->ia_valid &= ~BOTH_TIME_SET;
 		}
 	}
+<<<<<<< HEAD
+=======
+	    
+	/*
+	 * The size case is special.
+	 * It changes the file as well as the attributes.
+	 */
+	if (iap->ia_valid & ATTR_SIZE) {
+		if (iap->ia_size < inode->i_size) {
+			err = nfsd_permission(rqstp, fhp->fh_export, dentry,
+					NFSD_MAY_TRUNC|NFSD_MAY_OWNER_OVERRIDE);
+			if (err)
+				goto out;
+		}
+
+		host_err = get_write_access(inode);
+		if (host_err)
+			goto out_nfserr;
+
+		size_change = 1;
+		host_err = locks_verify_truncate(inode, NULL, iap->ia_size);
+		if (host_err) {
+			put_write_access(inode);
+			goto out_nfserr;
+		}
+	}
+>>>>>>> 7175f4b... Truncated history
 
 	/* sanitize the mode change */
 	if (iap->ia_valid & ATTR_MODE) {
@@ -360,6 +430,7 @@ nfsd_sanitize_attrs(struct inode *inode, struct iattr *iap)
 			iap->ia_valid |= (ATTR_KILL_SUID | ATTR_KILL_SGID);
 		}
 	}
+<<<<<<< HEAD
 }
 
 static __be32
@@ -459,12 +530,37 @@ nfsd_setattr(struct svc_rqst *rqstp, struct svc_fh *fhp, struct iattr *iap,
 out_put_write_access_nfserror:
 	err = nfserrno(host_err);
 out_put_write_access:
+=======
+
+	/* Change the attributes. */
+
+	iap->ia_valid |= ATTR_CTIME;
+
+	err = nfserr_notsync;
+	if (!check_guard || guardtime == inode->i_ctime.tv_sec) {
+		host_err = nfsd_break_lease(inode);
+		if (host_err)
+			goto out_nfserr;
+		fh_lock(fhp);
+
+		host_err = notify_change(dentry, iap);
+		err = nfserrno(host_err);
+		fh_unlock(fhp);
+	}
+>>>>>>> 7175f4b... Truncated history
 	if (size_change)
 		put_write_access(inode);
 	if (!err)
 		commit_metadata(fhp);
 out:
 	return err;
+<<<<<<< HEAD
+=======
+
+out_nfserr:
+	err = nfserrno(host_err);
+	goto out;
+>>>>>>> 7175f4b... Truncated history
 }
 
 #if defined(CONFIG_NFSD_V2_ACL) || \
@@ -1502,6 +1598,7 @@ do_nfsd_create(struct svc_rqst *rqstp, struct svc_fh *fhp,
 		case NFS3_CREATE_EXCLUSIVE:
 			if (   dchild->d_inode->i_mtime.tv_sec == v_mtime
 			    && dchild->d_inode->i_atime.tv_sec == v_atime
+<<<<<<< HEAD
 			    && dchild->d_inode->i_size  == 0 ) {
 				if (created)
 					*created = 1;
@@ -1515,6 +1612,15 @@ do_nfsd_create(struct svc_rqst *rqstp, struct svc_fh *fhp,
 					*created = 1;
 				goto set_attr;
 			}
+=======
+			    && dchild->d_inode->i_size  == 0 )
+				break;
+		case NFS4_CREATE_EXCLUSIVE4_1:
+			if (   dchild->d_inode->i_mtime.tv_sec == v_mtime
+			    && dchild->d_inode->i_atime.tv_sec == v_atime
+			    && dchild->d_inode->i_size  == 0 )
+				goto set_attr;
+>>>>>>> 7175f4b... Truncated history
 			 /* fallthru */
 		case NFS3_CREATE_GUARDED:
 			err = nfserr_exist;

@@ -681,6 +681,7 @@ void usb_unpoison_urb(struct urb *urb)
 EXPORT_SYMBOL_GPL(usb_unpoison_urb);
 
 /**
+<<<<<<< HEAD
  * usb_block_urb - reliably prevent further use of an URB
  * @urb: pointer to URB to be blocked, may be NULL
  *
@@ -702,6 +703,8 @@ void usb_block_urb(struct urb *urb)
 EXPORT_SYMBOL_GPL(usb_block_urb);
 
 /**
+=======
+>>>>>>> 7175f4b... Truncated history
  * usb_kill_anchored_urbs - cancel transfer requests en masse
  * @anchor: anchor the requests are bound to
  *

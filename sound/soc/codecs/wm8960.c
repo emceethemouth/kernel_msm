@@ -790,9 +790,15 @@ static int wm8960_set_dai_pll(struct snd_soc_dai *codec_dai, int pll_id,
 	if (pll_div.k) {
 		reg |= 0x20;
 
+<<<<<<< HEAD
 		snd_soc_write(codec, WM8960_PLL2, (pll_div.k >> 16) & 0xff);
 		snd_soc_write(codec, WM8960_PLL3, (pll_div.k >> 8) & 0xff);
 		snd_soc_write(codec, WM8960_PLL4, pll_div.k & 0xff);
+=======
+		snd_soc_write(codec, WM8960_PLL2, (pll_div.k >> 18) & 0x3f);
+		snd_soc_write(codec, WM8960_PLL3, (pll_div.k >> 9) & 0x1ff);
+		snd_soc_write(codec, WM8960_PLL4, pll_div.k & 0x1ff);
+>>>>>>> 7175f4b... Truncated history
 	}
 	snd_soc_write(codec, WM8960_PLL1, reg);
 

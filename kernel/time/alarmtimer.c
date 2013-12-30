@@ -474,7 +474,11 @@ static int alarm_clock_getres(const clockid_t which_clock, struct timespec *tp)
 	clockid_t baseid = alarm_bases[clock2alarm(which_clock)].base_clockid;
 
 	if (!alarmtimer_get_rtcdev())
+<<<<<<< HEAD
 		return -EINVAL;
+=======
+		return -ENOTSUPP;
+>>>>>>> 7175f4b... Truncated history
 
 	return hrtimer_get_res(baseid, tp);
 }
@@ -491,7 +495,11 @@ static int alarm_clock_get(clockid_t which_clock, struct timespec *tp)
 	struct alarm_base *base = &alarm_bases[clock2alarm(which_clock)];
 
 	if (!alarmtimer_get_rtcdev())
+<<<<<<< HEAD
 		return -EINVAL;
+=======
+		return -ENOTSUPP;
+>>>>>>> 7175f4b... Truncated history
 
 	*tp = ktime_to_timespec(base->gettime());
 	return 0;

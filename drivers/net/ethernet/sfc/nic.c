@@ -73,8 +73,11 @@
 	_EFX_CHANNEL_MAGIC(_EFX_CHANNEL_MAGIC_TX_DRAIN,			\
 			   (_tx_queue)->queue)
 
+<<<<<<< HEAD
 static void efx_magic_event(struct efx_channel *channel, u32 magic);
 
+=======
+>>>>>>> 7175f4b... Truncated history
 /**************************************************************************
  *
  * Solarstorm hardware access
@@ -126,6 +129,12 @@ int efx_nic_test_registers(struct efx_nic *efx,
 	unsigned address = 0, i, j;
 	efx_oword_t mask, imask, original, reg, buf;
 
+<<<<<<< HEAD
+=======
+	/* Falcon should be in loopback to isolate the XMAC from the PHY */
+	WARN_ON(!LOOPBACK_INTERNAL(efx));
+
+>>>>>>> 7175f4b... Truncated history
 	for (i = 0; i < n_regs; ++i) {
 		address = regs[i].address;
 		mask = imask = regs[i].mask;
@@ -379,8 +388,12 @@ efx_may_push_tx_desc(struct efx_tx_queue *tx_queue, unsigned int write_count)
 		return false;
 
 	tx_queue->empty_read_count = 0;
+<<<<<<< HEAD
 	return ((empty_read_count ^ write_count) & ~EFX_EMPTY_COUNT_VALID) == 0
 		&& tx_queue->write_count - write_count == 1;
+=======
+	return ((empty_read_count ^ write_count) & ~EFX_EMPTY_COUNT_VALID) == 0;
+>>>>>>> 7175f4b... Truncated history
 }
 
 /* For each entry inserted into the software descriptor ring, create a
@@ -495,9 +508,12 @@ static void efx_flush_tx_queue(struct efx_tx_queue *tx_queue)
 	struct efx_nic *efx = tx_queue->efx;
 	efx_oword_t tx_flush_descq;
 
+<<<<<<< HEAD
 	WARN_ON(atomic_read(&tx_queue->flush_outstanding));
 	atomic_set(&tx_queue->flush_outstanding, 1);
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	EFX_POPULATE_OWORD_2(tx_flush_descq,
 			     FRF_AZ_TX_FLUSH_DESCQ_CMD, 1,
 			     FRF_AZ_TX_FLUSH_DESCQ, tx_queue->queue);
@@ -673,6 +689,7 @@ static bool efx_flush_wake(struct efx_nic *efx)
 		 && atomic_read(&efx->rxq_flush_pending) > 0));
 }
 
+<<<<<<< HEAD
 static bool efx_check_tx_flush_complete(struct efx_nic *efx)
 {
 	bool i = true;
@@ -714,6 +731,8 @@ static bool efx_check_tx_flush_complete(struct efx_nic *efx)
 	return i;
 }
 
+=======
+>>>>>>> 7175f4b... Truncated history
 /* Flush all the transmit queues, and continue flushing receive queues until
  * they're all flushed. Wait for the DRAIN events to be recieved so that there
  * are no more RX and TX events left on any channel. */
@@ -725,6 +744,10 @@ int efx_nic_flush_queues(struct efx_nic *efx)
 	struct efx_tx_queue *tx_queue;
 	int rc = 0;
 
+<<<<<<< HEAD
+=======
+	efx->fc_disable++;
+>>>>>>> 7175f4b... Truncated history
 	efx->type->prepare_flush(efx);
 
 	efx_for_each_channel(channel, efx) {
@@ -774,8 +797,12 @@ int efx_nic_flush_queues(struct efx_nic *efx)
 					     timeout);
 	}
 
+<<<<<<< HEAD
 	if (atomic_read(&efx->drain_pending) &&
 	    !efx_check_tx_flush_complete(efx)) {
+=======
+	if (atomic_read(&efx->drain_pending)) {
+>>>>>>> 7175f4b... Truncated history
 		netif_err(efx, hw, efx->net_dev, "failed to flush %d queues "
 			  "(rx %d+%d)\n", atomic_read(&efx->drain_pending),
 			  atomic_read(&efx->rxq_flush_outstanding),
@@ -787,7 +814,11 @@ int efx_nic_flush_queues(struct efx_nic *efx)
 		atomic_set(&efx->rxq_flush_outstanding, 0);
 	}
 
+<<<<<<< HEAD
 	efx->type->finish_flush(efx);
+=======
+	efx->fc_disable--;
+>>>>>>> 7175f4b... Truncated history
 
 	return rc;
 }
@@ -1062,10 +1093,16 @@ efx_handle_tx_flush_done(struct efx_nic *efx, efx_qword_t *event)
 	if (qid < EFX_TXQ_TYPES * efx->n_tx_channels) {
 		tx_queue = efx_get_tx_queue(efx, qid / EFX_TXQ_TYPES,
 					    qid % EFX_TXQ_TYPES);
+<<<<<<< HEAD
 		if (atomic_cmpxchg(&tx_queue->flush_outstanding, 1, 0)) {
 			efx_magic_event(tx_queue->channel,
 					EFX_CHANNEL_MAGIC_TX_DRAIN(tx_queue));
 		}
+=======
+
+		efx_magic_event(tx_queue->channel,
+				EFX_CHANNEL_MAGIC_TX_DRAIN(tx_queue));
+>>>>>>> 7175f4b... Truncated history
 	}
 }
 

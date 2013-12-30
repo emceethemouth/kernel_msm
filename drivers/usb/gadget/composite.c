@@ -588,7 +588,10 @@ static void reset_config(struct usb_composite_dev *cdev)
 		bitmap_zero(f->endpoints, 32);
 	}
 	cdev->config = NULL;
+<<<<<<< HEAD
 	cdev->delayed_status = 0;
+=======
+>>>>>>> 7175f4b... Truncated history
 }
 
 static int set_config(struct usb_composite_dev *cdev,
@@ -820,11 +823,14 @@ int usb_remove_config(struct usb_composite_dev *cdev,
 
 	spin_lock_irqsave(&cdev->lock, flags);
 
+<<<<<<< HEAD
 	if (WARN_ON(!config->cdev)) {
 		spin_unlock_irqrestore(&cdev->lock, flags);
 		return 0;
 	}
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	if (cdev->config == config)
 		reset_config(cdev);
 

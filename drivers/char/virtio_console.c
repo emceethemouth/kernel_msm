@@ -256,12 +256,18 @@ static struct port *find_port_by_devt_in_portdev(struct ports_device *portdev,
 	unsigned long flags;
 
 	spin_lock_irqsave(&portdev->ports_lock, flags);
+<<<<<<< HEAD
 	list_for_each_entry(port, &portdev->ports, list) {
 		if (port->cdev->dev == dev) {
 			kref_get(&port->kref);
 			goto out;
 		}
 	}
+=======
+	list_for_each_entry(port, &portdev->ports, list)
+		if (port->cdev->dev == dev)
+			goto out;
+>>>>>>> 7175f4b... Truncated history
 	port = NULL;
 out:
 	spin_unlock_irqrestore(&portdev->ports_lock, flags);
@@ -633,10 +639,13 @@ static ssize_t port_fops_read(struct file *filp, char __user *ubuf,
 
 	port = filp->private_data;
 
+<<<<<<< HEAD
 	/* Port is hot-unplugged. */
 	if (!port->guest_connected)
 		return -ENODEV;
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	if (!port_has_data(port)) {
 		/*
 		 * If nothing's connected on the host just return 0 in
@@ -653,7 +662,11 @@ static ssize_t port_fops_read(struct file *filp, char __user *ubuf,
 		if (ret < 0)
 			return ret;
 	}
+<<<<<<< HEAD
 	/* Port got hot-unplugged while we were waiting above. */
+=======
+	/* Port got hot-unplugged. */
+>>>>>>> 7175f4b... Truncated history
 	if (!port->guest_connected)
 		return -ENODEV;
 	/*
@@ -796,6 +809,7 @@ static int port_fops_open(struct inode *inode, struct file *filp)
 	struct port *port;
 	int ret;
 
+<<<<<<< HEAD
 	/* We get the port with a kref here */
 	port = find_port_by_devt(cdev->dev);
 	if (!port) {
@@ -804,6 +818,16 @@ static int port_fops_open(struct inode *inode, struct file *filp)
 	}
 	filp->private_data = port;
 
+=======
+	port = find_port_by_devt(cdev->dev);
+	filp->private_data = port;
+
+	/* Prevent against a port getting hot-unplugged at the same time */
+	spin_lock_irq(&port->portdev->ports_lock);
+	kref_get(&port->kref);
+	spin_unlock_irq(&port->portdev->ports_lock);
+
+>>>>>>> 7175f4b... Truncated history
 	/*
 	 * Don't allow opening of console port devices -- that's done
 	 * via /dev/hvc
@@ -1261,6 +1285,17 @@ static void remove_port(struct kref *kref)
 
 	port = container_of(kref, struct port, kref);
 
+<<<<<<< HEAD
+=======
+	sysfs_remove_group(&port->dev->kobj, &port_attribute_group);
+	device_destroy(pdrvdata.class, port->dev->devt);
+	cdev_del(port->cdev);
+
+	kfree(port->name);
+
+	debugfs_remove(port->debugfs_file);
+
+>>>>>>> 7175f4b... Truncated history
 	kfree(port);
 }
 
@@ -1290,6 +1325,7 @@ static void unplug_port(struct port *port)
 	spin_unlock_irq(&port->portdev->ports_lock);
 
 	if (port->guest_connected) {
+<<<<<<< HEAD
 		/* Let the app know the port is going down. */
 		send_sigio_to_port(port);
 
@@ -1298,6 +1334,14 @@ static void unplug_port(struct port *port)
 		port->host_connected = false;
 
 		wake_up_interruptible(&port->waitqueue);
+=======
+		port->guest_connected = false;
+		port->host_connected = false;
+		wake_up_interruptible(&port->waitqueue);
+
+		/* Let the app know the port is going down. */
+		send_sigio_to_port(port);
+>>>>>>> 7175f4b... Truncated history
 	}
 
 	if (is_console_port(port)) {
@@ -1316,6 +1360,7 @@ static void unplug_port(struct port *port)
 	 */
 	port->portdev = NULL;
 
+<<<<<<< HEAD
 	sysfs_remove_group(&port->dev->kobj, &port_attribute_group);
 	device_destroy(pdrvdata.class, port->dev->devt);
 	cdev_del(port->cdev);
@@ -1324,6 +1369,8 @@ static void unplug_port(struct port *port)
 
 	debugfs_remove(port->debugfs_file);
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	/*
 	 * Locks around here are not necessary - a port can't be
 	 * opened after we removed the port struct from ports_list
@@ -1817,8 +1864,12 @@ static void virtcons_remove(struct virtio_device *vdev)
 	/* Disable interrupts for vqs */
 	vdev->config->reset(vdev);
 	/* Finish up work that's lined up */
+<<<<<<< HEAD
 	if (use_multiport(portdev))
 		cancel_work_sync(&portdev->control_work);
+=======
+	cancel_work_sync(&portdev->control_work);
+>>>>>>> 7175f4b... Truncated history
 
 	list_for_each_entry_safe(port, port2, &portdev->ports, list)
 		unplug_port(port);

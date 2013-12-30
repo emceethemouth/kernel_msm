@@ -17,7 +17,10 @@
 #include <asm/e820.h>
 #include <asm/setup.h>
 #include <asm/acpi.h>
+<<<<<<< HEAD
 #include <asm/numa.h>
+=======
+>>>>>>> 7175f4b... Truncated history
 #include <asm/xen/hypervisor.h>
 #include <asm/xen/hypercall.h>
 
@@ -80,6 +83,7 @@ static void __init xen_add_extra_mem(u64 start, u64 size)
 	memblock_reserve(start, size);
 
 	xen_max_p2m_pfn = PFN_DOWN(start + size);
+<<<<<<< HEAD
 	for (pfn = PFN_DOWN(start); pfn < xen_max_p2m_pfn; pfn++) {
 		unsigned long mfn = pfn_to_mfn(pfn);
 
@@ -90,6 +94,11 @@ static void __init xen_add_extra_mem(u64 start, u64 size)
 
 		__set_phys_to_machine(pfn, INVALID_P2M_ENTRY);
 	}
+=======
+
+	for (pfn = PFN_DOWN(start); pfn <= xen_max_p2m_pfn; pfn++)
+		__set_phys_to_machine(pfn, INVALID_P2M_ENTRY);
+>>>>>>> 7175f4b... Truncated history
 }
 
 static unsigned long __init xen_release_chunk(unsigned long start,
@@ -213,6 +222,7 @@ static void xen_align_and_add_e820_region(u64 start, u64 size, int type)
 	e820_add_region(start, end - start, type);
 }
 
+<<<<<<< HEAD
 void xen_ignore_unusable(struct e820entry *list, size_t map_size)
 {
 	struct e820entry *entry;
@@ -224,6 +234,8 @@ void xen_ignore_unusable(struct e820entry *list, size_t map_size)
 	}
 }
 
+=======
+>>>>>>> 7175f4b... Truncated history
 /**
  * machine_specific_memory_setup - Hook for machine specific memory setup.
  **/
@@ -262,6 +274,7 @@ char * __init xen_memory_setup(void)
 	}
 	BUG_ON(rc);
 
+<<<<<<< HEAD
 	/*
 	 * Xen won't allow a 1:1 mapping to be created to UNUSABLE
 	 * regions, so if we're using the machine memory map leave the
@@ -273,6 +286,8 @@ char * __init xen_memory_setup(void)
 	if (xen_initial_domain())
 		xen_ignore_unusable(map, memmap.nr_entries);
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	/* Make sure the Xen-supplied memory map is well-ordered. */
 	sanitize_e820_map(map, memmap.nr_entries, &memmap.nr_entries);
 
@@ -454,7 +469,10 @@ void __init xen_arch_setup(void)
 	disable_cpufreq();
 	WARN_ON(set_pm_idle_to_default());
 	fiddle_vdso();
+<<<<<<< HEAD
 #ifdef CONFIG_NUMA
 	numa_off = 1;
 #endif
+=======
+>>>>>>> 7175f4b... Truncated history
 }

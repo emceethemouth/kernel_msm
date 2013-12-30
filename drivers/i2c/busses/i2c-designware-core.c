@@ -25,7 +25,10 @@
  * ----------------------------------------------------------------------------
  *
  */
+<<<<<<< HEAD
 #include <linux/export.h>
+=======
+>>>>>>> 7175f4b... Truncated history
 #include <linux/clk.h>
 #include <linux/errno.h>
 #include <linux/err.h>
@@ -306,7 +309,10 @@ int i2c_dw_init(struct dw_i2c_dev *dev)
 	dw_writel(dev, dev->master_cfg , DW_IC_CON);
 	return 0;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(i2c_dw_init);
+=======
+>>>>>>> 7175f4b... Truncated history
 
 /*
  * Waiting for bus not busy
@@ -349,8 +355,12 @@ static void i2c_dw_xfer_init(struct dw_i2c_dev *dev)
 	/* Enable the adapter */
 	dw_writel(dev, 1, DW_IC_ENABLE);
 
+<<<<<<< HEAD
 	/* Clear and enable interrupts */
 	i2c_dw_clear_int(dev);
+=======
+	/* Enable interrupts */
+>>>>>>> 7175f4b... Truncated history
 	dw_writel(dev, DW_IC_INTR_DEFAULT_MASK, DW_IC_INTR_MASK);
 }
 
@@ -560,14 +570,20 @@ done:
 
 	return ret;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(i2c_dw_xfer);
+=======
+>>>>>>> 7175f4b... Truncated history
 
 u32 i2c_dw_func(struct i2c_adapter *adap)
 {
 	struct dw_i2c_dev *dev = i2c_get_adapdata(adap);
 	return dev->functionality;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(i2c_dw_func);
+=======
+>>>>>>> 7175f4b... Truncated history
 
 static u32 i2c_dw_read_clear_intrbits(struct dw_i2c_dev *dev)
 {
@@ -672,20 +688,29 @@ tx_aborted:
 
 	return IRQ_HANDLED;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(i2c_dw_isr);
+=======
+>>>>>>> 7175f4b... Truncated history
 
 void i2c_dw_enable(struct dw_i2c_dev *dev)
 {
        /* Enable the adapter */
 	dw_writel(dev, 1, DW_IC_ENABLE);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(i2c_dw_enable);
+=======
+>>>>>>> 7175f4b... Truncated history
 
 u32 i2c_dw_is_enabled(struct dw_i2c_dev *dev)
 {
 	return dw_readl(dev, DW_IC_ENABLE);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(i2c_dw_is_enabled);
+=======
+>>>>>>> 7175f4b... Truncated history
 
 void i2c_dw_disable(struct dw_i2c_dev *dev)
 {
@@ -696,22 +721,34 @@ void i2c_dw_disable(struct dw_i2c_dev *dev)
 	dw_writel(dev, 0, DW_IC_INTR_MASK);
 	dw_readl(dev, DW_IC_CLR_INTR);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(i2c_dw_disable);
+=======
+>>>>>>> 7175f4b... Truncated history
 
 void i2c_dw_clear_int(struct dw_i2c_dev *dev)
 {
 	dw_readl(dev, DW_IC_CLR_INTR);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(i2c_dw_clear_int);
+=======
+>>>>>>> 7175f4b... Truncated history
 
 void i2c_dw_disable_int(struct dw_i2c_dev *dev)
 {
 	dw_writel(dev, 0, DW_IC_INTR_MASK);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(i2c_dw_disable_int);
+=======
+>>>>>>> 7175f4b... Truncated history
 
 u32 i2c_dw_read_comp_param(struct dw_i2c_dev *dev)
 {
 	return dw_readl(dev, DW_IC_COMP_PARAM_1);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(i2c_dw_read_comp_param);
+=======
+>>>>>>> 7175f4b... Truncated history

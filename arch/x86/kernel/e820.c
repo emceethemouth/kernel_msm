@@ -1076,9 +1076,12 @@ void __init memblock_x86_fill(void)
 		memblock_add(ei->addr, ei->size);
 	}
 
+<<<<<<< HEAD
 	/* throw away partial pages */
 	memblock_trim_memory(PAGE_SIZE);
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	memblock_dump_all();
 }
 

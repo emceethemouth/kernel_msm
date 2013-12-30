@@ -357,22 +357,32 @@ static unsigned int vfs_dent_type(uint8_t type)
 static int ubifs_readdir(struct file *file, void *dirent, filldir_t filldir)
 {
 	int err, over = 0;
+<<<<<<< HEAD
 	loff_t pos = file->f_pos;
+=======
+>>>>>>> 7175f4b... Truncated history
 	struct qstr nm;
 	union ubifs_key key;
 	struct ubifs_dent_node *dent;
 	struct inode *dir = file->f_path.dentry->d_inode;
 	struct ubifs_info *c = dir->i_sb->s_fs_info;
 
+<<<<<<< HEAD
 	dbg_gen("dir ino %lu, f_pos %#llx", dir->i_ino, pos);
 
 	if (pos > UBIFS_S_KEY_HASH_MASK || pos == 2)
+=======
+	dbg_gen("dir ino %lu, f_pos %#llx", dir->i_ino, file->f_pos);
+
+	if (file->f_pos > UBIFS_S_KEY_HASH_MASK || file->f_pos == 2)
+>>>>>>> 7175f4b... Truncated history
 		/*
 		 * The directory was seek'ed to a senseless position or there
 		 * are no more entries.
 		 */
 		return 0;
 
+<<<<<<< HEAD
 	if (file->f_version == 0) {
 		/*
 		 * The file was seek'ed, which means that @file->private_data
@@ -393,14 +403,25 @@ static int ubifs_readdir(struct file *file, void *dirent, filldir_t filldir)
 
 	/* File positions 0 and 1 correspond to "." and ".." */
 	if (pos == 0) {
+=======
+	/* File positions 0 and 1 correspond to "." and ".." */
+	if (file->f_pos == 0) {
+>>>>>>> 7175f4b... Truncated history
 		ubifs_assert(!file->private_data);
 		over = filldir(dirent, ".", 1, 0, dir->i_ino, DT_DIR);
 		if (over)
 			return 0;
+<<<<<<< HEAD
 		file->f_pos = pos = 1;
 	}
 
 	if (pos == 1) {
+=======
+		file->f_pos = 1;
+	}
+
+	if (file->f_pos == 1) {
+>>>>>>> 7175f4b... Truncated history
 		ubifs_assert(!file->private_data);
 		over = filldir(dirent, "..", 2, 1,
 			       parent_ino(file->f_path.dentry), DT_DIR);
@@ -416,7 +437,11 @@ static int ubifs_readdir(struct file *file, void *dirent, filldir_t filldir)
 			goto out;
 		}
 
+<<<<<<< HEAD
 		file->f_pos = pos = key_hash_flash(c, &dent->key);
+=======
+		file->f_pos = key_hash_flash(c, &dent->key);
+>>>>>>> 7175f4b... Truncated history
 		file->private_data = dent;
 	}
 
@@ -424,16 +449,27 @@ static int ubifs_readdir(struct file *file, void *dirent, filldir_t filldir)
 	if (!dent) {
 		/*
 		 * The directory was seek'ed to and is now readdir'ed.
+<<<<<<< HEAD
 		 * Find the entry corresponding to @pos or the closest one.
 		 */
 		dent_key_init_hash(c, &key, dir->i_ino, pos);
+=======
+		 * Find the entry corresponding to @file->f_pos or the
+		 * closest one.
+		 */
+		dent_key_init_hash(c, &key, dir->i_ino, file->f_pos);
+>>>>>>> 7175f4b... Truncated history
 		nm.name = NULL;
 		dent = ubifs_tnc_next_ent(c, &key, &nm);
 		if (IS_ERR(dent)) {
 			err = PTR_ERR(dent);
 			goto out;
 		}
+<<<<<<< HEAD
 		file->f_pos = pos = key_hash_flash(c, &dent->key);
+=======
+		file->f_pos = key_hash_flash(c, &dent->key);
+>>>>>>> 7175f4b... Truncated history
 		file->private_data = dent;
 	}
 
@@ -445,7 +481,11 @@ static int ubifs_readdir(struct file *file, void *dirent, filldir_t filldir)
 			     ubifs_inode(dir)->creat_sqnum);
 
 		nm.len = le16_to_cpu(dent->nlen);
+<<<<<<< HEAD
 		over = filldir(dirent, dent->name, nm.len, pos,
+=======
+		over = filldir(dirent, dent->name, nm.len, file->f_pos,
+>>>>>>> 7175f4b... Truncated history
 			       le64_to_cpu(dent->inum),
 			       vfs_dent_type(dent->type));
 		if (over)
@@ -461,6 +501,7 @@ static int ubifs_readdir(struct file *file, void *dirent, filldir_t filldir)
 		}
 
 		kfree(file->private_data);
+<<<<<<< HEAD
 		file->f_pos = pos = key_hash_flash(c, &dent->key);
 		file->private_data = dent;
 		cond_resched();
@@ -472,6 +513,11 @@ static int ubifs_readdir(struct file *file, void *dirent, filldir_t filldir)
 			 * invocation.
 			 */
 			return 0;
+=======
+		file->f_pos = key_hash_flash(c, &dent->key);
+		file->private_data = dent;
+		cond_resched();
+>>>>>>> 7175f4b... Truncated history
 	}
 
 out:
@@ -482,13 +528,24 @@ out:
 
 	kfree(file->private_data);
 	file->private_data = NULL;
+<<<<<<< HEAD
 	/* 2 is a special value indicating that there are no more direntries */
+=======
+>>>>>>> 7175f4b... Truncated history
 	file->f_pos = 2;
 	return 0;
 }
 
+<<<<<<< HEAD
 static loff_t ubifs_dir_llseek(struct file *file, loff_t offset, int origin)
 {
+=======
+/* If a directory is seeked, we have to free saved readdir() state */
+static loff_t ubifs_dir_llseek(struct file *file, loff_t offset, int origin)
+{
+	kfree(file->private_data);
+	file->private_data = NULL;
+>>>>>>> 7175f4b... Truncated history
 	return generic_file_llseek(file, offset, origin);
 }
 

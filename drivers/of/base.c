@@ -1210,7 +1210,10 @@ void of_alias_scan(void * (*dt_alloc)(u64 size, u64 align))
 		ap = dt_alloc(sizeof(*ap) + len + 1, 4);
 		if (!ap)
 			continue;
+<<<<<<< HEAD
 		memset(ap, 0, sizeof(*ap) + len + 1);
+=======
+>>>>>>> 7175f4b... Truncated history
 		ap->alias = start;
 		of_alias_add(ap, np, id, start, len);
 	}

@@ -22,13 +22,22 @@ static int load_script(struct linux_binprm *bprm,struct pt_regs *regs)
 	char interp[BINPRM_BUF_SIZE];
 	int retval;
 
+<<<<<<< HEAD
 	if ((bprm->buf[0] != '#') || (bprm->buf[1] != '!'))
+=======
+	if ((bprm->buf[0] != '#') || (bprm->buf[1] != '!') ||
+	    (bprm->recursion_depth > BINPRM_MAX_RECURSION))
+>>>>>>> 7175f4b... Truncated history
 		return -ENOEXEC;
 	/*
 	 * This section does the #! interpretation.
 	 * Sorta complicated, but hopefully it will work.  -TYT
 	 */
 
+<<<<<<< HEAD
+=======
+	bprm->recursion_depth++;
+>>>>>>> 7175f4b... Truncated history
 	allow_write_access(bprm->file);
 	fput(bprm->file);
 	bprm->file = NULL;
@@ -80,9 +89,13 @@ static int load_script(struct linux_binprm *bprm,struct pt_regs *regs)
 	retval = copy_strings_kernel(1, &i_name, bprm);
 	if (retval) return retval; 
 	bprm->argc++;
+<<<<<<< HEAD
 	retval = bprm_change_interp(interp, bprm);
 	if (retval < 0)
 		return retval;
+=======
+	bprm->interp = interp;
+>>>>>>> 7175f4b... Truncated history
 
 	/*
 	 * OK, now restart the process with the interpreter's dentry.

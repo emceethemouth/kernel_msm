@@ -76,7 +76,10 @@
 #include <net/route.h>
 #include <net/net_namespace.h>
 #include <net/netns/generic.h>
+<<<<<<< HEAD
 #include <net/pkt_sched.h>
+=======
+>>>>>>> 7175f4b... Truncated history
 #include "bonding.h"
 #include "bond_3ad.h"
 #include "bond_alb.h"
@@ -382,6 +385,11 @@ struct vlan_entry *bond_next_vlan(struct bonding *bond, struct vlan_entry *curr)
 	return next;
 }
 
+<<<<<<< HEAD
+=======
+#define bond_queue_mapping(skb) (*(u16 *)((skb)->cb))
+
+>>>>>>> 7175f4b... Truncated history
 /**
  * bond_dev_queue_xmit - Prepare skb for xmit.
  *
@@ -394,9 +402,13 @@ int bond_dev_queue_xmit(struct bonding *bond, struct sk_buff *skb,
 {
 	skb->dev = slave_dev;
 
+<<<<<<< HEAD
 	BUILD_BUG_ON(sizeof(skb->queue_mapping) !=
 		     sizeof(qdisc_skb_cb(skb)->bond_queue_mapping));
 	skb->queue_mapping = qdisc_skb_cb(skb)->bond_queue_mapping;
+=======
+	skb->queue_mapping = bond_queue_mapping(skb);
+>>>>>>> 7175f4b... Truncated history
 
 	if (unlikely(netpoll_tx_running(slave_dev)))
 		bond_netpoll_send_skb(bond_get_slave_by_dev(bond, slave_dev), skb);
@@ -1383,8 +1395,11 @@ static void bond_compute_features(struct bonding *bond)
 	struct net_device *bond_dev = bond->dev;
 	netdev_features_t vlan_features = BOND_VLAN_FEATURES;
 	unsigned short max_hard_header_len = ETH_HLEN;
+<<<<<<< HEAD
 	unsigned int gso_max_size = GSO_MAX_SIZE;
 	u16 gso_max_segs = GSO_MAX_SEGS;
+=======
+>>>>>>> 7175f4b... Truncated history
 	int i;
 
 	read_lock(&bond->lock);
@@ -1398,16 +1413,22 @@ static void bond_compute_features(struct bonding *bond)
 
 		if (slave->dev->hard_header_len > max_hard_header_len)
 			max_hard_header_len = slave->dev->hard_header_len;
+<<<<<<< HEAD
 
 		gso_max_size = min(gso_max_size, slave->dev->gso_max_size);
 		gso_max_segs = min(gso_max_segs, slave->dev->gso_max_segs);
+=======
+>>>>>>> 7175f4b... Truncated history
 	}
 
 done:
 	bond_dev->vlan_features = vlan_features;
 	bond_dev->hard_header_len = max_hard_header_len;
+<<<<<<< HEAD
 	bond_dev->gso_max_segs = gso_max_segs;
 	netif_set_gso_max_size(bond_dev, gso_max_size);
+=======
+>>>>>>> 7175f4b... Truncated history
 
 	read_unlock(&bond->lock);
 
@@ -1737,8 +1758,11 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev)
 
 	bond_compute_features(bond);
 
+<<<<<<< HEAD
 	bond_update_speed_duplex(new_slave);
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	read_lock(&bond->lock);
 
 	new_slave->last_arp_rx = jiffies;
@@ -1782,6 +1806,11 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev)
 		new_slave->link  = BOND_LINK_DOWN;
 	}
 
+<<<<<<< HEAD
+=======
+	bond_update_speed_duplex(new_slave);
+
+>>>>>>> 7175f4b... Truncated history
 	if (USES_PRIMARY(bond->params.mode) && bond->params.primary[0]) {
 		/* if there is a primary slave, remember it */
 		if (strcmp(bond->params.primary, new_slave->dev->name) == 0) {
@@ -1888,7 +1917,10 @@ err_detach:
 	write_unlock_bh(&bond->lock);
 
 err_close:
+<<<<<<< HEAD
 	slave_dev->priv_flags &= ~IFF_BONDING;
+=======
+>>>>>>> 7175f4b... Truncated history
 	dev_close(slave_dev);
 
 err_unset_master:
@@ -1933,7 +1965,10 @@ int bond_release(struct net_device *bond_dev, struct net_device *slave_dev)
 	struct bonding *bond = netdev_priv(bond_dev);
 	struct slave *slave, *oldcurrent;
 	struct sockaddr addr;
+<<<<<<< HEAD
 	int old_flags = bond_dev->flags;
+=======
+>>>>>>> 7175f4b... Truncated history
 	netdev_features_t old_features = bond_dev->features;
 
 	/* slave is not a slave or master is not master of this slave */
@@ -1958,11 +1993,19 @@ int bond_release(struct net_device *bond_dev, struct net_device *slave_dev)
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	write_unlock_bh(&bond->lock);
+=======
+>>>>>>> 7175f4b... Truncated history
 	/* unregister rx_handler early so bond_handle_frame wouldn't be called
 	 * for this slave anymore.
 	 */
 	netdev_rx_handler_unregister(slave_dev);
+<<<<<<< HEAD
+=======
+	write_unlock_bh(&bond->lock);
+	synchronize_net();
+>>>>>>> 7175f4b... Truncated history
 	write_lock_bh(&bond->lock);
 
 	if (!bond->params.fail_over_mac) {
@@ -2067,6 +2110,7 @@ int bond_release(struct net_device *bond_dev, struct net_device *slave_dev)
 	 * already taken care of above when we detached the slave
 	 */
 	if (!USES_PRIMARY(bond->params.mode)) {
+<<<<<<< HEAD
 		/* unset promiscuity level from slave
 		 * NOTE: The NETDEV_CHANGEADDR call above may change the value
 		 * of the IFF_PROMISC flag in the bond_dev, but we need the
@@ -2079,6 +2123,14 @@ int bond_release(struct net_device *bond_dev, struct net_device *slave_dev)
 
 		/* unset allmulti level from slave */
 		if (old_flags & IFF_ALLMULTI)
+=======
+		/* unset promiscuity level from slave */
+		if (bond_dev->flags & IFF_PROMISC)
+			dev_set_promiscuity(slave_dev, -1);
+
+		/* unset allmulti level from slave */
+		if (bond_dev->flags & IFF_ALLMULTI)
+>>>>>>> 7175f4b... Truncated history
 			dev_set_allmulti(slave_dev, -1);
 
 		/* flush master's mc_list from slave */
@@ -2469,6 +2521,11 @@ static void bond_miimon_commit(struct bonding *bond)
 				bond_set_backup_slave(slave);
 			}
 
+<<<<<<< HEAD
+=======
+			bond_update_speed_duplex(slave);
+
+>>>>>>> 7175f4b... Truncated history
 			pr_info("%s: link status definitely up for interface %s, %u Mbps %s duplex.\n",
 				bond->dev->name, slave->dev->name,
 				slave->speed, slave->duplex ? "full" : "half");
@@ -3230,12 +3287,15 @@ static int bond_master_netdev_event(unsigned long event,
 	switch (event) {
 	case NETDEV_CHANGENAME:
 		return bond_event_changename(event_bond);
+<<<<<<< HEAD
 	case NETDEV_UNREGISTER:
 		bond_remove_proc_entry(event_bond);
 		break;
 	case NETDEV_REGISTER:
 		bond_create_proc_entry(event_bond);
 		break;
+=======
+>>>>>>> 7175f4b... Truncated history
 	default:
 		break;
 	}
@@ -3405,6 +3465,7 @@ static int bond_xmit_hash_policy_l2(struct sk_buff *skb, int count)
 
 /*-------------------------- Device entry points ----------------------------*/
 
+<<<<<<< HEAD
 static void bond_work_init_all(struct bonding *bond)
 {
 	INIT_DELAYED_WORK(&bond->mcast_work,
@@ -3427,6 +3488,8 @@ static void bond_work_cancel_all(struct bonding *bond)
 	cancel_delayed_work_sync(&bond->mcast_work);
 }
 
+=======
+>>>>>>> 7175f4b... Truncated history
 static int bond_open(struct net_device *bond_dev)
 {
 	struct bonding *bond = netdev_priv(bond_dev);
@@ -3449,12 +3512,17 @@ static int bond_open(struct net_device *bond_dev)
 	}
 	read_unlock(&bond->lock);
 
+<<<<<<< HEAD
 	bond_work_init_all(bond);
+=======
+	INIT_DELAYED_WORK(&bond->mcast_work, bond_resend_igmp_join_requests_delayed);
+>>>>>>> 7175f4b... Truncated history
 
 	if (bond_is_lb(bond)) {
 		/* bond_alb_initialize must be called before the timer
 		 * is started.
 		 */
+<<<<<<< HEAD
 		if (bond_alb_initialize(bond, (bond->params.mode == BOND_MODE_ALB)))
 			return -ENOMEM;
 		queue_delayed_work(bond->wq, &bond->alb_work, 0);
@@ -3464,12 +3532,40 @@ static int bond_open(struct net_device *bond_dev)
 		queue_delayed_work(bond->wq, &bond->mii_work, 0);
 
 	if (bond->params.arp_interval) {  /* arp interval, in milliseconds. */
+=======
+		if (bond_alb_initialize(bond, (bond->params.mode == BOND_MODE_ALB))) {
+			/* something went wrong - fail the open operation */
+			return -ENOMEM;
+		}
+
+		INIT_DELAYED_WORK(&bond->alb_work, bond_alb_monitor);
+		queue_delayed_work(bond->wq, &bond->alb_work, 0);
+	}
+
+	if (bond->params.miimon) {  /* link check interval, in milliseconds. */
+		INIT_DELAYED_WORK(&bond->mii_work, bond_mii_monitor);
+		queue_delayed_work(bond->wq, &bond->mii_work, 0);
+	}
+
+	if (bond->params.arp_interval) {  /* arp interval, in milliseconds. */
+		if (bond->params.mode == BOND_MODE_ACTIVEBACKUP)
+			INIT_DELAYED_WORK(&bond->arp_work,
+					  bond_activebackup_arp_mon);
+		else
+			INIT_DELAYED_WORK(&bond->arp_work,
+					  bond_loadbalance_arp_mon);
+
+>>>>>>> 7175f4b... Truncated history
 		queue_delayed_work(bond->wq, &bond->arp_work, 0);
 		if (bond->params.arp_validate)
 			bond->recv_probe = bond_arp_rcv;
 	}
 
 	if (bond->params.mode == BOND_MODE_8023AD) {
+<<<<<<< HEAD
+=======
+		INIT_DELAYED_WORK(&bond->ad_work, bond_3ad_state_machine_handler);
+>>>>>>> 7175f4b... Truncated history
 		queue_delayed_work(bond->wq, &bond->ad_work, 0);
 		/* register to receive LACPDUs */
 		bond->recv_probe = bond_3ad_lacpdu_recv;
@@ -3484,10 +3580,41 @@ static int bond_close(struct net_device *bond_dev)
 	struct bonding *bond = netdev_priv(bond_dev);
 
 	write_lock_bh(&bond->lock);
+<<<<<<< HEAD
 	bond->send_peer_notif = 0;
 	write_unlock_bh(&bond->lock);
 
 	bond_work_cancel_all(bond);
+=======
+
+	bond->send_peer_notif = 0;
+
+	write_unlock_bh(&bond->lock);
+
+	if (bond->params.miimon) {  /* link check interval, in milliseconds. */
+		cancel_delayed_work_sync(&bond->mii_work);
+	}
+
+	if (bond->params.arp_interval) {  /* arp interval, in milliseconds. */
+		cancel_delayed_work_sync(&bond->arp_work);
+	}
+
+	switch (bond->params.mode) {
+	case BOND_MODE_8023AD:
+		cancel_delayed_work_sync(&bond->ad_work);
+		break;
+	case BOND_MODE_TLB:
+	case BOND_MODE_ALB:
+		cancel_delayed_work_sync(&bond->alb_work);
+		break;
+	default:
+		break;
+	}
+
+	if (delayed_work_pending(&bond->mcast_work))
+		cancel_delayed_work_sync(&bond->mcast_work);
+
+>>>>>>> 7175f4b... Truncated history
 	if (bond_is_lb(bond)) {
 		/* Must be called only after all
 		 * slaves have been released
@@ -3757,17 +3884,24 @@ static int bond_neigh_init(struct neighbour *n)
  * The bonding ndo_neigh_setup is called at init time beofre any
  * slave exists. So we must declare proxy setup function which will
  * be used at run time to resolve the actual slave neigh param setup.
+<<<<<<< HEAD
  *
  * It's also called by master devices (such as vlans) to setup their
  * underlying devices. In that case - do nothing, we're already set up from
  * our init.
+=======
+>>>>>>> 7175f4b... Truncated history
  */
 static int bond_neigh_setup(struct net_device *dev,
 			    struct neigh_parms *parms)
 {
+<<<<<<< HEAD
 	/* modify only our neigh_parms */
 	if (parms->dev == dev)
 		parms->neigh_setup = bond_neigh_init;
+=======
+	parms->neigh_setup   = bond_neigh_init;
+>>>>>>> 7175f4b... Truncated history
 
 	return 0;
 }
@@ -4171,7 +4305,11 @@ static u16 bond_select_queue(struct net_device *dev, struct sk_buff *skb)
 	/*
 	 * Save the original txq to restore before passing to the driver
 	 */
+<<<<<<< HEAD
 	qdisc_skb_cb(skb)->bond_queue_mapping = skb->queue_mapping;
+=======
+	bond_queue_mapping(skb) = skb->queue_mapping;
+>>>>>>> 7175f4b... Truncated history
 
 	if (unlikely(txq >= dev->real_num_tx_queues)) {
 		do {
@@ -4372,6 +4510,29 @@ static void bond_setup(struct net_device *bond_dev)
 	bond_dev->features |= bond_dev->hw_features;
 }
 
+<<<<<<< HEAD
+=======
+static void bond_work_cancel_all(struct bonding *bond)
+{
+	if (bond->params.miimon && delayed_work_pending(&bond->mii_work))
+		cancel_delayed_work_sync(&bond->mii_work);
+
+	if (bond->params.arp_interval && delayed_work_pending(&bond->arp_work))
+		cancel_delayed_work_sync(&bond->arp_work);
+
+	if (bond->params.mode == BOND_MODE_ALB &&
+	    delayed_work_pending(&bond->alb_work))
+		cancel_delayed_work_sync(&bond->alb_work);
+
+	if (bond->params.mode == BOND_MODE_8023AD &&
+	    delayed_work_pending(&bond->ad_work))
+		cancel_delayed_work_sync(&bond->ad_work);
+
+	if (delayed_work_pending(&bond->mcast_work))
+		cancel_delayed_work_sync(&bond->mcast_work);
+}
+
+>>>>>>> 7175f4b... Truncated history
 /*
 * Destroy a bonding device.
 * Must be under rtnl_lock when this function is called.
@@ -4390,6 +4551,11 @@ static void bond_uninit(struct net_device *bond_dev)
 
 	bond_work_cancel_all(bond);
 
+<<<<<<< HEAD
+=======
+	bond_remove_proc_entry(bond);
+
+>>>>>>> 7175f4b... Truncated history
 	bond_debug_unregister(bond);
 
 	__hw_addr_flush(&bond->mc_list);
@@ -4791,6 +4957,10 @@ static int bond_init(struct net_device *bond_dev)
 
 	bond_set_lockdep_class(bond_dev);
 
+<<<<<<< HEAD
+=======
+	bond_create_proc_entry(bond);
+>>>>>>> 7175f4b... Truncated history
 	list_add_tail(&bond->bond_list, &bn->dev_list);
 
 	bond_prepare_sysfs_group(bond);
@@ -4878,6 +5048,7 @@ static int __net_init bond_net_init(struct net *net)
 static void __net_exit bond_net_exit(struct net *net)
 {
 	struct bond_net *bn = net_generic(net, bond_net_id);
+<<<<<<< HEAD
 	struct bonding *bond, *tmp_bond;
 	LIST_HEAD(list);
 
@@ -4890,6 +5061,11 @@ static void __net_exit bond_net_exit(struct net *net)
 		unregister_netdevice_queue(bond->dev, &list);
 	unregister_netdevice_many(&list);
 	rtnl_unlock();
+=======
+
+	bond_destroy_sysfs(bn);
+	bond_destroy_proc_dir(bn);
+>>>>>>> 7175f4b... Truncated history
 }
 
 static struct pernet_operations bond_net_ops = {

@@ -131,6 +131,7 @@ found:
  *	0 - deliver
  *	1 - block
  */
+<<<<<<< HEAD
 static int icmp_filter(const struct sock *sk, const struct sk_buff *skb)
 {
 	struct icmphdr _hdr;
@@ -145,6 +146,20 @@ static int icmp_filter(const struct sock *sk, const struct sk_buff *skb)
 		__u32 data = raw_sk(sk)->filter.data;
 
 		return ((1U << hdr->type) & data) != 0;
+=======
+static __inline__ int icmp_filter(struct sock *sk, struct sk_buff *skb)
+{
+	int type;
+
+	if (!pskb_may_pull(skb, sizeof(struct icmphdr)))
+		return 1;
+
+	type = icmp_hdr(skb)->type;
+	if (type < 32) {
+		__u32 data = raw_sk(sk)->filter.data;
+
+		return ((1 << type) & data) != 0;
+>>>>>>> 7175f4b... Truncated history
 	}
 
 	/* Do not block unknown ICMP types */
@@ -384,7 +399,11 @@ static int raw_send_hdrinc(struct sock *sk, struct flowi4 *fl4,
 		iph->check   = 0;
 		iph->tot_len = htons(length);
 		if (!iph->id)
+<<<<<<< HEAD
 			ip_select_ident(skb, &rt->dst, NULL);
+=======
+			ip_select_ident(iph, &rt->dst, NULL);
+>>>>>>> 7175f4b... Truncated history
 
 		iph->check = ip_fast_csum((unsigned char *)iph, iph->ihl);
 	}
@@ -688,8 +707,16 @@ static int raw_recvmsg(struct kiocb *iocb, struct sock *sk, struct msghdr *msg,
 	if (flags & MSG_OOB)
 		goto out;
 
+<<<<<<< HEAD
 	if (flags & MSG_ERRQUEUE) {
 		err = ip_recv_error(sk, msg, len, addr_len);
+=======
+	if (addr_len)
+		*addr_len = sizeof(*sin);
+
+	if (flags & MSG_ERRQUEUE) {
+		err = ip_recv_error(sk, msg, len);
+>>>>>>> 7175f4b... Truncated history
 		goto out;
 	}
 
@@ -715,7 +742,10 @@ static int raw_recvmsg(struct kiocb *iocb, struct sock *sk, struct msghdr *msg,
 		sin->sin_addr.s_addr = ip_hdr(skb)->saddr;
 		sin->sin_port = 0;
 		memset(&sin->sin_zero, 0, sizeof(sin->sin_zero));
+<<<<<<< HEAD
 		*addr_len = sizeof(*sin);
+=======
+>>>>>>> 7175f4b... Truncated history
 	}
 	if (inet->cmsg_flags)
 		ip_cmsg_recv(msg, skb);

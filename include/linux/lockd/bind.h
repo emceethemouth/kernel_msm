@@ -54,7 +54,12 @@ extern void	nlmclnt_done(struct nlm_host *host);
 
 extern int	nlmclnt_proc(struct nlm_host *host, int cmd,
 					struct file_lock *fl);
+<<<<<<< HEAD
 extern int	lockd_up(struct net *net);
 extern void	lockd_down(struct net *net);
+=======
+extern int	lockd_up(void);
+extern void	lockd_down(void);
+>>>>>>> 7175f4b... Truncated history
 
 #endif /* LINUX_LOCKD_BIND_H */

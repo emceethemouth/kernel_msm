@@ -625,7 +625,11 @@ static int audit_log_common_recv_msg(struct audit_buffer **ab, u16 msg_type,
 	char *ctx = NULL;
 	u32 len;
 
+<<<<<<< HEAD
 	if (!audit_enabled && msg_type != AUDIT_USER_AVC) {
+=======
+	if (!audit_enabled) {
+>>>>>>> 7175f4b... Truncated history
 		*ab = NULL;
 		return rc;
 	}
@@ -684,7 +688,10 @@ static int audit_receive_msg(struct sk_buff *skb, struct nlmsghdr *nlh)
 
 	switch (msg_type) {
 	case AUDIT_GET:
+<<<<<<< HEAD
 		status_set.mask		 = 0;
+=======
+>>>>>>> 7175f4b... Truncated history
 		status_set.enabled	 = audit_enabled;
 		status_set.failure	 = audit_failure;
 		status_set.pid		 = audit_pid;
@@ -696,7 +703,11 @@ static int audit_receive_msg(struct sk_buff *skb, struct nlmsghdr *nlh)
 				 &status_set, sizeof(status_set));
 		break;
 	case AUDIT_SET:
+<<<<<<< HEAD
 		if (nlmsg_len(nlh) < sizeof(struct audit_status))
+=======
+		if (nlh->nlmsg_len < sizeof(struct audit_status))
+>>>>>>> 7175f4b... Truncated history
 			return -EINVAL;
 		status_get   = (struct audit_status *)data;
 		if (status_get->mask & AUDIT_STATUS_ENABLED) {

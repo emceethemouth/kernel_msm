@@ -21,9 +21,12 @@
 /* Number of longs required to track all the VIs in a VF */
 #define VI_MASK_LENGTH BITS_TO_LONGS(1 << EFX_VI_SCALE_MAX)
 
+<<<<<<< HEAD
 /* Maximum number of RX queues supported */
 #define VF_MAX_RX_QUEUES 63
 
+=======
+>>>>>>> 7175f4b... Truncated history
 /**
  * enum efx_vf_tx_filter_mode - TX MAC filtering behaviour
  * @VF_TX_FILTER_OFF: Disabled
@@ -581,7 +584,10 @@ static int efx_vfdi_init_rxq(struct efx_vf *vf)
 	efx_oword_t reg;
 
 	if (bad_vf_index(efx, vf_evq) || bad_vf_index(efx, vf_rxq) ||
+<<<<<<< HEAD
 	    vf_rxq >= VF_MAX_RX_QUEUES ||
+=======
+>>>>>>> 7175f4b... Truncated history
 	    bad_buf_count(buf_count, EFX_MAX_DMAQ_SIZE)) {
 		if (net_ratelimit())
 			netif_err(efx, hw, efx->net_dev,
@@ -687,15 +693,23 @@ static int efx_vfdi_fini_all_queues(struct efx_vf *vf)
 	__le32 *rxqs;
 	int rc;
 
+<<<<<<< HEAD
 	BUILD_BUG_ON(VF_MAX_RX_QUEUES >
 		     MC_CMD_FLUSH_RX_QUEUES_IN_QID_OFST_MAXNUM);
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	rxqs = kmalloc(count * sizeof(*rxqs), GFP_KERNEL);
 	if (rxqs == NULL)
 		return VFDI_RC_ENOMEM;
 
 	rtnl_lock();
+<<<<<<< HEAD
 	siena_prepare_flush(efx);
+=======
+	if (efx->fc_disable++ == 0)
+		efx_mcdi_set_mac(efx);
+>>>>>>> 7175f4b... Truncated history
 	rtnl_unlock();
 
 	/* Flush all the initialized queues */
@@ -732,7 +746,12 @@ static int efx_vfdi_fini_all_queues(struct efx_vf *vf)
 	}
 
 	rtnl_lock();
+<<<<<<< HEAD
 	siena_finish_flush(efx);
+=======
+	if (--efx->fc_disable == 0)
+		efx_mcdi_set_mac(efx);
+>>>>>>> 7175f4b... Truncated history
 	rtnl_unlock();
 
 	/* Irrespective of success/failure, fini the queues */

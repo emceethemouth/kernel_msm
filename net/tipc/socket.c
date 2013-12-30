@@ -829,7 +829,10 @@ static void set_orig_addr(struct msghdr *m, struct tipc_msg *msg)
 	if (addr) {
 		addr->family = AF_TIPC;
 		addr->addrtype = TIPC_ADDR_ID;
+<<<<<<< HEAD
 		memset(&addr->addr, 0, sizeof(addr->addr));
+=======
+>>>>>>> 7175f4b... Truncated history
 		addr->addr.id.ref = msg_origport(msg);
 		addr->addr.id.node = msg_orignode(msg);
 		addr->addr.name.domain = 0;	/* could leave uninitialized */

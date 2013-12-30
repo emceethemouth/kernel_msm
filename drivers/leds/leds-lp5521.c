@@ -193,6 +193,7 @@ static int lp5521_load_program(struct lp5521_engine *eng, const u8 *pattern)
 
 	/* move current engine to direct mode and remember the state */
 	ret = lp5521_set_engine_mode(eng, LP5521_CMD_DIRECT);
+<<<<<<< HEAD
 	if (ret)
 		return ret;
 
@@ -201,6 +202,11 @@ static int lp5521_load_program(struct lp5521_engine *eng, const u8 *pattern)
 	ret = lp5521_read(client, LP5521_REG_OP_MODE, &mode);
 	if (ret)
 		return ret;
+=======
+	/* Mode change requires min 500 us delay. 1 - 2 ms  with margin */
+	usleep_range(1000, 2000);
+	ret |= lp5521_read(client, LP5521_REG_OP_MODE, &mode);
+>>>>>>> 7175f4b... Truncated history
 
 	/* For loading, all the engines to load mode */
 	lp5521_write(client, LP5521_REG_OP_MODE, LP5521_CMD_DIRECT);
@@ -216,7 +222,12 @@ static int lp5521_load_program(struct lp5521_engine *eng, const u8 *pattern)
 				LP5521_PROG_MEM_SIZE,
 				pattern);
 
+<<<<<<< HEAD
 	return lp5521_write(client, LP5521_REG_OP_MODE, mode);
+=======
+	ret |= lp5521_write(client, LP5521_REG_OP_MODE, mode);
+	return ret;
+>>>>>>> 7175f4b... Truncated history
 }
 
 static int lp5521_set_led_current(struct lp5521_chip *chip, int led, u8 curr)
@@ -789,7 +800,11 @@ static int __devinit lp5521_probe(struct i2c_client *client,
 	 * LP5521_REG_ENABLE register will not have any effect - strange!
 	 */
 	ret = lp5521_read(client, LP5521_REG_R_CURRENT, &buf);
+<<<<<<< HEAD
 	if (ret || buf != LP5521_REG_R_CURR_DEFAULT) {
+=======
+	if (buf != LP5521_REG_R_CURR_DEFAULT) {
+>>>>>>> 7175f4b... Truncated history
 		dev_err(&client->dev, "error in resetting chip\n");
 		goto fail2;
 	}

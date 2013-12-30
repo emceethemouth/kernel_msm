@@ -120,6 +120,7 @@ MODULE_PARM_DESC(quirks, "supplemental list of device IDs and their quirks");
 	.useTransport = use_transport,	\
 }
 
+<<<<<<< HEAD
 #define UNUSUAL_VENDOR_INTF(idVendor, cl, sc, pr, \
 		vendor_name, product_name, use_protocol, use_transport, \
 		init_function, Flags) \
@@ -131,6 +132,8 @@ MODULE_PARM_DESC(quirks, "supplemental list of device IDs and their quirks");
 	.initFunction = init_function,	\
 }
 
+=======
+>>>>>>> 7175f4b... Truncated history
 static struct us_unusual_dev us_unusual_dev_list[] = {
 #	include "unusual_devs.h" 
 	{ }		/* Terminating entry */
@@ -142,7 +145,10 @@ static struct us_unusual_dev for_dynamic_ids =
 #undef UNUSUAL_DEV
 #undef COMPLIANT_DEV
 #undef USUAL_DEV
+<<<<<<< HEAD
 #undef UNUSUAL_VENDOR_INTF
+=======
+>>>>>>> 7175f4b... Truncated history
 
 #ifdef CONFIG_LOCKDEP
 

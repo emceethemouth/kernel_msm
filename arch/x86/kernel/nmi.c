@@ -491,16 +491,25 @@ static inline void nmi_nesting_preprocess(struct pt_regs *regs)
 	 */
 	if (unlikely(is_debug_stack(regs->sp))) {
 		debug_stack_set_zero();
+<<<<<<< HEAD
 		this_cpu_write(update_debug_stack, 1);
+=======
+		__get_cpu_var(update_debug_stack) = 1;
+>>>>>>> 7175f4b... Truncated history
 	}
 }
 
 static inline void nmi_nesting_postprocess(void)
 {
+<<<<<<< HEAD
 	if (unlikely(this_cpu_read(update_debug_stack))) {
 		debug_stack_reset();
 		this_cpu_write(update_debug_stack, 0);
 	}
+=======
+	if (unlikely(__get_cpu_var(update_debug_stack)))
+		debug_stack_reset();
+>>>>>>> 7175f4b... Truncated history
 }
 #endif
 

@@ -289,24 +289,40 @@ static int sata_pmp_configure(struct ata_device *dev, int print_info)
 
 	/* Disable sending Early R_OK.
 	 * With "cached read" HDD testing and multiple ports busy on a SATA
+<<<<<<< HEAD
 	 * host controller, 3x26 PMP will very rarely drop a deferred
 	 * R_OK that was intended for the host. Symptom will be all
 	 * 5 drives under test will timeout, get reset, and recover.
 	 */
 	if (vendor == 0x1095 && (devid == 0x3726 || devid == 0x3826)) {
+=======
+	 * host controller, 3726 PMP will very rarely drop a deferred
+	 * R_OK that was intended for the host. Symptom will be all
+	 * 5 drives under test will timeout, get reset, and recover.
+	 */
+	if (vendor == 0x1095 && devid == 0x3726) {
+>>>>>>> 7175f4b... Truncated history
 		u32 reg;
 
 		err_mask = sata_pmp_read(&ap->link, PMP_GSCR_SII_POL, &reg);
 		if (err_mask) {
 			rc = -EIO;
+<<<<<<< HEAD
 			reason = "failed to read Sil3x26 Private Register";
+=======
+			reason = "failed to read Sil3726 Private Register";
+>>>>>>> 7175f4b... Truncated history
 			goto fail;
 		}
 		reg &= ~0x1;
 		err_mask = sata_pmp_write(&ap->link, PMP_GSCR_SII_POL, reg);
 		if (err_mask) {
 			rc = -EIO;
+<<<<<<< HEAD
 			reason = "failed to write Sil3x26 Private Register";
+=======
+			reason = "failed to write Sil3726 Private Register";
+>>>>>>> 7175f4b... Truncated history
 			goto fail;
 		}
 	}
@@ -383,12 +399,18 @@ static void sata_pmp_quirks(struct ata_port *ap)
 	u16 devid = sata_pmp_gscr_devid(gscr);
 	struct ata_link *link;
 
+<<<<<<< HEAD
 	if (vendor == 0x1095 && (devid == 0x3726 || devid == 0x3826)) {
 		/* sil3x26 quirks */
+=======
+	if (vendor == 0x1095 && devid == 0x3726) {
+		/* sil3726 quirks */
+>>>>>>> 7175f4b... Truncated history
 		ata_for_each_link(link, ap, EDGE) {
 			/* link reports offline after LPM */
 			link->flags |= ATA_LFLAG_NO_LPM;
 
+<<<<<<< HEAD
 			/*
 			 * Class code report is unreliable and SRST times
 			 * out under certain configurations.
@@ -396,6 +418,11 @@ static void sata_pmp_quirks(struct ata_port *ap)
 			if (link->pmp < 5)
 				link->flags |= ATA_LFLAG_NO_SRST |
 					       ATA_LFLAG_ASSUME_ATA;
+=======
+			/* Class code report is unreliable. */
+			if (link->pmp < 5)
+				link->flags |= ATA_LFLAG_ASSUME_ATA;
+>>>>>>> 7175f4b... Truncated history
 
 			/* port 5 is for SEMB device and it doesn't like SRST */
 			if (link->pmp == 5)
@@ -403,6 +430,7 @@ static void sata_pmp_quirks(struct ata_port *ap)
 					       ATA_LFLAG_ASSUME_SEMB;
 		}
 	} else if (vendor == 0x1095 && devid == 0x4723) {
+<<<<<<< HEAD
 		/*
 		 * sil4723 quirks
 		 *
@@ -414,6 +442,22 @@ static void sata_pmp_quirks(struct ata_port *ap)
 			link->flags |= ATA_LFLAG_NO_LPM |
 				       ATA_LFLAG_NO_SRST |
 				       ATA_LFLAG_ASSUME_ATA;
+=======
+		/* sil4723 quirks */
+		ata_for_each_link(link, ap, EDGE) {
+			/* link reports offline after LPM */
+			link->flags |= ATA_LFLAG_NO_LPM;
+
+			/* class code report is unreliable */
+			if (link->pmp < 2)
+				link->flags |= ATA_LFLAG_ASSUME_ATA;
+
+			/* the config device at port 2 locks up on SRST */
+			if (link->pmp == 2)
+				link->flags |= ATA_LFLAG_NO_SRST |
+					       ATA_LFLAG_ASSUME_ATA;
+		}
+>>>>>>> 7175f4b... Truncated history
 	} else if (vendor == 0x1095 && devid == 0x4726) {
 		/* sil4726 quirks */
 		ata_for_each_link(link, ap, EDGE) {

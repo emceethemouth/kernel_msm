@@ -334,10 +334,17 @@ void ceph_put_mds_session(struct ceph_mds_session *s)
 	dout("mdsc put_session %p %d -> %d\n", s,
 	     atomic_read(&s->s_ref), atomic_read(&s->s_ref)-1);
 	if (atomic_dec_and_test(&s->s_ref)) {
+<<<<<<< HEAD
 		if (s->s_auth.authorizer)
 			ceph_auth_destroy_authorizer(
 				s->s_mdsc->fsc->client->monc.auth,
 				s->s_auth.authorizer);
+=======
+		if (s->s_authorizer)
+		     s->s_mdsc->fsc->client->monc.auth->ops->destroy_authorizer(
+			     s->s_mdsc->fsc->client->monc.auth,
+			     s->s_authorizer);
+>>>>>>> 7175f4b... Truncated history
 		kfree(s);
 	}
 }
@@ -394,7 +401,15 @@ static struct ceph_mds_session *register_session(struct ceph_mds_client *mdsc,
 	s->s_seq = 0;
 	mutex_init(&s->s_mutex);
 
+<<<<<<< HEAD
 	ceph_con_init(&s->s_con, s, &mds_con_ops, &mdsc->fsc->client->msgr);
+=======
+	ceph_con_init(mdsc->fsc->client->msgr, &s->s_con);
+	s->s_con.private = s;
+	s->s_con.ops = &mds_con_ops;
+	s->s_con.peer_name.type = CEPH_ENTITY_TYPE_MDS;
+	s->s_con.peer_name.num = cpu_to_le64(mds);
+>>>>>>> 7175f4b... Truncated history
 
 	spin_lock_init(&s->s_gen_ttl_lock);
 	s->s_cap_gen = 0;
@@ -436,8 +451,12 @@ static struct ceph_mds_session *register_session(struct ceph_mds_client *mdsc,
 	mdsc->sessions[mds] = s;
 	atomic_inc(&s->s_ref);  /* one ref to sessions[], one to caller */
 
+<<<<<<< HEAD
 	ceph_con_open(&s->s_con, CEPH_ENTITY_TYPE_MDS, mds,
 		      ceph_mdsmap_get_addr(mdsc->mdsmap, mds));
+=======
+	ceph_con_open(&s->s_con, ceph_mdsmap_get_addr(mdsc->mdsmap, mds));
+>>>>>>> 7175f4b... Truncated history
 
 	return s;
 
@@ -609,8 +628,11 @@ static void __unregister_request(struct ceph_mds_client *mdsc,
 		req->r_unsafe_dir = NULL;
 	}
 
+<<<<<<< HEAD
 	complete_all(&req->r_safe_completion);
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	ceph_mdsc_put_request(req);
 }
 
@@ -1817,11 +1839,16 @@ static int __do_request(struct ceph_mds_client *mdsc,
 	int mds = -1;
 	int err = -EAGAIN;
 
+<<<<<<< HEAD
 	if (req->r_err || req->r_got_result) {
 		if (req->r_aborted)
 			__unregister_request(mdsc, req);
 		goto out;
 	}
+=======
+	if (req->r_err || req->r_got_result)
+		goto out;
+>>>>>>> 7175f4b... Truncated history
 
 	if (req->r_timeout &&
 	    time_after_eq(jiffies, req->r_started + req->r_timeout)) {
@@ -1891,6 +1918,7 @@ finish:
 static void __wake_requests(struct ceph_mds_client *mdsc,
 			    struct list_head *head)
 {
+<<<<<<< HEAD
 	struct ceph_mds_request *req;
 	LIST_HEAD(tmp_list);
 
@@ -1899,6 +1927,11 @@ static void __wake_requests(struct ceph_mds_client *mdsc,
 	while (!list_empty(&tmp_list)) {
 		req = list_entry(tmp_list.next,
 				 struct ceph_mds_request, r_wait);
+=======
+	struct ceph_mds_request *req, *nreq;
+
+	list_for_each_entry_safe(req, nreq, head, r_wait) {
+>>>>>>> 7175f4b... Truncated history
 		list_del_init(&req->r_wait);
 		__do_request(mdsc, req);
 	}
@@ -2134,6 +2167,10 @@ static void handle_reply(struct ceph_mds_session *session, struct ceph_msg *msg)
 	if (head->safe) {
 		req->r_got_safe = true;
 		__unregister_request(mdsc, req);
+<<<<<<< HEAD
+=======
+		complete_all(&req->r_safe_completion);
+>>>>>>> 7175f4b... Truncated history
 
 		if (req->r_got_unsafe) {
 			/*
@@ -2459,6 +2496,7 @@ static int encode_caps_cb(struct inode *inode, struct ceph_cap *cap,
 
 	if (recon_state->flock) {
 		int num_fcntl_locks, num_flock_locks;
+<<<<<<< HEAD
 		struct ceph_filelock *flocks;
 
 encode_again:
@@ -2497,6 +2535,41 @@ encode_again:
 	} else {
 		err = ceph_pagelist_append(pagelist, &rec, reclen);
 	}
+=======
+		struct ceph_pagelist_cursor trunc_point;
+
+		ceph_pagelist_set_cursor(pagelist, &trunc_point);
+		do {
+			lock_flocks();
+			ceph_count_locks(inode, &num_fcntl_locks,
+					 &num_flock_locks);
+			rec.v2.flock_len = (2*sizeof(u32) +
+					    (num_fcntl_locks+num_flock_locks) *
+					    sizeof(struct ceph_filelock));
+			unlock_flocks();
+
+			/* pre-alloc pagelist */
+			ceph_pagelist_truncate(pagelist, &trunc_point);
+			err = ceph_pagelist_append(pagelist, &rec, reclen);
+			if (!err)
+				err = ceph_pagelist_reserve(pagelist,
+							    rec.v2.flock_len);
+
+			/* encode locks */
+			if (!err) {
+				lock_flocks();
+				err = ceph_encode_locks(inode,
+							pagelist,
+							num_fcntl_locks,
+							num_flock_locks);
+				unlock_flocks();
+			}
+		} while (err == -ENOSPC);
+	} else {
+		err = ceph_pagelist_append(pagelist, &rec, reclen);
+	}
+
+>>>>>>> 7175f4b... Truncated history
 out_free:
 	kfree(path);
 out_dput:
@@ -2542,9 +2615,13 @@ static void send_mds_reconnect(struct ceph_mds_client *mdsc,
 	session->s_state = CEPH_MDS_SESSION_RECONNECTING;
 	session->s_seq = 0;
 
+<<<<<<< HEAD
 	ceph_con_close(&session->s_con);
 	ceph_con_open(&session->s_con,
 		      CEPH_ENTITY_TYPE_MDS, mds,
+=======
+	ceph_con_open(&session->s_con,
+>>>>>>> 7175f4b... Truncated history
 		      ceph_mdsmap_get_addr(mdsc->mdsmap, mds));
 
 	/* replay unsafe requests */
@@ -2649,8 +2726,12 @@ static void check_new_map(struct ceph_mds_client *mdsc,
 		     ceph_mdsmap_is_laggy(newmap, i) ? " (laggy)" : "",
 		     session_state_name(s->s_state));
 
+<<<<<<< HEAD
 		if (i >= newmap->m_max_mds ||
 		    memcmp(ceph_mdsmap_get_addr(oldmap, i),
+=======
+		if (memcmp(ceph_mdsmap_get_addr(oldmap, i),
+>>>>>>> 7175f4b... Truncated history
 			   ceph_mdsmap_get_addr(newmap, i),
 			   sizeof(struct ceph_entity_addr))) {
 			if (s->s_state == CEPH_MDS_SESSION_OPENING) {
@@ -3409,6 +3490,7 @@ out:
 /*
  * authentication
  */
+<<<<<<< HEAD
 
 /*
  * Note: returned pointer is the address of a structure that's
@@ -3416,10 +3498,16 @@ out:
  */
 static struct ceph_auth_handshake *get_authorizer(struct ceph_connection *con,
 					int *proto, int force_new)
+=======
+static int get_authorizer(struct ceph_connection *con,
+			  void **buf, int *len, int *proto,
+			  void **reply_buf, int *reply_len, int force_new)
+>>>>>>> 7175f4b... Truncated history
 {
 	struct ceph_mds_session *s = con->private;
 	struct ceph_mds_client *mdsc = s->s_mdsc;
 	struct ceph_auth_client *ac = mdsc->fsc->client->monc.auth;
+<<<<<<< HEAD
 	struct ceph_auth_handshake *auth = &s->s_auth;
 
 	if (force_new && auth->authorizer) {
@@ -3440,6 +3528,34 @@ static struct ceph_auth_handshake *get_authorizer(struct ceph_connection *con,
 	*proto = ac->protocol;
 
 	return auth;
+=======
+	int ret = 0;
+
+	if (force_new && s->s_authorizer) {
+		ac->ops->destroy_authorizer(ac, s->s_authorizer);
+		s->s_authorizer = NULL;
+	}
+	if (s->s_authorizer == NULL) {
+		if (ac->ops->create_authorizer) {
+			ret = ac->ops->create_authorizer(
+				ac, CEPH_ENTITY_TYPE_MDS,
+				&s->s_authorizer,
+				&s->s_authorizer_buf,
+				&s->s_authorizer_buf_len,
+				&s->s_authorizer_reply_buf,
+				&s->s_authorizer_reply_buf_len);
+			if (ret)
+				return ret;
+		}
+	}
+
+	*proto = ac->protocol;
+	*buf = s->s_authorizer_buf;
+	*len = s->s_authorizer_buf_len;
+	*reply_buf = s->s_authorizer_reply_buf;
+	*reply_len = s->s_authorizer_reply_buf_len;
+	return 0;
+>>>>>>> 7175f4b... Truncated history
 }
 
 
@@ -3449,7 +3565,11 @@ static int verify_authorizer_reply(struct ceph_connection *con, int len)
 	struct ceph_mds_client *mdsc = s->s_mdsc;
 	struct ceph_auth_client *ac = mdsc->fsc->client->monc.auth;
 
+<<<<<<< HEAD
 	return ceph_auth_verify_authorizer_reply(ac, s->s_auth.authorizer, len);
+=======
+	return ac->ops->verify_authorizer_reply(ac, s->s_authorizer, len);
+>>>>>>> 7175f4b... Truncated history
 }
 
 static int invalidate_authorizer(struct ceph_connection *con)
@@ -3458,7 +3578,12 @@ static int invalidate_authorizer(struct ceph_connection *con)
 	struct ceph_mds_client *mdsc = s->s_mdsc;
 	struct ceph_auth_client *ac = mdsc->fsc->client->monc.auth;
 
+<<<<<<< HEAD
 	ceph_auth_invalidate_authorizer(ac, CEPH_ENTITY_TYPE_MDS);
+=======
+	if (ac->ops->invalidate_authorizer)
+		ac->ops->invalidate_authorizer(ac, CEPH_ENTITY_TYPE_MDS);
+>>>>>>> 7175f4b... Truncated history
 
 	return ceph_monc_validate_auth(&mdsc->fsc->client->monc);
 }

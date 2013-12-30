@@ -119,6 +119,7 @@ efx_max_tx_len(struct efx_nic *efx, dma_addr_t dma_addr)
 	return len;
 }
 
+<<<<<<< HEAD
 unsigned int efx_tx_max_skb_descs(struct efx_nic *efx)
 {
 	/* Header and payload descriptor for each output segment, plus
@@ -138,6 +139,8 @@ unsigned int efx_tx_max_skb_descs(struct efx_nic *efx)
 	return max_descs;
 }
 
+=======
+>>>>>>> 7175f4b... Truncated history
 /*
  * Add a socket buffer to a TX queue
  *

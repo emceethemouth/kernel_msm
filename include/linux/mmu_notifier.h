@@ -4,7 +4,10 @@
 #include <linux/list.h>
 #include <linux/spinlock.h>
 #include <linux/mm_types.h>
+<<<<<<< HEAD
 #include <linux/srcu.h>
+=======
+>>>>>>> 7175f4b... Truncated history
 
 struct mmu_notifier;
 struct mmu_notifier_ops;

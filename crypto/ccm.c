@@ -271,8 +271,12 @@ static int crypto_ccm_auth(struct aead_request *req, struct scatterlist *plain,
 	}
 
 	/* compute plaintext into mac */
+<<<<<<< HEAD
 	if (cryptlen)
 		get_data_to_compute(cipher, pctx, plain, cryptlen);
+=======
+	get_data_to_compute(cipher, pctx, plain, cryptlen);
+>>>>>>> 7175f4b... Truncated history
 
 out:
 	return err;

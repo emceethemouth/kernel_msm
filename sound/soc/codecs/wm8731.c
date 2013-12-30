@@ -406,10 +406,17 @@ static int wm8731_set_dai_fmt(struct snd_soc_dai *codec_dai,
 		iface |= 0x0001;
 		break;
 	case SND_SOC_DAIFMT_DSP_A:
+<<<<<<< HEAD
 		iface |= 0x0013;
 		break;
 	case SND_SOC_DAIFMT_DSP_B:
 		iface |= 0x0003;
+=======
+		iface |= 0x0003;
+		break;
+	case SND_SOC_DAIFMT_DSP_B:
+		iface |= 0x0013;
+>>>>>>> 7175f4b... Truncated history
 		break;
 	default:
 		return -EINVAL;

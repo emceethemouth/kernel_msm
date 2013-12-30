@@ -18,7 +18,10 @@
 #include <linux/delay.h>
 #include <linux/module.h>
 #include <linux/io.h>
+<<<<<<< HEAD
 #include <linux/gpio.h>
+=======
+>>>>>>> 7175f4b... Truncated history
 
 #include <sound/ac97_codec.h>
 #include <sound/pxa2xx-lib.h>
@@ -149,8 +152,11 @@ static inline void pxa_ac97_warm_pxa27x(void)
 
 static inline void pxa_ac97_cold_pxa27x(void)
 {
+<<<<<<< HEAD
 	unsigned int timeout;
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	GCR &=  GCR_COLD_RST;  /* clear everything but nCRST */
 	GCR &= ~GCR_COLD_RST;  /* then assert nCRST */
 
@@ -160,10 +166,15 @@ static inline void pxa_ac97_cold_pxa27x(void)
 	clk_enable(ac97conf_clk);
 	udelay(5);
 	clk_disable(ac97conf_clk);
+<<<<<<< HEAD
 	GCR = GCR_COLD_RST | GCR_WARM_RST;
 	timeout = 100;     /* wait for the codec-ready bit to be set */
 	while (!((GSR | gsr_bits) & (GSR_PCR | GSR_SCR)) && timeout--)
 		mdelay(1);
+=======
+	GCR = GCR_COLD_RST;
+	udelay(50);
+>>>>>>> 7175f4b... Truncated history
 }
 #endif
 
@@ -345,6 +356,7 @@ int __devinit pxa2xx_ac97_hw_probe(struct platform_device *dev)
 	}
 
 	if (cpu_is_pxa27x()) {
+<<<<<<< HEAD
 		/*
 		 * This gpio is needed for a work-around to a bug in the ac97
 		 * controller during warm reset.  The direction and level is set
@@ -360,6 +372,10 @@ int __devinit pxa2xx_ac97_hw_probe(struct platform_device *dev)
 		}
 		pxa27x_assert_ac97reset(reset_gpio, 0);
 
+=======
+		/* Use GPIO 113 as AC97 Reset on Bulverde */
+		pxa27x_assert_ac97reset(reset_gpio, 0);
+>>>>>>> 7175f4b... Truncated history
 		ac97conf_clk = clk_get(&dev->dev, "AC97CONFCLK");
 		if (IS_ERR(ac97conf_clk)) {
 			ret = PTR_ERR(ac97conf_clk);
@@ -402,8 +418,11 @@ EXPORT_SYMBOL_GPL(pxa2xx_ac97_hw_probe);
 
 void pxa2xx_ac97_hw_remove(struct platform_device *dev)
 {
+<<<<<<< HEAD
 	if (cpu_is_pxa27x())
 		gpio_free(reset_gpio);
+=======
+>>>>>>> 7175f4b... Truncated history
 	GCR |= GCR_ACLINK_OFF;
 	free_irq(IRQ_AC97, NULL);
 	if (ac97conf_clk) {

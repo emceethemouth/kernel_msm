@@ -225,11 +225,22 @@ enum {
 	/* device driver is going to provide hardware time stamp */
 	SKBTX_IN_PROGRESS = 1 << 2,
 
+<<<<<<< HEAD
 	/* device driver supports TX zero-copy buffers */
 	SKBTX_DEV_ZEROCOPY = 1 << 3,
 
 	/* generate wifi status information (where possible) */
 	SKBTX_WIFI_STATUS = 1 << 4,
+=======
+	/* ensure the originating sk reference is available on driver level */
+	SKBTX_DRV_NEEDS_SK_REF = 1 << 3,
+
+	/* device driver supports TX zero-copy buffers */
+	SKBTX_DEV_ZEROCOPY = 1 << 4,
+
+	/* generate wifi status information (where possible) */
+	SKBTX_WIFI_STATUS = 1 << 5,
+>>>>>>> 7175f4b... Truncated history
 };
 
 /*
@@ -479,7 +490,11 @@ struct sk_buff {
 	union {
 		__u32		mark;
 		__u32		dropcount;
+<<<<<<< HEAD
 		__u32		reserved_tailroom;
+=======
+		__u32		avail_size;
+>>>>>>> 7175f4b... Truncated history
 	};
 
 	sk_buff_data_t		transport_header;
@@ -760,6 +775,7 @@ static inline int skb_cloned(const struct sk_buff *skb)
 	       (atomic_read(&skb_shinfo(skb)->dataref) & SKB_DATAREF_MASK) != 1;
 }
 
+<<<<<<< HEAD
 static inline int skb_unclone(struct sk_buff *skb, gfp_t pri)
 {
 	might_sleep_if(pri & __GFP_WAIT);
@@ -770,6 +786,8 @@ static inline int skb_unclone(struct sk_buff *skb, gfp_t pri)
 	return 0;
 }
 
+=======
+>>>>>>> 7175f4b... Truncated history
 /**
  *	skb_header_cloned - is the header a clone
  *	@skb: buffer to check
@@ -1208,11 +1226,14 @@ static inline int skb_pagelen(const struct sk_buff *skb)
 	return len + skb_headlen(skb);
 }
 
+<<<<<<< HEAD
 static inline bool skb_has_frags(const struct sk_buff *skb)
 {
 	return skb_shinfo(skb)->nr_frags;
 }
 
+=======
+>>>>>>> 7175f4b... Truncated history
 /**
  * __skb_fill_page_desc - initialise a paged fragment in an skb
  * @skb: buffer containing fragment to be initialised
@@ -1388,10 +1409,14 @@ static inline int skb_tailroom(const struct sk_buff *skb)
  */
 static inline int skb_availroom(const struct sk_buff *skb)
 {
+<<<<<<< HEAD
 	if (skb_is_nonlinear(skb))
 		return 0;
 
 	return skb->end - skb->tail - skb->reserved_tailroom;
+=======
+	return skb_is_nonlinear(skb) ? 0 : skb->avail_size - skb->len;
+>>>>>>> 7175f4b... Truncated history
 }
 
 /**
@@ -1896,6 +1921,11 @@ static inline int __skb_cow(struct sk_buff *skb, unsigned int headroom,
 {
 	int delta = 0;
 
+<<<<<<< HEAD
+=======
+	if (headroom < NET_SKB_PAD)
+		headroom = NET_SKB_PAD;
+>>>>>>> 7175f4b... Truncated history
 	if (headroom > skb_headroom(skb))
 		delta = headroom - skb_headroom(skb);
 
@@ -2407,6 +2437,7 @@ static inline void nf_reset(struct sk_buff *skb)
 #endif
 }
 
+<<<<<<< HEAD
 static inline void nf_reset_trace(struct sk_buff *skb)
 {
 #if IS_ENABLED(CONFIG_NETFILTER_XT_TARGET_TRACE)
@@ -2414,6 +2445,8 @@ static inline void nf_reset_trace(struct sk_buff *skb)
 #endif
 }
 
+=======
+>>>>>>> 7175f4b... Truncated history
 /* Note: This doesn't put any conntrack and bridge info in dst. */
 static inline void __nf_copy(struct sk_buff *dst, const struct sk_buff *src)
 {

@@ -663,7 +663,10 @@ static int pci_pm_suspend(struct device *dev)
 		goto Fixup;
 	}
 
+<<<<<<< HEAD
 	pci_dev->state_saved = false;
+=======
+>>>>>>> 7175f4b... Truncated history
 	if (pm->suspend) {
 		pci_power_t prev = pci_dev->current_state;
 		int error;
@@ -726,6 +729,7 @@ static int pci_pm_suspend_noirq(struct device *dev)
 
 	pci_pm_set_unknown_state(pci_dev);
 
+<<<<<<< HEAD
 	/*
 	 * Some BIOSes from ASUS have a bug: If a USB EHCI host controller's
 	 * PCI COMMAND register isn't 0, the BIOS assumes that the controller
@@ -738,6 +742,8 @@ static int pci_pm_suspend_noirq(struct device *dev)
 	if (pci_dev->class == PCI_CLASS_SERIAL_USB_EHCI)
 		pci_write_config_word(pci_dev, PCI_COMMAND, 0);
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	return 0;
 }
 
@@ -810,7 +816,10 @@ static int pci_pm_freeze(struct device *dev)
 		return 0;
 	}
 
+<<<<<<< HEAD
 	pci_dev->state_saved = false;
+=======
+>>>>>>> 7175f4b... Truncated history
 	if (pm->freeze) {
 		int error;
 
@@ -899,7 +908,10 @@ static int pci_pm_poweroff(struct device *dev)
 		goto Fixup;
 	}
 
+<<<<<<< HEAD
 	pci_dev->state_saved = false;
+=======
+>>>>>>> 7175f4b... Truncated history
 	if (pm->poweroff) {
 		int error;
 
@@ -938,6 +950,7 @@ static int pci_pm_poweroff_noirq(struct device *dev)
 	if (!pci_dev->state_saved && !pci_is_bridge(pci_dev))
 		pci_prepare_to_sleep(pci_dev);
 
+<<<<<<< HEAD
 	/*
 	 * The reason for doing this here is the same as for the analogous code
 	 * in pci_pm_suspend_noirq().
@@ -945,6 +958,8 @@ static int pci_pm_poweroff_noirq(struct device *dev)
 	if (pci_dev->class == PCI_CLASS_SERIAL_USB_EHCI)
 		pci_write_config_word(pci_dev, PCI_COMMAND, 0);
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	return 0;
 }
 
@@ -1018,7 +1033,10 @@ static int pci_pm_runtime_suspend(struct device *dev)
 	if (!pm || !pm->runtime_suspend)
 		return -ENOSYS;
 
+<<<<<<< HEAD
 	pci_dev->state_saved = false;
+=======
+>>>>>>> 7175f4b... Truncated history
 	error = pm->runtime_suspend(dev);
 	suspend_report_result(pm->runtime_suspend, error);
 	if (error)

@@ -176,11 +176,14 @@ int notify_change(struct dentry * dentry, struct iattr * attr)
 			return -EPERM;
 	}
 
+<<<<<<< HEAD
 	if ((ia_valid & ATTR_SIZE) && IS_I_VERSION(inode)) {
 		if (attr->ia_size != inode->i_size)
 			inode_inc_iversion(inode);
 	}
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	if ((ia_valid & ATTR_MODE)) {
 		umode_t amode = attr->ia_mode;
 		/* Flag setting protected by i_mutex */

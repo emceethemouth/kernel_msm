@@ -240,7 +240,11 @@ static int parse_cmdline(char *devname, char *szstart, char *szlength)
 
 	if (*(szlength) != '+') {
 		devlength = simple_strtoul(szlength, &buffer, 0);
+<<<<<<< HEAD
 		devlength = handle_unit(devlength, buffer);
+=======
+		devlength = handle_unit(devlength, buffer) - devstart;
+>>>>>>> 7175f4b... Truncated history
 		if (devlength < devstart)
 			goto err_out;
 

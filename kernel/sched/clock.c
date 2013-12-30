@@ -176,6 +176,7 @@ static u64 sched_clock_remote(struct sched_clock_data *scd)
 	u64 this_clock, remote_clock;
 	u64 *ptr, old_val, val;
 
+<<<<<<< HEAD
 #if BITS_PER_LONG != 64
 again:
 	/*
@@ -201,11 +202,16 @@ again:
 	 * On 64bit the read of [my]scd->clock is atomic versus the
 	 * update, so we can avoid the above 32bit dance.
 	 */
+=======
+>>>>>>> 7175f4b... Truncated history
 	sched_clock_local(my_scd);
 again:
 	this_clock = my_scd->clock;
 	remote_clock = scd->clock;
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> 7175f4b... Truncated history
 
 	/*
 	 * Use the opportunity that we have both locks

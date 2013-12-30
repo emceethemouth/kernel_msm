@@ -555,6 +555,11 @@ int __kvm_set_xcr(struct kvm_vcpu *vcpu, u32 index, u64 xcr)
 	if (index != XCR_XFEATURE_ENABLED_MASK)
 		return 1;
 	xcr0 = xcr;
+<<<<<<< HEAD
+=======
+	if (kvm_x86_ops->get_cpl(vcpu) != 0)
+		return 1;
+>>>>>>> 7175f4b... Truncated history
 	if (!(xcr0 & XSTATE_FP))
 		return 1;
 	if ((xcr0 & XSTATE_YMM) && !(xcr0 & XSTATE_SSE))
@@ -568,8 +573,12 @@ int __kvm_set_xcr(struct kvm_vcpu *vcpu, u32 index, u64 xcr)
 
 int kvm_set_xcr(struct kvm_vcpu *vcpu, u32 index, u64 xcr)
 {
+<<<<<<< HEAD
 	if (kvm_x86_ops->get_cpl(vcpu) != 0 ||
 	    __kvm_set_xcr(vcpu, index, xcr)) {
+=======
+	if (__kvm_set_xcr(vcpu, index, xcr)) {
+>>>>>>> 7175f4b... Truncated history
 		kvm_inject_gp(vcpu, 0);
 		return 1;
 	}
@@ -1113,6 +1122,10 @@ static int kvm_guest_time_update(struct kvm_vcpu *v)
 {
 	unsigned long flags;
 	struct kvm_vcpu_arch *vcpu = &v->arch;
+<<<<<<< HEAD
+=======
+	void *shared_kaddr;
+>>>>>>> 7175f4b... Truncated history
 	unsigned long this_tsc_khz;
 	s64 kernel_ns, max_kernel_ns;
 	u64 tsc_timestamp;
@@ -1148,7 +1161,11 @@ static int kvm_guest_time_update(struct kvm_vcpu *v)
 
 	local_irq_restore(flags);
 
+<<<<<<< HEAD
 	if (!vcpu->pv_time_enabled)
+=======
+	if (!vcpu->time_page)
+>>>>>>> 7175f4b... Truncated history
 		return 0;
 
 	/*
@@ -1206,9 +1223,20 @@ static int kvm_guest_time_update(struct kvm_vcpu *v)
 	 */
 	vcpu->hv_clock.version += 2;
 
+<<<<<<< HEAD
 	kvm_write_guest_cached(v->kvm, &vcpu->pv_time,
 				&vcpu->hv_clock,
 				sizeof(vcpu->hv_clock));
+=======
+	shared_kaddr = kmap_atomic(vcpu->time_page);
+
+	memcpy(shared_kaddr + vcpu->time_offset, &vcpu->hv_clock,
+	       sizeof(vcpu->hv_clock));
+
+	kunmap_atomic(shared_kaddr);
+
+	mark_page_dirty(v->kvm, vcpu->time >> PAGE_SHIFT);
+>>>>>>> 7175f4b... Truncated history
 	return 0;
 }
 
@@ -1487,8 +1515,12 @@ static int kvm_pv_enable_async_pf(struct kvm_vcpu *vcpu, u64 data)
 		return 0;
 	}
 
+<<<<<<< HEAD
 	if (kvm_gfn_to_hva_cache_init(vcpu->kvm, &vcpu->arch.apf.data, gpa,
 					sizeof(u32)))
+=======
+	if (kvm_gfn_to_hva_cache_init(vcpu->kvm, &vcpu->arch.apf.data, gpa))
+>>>>>>> 7175f4b... Truncated history
 		return 1;
 
 	vcpu->arch.apf.send_user_only = !(data & KVM_ASYNC_PF_SEND_ALWAYS);
@@ -1498,7 +1530,14 @@ static int kvm_pv_enable_async_pf(struct kvm_vcpu *vcpu, u64 data)
 
 static void kvmclock_reset(struct kvm_vcpu *vcpu)
 {
+<<<<<<< HEAD
 	vcpu->arch.pv_time_enabled = false;
+=======
+	if (vcpu->arch.time_page) {
+		kvm_release_page_dirty(vcpu->arch.time_page);
+		vcpu->arch.time_page = NULL;
+	}
+>>>>>>> 7175f4b... Truncated history
 }
 
 static void accumulate_steal_time(struct kvm_vcpu *vcpu)
@@ -1593,7 +1632,10 @@ int kvm_set_msr_common(struct kvm_vcpu *vcpu, u32 msr, u64 data)
 		break;
 	case MSR_KVM_SYSTEM_TIME_NEW:
 	case MSR_KVM_SYSTEM_TIME: {
+<<<<<<< HEAD
 		u64 gpa_offset;
+=======
+>>>>>>> 7175f4b... Truncated history
 		kvmclock_reset(vcpu);
 
 		vcpu->arch.time = data;
@@ -1603,6 +1645,7 @@ int kvm_set_msr_common(struct kvm_vcpu *vcpu, u32 msr, u64 data)
 		if (!(data & 1))
 			break;
 
+<<<<<<< HEAD
 		gpa_offset = data & ~(PAGE_MASK | 1);
 
 		if (kvm_gfn_to_hva_cache_init(vcpu->kvm,
@@ -1611,6 +1654,18 @@ int kvm_set_msr_common(struct kvm_vcpu *vcpu, u32 msr, u64 data)
 			vcpu->arch.pv_time_enabled = false;
 		else
 			vcpu->arch.pv_time_enabled = true;
+=======
+		/* ...but clean it before doing the actual write */
+		vcpu->arch.time_offset = data & ~(PAGE_MASK | 1);
+
+		vcpu->arch.time_page =
+				gfn_to_page(vcpu->kvm, data >> PAGE_SHIFT);
+
+		if (is_error_page(vcpu->arch.time_page)) {
+			kvm_release_page_clean(vcpu->arch.time_page);
+			vcpu->arch.time_page = NULL;
+		}
+>>>>>>> 7175f4b... Truncated history
 		break;
 	}
 	case MSR_KVM_ASYNC_PF_EN:
@@ -1626,8 +1681,12 @@ int kvm_set_msr_common(struct kvm_vcpu *vcpu, u32 msr, u64 data)
 			return 1;
 
 		if (kvm_gfn_to_hva_cache_init(vcpu->kvm, &vcpu->arch.st.stime,
+<<<<<<< HEAD
 						data & KVM_STEAL_VALID_BITS,
 						sizeof(struct kvm_steal_time)))
+=======
+							data & KVM_STEAL_VALID_BITS))
+>>>>>>> 7175f4b... Truncated history
 			return 1;
 
 		vcpu->arch.st.msr_val = data;
@@ -2728,7 +2787,12 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
 		r = -EFAULT;
 		if (copy_from_user(&va, argp, sizeof va))
 			goto out;
+<<<<<<< HEAD
 		r = kvm_lapic_set_vapic_addr(vcpu, va.vapic_addr);
+=======
+		r = 0;
+		kvm_lapic_set_vapic_addr(vcpu, va.vapic_addr);
+>>>>>>> 7175f4b... Truncated history
 		break;
 	}
 	case KVM_X86_SETUP_MCE: {
@@ -5074,6 +5138,36 @@ static void post_kvm_run_save(struct kvm_vcpu *vcpu)
 			!kvm_event_needs_reinjection(vcpu);
 }
 
+<<<<<<< HEAD
+=======
+static void vapic_enter(struct kvm_vcpu *vcpu)
+{
+	struct kvm_lapic *apic = vcpu->arch.apic;
+	struct page *page;
+
+	if (!apic || !apic->vapic_addr)
+		return;
+
+	page = gfn_to_page(vcpu->kvm, apic->vapic_addr >> PAGE_SHIFT);
+
+	vcpu->arch.apic->vapic_page = page;
+}
+
+static void vapic_exit(struct kvm_vcpu *vcpu)
+{
+	struct kvm_lapic *apic = vcpu->arch.apic;
+	int idx;
+
+	if (!apic || !apic->vapic_addr)
+		return;
+
+	idx = srcu_read_lock(&vcpu->kvm->srcu);
+	kvm_release_page_dirty(apic->vapic_page);
+	mark_page_dirty(vcpu->kvm, apic->vapic_addr >> PAGE_SHIFT);
+	srcu_read_unlock(&vcpu->kvm->srcu, idx);
+}
+
+>>>>>>> 7175f4b... Truncated history
 static void update_cr8_intercept(struct kvm_vcpu *vcpu)
 {
 	int max_irr, tpr;
@@ -5357,6 +5451,10 @@ static int __vcpu_run(struct kvm_vcpu *vcpu)
 	}
 
 	vcpu->srcu_idx = srcu_read_lock(&kvm->srcu);
+<<<<<<< HEAD
+=======
+	vapic_enter(vcpu);
+>>>>>>> 7175f4b... Truncated history
 
 	r = 1;
 	while (r > 0) {
@@ -5413,6 +5511,11 @@ static int __vcpu_run(struct kvm_vcpu *vcpu)
 
 	srcu_read_unlock(&kvm->srcu, vcpu->srcu_idx);
 
+<<<<<<< HEAD
+=======
+	vapic_exit(vcpu);
+
+>>>>>>> 7175f4b... Truncated history
 	return r;
 }
 
@@ -5657,9 +5760,12 @@ int kvm_arch_vcpu_ioctl_set_sregs(struct kvm_vcpu *vcpu,
 	int pending_vec, max_bits, idx;
 	struct desc_ptr dt;
 
+<<<<<<< HEAD
 	if (!guest_cpuid_has_xsave(vcpu) && (sregs->cr4 & X86_CR4_OSXSAVE))
 		return -EINVAL;
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	dt.size = sregs->idt.limit;
 	dt.address = sregs->idt.base;
 	kvm_x86_ops->set_idt(vcpu, &dt);
@@ -6127,7 +6233,10 @@ int kvm_arch_vcpu_init(struct kvm_vcpu *vcpu)
 	if (!zalloc_cpumask_var(&vcpu->arch.wbinvd_dirty_mask, GFP_KERNEL))
 		goto fail_free_mce_banks;
 
+<<<<<<< HEAD
 	vcpu->arch.pv_time_enabled = false;
+=======
+>>>>>>> 7175f4b... Truncated history
 	kvm_async_pf_hash_reset(vcpu);
 	kvm_pmu_init(vcpu);
 

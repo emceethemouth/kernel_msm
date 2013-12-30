@@ -937,7 +937,11 @@ static inline int atapi_cdb_len(const u16 *dev_id)
 	}
 }
 
+<<<<<<< HEAD
 static inline int atapi_command_packet_set(const u16 *dev_id)
+=======
+static inline bool atapi_command_packet_set(const u16 *dev_id)
+>>>>>>> 7175f4b... Truncated history
 {
 	return (dev_id[ATA_ID_CONFIG] >> 8) & 0x1f;
 }

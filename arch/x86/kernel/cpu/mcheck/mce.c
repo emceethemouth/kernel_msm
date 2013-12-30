@@ -437,6 +437,7 @@ static inline void mce_gather_info(struct mce *m, struct pt_regs *regs)
 		if (m->mcgstatus & (MCG_STATUS_RIPV|MCG_STATUS_EIPV)) {
 			m->ip = regs->ip;
 			m->cs = regs->cs;
+<<<<<<< HEAD
 
 			/*
 			 * When in VM86 mode make the cs look like ring 3
@@ -445,6 +446,8 @@ static inline void mce_gather_info(struct mce *m, struct pt_regs *regs)
 			 */
 			if (v8086_mode(regs))
 				m->cs |= 3;
+=======
+>>>>>>> 7175f4b... Truncated history
 		}
 		/* Use accurate RIP reporting if available. */
 		if (rip_msr)
@@ -1180,7 +1183,10 @@ void mce_notify_process(void)
 {
 	unsigned long pfn;
 	struct mce_info *mi = mce_find_info();
+<<<<<<< HEAD
 	int flags = MF_ACTION_REQUIRED;
+=======
+>>>>>>> 7175f4b... Truncated history
 
 	if (!mi)
 		mce_panic("Lost physical address for unconsumed uncorrectable error", NULL, NULL);
@@ -1195,9 +1201,14 @@ void mce_notify_process(void)
 	 * doomed. We still need to mark the page as poisoned and alert any
 	 * other users of the page.
 	 */
+<<<<<<< HEAD
 	if (!mi->restartable)
 		flags |= MF_MUST_KILL;
 	if (memory_failure(pfn, MCE_VECTOR, flags) < 0) {
+=======
+	if (memory_failure(pfn, MCE_VECTOR, MF_ACTION_REQUIRED) < 0 ||
+			   mi->restartable == 0) {
+>>>>>>> 7175f4b... Truncated history
 		pr_err("Memory error not recovered");
 		force_sig(SIGBUS, current);
 	}

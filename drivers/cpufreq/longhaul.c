@@ -77,7 +77,11 @@ static unsigned int longhaul_index;
 static int scale_voltage;
 static int disable_acpi_c3;
 static int revid_errata;
+<<<<<<< HEAD
 static int enable;
+=======
+
+>>>>>>> 7175f4b... Truncated history
 
 /* Clock ratios multiplied by 10 */
 static int mults[32];
@@ -965,10 +969,13 @@ static int __init longhaul_init(void)
 	if (!x86_match_cpu(longhaul_id))
 		return -ENODEV;
 
+<<<<<<< HEAD
 	if (!enable) {
 		printk(KERN_ERR PFX "Option \"enable\" not set. Aborting.\n");
 		return -ENODEV;
 	}
+=======
+>>>>>>> 7175f4b... Truncated history
 #ifdef CONFIG_SMP
 	if (num_online_cpus() > 1) {
 		printk(KERN_ERR PFX "More than 1 CPU detected, "
@@ -1025,10 +1032,13 @@ MODULE_PARM_DESC(scale_voltage, "Scale voltage of processor");
  * such. */
 module_param(revid_errata, int, 0644);
 MODULE_PARM_DESC(revid_errata, "Ignore CPU Revision ID");
+<<<<<<< HEAD
 /* By default driver is disabled to prevent incompatible
  * system freeze. */
 module_param(enable, int, 0644);
 MODULE_PARM_DESC(enable, "Enable driver");
+=======
+>>>>>>> 7175f4b... Truncated history
 
 MODULE_AUTHOR("Dave Jones <davej@redhat.com>");
 MODULE_DESCRIPTION("Longhaul driver for VIA Cyrix processors.");

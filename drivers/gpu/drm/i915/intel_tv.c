@@ -674,6 +674,7 @@ static const struct tv_mode tv_modes[] = {
 		.filter_table = filter_table,
 	},
 	{
+<<<<<<< HEAD
 		.name       = "480p",
 		.clock		= 107520,
 		.refresh	= 59940,
@@ -722,6 +723,8 @@ static const struct tv_mode tv_modes[] = {
 		.filter_table = filter_table,
 	},
 	{
+=======
+>>>>>>> 7175f4b... Truncated history
 		.name       = "720p@60Hz",
 		.clock		= 148800,
 		.refresh	= 60000,
@@ -1233,11 +1236,14 @@ intel_tv_detect_type(struct intel_tv *intel_tv,
 
 	I915_WRITE(TV_DAC, save_tv_dac & ~TVDAC_STATE_CHG_EN);
 	I915_WRITE(TV_CTL, save_tv_ctl);
+<<<<<<< HEAD
 	POSTING_READ(TV_CTL);
 
 	/* For unknown reasons the hw barfs if we don't do this vblank wait. */
 	intel_wait_for_vblank(intel_tv->base.base.dev,
 			      to_intel_crtc(intel_tv->base.base.crtc)->pipe);
+=======
+>>>>>>> 7175f4b... Truncated history
 
 	/* Restore interrupt config */
 	if (connector->polled & DRM_CONNECTOR_POLL_HPD) {

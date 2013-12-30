@@ -336,14 +336,28 @@ static void nfs_async_rename_done(struct rpc_task *task, void *calldata)
 	struct inode *old_dir = data->old_dir;
 	struct inode *new_dir = data->new_dir;
 	struct dentry *old_dentry = data->old_dentry;
+<<<<<<< HEAD
+=======
+	struct dentry *new_dentry = data->new_dentry;
+>>>>>>> 7175f4b... Truncated history
 
 	if (!NFS_PROTO(old_dir)->rename_done(task, old_dir, new_dir)) {
 		rpc_restart_call_prepare(task);
 		return;
 	}
 
+<<<<<<< HEAD
 	if (task->tk_status != 0)
 		nfs_cancel_async_unlink(old_dentry);
+=======
+	if (task->tk_status != 0) {
+		nfs_cancel_async_unlink(old_dentry);
+		return;
+	}
+
+	d_drop(old_dentry);
+	d_drop(new_dentry);
+>>>>>>> 7175f4b... Truncated history
 }
 
 /**
@@ -544,6 +558,7 @@ nfs_sillyrename(struct inode *dir, struct dentry *dentry)
 	error = rpc_wait_for_completion_task(task);
 	if (error == 0)
 		error = task->tk_status;
+<<<<<<< HEAD
 	switch (error) {
 	case 0:
 		/* The rename succeeded */
@@ -556,6 +571,8 @@ nfs_sillyrename(struct inode *dir, struct dentry *dentry)
 		d_drop(dentry);
 		d_drop(sdentry);
 	}
+=======
+>>>>>>> 7175f4b... Truncated history
 	rpc_put_task(task);
 out_dput:
 	dput(sdentry);

@@ -339,7 +339,10 @@ static s32 wl_notify_escan_complete(struct wl_priv *wl,
 static s32 wl_cfg80211_tdls_oper(struct wiphy *wiphy, struct net_device *dev,
 	u8 *peer, enum nl80211_tdls_operation oper);
 #endif 
+<<<<<<< HEAD
 static int wl_cfg80211_sched_scan_stop(struct wiphy *wiphy, struct net_device *dev);
+=======
+>>>>>>> 7175f4b... Truncated history
 
 /*
  * event & event Q handlers for cfg80211 interfaces
@@ -1410,9 +1413,12 @@ wl_cfg80211_del_virtual_iface(struct wiphy *wiphy, bcm_struct_cfgdev *cfgdev)
 				WL_ERR(("IFDEL didn't complete properly\n"));
 			}
 			ret = dhd_del_monitor(dev);
+<<<<<<< HEAD
 			if (wl_get_mode_by_netdev(wl, dev) == WL_MODE_AP) {
 				DHD_OS_WAKE_LOCK_CTRL_TIMEOUT_CANCEL((dhd_pub_t *)(wl->pub));
 			}
+=======
+>>>>>>> 7175f4b... Truncated history
 		}
 	}
 	return ret;
@@ -2199,6 +2205,10 @@ __wl_cfg80211_scan(struct wiphy *wiphy, struct net_device *ndev,
 	}
 #endif /* WL_CFG80211_VSDB_PRIORITIZE_SCAN_REQUEST */
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 7175f4b... Truncated history
 	/* Arm scan timeout timer */
 	mod_timer(&wl->scan_timeout, jiffies + msecs_to_jiffies(WL_SCAN_TIMER_INTERVAL_MS));
 	iscan_req = false;
@@ -3160,11 +3170,14 @@ wl_cfg80211_connect(struct wiphy *wiphy, struct net_device *dev,
 		wl_notify_escan_complete(wl, dev, true, true);
 	}
 #endif
+<<<<<<< HEAD
 #ifdef WL_SCHED_SCAN
 	if (wl->sched_scan_req) {
 		wl_cfg80211_sched_scan_stop(wiphy, wl_to_prmry_ndev(wl));
 	}
 #endif
+=======
+>>>>>>> 7175f4b... Truncated history
 #if defined(ESCAN_RESULT_PATCH)
 	if (sme->bssid)
 		memcpy(connect_req_bssid, sme->bssid, ETHER_ADDR_LEN);
@@ -6161,8 +6174,11 @@ wl_cfg80211_stop_ap(
 		}
 	} else {
 		WL_DBG(("Stopping P2P GO \n"));
+<<<<<<< HEAD
 		DHD_OS_WAKE_LOCK_CTRL_TIMEOUT_ENABLE((dhd_pub_t *)(wl->pub), DHD_EVENT_TIMEOUT_MS*3);
 		DHD_OS_WAKE_LOCK_TIMEOUT((dhd_pub_t *)(wl->pub));
+=======
+>>>>>>> 7175f4b... Truncated history
 	}
 
 exit:
@@ -6362,8 +6378,12 @@ fail:
 #define PNO_TIME		30
 #define PNO_REPEAT		4
 #define PNO_FREQ_EXPO_MAX	2
+<<<<<<< HEAD
 static int
 wl_cfg80211_sched_scan_start(struct wiphy *wiphy,
+=======
+int wl_cfg80211_sched_scan_start(struct wiphy *wiphy,
+>>>>>>> 7175f4b... Truncated history
                              struct net_device *dev,
                              struct cfg80211_sched_scan_request *request)
 {
@@ -6427,8 +6447,12 @@ wl_cfg80211_sched_scan_start(struct wiphy *wiphy,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int
 wl_cfg80211_sched_scan_stop(struct wiphy *wiphy, struct net_device *dev)
+=======
+int wl_cfg80211_sched_scan_stop(struct wiphy *wiphy, struct net_device *dev)
+>>>>>>> 7175f4b... Truncated history
 {
 	struct wl_priv *wl = wiphy_priv(wiphy);
 
@@ -8092,7 +8116,10 @@ wl_notify_sched_scan_results(struct wl_priv *wl, struct net_device *ndev,
 				wl_clr_drv_status(wl, SCANNING, ndev);
 				goto out_err;
 			}
+<<<<<<< HEAD
 			p2p_scan(wl) = false;
+=======
+>>>>>>> 7175f4b... Truncated history
 		}
 
 		wl_set_drv_status(wl, SCANNING, ndev);
@@ -10613,18 +10640,28 @@ wl_cfg80211_tdls_oper(struct wiphy *wiphy, struct net_device *dev,
 #ifdef WLTDLS
 	struct wl_priv *wl = wlcfg_drv_priv;
 	tdls_iovar_t info;
+<<<<<<< HEAD
+=======
+	dhd_pub_t *dhd = (dhd_pub_t *)(wl->pub);
+>>>>>>> 7175f4b... Truncated history
 	memset(&info, 0, sizeof(tdls_iovar_t));
 	if (peer)
 		memcpy(&info.ea, peer, ETHER_ADDR_LEN);
 	switch (oper) {
 	case NL80211_TDLS_DISCOVERY_REQ:
+<<<<<<< HEAD
 		/* turn on TDLS */
 		ret = dhd_tdls_enable(dev, true, false, NULL);
+=======
+		if (!dhd->tdls_enable)
+			ret = dhd_tdls_enable_disable(dhd, 1);
+>>>>>>> 7175f4b... Truncated history
 		if (ret < 0)
 			return ret;
 		info.mode = TDLS_MANUAL_EP_DISCOVERY;
 		break;
 	case NL80211_TDLS_SETUP:
+<<<<<<< HEAD
 		/* auto mode on */
 		ret = dhd_tdls_enable(dev, true, true, (struct ether_addr *)peer);
 		if (ret < 0)
@@ -10636,11 +10673,18 @@ wl_cfg80211_tdls_oper(struct wiphy *wiphy, struct net_device *dev,
 		ret = dhd_tdls_enable(dev, true, false, (struct ether_addr *)peer);
 		if (ret < 0)
 			return ret;
+=======
+		info.mode = TDLS_MANUAL_EP_CREATE;
+		break;
+	case NL80211_TDLS_TEARDOWN:
+		info.mode = TDLS_MANUAL_EP_DELETE;
+>>>>>>> 7175f4b... Truncated history
 		break;
 	default:
 		WL_ERR(("Unsupported operation : %d\n", oper));
 		goto out;
 	}
+<<<<<<< HEAD
 
 	if (info.mode) {
 		ret = wldev_iovar_setbuf(dev, "tdls_endpoint", &info, sizeof(info),
@@ -10648,6 +10692,12 @@ wl_cfg80211_tdls_oper(struct wiphy *wiphy, struct net_device *dev,
 		if (ret) {
 			WL_ERR(("tdls_endpoint error %d\n", ret));
 		}
+=======
+	ret = wldev_iovar_setbuf(dev, "tdls_endpoint", &info, sizeof(info),
+		wl->ioctl_buf, WLC_IOCTL_MAXLEN, &wl->ioctl_buf_sync);
+	if (ret) {
+		WL_ERR(("tdls_endpoint error %d\n", ret));
+>>>>>>> 7175f4b... Truncated history
 	}
 out:
 #endif /* WLTDLS */

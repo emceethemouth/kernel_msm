@@ -345,14 +345,22 @@ static void add_to_kill(struct task_struct *tsk, struct page *p,
  * Also when FAIL is set do a force kill because something went
  * wrong earlier.
  */
+<<<<<<< HEAD
 static void kill_procs(struct list_head *to_kill, int forcekill, int trapno,
+=======
+static void kill_procs(struct list_head *to_kill, int doit, int trapno,
+>>>>>>> 7175f4b... Truncated history
 			  int fail, struct page *page, unsigned long pfn,
 			  int flags)
 {
 	struct to_kill *tk, *next;
 
 	list_for_each_entry_safe (tk, next, to_kill, nd) {
+<<<<<<< HEAD
 		if (forcekill) {
+=======
+		if (doit) {
+>>>>>>> 7175f4b... Truncated history
 			/*
 			 * In case something went wrong with munmapping
 			 * make sure the process doesn't catch the
@@ -858,7 +866,11 @@ static int hwpoison_user_mappings(struct page *p, unsigned long pfn,
 	struct address_space *mapping;
 	LIST_HEAD(tokill);
 	int ret;
+<<<<<<< HEAD
 	int kill = 1, forcekill;
+=======
+	int kill = 1;
+>>>>>>> 7175f4b... Truncated history
 	struct page *hpage = compound_head(p);
 	struct page *ppage;
 
@@ -888,7 +900,11 @@ static int hwpoison_user_mappings(struct page *p, unsigned long pfn,
 	 * be called inside page lock (it's recommended but not enforced).
 	 */
 	mapping = page_mapping(hpage);
+<<<<<<< HEAD
 	if (!(flags & MF_MUST_KILL) && !PageDirty(hpage) && mapping &&
+=======
+	if (!PageDirty(hpage) && mapping &&
+>>>>>>> 7175f4b... Truncated history
 	    mapping_cap_writeback_dirty(mapping)) {
 		if (page_mkclean(hpage)) {
 			SetPageDirty(hpage);
@@ -965,14 +981,22 @@ static int hwpoison_user_mappings(struct page *p, unsigned long pfn,
 	 * Now that the dirty bit has been propagated to the
 	 * struct page and all unmaps done we can decide if
 	 * killing is needed or not.  Only kill when the page
+<<<<<<< HEAD
 	 * was dirty or the process is not restartable,
 	 * otherwise the tokill list is merely
+=======
+	 * was dirty, otherwise the tokill list is merely
+>>>>>>> 7175f4b... Truncated history
 	 * freed.  When there was a problem unmapping earlier
 	 * use a more force-full uncatchable kill to prevent
 	 * any accesses to the poisoned memory.
 	 */
+<<<<<<< HEAD
 	forcekill = PageDirty(ppage) || (flags & MF_MUST_KILL);
 	kill_procs(&tokill, forcekill, trapno,
+=======
+	kill_procs(&tokill, !!PageDirty(ppage), trapno,
+>>>>>>> 7175f4b... Truncated history
 		      ret != SWAP_SUCCESS, p, pfn, flags);
 
 	return ret;
@@ -1433,8 +1457,13 @@ static int soft_offline_huge_page(struct page *page, int flags)
 	/* Keep page count to indicate a given hugepage is isolated. */
 
 	list_add(&hpage->lru, &pagelist);
+<<<<<<< HEAD
 	ret = migrate_huge_pages(&pagelist, new_page, MPOL_MF_MOVE_ALL, false,
 				MIGRATE_SYNC);
+=======
+	ret = migrate_huge_pages(&pagelist, new_page, MPOL_MF_MOVE_ALL, 0,
+				true);
+>>>>>>> 7175f4b... Truncated history
 	if (ret) {
 		struct page *page1, *page2;
 		list_for_each_entry_safe(page1, page2, &pagelist, lru)
@@ -1447,6 +1476,7 @@ static int soft_offline_huge_page(struct page *page, int flags)
 		return ret;
 	}
 done:
+<<<<<<< HEAD
 	/* overcommit hugetlb page will be freed to buddy */
 	if (PageHuge(hpage)) {
 		if (!PageHWPoison(hpage))
@@ -1459,6 +1489,12 @@ done:
 		atomic_long_inc(&mce_bad_pages);
 	}
 
+=======
+	if (!PageHWPoison(hpage))
+		atomic_long_add(1 << compound_trans_order(hpage), &mce_bad_pages);
+	set_page_hwpoison_huge_page(hpage);
+	dequeue_hwpoisoned_huge_page(hpage);
+>>>>>>> 7175f4b... Truncated history
 	/* keep elevated page count for bad page */
 	return ret;
 }
@@ -1489,6 +1525,7 @@ int soft_offline_page(struct page *page, int flags)
 {
 	int ret;
 	unsigned long pfn = page_to_pfn(page);
+<<<<<<< HEAD
 	struct page *hpage = compound_trans_head(page);
 
 	if (PageHuge(page))
@@ -1500,6 +1537,11 @@ int soft_offline_page(struct page *page, int flags)
 			return -EBUSY;
 		}
 	}
+=======
+
+	if (PageHuge(page))
+		return soft_offline_huge_page(page, flags);
+>>>>>>> 7175f4b... Truncated history
 
 	ret = get_any_page(page, pfn, flags);
 	if (ret < 0)
@@ -1579,7 +1621,11 @@ int soft_offline_page(struct page *page, int flags)
 					    page_is_file_cache(page));
 		list_add(&page->lru, &pagelist);
 		ret = migrate_pages(&pagelist, new_page, MPOL_MF_MOVE_ALL,
+<<<<<<< HEAD
 							false, MIGRATE_SYNC);
+=======
+							0, MIGRATE_SYNC);
+>>>>>>> 7175f4b... Truncated history
 		if (ret) {
 			putback_lru_pages(&pagelist);
 			pr_info("soft offline: %#lx: migration failed %d, type %lx\n",

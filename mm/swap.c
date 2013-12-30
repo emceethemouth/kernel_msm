@@ -30,7 +30,10 @@
 #include <linux/backing-dev.h>
 #include <linux/memcontrol.h>
 #include <linux/gfp.h>
+<<<<<<< HEAD
 #include <linux/hugetlb.h>
+=======
+>>>>>>> 7175f4b... Truncated history
 
 #include "internal.h"
 
@@ -69,14 +72,19 @@ static void __put_compound_page(struct page *page)
 {
 	compound_page_dtor *dtor;
 
+<<<<<<< HEAD
 	if (!PageHuge(page))
 		__page_cache_release(page);
+=======
+	__page_cache_release(page);
+>>>>>>> 7175f4b... Truncated history
 	dtor = get_compound_page_dtor(page);
 	(*dtor)(page);
 }
 
 static void put_compound_page(struct page *page)
 {
+<<<<<<< HEAD
 	/*
 	 * hugetlbfs pages cannot be split from under us.  If this is a
 	 * hugetlbfs page, check refcount on head page and release the page if
@@ -89,6 +97,8 @@ static void put_compound_page(struct page *page)
 		return;
 	}
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	if (unlikely(PageTail(page))) {
 		/* __split_huge_page_refcount can run under us */
 		struct page *page_head = compound_trans_head(page);
@@ -173,6 +183,7 @@ bool __get_page_tail(struct page *page)
 	 */
 	unsigned long flags;
 	bool got = false;
+<<<<<<< HEAD
 	struct page *page_head;
 
 	/*
@@ -187,6 +198,10 @@ bool __get_page_tail(struct page *page)
 	}
 
 	page_head = compound_trans_head(page);
+=======
+	struct page *page_head = compound_trans_head(page);
+
+>>>>>>> 7175f4b... Truncated history
 	if (likely(page != page_head && get_page_unless_zero(page_head))) {
 		/*
 		 * page_head wasn't a dangling pointer but it
@@ -204,7 +219,10 @@ bool __get_page_tail(struct page *page)
 		if (unlikely(!got))
 			put_page(page_head);
 	}
+<<<<<<< HEAD
 out:
+=======
+>>>>>>> 7175f4b... Truncated history
 	return got;
 }
 EXPORT_SYMBOL(__get_page_tail);

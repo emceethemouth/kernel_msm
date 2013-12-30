@@ -24,11 +24,19 @@
  */
 void p9_release_pages(struct page **pages, int nr_pages)
 {
+<<<<<<< HEAD
 	int i;
 
 	for (i = 0; i < nr_pages; i++)
 		if (pages[i])
 			put_page(pages[i]);
+=======
+	int i = 0;
+	while (pages[i] && nr_pages--) {
+		put_page(pages[i]);
+		i++;
+	}
+>>>>>>> 7175f4b... Truncated history
 }
 EXPORT_SYMBOL(p9_release_pages);
 

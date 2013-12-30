@@ -657,6 +657,7 @@ static void cayman_gpu_init(struct radeon_device *rdev)
 		rdev->config.cayman.max_pipes_per_simd = 4;
 		rdev->config.cayman.max_tile_pipes = 2;
 		if ((rdev->pdev->device == 0x9900) ||
+<<<<<<< HEAD
 		    (rdev->pdev->device == 0x9901) ||
 		    (rdev->pdev->device == 0x9905) ||
 		    (rdev->pdev->device == 0x9906) ||
@@ -711,6 +712,22 @@ static void cayman_gpu_init(struct radeon_device *rdev)
 			rdev->config.cayman.sx_max_export_size = 128;
 			rdev->config.cayman.sx_max_export_pos_size = 32;
 			rdev->config.cayman.sx_max_export_smx_size = 96;
+=======
+		    (rdev->pdev->device == 0x9901)) {
+			rdev->config.cayman.max_simds_per_se = 6;
+			rdev->config.cayman.max_backends_per_se = 2;
+		} else if ((rdev->pdev->device == 0x9903) ||
+			   (rdev->pdev->device == 0x9904)) {
+			rdev->config.cayman.max_simds_per_se = 4;
+			rdev->config.cayman.max_backends_per_se = 2;
+		} else if ((rdev->pdev->device == 0x9990) ||
+			   (rdev->pdev->device == 0x9991)) {
+			rdev->config.cayman.max_simds_per_se = 3;
+			rdev->config.cayman.max_backends_per_se = 1;
+		} else {
+			rdev->config.cayman.max_simds_per_se = 2;
+			rdev->config.cayman.max_backends_per_se = 1;
+>>>>>>> 7175f4b... Truncated history
 		}
 		rdev->config.cayman.max_texture_channel_caches = 2;
 		rdev->config.cayman.max_gprs = 256;
@@ -718,6 +735,13 @@ static void cayman_gpu_init(struct radeon_device *rdev)
 		rdev->config.cayman.max_gs_threads = 32;
 		rdev->config.cayman.max_stack_entries = 512;
 		rdev->config.cayman.sx_num_of_sets = 8;
+<<<<<<< HEAD
+=======
+		rdev->config.cayman.sx_max_export_size = 256;
+		rdev->config.cayman.sx_max_export_pos_size = 64;
+		rdev->config.cayman.sx_max_export_smx_size = 192;
+		rdev->config.cayman.max_hw_contexts = 8;
+>>>>>>> 7175f4b... Truncated history
 		rdev->config.cayman.sq_num_cf_insts = 2;
 
 		rdev->config.cayman.sc_prim_fifo_size = 0x40;
@@ -901,6 +925,7 @@ static void cayman_gpu_init(struct radeon_device *rdev)
 
 	/* num banks is 8 on all fusion asics. 0 = 4, 1 = 8, 2 = 16 */
 	if (rdev->flags & RADEON_IS_IGP)
+<<<<<<< HEAD
 		rdev->config.cayman.tile_config |= 1 << 4;
 	else {
 		switch ((mc_arb_ramcfg & NOOFBANK_MASK) >> NOOFBANK_SHIFT) {
@@ -916,6 +941,12 @@ static void cayman_gpu_init(struct radeon_device *rdev)
 			break;
 		}
 	}
+=======
+		rdev->config.evergreen.tile_config |= 1 << 4;
+	else
+		rdev->config.cayman.tile_config |=
+			((mc_arb_ramcfg & NOOFBANK_MASK) >> NOOFBANK_SHIFT) << 4;
+>>>>>>> 7175f4b... Truncated history
 	rdev->config.cayman.tile_config |=
 		((gb_addr_config & PIPE_INTERLEAVE_SIZE_MASK) >> PIPE_INTERLEAVE_SIZE_SHIFT) << 8;
 	rdev->config.cayman.tile_config |=
@@ -925,8 +956,11 @@ static void cayman_gpu_init(struct radeon_device *rdev)
 	WREG32(GB_BACKEND_MAP, gb_backend_map);
 	WREG32(GB_ADDR_CONFIG, gb_addr_config);
 	WREG32(DMIF_ADDR_CONFIG, gb_addr_config);
+<<<<<<< HEAD
 	if (ASIC_IS_DCE6(rdev))
 		WREG32(DMIF_ADDR_CALC, gb_addr_config);
+=======
+>>>>>>> 7175f4b... Truncated history
 	WREG32(HDP_ADDR_CONFIG, gb_addr_config);
 
 	/* primary versions */
@@ -1626,12 +1660,15 @@ static int cayman_startup(struct radeon_device *rdev)
 	}
 
 	/* Enable IRQ */
+<<<<<<< HEAD
 	if (!rdev->irq.installed) {
 		r = radeon_irq_kms_init(rdev);
 		if (r)
 			return r;
 	}
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	r = r600_irq_init(rdev);
 	if (r) {
 		DRM_ERROR("radeon: IH init failed (%d).\n", r);
@@ -1762,6 +1799,13 @@ int cayman_init(struct radeon_device *rdev)
 	if (r)
 		return r;
 
+<<<<<<< HEAD
+=======
+	r = radeon_irq_kms_init(rdev);
+	if (r)
+		return r;
+
+>>>>>>> 7175f4b... Truncated history
 	ring->ring_obj = NULL;
 	r600_ring_init(rdev, ring, 1024 * 1024);
 

@@ -70,6 +70,7 @@
 			interrupt-parent = <&gpio2>;
 			interrupts = <31>;
 			reg-io-width = <4>;
+<<<<<<< HEAD
 			/*
 			 * VDD33A and VDDVARIO of LAN9220 are supplied by
 			 * SW4_3V3 of LTC3589.  Before the regulator driver
@@ -78,10 +79,13 @@
 			 */
 			vdd33a-supply = <&reg_3p3v>;
 			vddvario-supply = <&reg_3p3v>;
+=======
+>>>>>>> 7175f4b... Truncated history
 			smsc,irq-push-pull;
 		};
 	};
 
+<<<<<<< HEAD
 	regulators {
 		compatible = "simple-bus";
 
@@ -94,6 +98,8 @@
 		};
 	};
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	gpio-keys {
 		compatible = "gpio-keys";
 

@@ -4010,6 +4010,7 @@ static int taiko_volatile(struct snd_soc_codec *ssc, unsigned int reg)
 	return 0;
 }
 
+<<<<<<< HEAD
 #ifndef CONFIG_SOUND_CONTROL_HAX_3_GPL 
 static
 #endif
@@ -4017,6 +4018,11 @@ unsigned int taiko_read(struct snd_soc_codec *codec,
 				unsigned int reg)
 {
 	unsigned int val;
+=======
+static int taiko_write(struct snd_soc_codec *codec, unsigned int reg,
+	unsigned int value)
+{
+>>>>>>> 7175f4b... Truncated history
 	int ret;
 
 	if (reg == SND_SOC_NOPM)
@@ -4024,6 +4030,7 @@ unsigned int taiko_read(struct snd_soc_codec *codec,
 
 	BUG_ON(reg > TAIKO_MAX_REGISTER);
 
+<<<<<<< HEAD
 	if (!taiko_volatile(codec, reg) && taiko_readable(codec, reg) &&
 		reg < codec->driver->reg_cache_size) {
 		ret = snd_soc_cache_read(codec, reg, &val);
@@ -4055,12 +4062,29 @@ int taiko_write(struct snd_soc_codec *codec, unsigned int reg,
 #ifdef CONFIG_SOUND_CONTROL_HAX_3_GPL
 	int val;
 #endif
+=======
+	if (!taiko_volatile(codec, reg)) {
+		ret = snd_soc_cache_write(codec, reg, value);
+		if (ret != 0)
+			dev_err(codec->dev, "Cache write to %x failed: %d\n",
+				reg, ret);
+	}
+
+	return wcd9xxx_reg_write(codec->control_data, reg, value);
+}
+static unsigned int taiko_read(struct snd_soc_codec *codec,
+				unsigned int reg)
+{
+	unsigned int val;
+	int ret;
+>>>>>>> 7175f4b... Truncated history
 
 	if (reg == SND_SOC_NOPM)
 		return 0;
 
 	BUG_ON(reg > TAIKO_MAX_REGISTER);
 
+<<<<<<< HEAD
 	if (!taiko_volatile(codec, reg)) {
 		ret = snd_soc_cache_write(codec, reg, value);
 		if (ret != 0)
@@ -4081,6 +4105,21 @@ int taiko_write(struct snd_soc_codec *codec, unsigned int reg,
 #ifdef CONFIG_SOUND_CONTROL_HAX_3_GPL
 EXPORT_SYMBOL(taiko_write);
 #endif
+=======
+	if (!taiko_volatile(codec, reg) && taiko_readable(codec, reg) &&
+		reg < codec->driver->reg_cache_size) {
+		ret = snd_soc_cache_read(codec, reg, &val);
+		if (ret >= 0) {
+			return val;
+		} else
+			dev_err(codec->dev, "Cache read from %x failed: %d\n",
+				reg, ret);
+	}
+
+	val = wcd9xxx_reg_read(codec->control_data, reg);
+	return val;
+}
+>>>>>>> 7175f4b... Truncated history
 
 static int taiko_startup(struct snd_pcm_substream *substream,
 		struct snd_soc_dai *dai)
@@ -6391,11 +6430,14 @@ static struct regulator *taiko_codec_find_regulator(struct snd_soc_codec *codec,
 	return NULL;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_SOUND_CONTROL_HAX_3_GPL
 struct snd_soc_codec *fauxsound_codec_ptr;
 EXPORT_SYMBOL(fauxsound_codec_ptr);
 #endif
 
+=======
+>>>>>>> 7175f4b... Truncated history
 static int taiko_codec_probe(struct snd_soc_codec *codec)
 {
 	struct wcd9xxx *control;
@@ -6408,11 +6450,14 @@ static int taiko_codec_probe(struct snd_soc_codec *codec)
 	void *ptr = NULL;
 	struct wcd9xxx *core = dev_get_drvdata(codec->dev->parent);
 
+<<<<<<< HEAD
 #ifdef CONFIG_SOUND_CONTROL_HAX_3_GPL
 	pr_info("taiko codec probe...\n");
 	fauxsound_codec_ptr = codec;
 #endif
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	codec->control_data = dev_get_drvdata(codec->dev->parent);
 	control = codec->control_data;
 

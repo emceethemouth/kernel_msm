@@ -413,6 +413,7 @@ static void raid1_end_write_request(struct bio *bio, int error)
 
 		r1_bio->bios[mirror] = NULL;
 		to_put = bio;
+<<<<<<< HEAD
 		/*
 		 * Do not set R1BIO_Uptodate if the current device is
 		 * rebuilding or Faulty. This is because we cannot use
@@ -424,6 +425,9 @@ static void raid1_end_write_request(struct bio *bio, int error)
 		if (test_bit(In_sync, &conf->mirrors[mirror].rdev->flags) &&
 		    !test_bit(Faulty, &conf->mirrors[mirror].rdev->flags))
 			set_bit(R1BIO_Uptodate, &r1_bio->state);
+=======
+		set_bit(R1BIO_Uptodate, &r1_bio->state);
+>>>>>>> 7175f4b... Truncated history
 
 		/* Maybe we can clear some bad blocks. */
 		if (is_badblock(conf->mirrors[mirror].rdev,
@@ -812,17 +816,29 @@ static void allow_barrier(struct r1conf *conf)
 	wake_up(&conf->wait_barrier);
 }
 
+<<<<<<< HEAD
 static void freeze_array(struct r1conf *conf, int extra)
+=======
+static void freeze_array(struct r1conf *conf)
+>>>>>>> 7175f4b... Truncated history
 {
 	/* stop syncio and normal IO and wait for everything to
 	 * go quite.
 	 * We increment barrier and nr_waiting, and then
+<<<<<<< HEAD
 	 * wait until nr_pending match nr_queued+extra
+=======
+	 * wait until nr_pending match nr_queued+1
+>>>>>>> 7175f4b... Truncated history
 	 * This is called in the context of one normal IO request
 	 * that has failed. Thus any sync request that might be pending
 	 * will be blocked by nr_pending, and we need to wait for
 	 * pending IO requests to complete or be queued for re-try.
+<<<<<<< HEAD
 	 * Thus the number queued (nr_queued) plus this request (extra)
+=======
+	 * Thus the number queued (nr_queued) plus this request (1)
+>>>>>>> 7175f4b... Truncated history
 	 * must match the number of pending IOs (nr_pending) before
 	 * we continue.
 	 */
@@ -830,7 +846,11 @@ static void freeze_array(struct r1conf *conf, int extra)
 	conf->barrier++;
 	conf->nr_waiting++;
 	wait_event_lock_irq(conf->wait_barrier,
+<<<<<<< HEAD
 			    conf->nr_pending == conf->nr_queued+extra,
+=======
+			    conf->nr_pending == conf->nr_queued+1,
+>>>>>>> 7175f4b... Truncated history
 			    conf->resync_lock,
 			    flush_pending_writes(conf));
 	spin_unlock_irq(&conf->resync_lock);
@@ -1357,7 +1377,10 @@ static int raid1_spare_active(struct mddev *mddev)
 			}
 		}
 		if (rdev
+<<<<<<< HEAD
 		    && rdev->recovery_offset == MaxSector
+=======
+>>>>>>> 7175f4b... Truncated history
 		    && !test_bit(Faulty, &rdev->flags)
 		    && !test_and_set_bit(In_sync, &rdev->flags)) {
 			count++;
@@ -1433,8 +1456,13 @@ static int raid1_add_disk(struct mddev *mddev, struct md_rdev *rdev)
 		 * we wait for all outstanding requests to complete.
 		 */
 		synchronize_sched();
+<<<<<<< HEAD
 		freeze_array(conf, 0);
 		unfreeze_array(conf);
+=======
+		raise_barrier(conf);
+		lower_barrier(conf);
+>>>>>>> 7175f4b... Truncated history
 		clear_bit(Unmerged, &rdev->flags);
 	}
 	md_integrity_add_rdev(rdev, mddev);
@@ -1482,11 +1510,19 @@ static int raid1_remove_disk(struct mddev *mddev, struct md_rdev *rdev)
 			 */
 			struct md_rdev *repl =
 				conf->mirrors[conf->raid_disks + number].rdev;
+<<<<<<< HEAD
 			freeze_array(conf, 0);
 			clear_bit(Replacement, &repl->flags);
 			p->rdev = repl;
 			conf->mirrors[conf->raid_disks + number].rdev = NULL;
 			unfreeze_array(conf);
+=======
+			raise_barrier(conf);
+			clear_bit(Replacement, &repl->flags);
+			p->rdev = repl;
+			conf->mirrors[conf->raid_disks + number].rdev = NULL;
+			lower_barrier(conf);
+>>>>>>> 7175f4b... Truncated history
 			clear_bit(WantReplacement, &rdev->flags);
 		} else
 			clear_bit(WantReplacement, &rdev->flags);
@@ -2095,7 +2131,11 @@ static void handle_read_error(struct r1conf *conf, struct r1bio *r1_bio)
 	 * frozen
 	 */
 	if (mddev->ro == 0) {
+<<<<<<< HEAD
 		freeze_array(conf, 1);
+=======
+		freeze_array(conf);
+>>>>>>> 7175f4b... Truncated history
 		fix_read_error(conf, r1_bio->read_disk,
 			       r1_bio->sector, r1_bio->sectors);
 		unfreeze_array(conf);
@@ -2842,7 +2882,11 @@ static int raid1_reshape(struct mddev *mddev)
 		return -ENOMEM;
 	}
 
+<<<<<<< HEAD
 	freeze_array(conf, 0);
+=======
+	raise_barrier(conf);
+>>>>>>> 7175f4b... Truncated history
 
 	/* ok, everything is stopped */
 	oldpool = conf->r1bio_pool;
@@ -2874,7 +2918,11 @@ static int raid1_reshape(struct mddev *mddev)
 	mddev->delta_disks = 0;
 
 	conf->last_used = 0; /* just make sure it is in-range */
+<<<<<<< HEAD
 	unfreeze_array(conf);
+=======
+	lower_barrier(conf);
+>>>>>>> 7175f4b... Truncated history
 
 	set_bit(MD_RECOVERY_NEEDED, &mddev->recovery);
 	md_wakeup_thread(mddev->thread);

@@ -2045,9 +2045,12 @@ sub process_file($) {
 
     $section_counter = 0;
     while (<IN>) {
+<<<<<<< HEAD
 	while (s/\\\s*$//) {
 	    $_ .= <IN>;
 	}
+=======
+>>>>>>> 7175f4b... Truncated history
 	if ($state == 0) {
 	    if (/$doc_start/o) {
 		$state = 1;		# next line is always the function name

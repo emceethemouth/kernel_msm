@@ -3493,6 +3493,7 @@ static int megasas_init_fw(struct megasas_instance *instance)
 		break;
 	}
 
+<<<<<<< HEAD
 	if (megasas_transition_to_ready(instance, 0)) {
 		atomic_set(&instance->fw_reset_no_pci_access, 1);
 		instance->instancet->adp_reset
@@ -3508,6 +3509,13 @@ static int megasas_init_fw(struct megasas_instance *instance)
 		if (megasas_transition_to_ready(instance, 0))
 			goto fail_ready_state;
 	}
+=======
+	/*
+	 * We expect the FW state to be READY
+	 */
+	if (megasas_transition_to_ready(instance, 0))
+		goto fail_ready_state;
+>>>>>>> 7175f4b... Truncated history
 
 	/* Check if MSI-X is supported while in ready state */
 	msix_enable = (instance->instancet->read_fw_status_reg(reg_set) &
@@ -4076,6 +4084,10 @@ megasas_probe_one(struct pci_dev *pdev, const struct pci_device_id *id)
 	spin_lock_init(&instance->cmd_pool_lock);
 	spin_lock_init(&instance->hba_lock);
 	spin_lock_init(&instance->completion_lock);
+<<<<<<< HEAD
+=======
+	spin_lock_init(&poll_aen_lock);
+>>>>>>> 7175f4b... Truncated history
 
 	mutex_init(&instance->aen_mutex);
 	mutex_init(&instance->reset_mutex);
@@ -4827,12 +4839,19 @@ megasas_mgmt_fw_ioctl(struct megasas_instance *instance,
 				    sense, sense_handle);
 	}
 
+<<<<<<< HEAD
 	for (i = 0; i < ioc->sge_count; i++) {
 		if (kbuff_arr[i])
 			dma_free_coherent(&instance->pdev->dev,
 					  kern_sge32[i].length,
 					  kbuff_arr[i],
 					  kern_sge32[i].phys_addr);
+=======
+	for (i = 0; i < ioc->sge_count && kbuff_arr[i]; i++) {
+		dma_free_coherent(&instance->pdev->dev,
+				    kern_sge32[i].length,
+				    kbuff_arr[i], kern_sge32[i].phys_addr);
+>>>>>>> 7175f4b... Truncated history
 	}
 
 	megasas_return_cmd(instance, cmd);
@@ -5403,8 +5422,11 @@ static int __init megasas_init(void)
 	printk(KERN_INFO "megasas: %s %s\n", MEGASAS_VERSION,
 	       MEGASAS_EXT_VERSION);
 
+<<<<<<< HEAD
 	spin_lock_init(&poll_aen_lock);
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	support_poll_for_event = 2;
 	support_device_change = 1;
 

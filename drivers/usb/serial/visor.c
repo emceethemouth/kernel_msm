@@ -596,6 +596,7 @@ static int treo_attach(struct usb_serial *serial)
 	*/
 #define COPY_PORT(dest, src)						\
 	do { \
+<<<<<<< HEAD
 		int i;							\
 									\
 		for (i = 0; i < ARRAY_SIZE(src->read_urbs); ++i) {	\
@@ -609,6 +610,12 @@ static int treo_attach(struct usb_serial *serial)
 		dest->bulk_in_size = src->bulk_in_size;			\
 		dest->interrupt_in_urb = src->interrupt_in_urb;		\
 		dest->interrupt_in_urb->context = dest;			\
+=======
+		dest->read_urb = src->read_urb;				\
+		dest->bulk_in_endpointAddress = src->bulk_in_endpointAddress;\
+		dest->bulk_in_buffer = src->bulk_in_buffer;		\
+		dest->interrupt_in_urb = src->interrupt_in_urb;		\
+>>>>>>> 7175f4b... Truncated history
 		dest->interrupt_in_endpointAddress = \
 					src->interrupt_in_endpointAddress;\
 		dest->interrupt_in_buffer = src->interrupt_in_buffer;	\

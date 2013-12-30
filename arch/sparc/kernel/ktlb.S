@@ -25,10 +25,18 @@ kvmap_itlb:
 	 */
 kvmap_itlb_4v:
 
+<<<<<<< HEAD
 	/* Catch kernel NULL pointer calls.  */
 	sethi		%hi(PAGE_SIZE), %g5
 	cmp		%g4, %g5
 	blu,pn		%xcc, kvmap_itlb_longpath
+=======
+kvmap_itlb_nonlinear:
+	/* Catch kernel NULL pointer calls.  */
+	sethi		%hi(PAGE_SIZE), %g5
+	cmp		%g4, %g5
+	bleu,pn		%xcc, kvmap_dtlb_longpath
+>>>>>>> 7175f4b... Truncated history
 	 nop
 
 	KERN_TSB_LOOKUP_TL1(%g4, %g6, %g5, %g1, %g2, %g3, kvmap_itlb_load)

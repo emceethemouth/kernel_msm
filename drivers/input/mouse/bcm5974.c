@@ -79,10 +79,13 @@
 #define USB_DEVICE_ID_APPLE_WELLSPRING5A_ANSI	0x0252
 #define USB_DEVICE_ID_APPLE_WELLSPRING5A_ISO	0x0253
 #define USB_DEVICE_ID_APPLE_WELLSPRING5A_JIS	0x0254
+<<<<<<< HEAD
 /* MacbookPro10,1 (unibody, June 2012) */
 #define USB_DEVICE_ID_APPLE_WELLSPRING7_ANSI	0x0262
 #define USB_DEVICE_ID_APPLE_WELLSPRING7_ISO	0x0263
 #define USB_DEVICE_ID_APPLE_WELLSPRING7_JIS	0x0264
+=======
+>>>>>>> 7175f4b... Truncated history
 
 #define BCM5974_DEVICE(prod) {					\
 	.match_flags = (USB_DEVICE_ID_MATCH_DEVICE |		\
@@ -132,10 +135,13 @@ static const struct usb_device_id bcm5974_table[] = {
 	BCM5974_DEVICE(USB_DEVICE_ID_APPLE_WELLSPRING5A_ANSI),
 	BCM5974_DEVICE(USB_DEVICE_ID_APPLE_WELLSPRING5A_ISO),
 	BCM5974_DEVICE(USB_DEVICE_ID_APPLE_WELLSPRING5A_JIS),
+<<<<<<< HEAD
 	/* MacbookPro10,1 */
 	BCM5974_DEVICE(USB_DEVICE_ID_APPLE_WELLSPRING7_ANSI),
 	BCM5974_DEVICE(USB_DEVICE_ID_APPLE_WELLSPRING7_ISO),
 	BCM5974_DEVICE(USB_DEVICE_ID_APPLE_WELLSPRING7_JIS),
+=======
+>>>>>>> 7175f4b... Truncated history
 	/* Terminating entry */
 	{}
 };
@@ -362,6 +368,7 @@ static const struct bcm5974_config bcm5974_config_table[] = {
 		{ DIM_X, DIM_X / SN_COORD, -4620, 5140 },
 		{ DIM_Y, DIM_Y / SN_COORD, -150, 6600 }
 	},
+<<<<<<< HEAD
 	{
 		USB_DEVICE_ID_APPLE_WELLSPRING7_ANSI,
 		USB_DEVICE_ID_APPLE_WELLSPRING7_ISO,
@@ -374,6 +381,8 @@ static const struct bcm5974_config bcm5974_config_table[] = {
 		{ DIM_X, DIM_X / SN_COORD, -4750, 5280 },
 		{ DIM_Y, DIM_Y / SN_COORD, -150, 6730 }
 	},
+=======
+>>>>>>> 7175f4b... Truncated history
 	{}
 };
 

@@ -206,7 +206,11 @@ static const struct usb_device_id moschip_port_id_table[] = {
 	{}			/* terminating entry */
 };
 
+<<<<<<< HEAD
 static const struct usb_device_id moschip_id_table_combined[] = {
+=======
+static const struct usb_device_id moschip_id_table_combined[] __devinitconst = {
+>>>>>>> 7175f4b... Truncated history
 	{USB_DEVICE(USB_VENDOR_ID_MOSCHIP, MOSCHIP_DEVICE_ID_7840)},
 	{USB_DEVICE(USB_VENDOR_ID_MOSCHIP, MOSCHIP_DEVICE_ID_7820)},
 	{USB_DEVICE(USB_VENDOR_ID_BANDB, BANDB_DEVICE_ID_USO9ML2_2)},
@@ -235,10 +239,18 @@ struct moschip_port {
 	int port_num;		/*Actual port number in the device(1,2,etc) */
 	struct urb *write_urb;	/* write URB for this port */
 	struct urb *read_urb;	/* read URB for this port */
+<<<<<<< HEAD
+=======
+	struct urb *int_urb;
+>>>>>>> 7175f4b... Truncated history
 	__u8 shadowLCR;		/* last LCR value received */
 	__u8 shadowMCR;		/* last MCR value received */
 	char open;
 	char open_ports;
+<<<<<<< HEAD
+=======
+	char zombie;
+>>>>>>> 7175f4b... Truncated history
 	wait_queue_head_t wait_chase;	/* for handling sleeping while waiting for chase to finish */
 	wait_queue_head_t delta_msr_wait;	/* for handling sleeping while waiting for msr change to happen */
 	int delta_msr_cond;
@@ -503,6 +515,10 @@ static void mos7840_control_callback(struct urb *urb)
 	unsigned char *data;
 	struct moschip_port *mos7840_port;
 	__u8 regval = 0x0;
+<<<<<<< HEAD
+=======
+	int result = 0;
+>>>>>>> 7175f4b... Truncated history
 	int status = urb->status;
 
 	mos7840_port = urb->context;
@@ -521,7 +537,11 @@ static void mos7840_control_callback(struct urb *urb)
 	default:
 		dbg("%s - nonzero urb status received: %d", __func__,
 		    status);
+<<<<<<< HEAD
 		return;
+=======
+		goto exit;
+>>>>>>> 7175f4b... Truncated history
 	}
 
 	dbg("%s urb buffer size is %d", __func__, urb->actual_length);
@@ -534,6 +554,20 @@ static void mos7840_control_callback(struct urb *urb)
 		mos7840_handle_new_msr(mos7840_port, regval);
 	else if (mos7840_port->MsrLsr == 1)
 		mos7840_handle_new_lsr(mos7840_port, regval);
+<<<<<<< HEAD
+=======
+
+exit:
+	spin_lock(&mos7840_port->pool_lock);
+	if (!mos7840_port->zombie)
+		result = usb_submit_urb(mos7840_port->int_urb, GFP_ATOMIC);
+	spin_unlock(&mos7840_port->pool_lock);
+	if (result) {
+		dev_err(&urb->dev->dev,
+			"%s - Error %d submitting interrupt urb\n",
+			__func__, result);
+	}
+>>>>>>> 7175f4b... Truncated history
 }
 
 static int mos7840_get_reg(struct moschip_port *mcs, __u16 Wval, __u16 reg,
@@ -641,7 +675,18 @@ static void mos7840_interrupt_callback(struct urb *urb)
 					wreg = MODEM_STATUS_REGISTER;
 					break;
 				}
+<<<<<<< HEAD
 				rv = mos7840_get_reg(mos7840_port, wval, wreg, &Data);
+=======
+				spin_lock(&mos7840_port->pool_lock);
+				if (!mos7840_port->zombie) {
+					rv = mos7840_get_reg(mos7840_port, wval, wreg, &Data);
+				} else {
+					spin_unlock(&mos7840_port->pool_lock);
+					return;
+				}
+				spin_unlock(&mos7840_port->pool_lock);
+>>>>>>> 7175f4b... Truncated history
 			}
 		}
 	}
@@ -1168,12 +1213,18 @@ static int mos7840_chars_in_buffer(struct tty_struct *tty)
 	}
 
 	spin_lock_irqsave(&mos7840_port->pool_lock, flags);
+<<<<<<< HEAD
 	for (i = 0; i < NUM_URBS; ++i) {
 		if (mos7840_port->busy[i]) {
 			struct urb *urb = mos7840_port->write_urb_pool[i];
 			chars += urb->transfer_buffer_length;
 		}
 	}
+=======
+	for (i = 0; i < NUM_URBS; ++i)
+		if (mos7840_port->busy[i])
+			chars += URB_TRANSFER_BUFFER_SIZE;
+>>>>>>> 7175f4b... Truncated history
 	spin_unlock_irqrestore(&mos7840_port->pool_lock, flags);
 	dbg("%s - returns %d", __func__, chars);
 	return chars;
@@ -1664,11 +1715,15 @@ static int mos7840_tiocmget(struct tty_struct *tty)
 		return -ENODEV;
 
 	status = mos7840_get_uart_reg(port, MODEM_STATUS_REGISTER, &msr);
+<<<<<<< HEAD
 	if (status != 1)
 		return -EIO;
 	status = mos7840_get_uart_reg(port, MODEM_CONTROL_REGISTER, &mcr);
 	if (status != 1)
 		return -EIO;
+=======
+	status = mos7840_get_uart_reg(port, MODEM_CONTROL_REGISTER, &mcr);
+>>>>>>> 7175f4b... Truncated history
 	result = ((mcr & MCR_DTR) ? TIOCM_DTR : 0)
 	    | ((mcr & MCR_RTS) ? TIOCM_RTS : 0)
 	    | ((mcr & MCR_LOOPBACK) ? TIOCM_LOOP : 0)
@@ -1962,6 +2017,7 @@ static void mos7840_change_port_settings(struct tty_struct *tty,
 	iflag = tty->termios->c_iflag;
 
 	/* Change the number of bits */
+<<<<<<< HEAD
 	switch (cflag & CSIZE) {
 	case CS5:
 		lData = LCR_BITS_5;
@@ -1981,6 +2037,27 @@ static void mos7840_change_port_settings(struct tty_struct *tty,
 		break;
 	}
 
+=======
+	if (cflag & CSIZE) {
+		switch (cflag & CSIZE) {
+		case CS5:
+			lData = LCR_BITS_5;
+			break;
+
+		case CS6:
+			lData = LCR_BITS_6;
+			break;
+
+		case CS7:
+			lData = LCR_BITS_7;
+			break;
+		default:
+		case CS8:
+			lData = LCR_BITS_8;
+			break;
+		}
+	}
+>>>>>>> 7175f4b... Truncated history
 	/* Change the Parity bit */
 	if (cflag & PARENB) {
 		if (cflag & PARODD) {
@@ -2573,6 +2650,10 @@ error:
 		kfree(mos7840_port->ctrl_buf);
 		usb_free_urb(mos7840_port->control_urb);
 		kfree(mos7840_port);
+<<<<<<< HEAD
+=======
+		serial->port[i] = NULL;
+>>>>>>> 7175f4b... Truncated history
 	}
 	return status;
 }
@@ -2585,6 +2666,10 @@ error:
 static void mos7840_disconnect(struct usb_serial *serial)
 {
 	int i;
+<<<<<<< HEAD
+=======
+	unsigned long flags;
+>>>>>>> 7175f4b... Truncated history
 	struct moschip_port *mos7840_port;
 	dbg("%s", " disconnect :entering..........");
 
@@ -2602,6 +2687,12 @@ static void mos7840_disconnect(struct usb_serial *serial)
 		mos7840_port = mos7840_get_port_private(serial->port[i]);
 		dbg ("mos7840_port %d = %p", i, mos7840_port);
 		if (mos7840_port) {
+<<<<<<< HEAD
+=======
+			spin_lock_irqsave(&mos7840_port->pool_lock, flags);
+			mos7840_port->zombie = 1;
+			spin_unlock_irqrestore(&mos7840_port->pool_lock, flags);
+>>>>>>> 7175f4b... Truncated history
 			usb_kill_urb(mos7840_port->control_urb);
 		}
 	}
@@ -2635,7 +2726,10 @@ static void mos7840_release(struct usb_serial *serial)
 		mos7840_port = mos7840_get_port_private(serial->port[i]);
 		dbg("mos7840_port %d = %p", i, mos7840_port);
 		if (mos7840_port) {
+<<<<<<< HEAD
 			usb_free_urb(mos7840_port->control_urb);
+=======
+>>>>>>> 7175f4b... Truncated history
 			kfree(mos7840_port->ctrl_buf);
 			kfree(mos7840_port->dr);
 			kfree(mos7840_port);

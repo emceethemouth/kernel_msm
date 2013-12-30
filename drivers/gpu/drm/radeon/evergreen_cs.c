@@ -52,7 +52,10 @@ struct evergreen_cs_track {
 	u32			cb_color_view[12];
 	u32			cb_color_pitch[12];
 	u32			cb_color_slice[12];
+<<<<<<< HEAD
 	u32			cb_color_slice_idx[12];
+=======
+>>>>>>> 7175f4b... Truncated history
 	u32			cb_color_attrib[12];
 	u32			cb_color_cmask_slice[8];/* unused */
 	u32			cb_color_fmask_slice[8];/* unused */
@@ -128,14 +131,21 @@ static void evergreen_cs_track_init(struct evergreen_cs_track *track)
 		track->cb_color_info[i] = 0;
 		track->cb_color_view[i] = 0xFFFFFFFF;
 		track->cb_color_pitch[i] = 0;
+<<<<<<< HEAD
 		track->cb_color_slice[i] = 0xfffffff;
 		track->cb_color_slice_idx[i] = 0;
+=======
+		track->cb_color_slice[i] = 0;
+>>>>>>> 7175f4b... Truncated history
 	}
 	track->cb_target_mask = 0xFFFFFFFF;
 	track->cb_shader_mask = 0xFFFFFFFF;
 	track->cb_dirty = true;
 
+<<<<<<< HEAD
 	track->db_depth_slice = 0xffffffff;
+=======
+>>>>>>> 7175f4b... Truncated history
 	track->db_depth_view = 0xFFFFC000;
 	track->db_depth_size = 0xFFFFFFFF;
 	track->db_depth_control = 0xFFFFFFFF;
@@ -253,9 +263,16 @@ static int evergreen_surface_check_2d(struct radeon_cs_parser *p,
 {
 	struct evergreen_cs_track *track = p->track;
 	unsigned palign, halign, tileb, slice_pt;
+<<<<<<< HEAD
 	unsigned mtile_pr, mtile_ps, mtileb;
 
 	tileb = 64 * surf->bpe * surf->nsamples;
+=======
+
+	tileb = 64 * surf->bpe * surf->nsamples;
+	palign = track->group_size / (8 * surf->bpe * surf->nsamples);
+	palign = MAX(8, palign);
+>>>>>>> 7175f4b... Truncated history
 	slice_pt = 1;
 	if (tileb > surf->tsplit) {
 		slice_pt = tileb / surf->tsplit;
@@ -264,10 +281,14 @@ static int evergreen_surface_check_2d(struct radeon_cs_parser *p,
 	/* macro tile width & height */
 	palign = (8 * surf->bankw * track->npipes) * surf->mtilea;
 	halign = (8 * surf->bankh * surf->nbanks) / surf->mtilea;
+<<<<<<< HEAD
 	mtileb = (palign / 8) * (halign / 8) * tileb;;
 	mtile_pr = surf->nbx / palign;
 	mtile_ps = (mtile_pr * surf->nby) / halign;
 	surf->layer_size = mtile_ps * mtileb * slice_pt;
+=======
+	surf->layer_size = surf->nbx * surf->nby * surf->bpe * slice_pt;
+>>>>>>> 7175f4b... Truncated history
 	surf->base_align = (palign / 8) * (halign / 8) * tileb;
 	surf->palign = palign;
 	surf->halign = halign;
@@ -439,6 +460,7 @@ static int evergreen_cs_track_validate_cb(struct radeon_cs_parser *p, unsigned i
 
 	offset += surf.layer_size * mslice;
 	if (offset > radeon_bo_size(track->cb_color_bo[id])) {
+<<<<<<< HEAD
 		/* old ddx are broken they allocate bo with w*h*bpp but
 		 * program slice with ALIGN(h, 8), catch this and patch
 		 * command stream.
@@ -472,6 +494,8 @@ static int evergreen_cs_track_validate_cb(struct radeon_cs_parser *p, unsigned i
 				}
 			}
 		}
+=======
+>>>>>>> 7175f4b... Truncated history
 		dev_warn(p->dev, "%s:%d cb[%d] bo too small (layer size %d, "
 			 "offset %d, max layer %d, bo size %ld, slice %d)\n",
 			 __func__, __LINE__, id, surf.layer_size,
@@ -484,7 +508,10 @@ static int evergreen_cs_track_validate_cb(struct radeon_cs_parser *p, unsigned i
 			surf.tsplit, surf.mtilea);
 		return -EINVAL;
 	}
+<<<<<<< HEAD
 old_ddx_ok:
+=======
+>>>>>>> 7175f4b... Truncated history
 
 	return 0;
 }
@@ -1571,7 +1598,10 @@ static int evergreen_cs_check_reg(struct radeon_cs_parser *p, u32 reg, u32 idx)
 	case CB_COLOR7_SLICE:
 		tmp = (reg - CB_COLOR0_SLICE) / 0x3c;
 		track->cb_color_slice[tmp] = radeon_get_ib_value(p, idx);
+<<<<<<< HEAD
 		track->cb_color_slice_idx[tmp] = idx;
+=======
+>>>>>>> 7175f4b... Truncated history
 		track->cb_dirty = true;
 		break;
 	case CB_COLOR8_SLICE:
@@ -1580,7 +1610,10 @@ static int evergreen_cs_check_reg(struct radeon_cs_parser *p, u32 reg, u32 idx)
 	case CB_COLOR11_SLICE:
 		tmp = ((reg - CB_COLOR8_SLICE) / 0x1c) + 8;
 		track->cb_color_slice[tmp] = radeon_get_ib_value(p, idx);
+<<<<<<< HEAD
 		track->cb_color_slice_idx[tmp] = idx;
+=======
+>>>>>>> 7175f4b... Truncated history
 		track->cb_dirty = true;
 		break;
 	case CB_COLOR0_ATTRIB:
@@ -2670,11 +2703,15 @@ static bool evergreen_vm_reg_valid(u32 reg)
 
 	/* check config regs */
 	switch (reg) {
+<<<<<<< HEAD
 	case WAIT_UNTIL:
 	case GRBM_GFX_INDEX:
 	case CP_STRMOUT_CNTL:
 	case CP_COHER_CNTL:
 	case CP_COHER_SIZE:
+=======
+	case GRBM_GFX_INDEX:
+>>>>>>> 7175f4b... Truncated history
 	case VGT_VTX_VECT_EJECT_REG:
 	case VGT_CACHE_INVALIDATION:
 	case VGT_GS_VERTEX_REUSE:
@@ -2779,7 +2816,10 @@ static bool evergreen_vm_reg_valid(u32 reg)
 	case CAYMAN_SQ_EX_ALLOC_TABLE_SLOTS:
 		return true;
 	default:
+<<<<<<< HEAD
 		DRM_ERROR("Invalid register 0x%x in CS\n", reg);
+=======
+>>>>>>> 7175f4b... Truncated history
 		return false;
 	}
 }

@@ -25,7 +25,10 @@
 #include <linux/elfcore.h>
 #include <linux/mqueue.h>
 #include <linux/reboot.h>
+<<<<<<< HEAD
 #include <linux/rcupdate.h>
+=======
+>>>>>>> 7175f4b... Truncated history
 
 //#define DEBUG
 
@@ -103,7 +106,10 @@ void cpu_idle (void)
 {
 	/* endless idle loop with no priority at all */
 	while (1) {
+<<<<<<< HEAD
 		rcu_idle_enter();
+=======
+>>>>>>> 7175f4b... Truncated history
 		while (!need_resched()) {
 			void (*idle)(void);
 			/*
@@ -116,7 +122,10 @@ void cpu_idle (void)
 				idle = default_idle;
 			idle();
 		}
+<<<<<<< HEAD
 		rcu_idle_exit();
+=======
+>>>>>>> 7175f4b... Truncated history
 		schedule_preempt_disabled();
 	}
 }

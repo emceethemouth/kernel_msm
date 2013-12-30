@@ -191,7 +191,11 @@ int bnx2x_tx_int(struct bnx2x *bp, struct bnx2x_fp_txdata *txdata)
 
 		if ((netif_tx_queue_stopped(txq)) &&
 		    (bp->state == BNX2X_STATE_OPEN) &&
+<<<<<<< HEAD
 		    (bnx2x_tx_avail(bp, txdata) >= MAX_SKB_FRAGS + 4))
+=======
+		    (bnx2x_tx_avail(bp, txdata) >= MAX_SKB_FRAGS + 3))
+>>>>>>> 7175f4b... Truncated history
 			netif_tx_wake_queue(txq);
 
 		__netif_tx_unlock(txq);
@@ -547,7 +551,10 @@ static inline void bnx2x_tpa_stop(struct bnx2x *bp, struct bnx2x_fastpath *fp,
 					 skb, cqe, cqe_idx)) {
 			if (tpa_info->parsing_flags & PARSING_FLAGS_VLAN)
 				__vlan_hwaccel_put_tag(skb, tpa_info->vlan_tag);
+<<<<<<< HEAD
 			skb_record_rx_queue(skb, fp->rx_queue);
+=======
+>>>>>>> 7175f4b... Truncated history
 			napi_gro_receive(&fp->napi, skb);
 		} else {
 			DP(NETIF_MSG_RX_STATUS,
@@ -569,6 +576,7 @@ drop:
 	fp->eth_q_stats.rx_skb_alloc_failed++;
 }
 
+<<<<<<< HEAD
 static void bnx2x_csum_validate(struct sk_buff *skb, union eth_rx_cqe *cqe,
 				struct bnx2x_fastpath *fp)
 {
@@ -590,6 +598,8 @@ static void bnx2x_csum_validate(struct sk_buff *skb, union eth_rx_cqe *cqe,
 	else
 		skb->ip_summed = CHECKSUM_UNNECESSARY;
 }
+=======
+>>>>>>> 7175f4b... Truncated history
 
 int bnx2x_rx_int(struct bnx2x_fastpath *fp, int budget)
 {
@@ -779,9 +789,19 @@ reuse_rx:
 
 		skb_checksum_none_assert(skb);
 
+<<<<<<< HEAD
 		if (bp->dev->features & NETIF_F_RXCSUM)
 			bnx2x_csum_validate(skb, cqe, fp);
 
+=======
+		if (bp->dev->features & NETIF_F_RXCSUM) {
+
+			if (likely(BNX2X_RX_CSUM_OK(cqe)))
+				skb->ip_summed = CHECKSUM_UNNECESSARY;
+			else
+				fp->eth_q_stats.hw_csum_err++;
+		}
+>>>>>>> 7175f4b... Truncated history
 
 		skb_record_rx_queue(skb, fp->rx_queue);
 
@@ -2352,6 +2372,11 @@ int bnx2x_poll(struct napi_struct *napi, int budget)
 /* we split the first BD into headers and data BDs
  * to ease the pain of our fellow microcode engineers
  * we use one mapping for both BDs
+<<<<<<< HEAD
+=======
+ * So far this has only been observed to happen
+ * in Other Operating Systems(TM)
+>>>>>>> 7175f4b... Truncated history
  */
 static noinline u16 bnx2x_tx_split(struct bnx2x *bp,
 				   struct bnx2x_fp_txdata *txdata,
@@ -3003,7 +3028,11 @@ netdev_tx_t bnx2x_start_xmit(struct sk_buff *skb, struct net_device *dev)
 
 	txdata->tx_bd_prod += nbd;
 
+<<<<<<< HEAD
 	if (unlikely(bnx2x_tx_avail(bp, txdata) < MAX_SKB_FRAGS + 4)) {
+=======
+	if (unlikely(bnx2x_tx_avail(bp, txdata) < MAX_SKB_FRAGS + 3)) {
+>>>>>>> 7175f4b... Truncated history
 		netif_tx_stop_queue(txq);
 
 		/* paired memory barrier is in bnx2x_tx_int(), we have to keep
@@ -3012,7 +3041,11 @@ netdev_tx_t bnx2x_start_xmit(struct sk_buff *skb, struct net_device *dev)
 		smp_mb();
 
 		fp->eth_q_stats.driver_xoff++;
+<<<<<<< HEAD
 		if (bnx2x_tx_avail(bp, txdata) >= MAX_SKB_FRAGS + 4)
+=======
+		if (bnx2x_tx_avail(bp, txdata) >= MAX_SKB_FRAGS + 3)
+>>>>>>> 7175f4b... Truncated history
 			netif_tx_wake_queue(txq);
 	}
 	txdata->tx_pkt++;

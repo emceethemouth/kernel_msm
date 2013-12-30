@@ -410,6 +410,7 @@ static int logi_dj_recv_send_report(struct dj_receiver_dev *djrcv_dev,
 				    struct dj_report *dj_report)
 {
 	struct hid_device *hdev = djrcv_dev->hdev;
+<<<<<<< HEAD
 	struct hid_report *report;
 	struct hid_report_enum *output_report_enum;
 	u8 *data = (u8 *)(&dj_report->device_index);
@@ -429,6 +430,21 @@ static int logi_dj_recv_send_report(struct dj_receiver_dev *djrcv_dev,
 	usbhid_submit_report(hdev, report, USB_DIR_OUT);
 
 	return 0;
+=======
+	int sent_bytes;
+
+	if (!hdev->hid_output_raw_report) {
+		dev_err(&hdev->dev, "%s:"
+			"hid_output_raw_report is null\n", __func__);
+		return -ENODEV;
+	}
+
+	sent_bytes = hdev->hid_output_raw_report(hdev, (u8 *) dj_report,
+						 sizeof(struct dj_report),
+						 HID_OUTPUT_REPORT);
+
+	return (sent_bytes < 0) ? sent_bytes : 0;
+>>>>>>> 7175f4b... Truncated history
 }
 
 static int logi_dj_recv_query_paired_devices(struct dj_receiver_dev *djrcv_dev)
@@ -741,12 +757,15 @@ static int logi_dj_probe(struct hid_device *hdev,
 		goto hid_parse_fail;
 	}
 
+<<<<<<< HEAD
 	if (!hid_validate_values(hdev, HID_OUTPUT_REPORT, REPORT_ID_DJ_SHORT,
 				 0, DJREPORT_SHORT_LENGTH - 1)) {
 		retval = -ENODEV;
 		goto hid_parse_fail;
 	}
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	/* Starts the usb device and connects to upper interfaces hiddev and
 	 * hidraw */
 	retval = hid_hw_start(hdev, HID_CONNECT_DEFAULT);

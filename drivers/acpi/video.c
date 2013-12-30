@@ -389,12 +389,15 @@ static int __init video_set_bqc_offset(const struct dmi_system_id *d)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int video_ignore_initial_backlight(const struct dmi_system_id *d)
 {
 	use_bios_initial_backlight = 0;
 	return 0;
 }
 
+=======
+>>>>>>> 7175f4b... Truncated history
 static struct dmi_system_id video_dmi_table[] __initdata = {
 	/*
 	 * Broken _BQC workaround http://bugzilla.kernel.org/show_bug.cgi?id=13121
@@ -439,6 +442,7 @@ static struct dmi_system_id video_dmi_table[] __initdata = {
 		DMI_MATCH(DMI_PRODUCT_NAME, "Aspire 7720"),
 		},
 	},
+<<<<<<< HEAD
 	{
 	 .callback = video_ignore_initial_backlight,
 	 .ident = "HP Folio 13-2000",
@@ -463,6 +467,8 @@ static struct dmi_system_id video_dmi_table[] __initdata = {
 		DMI_MATCH(DMI_PRODUCT_NAME, "HP Pavilion m4 Notebook PC"),
 		},
 	},
+=======
+>>>>>>> 7175f4b... Truncated history
 	{}
 };
 
@@ -588,8 +594,11 @@ acpi_video_bus_DOS(struct acpi_video_bus *video, int bios_flag, int lcd_flag)
 	union acpi_object arg0 = { ACPI_TYPE_INTEGER };
 	struct acpi_object_list args = { 1, &arg0 };
 
+<<<<<<< HEAD
 	if (!video->cap._DOS)
 		return 0;
+=======
+>>>>>>> 7175f4b... Truncated history
 
 	if (bios_flag < 0 || bios_flag > 3 || lcd_flag < 0 || lcd_flag > 1)
 		return -EINVAL;
@@ -1375,6 +1384,7 @@ static int
 acpi_video_bus_get_devices(struct acpi_video_bus *video,
 			   struct acpi_device *device)
 {
+<<<<<<< HEAD
 	int status = 0;
 	struct acpi_device *dev;
 
@@ -1384,6 +1394,14 @@ acpi_video_bus_get_devices(struct acpi_video_bus *video,
 	 * any issues later.
 	 */
 	acpi_video_device_enumerate(video);
+=======
+	int status;
+	struct acpi_device *dev;
+
+	status = acpi_video_device_enumerate(video);
+	if (status)
+		return status;
+>>>>>>> 7175f4b... Truncated history
 
 	list_for_each_entry(dev, &device->children, node) {
 
@@ -1780,7 +1798,10 @@ static int acpi_video_bus_remove(struct acpi_device *device, int type)
 
 static int __init intel_opregion_present(void)
 {
+<<<<<<< HEAD
 	int i915 = 0;
+=======
+>>>>>>> 7175f4b... Truncated history
 #if defined(CONFIG_DRM_I915) || defined(CONFIG_DRM_I915_MODULE)
 	struct pci_dev *dev = NULL;
 	u32 address;
@@ -1793,10 +1814,17 @@ static int __init intel_opregion_present(void)
 		pci_read_config_dword(dev, 0xfc, &address);
 		if (!address)
 			continue;
+<<<<<<< HEAD
 		i915 = 1;
 	}
 #endif
 	return i915;
+=======
+		return 1;
+	}
+#endif
+	return 0;
+>>>>>>> 7175f4b... Truncated history
 }
 
 int acpi_video_register(void)

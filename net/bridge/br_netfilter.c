@@ -254,9 +254,12 @@ static int br_parse_ip_options(struct sk_buff *skb)
 	struct net_device *dev = skb->dev;
 	u32 len;
 
+<<<<<<< HEAD
 	if (!pskb_may_pull(skb, sizeof(struct iphdr)))
 		goto inhdr_error;
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	iph = ip_hdr(skb);
 	opt = &(IPCB(skb)->opt);
 

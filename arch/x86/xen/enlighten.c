@@ -64,7 +64,10 @@
 #include <asm/hypervisor.h>
 #include <asm/mwait.h>
 #include <asm/pci_x86.h>
+<<<<<<< HEAD
 #include <asm/pat.h>
+=======
+>>>>>>> 7175f4b... Truncated history
 
 #ifdef CONFIG_ACPI
 #include <linux/acpi.h>
@@ -139,6 +142,7 @@ static void xen_vcpu_setup(int cpu)
 
 	BUG_ON(HYPERVISOR_shared_info == &xen_dummy_shared_info);
 
+<<<<<<< HEAD
 	/*
 	 * This path is called twice on PVHVM - first during bootup via
 	 * smp_init -> xen_hvm_cpu_notify, and then if the VCPU is being
@@ -154,6 +158,8 @@ static void xen_vcpu_setup(int cpu)
 		if (per_cpu(xen_vcpu, cpu) == &per_cpu(xen_vcpu_info, cpu))
 			return;
 	}
+=======
+>>>>>>> 7175f4b... Truncated history
 	if (cpu < MAX_VIRT_CPUS)
 		per_cpu(xen_vcpu,cpu) = &HYPERVISOR_shared_info->vcpu_info[cpu];
 
@@ -223,9 +229,12 @@ static void __init xen_banner(void)
 	       xen_feature(XENFEAT_mmu_pt_update_preserve_ad) ? " (preserve-AD)" : "");
 }
 
+<<<<<<< HEAD
 #define CPUID_THERM_POWER_LEAF 6
 #define APERFMPERF_PRESENT 0
 
+=======
+>>>>>>> 7175f4b... Truncated history
 static __read_mostly unsigned int cpuid_leaf1_edx_mask = ~0;
 static __read_mostly unsigned int cpuid_leaf1_ecx_mask = ~0;
 
@@ -259,11 +268,14 @@ static void xen_cpuid(unsigned int *ax, unsigned int *bx,
 		*dx = cpuid_leaf5_edx_val;
 		return;
 
+<<<<<<< HEAD
 	case CPUID_THERM_POWER_LEAF:
 		/* Disabling APERFMPERF for kernel usage */
 		maskecx = ~(1 << APERFMPERF_PRESENT);
 		break;
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	case 0xb:
 		/* Suppress extended topology stuff */
 		maskebx = 0;
@@ -958,6 +970,7 @@ static void xen_write_cr4(unsigned long cr4)
 
 	native_write_cr4(cr4);
 }
+<<<<<<< HEAD
 #ifdef CONFIG_X86_64
 static inline unsigned long xen_read_cr8(void)
 {
@@ -968,6 +981,9 @@ static inline void xen_write_cr8(unsigned long val)
 	BUG_ON(val);
 }
 #endif
+=======
+
+>>>>>>> 7175f4b... Truncated history
 static int xen_write_msr_safe(unsigned int msr, unsigned low, unsigned high)
 {
 	int ret;
@@ -1136,6 +1152,7 @@ static const struct pv_cpu_ops xen_cpu_ops __initconst = {
 	.read_cr4_safe = native_read_cr4_safe,
 	.write_cr4 = xen_write_cr4,
 
+<<<<<<< HEAD
 #ifdef CONFIG_X86_64
 	.read_cr8 = xen_read_cr8,
 	.write_cr8 = xen_write_cr8,
@@ -1153,6 +1170,15 @@ static const struct pv_cpu_ops xen_cpu_ops __initconst = {
 
 	.read_tscp = native_read_tscp,
 
+=======
+	.wbinvd = native_wbinvd,
+
+	.read_msr = native_read_msr_safe,
+	.write_msr = xen_write_msr_safe,
+	.read_tsc = native_read_tsc,
+	.read_pmc = native_read_pmc,
+
+>>>>>>> 7175f4b... Truncated history
 	.iret = xen_iret,
 	.irq_enable_sysexit = xen_sysexit,
 #ifdef CONFIG_X86_64
@@ -1371,6 +1397,7 @@ asmlinkage void __init xen_start_kernel(void)
 	 */
 	acpi_numa = -1;
 #endif
+<<<<<<< HEAD
 #ifdef CONFIG_X86_PAT
 	/*
 	 * For right now disable the PAT. We should remove this once
@@ -1379,6 +1406,9 @@ asmlinkage void __init xen_start_kernel(void)
 	 */
 	pat_enabled = 0;
 #endif
+=======
+
+>>>>>>> 7175f4b... Truncated history
 	pgd = (pgd_t *)xen_start_info->pt_base;
 
 	/* Don't do the full vcpu_info placement stuff until we have a
@@ -1530,11 +1560,16 @@ static int __cpuinit xen_hvm_cpu_notify(struct notifier_block *self,
 	switch (action) {
 	case CPU_UP_PREPARE:
 		xen_vcpu_setup(cpu);
+<<<<<<< HEAD
 		if (xen_have_vector_callback) {
 			xen_init_lock_cpu(cpu);
 			if (xen_feature(XENFEAT_hvm_safe_pvclock))
 				xen_setup_timer(cpu);
 		}
+=======
+		if (xen_have_vector_callback)
+			xen_init_lock_cpu(cpu);
+>>>>>>> 7175f4b... Truncated history
 		break;
 	default:
 		break;

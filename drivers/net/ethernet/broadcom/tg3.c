@@ -298,7 +298,10 @@ static DEFINE_PCI_DEVICE_TABLE(tg3_pci_tbl) = {
 	{PCI_DEVICE(PCI_VENDOR_ID_BROADCOM, TG3PCI_DEVICE_TIGON3_57795)},
 	{PCI_DEVICE(PCI_VENDOR_ID_BROADCOM, TG3PCI_DEVICE_TIGON3_5719)},
 	{PCI_DEVICE(PCI_VENDOR_ID_BROADCOM, TG3PCI_DEVICE_TIGON3_5720)},
+<<<<<<< HEAD
 	{PCI_DEVICE(PCI_VENDOR_ID_BROADCOM, TG3PCI_DEVICE_TIGON3_57762)},
+=======
+>>>>>>> 7175f4b... Truncated history
 	{PCI_DEVICE(PCI_VENDOR_ID_SYSKONNECT, PCI_DEVICE_ID_SYSKONNECT_9DXX)},
 	{PCI_DEVICE(PCI_VENDOR_ID_SYSKONNECT, PCI_DEVICE_ID_SYSKONNECT_9MXX)},
 	{PCI_DEVICE(PCI_VENDOR_ID_ALTIMA, PCI_DEVICE_ID_ALTIMA_AC1000)},
@@ -1136,6 +1139,7 @@ static int tg3_phy_auxctl_write(struct tg3 *tp, int reg, u32 set)
 	return tg3_writephy(tp, MII_TG3_AUX_CTRL, set | reg);
 }
 
+<<<<<<< HEAD
 static int tg3_phy_toggle_auxctl_smdsp(struct tg3 *tp, bool enable)
 {
 	u32 val;
@@ -1156,6 +1160,16 @@ static int tg3_phy_toggle_auxctl_smdsp(struct tg3 *tp, bool enable)
 
 	return err;
 }
+=======
+#define TG3_PHY_AUXCTL_SMDSP_ENABLE(tp) \
+	tg3_phy_auxctl_write((tp), MII_TG3_AUXCTL_SHDWSEL_AUXCTL, \
+			     MII_TG3_AUXCTL_ACTL_SMDSP_ENA | \
+			     MII_TG3_AUXCTL_ACTL_TX_6DB)
+
+#define TG3_PHY_AUXCTL_SMDSP_DISABLE(tp) \
+	tg3_phy_auxctl_write((tp), MII_TG3_AUXCTL_SHDWSEL_AUXCTL, \
+			     MII_TG3_AUXCTL_ACTL_TX_6DB);
+>>>>>>> 7175f4b... Truncated history
 
 static int tg3_bmcr_reset(struct tg3 *tp)
 {
@@ -2088,7 +2102,11 @@ static void tg3_phy_apply_otp(struct tg3 *tp)
 
 	otp = tp->phy_otp;
 
+<<<<<<< HEAD
 	if (tg3_phy_toggle_auxctl_smdsp(tp, true))
+=======
+	if (TG3_PHY_AUXCTL_SMDSP_ENABLE(tp))
+>>>>>>> 7175f4b... Truncated history
 		return;
 
 	phy = ((otp & TG3_OTP_AGCTGT_MASK) >> TG3_OTP_AGCTGT_SHIFT);
@@ -2113,7 +2131,11 @@ static void tg3_phy_apply_otp(struct tg3 *tp)
 	      ((otp & TG3_OTP_RCOFF_MASK) >> TG3_OTP_RCOFF_SHIFT);
 	tg3_phydsp_write(tp, MII_TG3_DSP_EXP97, phy);
 
+<<<<<<< HEAD
 	tg3_phy_toggle_auxctl_smdsp(tp, false);
+=======
+	TG3_PHY_AUXCTL_SMDSP_DISABLE(tp);
+>>>>>>> 7175f4b... Truncated history
 }
 
 static void tg3_phy_eee_adjust(struct tg3 *tp, u32 current_link_up)
@@ -2149,9 +2171,15 @@ static void tg3_phy_eee_adjust(struct tg3 *tp, u32 current_link_up)
 
 	if (!tp->setlpicnt) {
 		if (current_link_up == 1 &&
+<<<<<<< HEAD
 		   !tg3_phy_toggle_auxctl_smdsp(tp, true)) {
 			tg3_phydsp_write(tp, MII_TG3_DSP_TAP26, 0x0000);
 			tg3_phy_toggle_auxctl_smdsp(tp, false);
+=======
+		   !TG3_PHY_AUXCTL_SMDSP_ENABLE(tp)) {
+			tg3_phydsp_write(tp, MII_TG3_DSP_TAP26, 0x0000);
+			TG3_PHY_AUXCTL_SMDSP_DISABLE(tp);
+>>>>>>> 7175f4b... Truncated history
 		}
 
 		val = tr32(TG3_CPMU_EEE_MODE);
@@ -2167,11 +2195,19 @@ static void tg3_phy_eee_enable(struct tg3 *tp)
 	    (GET_ASIC_REV(tp->pci_chip_rev_id) == ASIC_REV_5717 ||
 	     GET_ASIC_REV(tp->pci_chip_rev_id) == ASIC_REV_5719 ||
 	     tg3_flag(tp, 57765_CLASS)) &&
+<<<<<<< HEAD
 	    !tg3_phy_toggle_auxctl_smdsp(tp, true)) {
 		val = MII_TG3_DSP_TAP26_ALNOKO |
 		      MII_TG3_DSP_TAP26_RMRXSTO;
 		tg3_phydsp_write(tp, MII_TG3_DSP_TAP26, val);
 		tg3_phy_toggle_auxctl_smdsp(tp, false);
+=======
+	    !TG3_PHY_AUXCTL_SMDSP_ENABLE(tp)) {
+		val = MII_TG3_DSP_TAP26_ALNOKO |
+		      MII_TG3_DSP_TAP26_RMRXSTO;
+		tg3_phydsp_write(tp, MII_TG3_DSP_TAP26, val);
+		TG3_PHY_AUXCTL_SMDSP_DISABLE(tp);
+>>>>>>> 7175f4b... Truncated history
 	}
 
 	val = tr32(TG3_CPMU_EEE_MODE);
@@ -2315,7 +2351,11 @@ static int tg3_phy_reset_5703_4_5(struct tg3 *tp)
 		tg3_writephy(tp, MII_CTRL1000,
 			     CTL1000_AS_MASTER | CTL1000_ENABLE_MASTER);
 
+<<<<<<< HEAD
 		err = tg3_phy_toggle_auxctl_smdsp(tp, true);
+=======
+		err = TG3_PHY_AUXCTL_SMDSP_ENABLE(tp);
+>>>>>>> 7175f4b... Truncated history
 		if (err)
 			return err;
 
@@ -2336,7 +2376,11 @@ static int tg3_phy_reset_5703_4_5(struct tg3 *tp)
 	tg3_writephy(tp, MII_TG3_DSP_ADDRESS, 0x8200);
 	tg3_writephy(tp, MII_TG3_DSP_CONTROL, 0x0000);
 
+<<<<<<< HEAD
 	tg3_phy_toggle_auxctl_smdsp(tp, false);
+=======
+	TG3_PHY_AUXCTL_SMDSP_DISABLE(tp);
+>>>>>>> 7175f4b... Truncated history
 
 	tg3_writephy(tp, MII_CTRL1000, phy9_orig);
 
@@ -2425,10 +2469,17 @@ static int tg3_phy_reset(struct tg3 *tp)
 
 out:
 	if ((tp->phy_flags & TG3_PHYFLG_ADC_BUG) &&
+<<<<<<< HEAD
 	    !tg3_phy_toggle_auxctl_smdsp(tp, true)) {
 		tg3_phydsp_write(tp, 0x201f, 0x2aaa);
 		tg3_phydsp_write(tp, 0x000a, 0x0323);
 		tg3_phy_toggle_auxctl_smdsp(tp, false);
+=======
+	    !TG3_PHY_AUXCTL_SMDSP_ENABLE(tp)) {
+		tg3_phydsp_write(tp, 0x201f, 0x2aaa);
+		tg3_phydsp_write(tp, 0x000a, 0x0323);
+		TG3_PHY_AUXCTL_SMDSP_DISABLE(tp);
+>>>>>>> 7175f4b... Truncated history
 	}
 
 	if (tp->phy_flags & TG3_PHYFLG_5704_A0_BUG) {
@@ -2437,6 +2488,7 @@ out:
 	}
 
 	if (tp->phy_flags & TG3_PHYFLG_BER_BUG) {
+<<<<<<< HEAD
 		if (!tg3_phy_toggle_auxctl_smdsp(tp, true)) {
 			tg3_phydsp_write(tp, 0x000a, 0x310b);
 			tg3_phydsp_write(tp, 0x201f, 0x9506);
@@ -2445,6 +2497,16 @@ out:
 		}
 	} else if (tp->phy_flags & TG3_PHYFLG_JITTER_BUG) {
 		if (!tg3_phy_toggle_auxctl_smdsp(tp, true)) {
+=======
+		if (!TG3_PHY_AUXCTL_SMDSP_ENABLE(tp)) {
+			tg3_phydsp_write(tp, 0x000a, 0x310b);
+			tg3_phydsp_write(tp, 0x201f, 0x9506);
+			tg3_phydsp_write(tp, 0x401f, 0x14e2);
+			TG3_PHY_AUXCTL_SMDSP_DISABLE(tp);
+		}
+	} else if (tp->phy_flags & TG3_PHYFLG_JITTER_BUG) {
+		if (!TG3_PHY_AUXCTL_SMDSP_ENABLE(tp)) {
+>>>>>>> 7175f4b... Truncated history
 			tg3_writephy(tp, MII_TG3_DSP_ADDRESS, 0x000a);
 			if (tp->phy_flags & TG3_PHYFLG_ADJUST_TRIM) {
 				tg3_writephy(tp, MII_TG3_DSP_RW_PORT, 0x110b);
@@ -2453,7 +2515,11 @@ out:
 			} else
 				tg3_writephy(tp, MII_TG3_DSP_RW_PORT, 0x010b);
 
+<<<<<<< HEAD
 			tg3_phy_toggle_auxctl_smdsp(tp, false);
+=======
+			TG3_PHY_AUXCTL_SMDSP_DISABLE(tp);
+>>>>>>> 7175f4b... Truncated history
 		}
 	}
 
@@ -3870,7 +3936,11 @@ static int tg3_phy_autoneg_cfg(struct tg3 *tp, u32 advertise, u32 flowctrl)
 	tw32(TG3_CPMU_EEE_MODE,
 	     tr32(TG3_CPMU_EEE_MODE) & ~TG3_CPMU_EEEMD_LPI_ENABLE);
 
+<<<<<<< HEAD
 	err = tg3_phy_toggle_auxctl_smdsp(tp, true);
+=======
+	err = TG3_PHY_AUXCTL_SMDSP_ENABLE(tp);
+>>>>>>> 7175f4b... Truncated history
 	if (!err) {
 		u32 err2;
 
@@ -3903,7 +3973,11 @@ static int tg3_phy_autoneg_cfg(struct tg3 *tp, u32 advertise, u32 flowctrl)
 						 MII_TG3_DSP_CH34TP2_HIBW01);
 		}
 
+<<<<<<< HEAD
 		err2 = tg3_phy_toggle_auxctl_smdsp(tp, false);
+=======
+		err2 = TG3_PHY_AUXCTL_SMDSP_DISABLE(tp);
+>>>>>>> 7175f4b... Truncated history
 		if (!err)
 			err = err2;
 	}
@@ -3946,6 +4020,7 @@ static void tg3_phy_copper_begin(struct tg3 *tp)
 		tp->link_config.active_speed = tp->link_config.speed;
 		tp->link_config.active_duplex = tp->link_config.duplex;
 
+<<<<<<< HEAD
 		if (GET_ASIC_REV(tp->pci_chip_rev_id) == ASIC_REV_5714) {
 			/* With autoneg disabled, 5715 only links up when the
 			 * advertisement register has the configured speed
@@ -3954,6 +4029,8 @@ static void tg3_phy_copper_begin(struct tg3 *tp)
 			tg3_writephy(tp, MII_ADVERTISE, ADVERTISE_ALL);
 		}
 
+=======
+>>>>>>> 7175f4b... Truncated history
 		bmcr = 0;
 		switch (tp->link_config.speed) {
 		default:
@@ -6594,9 +6671,12 @@ static void tg3_poll_controller(struct net_device *dev)
 	int i;
 	struct tg3 *tp = netdev_priv(dev);
 
+<<<<<<< HEAD
 	if (tg3_irq_sync(tp))
 		return;
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	for (i = 0; i < tp->irq_cnt; i++)
 		tg3_interrupt(tp->napi[i].irq_vec, &tp->napi[i]);
 }
@@ -8972,7 +9052,12 @@ static int tg3_reset_hw(struct tg3 *tp, int reset_phy)
 	    GET_ASIC_REV(tp->pci_chip_rev_id) == ASIC_REV_57780 ||
 	    tg3_flag(tp, 57765_PLUS)) {
 		val = tr32(TG3_RDMA_RSRVCTRL_REG);
+<<<<<<< HEAD
 		if (tp->pci_chip_rev_id == CHIPREV_ID_5719_A0) {
+=======
+		if (GET_ASIC_REV(tp->pci_chip_rev_id) == ASIC_REV_5719 ||
+		    GET_ASIC_REV(tp->pci_chip_rev_id) == ASIC_REV_5720) {
+>>>>>>> 7175f4b... Truncated history
 			val &= ~(TG3_RDMA_RSRVCTRL_TXMRGN_MASK |
 				 TG3_RDMA_RSRVCTRL_FIFO_LWM_MASK |
 				 TG3_RDMA_RSRVCTRL_FIFO_HWM_MASK);
@@ -12278,12 +12363,19 @@ static struct rtnl_link_stats64 *tg3_get_stats64(struct net_device *dev,
 {
 	struct tg3 *tp = netdev_priv(dev);
 
+<<<<<<< HEAD
 	spin_lock_bh(&tp->lock);
 	if (!tp->hw_stats) {
 		spin_unlock_bh(&tp->lock);
 		return &tp->net_stats_prev;
 	}
 
+=======
+	if (!tp->hw_stats)
+		return &tp->net_stats_prev;
+
+	spin_lock_bh(&tp->lock);
+>>>>>>> 7175f4b... Truncated history
 	tg3_get_nstats(tp, stats);
 	spin_unlock_bh(&tp->lock);
 
@@ -13590,11 +13682,16 @@ static void __devinit tg3_read_vpd(struct tg3 *tp)
 		if (j + len > block_end)
 			goto partno;
 
+<<<<<<< HEAD
 		if (len >= sizeof(tp->fw_ver))
 			len = sizeof(tp->fw_ver) - 1;
 		memset(tp->fw_ver, 0, sizeof(tp->fw_ver));
 		snprintf(tp->fw_ver, sizeof(tp->fw_ver), "%.*s bc ", len,
 			 &vpd_data[j]);
+=======
+		memcpy(tp->fw_ver, &vpd_data[j], len);
+		strncat(tp->fw_ver, " bc ", vpdlen - len - 1);
+>>>>>>> 7175f4b... Truncated history
 	}
 
 partno:
@@ -14276,8 +14373,12 @@ static int __devinit tg3_get_invariants(struct tg3 *tp)
 		}
 	}
 
+<<<<<<< HEAD
 	if (tg3_flag(tp, 5755_PLUS) ||
 	    GET_ASIC_REV(tp->pci_chip_rev_id) == ASIC_REV_5906)
+=======
+	if (tg3_flag(tp, 5755_PLUS))
+>>>>>>> 7175f4b... Truncated history
 		tg3_flag_set(tp, SHORT_DMA_BUG);
 
 	if (GET_ASIC_REV(tp->pci_chip_rev_id) == ASIC_REV_5719)
@@ -14671,9 +14772,12 @@ static int __devinit tg3_get_invariants(struct tg3 *tp)
 	/* Clear this out for sanity. */
 	tw32(TG3PCI_MEM_WIN_BASE_ADDR, 0);
 
+<<<<<<< HEAD
 	/* Clear TG3PCI_REG_BASE_ADDR to prevent hangs. */
 	tw32(TG3PCI_REG_BASE_ADDR, 0);
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	pci_read_config_dword(tp->pdev, TG3PCI_PCISTATE,
 			      &pci_state_reg);
 	if ((pci_state_reg & PCISTATE_CONV_PCI_MODE) == 0 &&
@@ -15558,7 +15662,10 @@ static int __devinit tg3_init_one(struct pci_dev *pdev,
 	tp->pm_cap = pm_cap;
 	tp->rx_mode = TG3_DEF_RX_MODE;
 	tp->tx_mode = TG3_DEF_TX_MODE;
+<<<<<<< HEAD
 	tp->irq_sync = 1;
+=======
+>>>>>>> 7175f4b... Truncated history
 
 	if (tg3_debug > 0)
 		tp->msg_enable = tg3_debug;

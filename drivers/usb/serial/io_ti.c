@@ -550,9 +550,12 @@ static void chase_port(struct edgeport_port *port, unsigned long timeout,
 	wait_queue_t wait;
 	unsigned long flags;
 
+<<<<<<< HEAD
 	if (!tty)
 		return;
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	if (!timeout)
 		timeout = (HZ * EDGE_CLOSING_WAIT)/100;
 
@@ -2773,7 +2776,10 @@ static struct usb_serial_driver edgeport_2port_device = {
 	.set_termios		= edge_set_termios,
 	.tiocmget		= edge_tiocmget,
 	.tiocmset		= edge_tiocmset,
+<<<<<<< HEAD
 	.get_icount		= edge_get_icount,
+=======
+>>>>>>> 7175f4b... Truncated history
 	.write			= edge_write,
 	.write_room		= edge_write_room,
 	.chars_in_buffer	= edge_chars_in_buffer,

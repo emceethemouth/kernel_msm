@@ -349,10 +349,14 @@ validate_event(struct pmu_hw_events *hw_events,
 	if (is_software_event(event))
 		return 1;
 
+<<<<<<< HEAD
 	if (event->pmu != leader_pmu || event->state < PERF_EVENT_STATE_OFF)
 		return 1;
 
 	if (event->state == PERF_EVENT_STATE_OFF && !event->attr.enable_on_exec)
+=======
+	if (event->pmu != leader_pmu || event->state <= PERF_EVENT_STATE_OFF)
+>>>>>>> 7175f4b... Truncated history
 		return 1;
 
 	return armpmu->get_event_idx(hw_events, &fake_event) >= 0;
@@ -1097,7 +1101,10 @@ perf_callchain_user(struct perf_callchain_entry *entry, struct pt_regs *regs)
 	struct frame_tail __user *tail;
 
 
+<<<<<<< HEAD
 	perf_callchain_store(entry, regs->ARM_pc);
+=======
+>>>>>>> 7175f4b... Truncated history
 	tail = (struct frame_tail __user *)regs->ARM_fp - 1;
 
 	while ((entry->nr < PERF_MAX_STACK_DEPTH) &&

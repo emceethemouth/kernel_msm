@@ -2572,6 +2572,7 @@ unsigned int ieee80211_get_hdrlen_from_skb(const struct sk_buff *skb);
 unsigned int __attribute_const__ ieee80211_hdrlen(__le16 fc);
 
 /**
+<<<<<<< HEAD
  * ieee80211_get_mesh_hdrlen - get mesh extension header length
  * @meshhdr: the mesh extension header, only the flags field
  *	(first byte) will be accessed
@@ -2581,6 +2582,8 @@ unsigned int __attribute_const__ ieee80211_hdrlen(__le16 fc);
 unsigned int ieee80211_get_mesh_hdrlen(struct ieee80211s_hdr *meshhdr);
 
 /**
+=======
+>>>>>>> 7175f4b... Truncated history
  * DOC: Data path helpers
  *
  * In addition to generic utilities, cfg80211 also offers

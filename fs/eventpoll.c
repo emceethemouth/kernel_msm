@@ -1227,11 +1227,16 @@ static int ep_modify(struct eventpoll *ep, struct epitem *epi, struct epoll_even
 	 * otherwise we might miss an event that happens between the
 	 * f_op->poll() call and the new event set registering.
 	 */
+<<<<<<< HEAD
 	epi->event.events = event->events; /* need barrier below */
+=======
+	epi->event.events = event->events;
+>>>>>>> 7175f4b... Truncated history
 	pt._key = event->events;
 	epi->event.data = event->data; /* protected by mtx */
 
 	/*
+<<<<<<< HEAD
 	 * The following barrier has two effects:
 	 *
 	 * 1) Flush epi changes above to other CPUs.  This ensures
@@ -1252,6 +1257,8 @@ static int ep_modify(struct eventpoll *ep, struct epitem *epi, struct epoll_even
 	smp_mb();
 
 	/*
+=======
+>>>>>>> 7175f4b... Truncated history
 	 * Get current event bits. We can safely use the file* here because
 	 * its usage count has been increased by the caller of this function.
 	 */

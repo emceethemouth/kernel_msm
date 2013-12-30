@@ -132,7 +132,10 @@ static void xenvif_up(struct xenvif *vif)
 static void xenvif_down(struct xenvif *vif)
 {
 	disable_irq(vif->irq);
+<<<<<<< HEAD
 	del_timer_sync(&vif->credit_timeout);
+=======
+>>>>>>> 7175f4b... Truncated history
 	xen_netbk_deschedule_xenvif(vif);
 	xen_netbk_remove_xenvif(vif);
 }
@@ -273,7 +276,12 @@ struct xenvif *xenvif_alloc(struct device *parent, domid_t domid,
 	vif->credit_bytes = vif->remaining_credit = ~0UL;
 	vif->credit_usec  = 0UL;
 	init_timer(&vif->credit_timeout);
+<<<<<<< HEAD
 	vif->credit_window_start = get_jiffies_64();
+=======
+	/* Initialize 'expires' now: it's used to track the credit window. */
+	vif->credit_timeout.expires = jiffies;
+>>>>>>> 7175f4b... Truncated history
 
 	dev->netdev_ops	= &xenvif_netdev_ops;
 	dev->hw_features = NETIF_F_SG | NETIF_F_IP_CSUM | NETIF_F_TSO;
@@ -343,6 +351,7 @@ err:
 	return err;
 }
 
+<<<<<<< HEAD
 void xenvif_carrier_off(struct xenvif *vif)
 {
 	struct net_device *dev = vif->dev;
@@ -359,10 +368,28 @@ void xenvif_disconnect(struct xenvif *vif)
 {
 	if (netif_carrier_ok(vif->dev))
 		xenvif_carrier_off(vif);
+=======
+void xenvif_disconnect(struct xenvif *vif)
+{
+	struct net_device *dev = vif->dev;
+	if (netif_carrier_ok(dev)) {
+		rtnl_lock();
+		netif_carrier_off(dev); /* discard queued packets */
+		if (netif_running(dev))
+			xenvif_down(vif);
+		rtnl_unlock();
+		xenvif_put(vif);
+	}
+>>>>>>> 7175f4b... Truncated history
 
 	atomic_dec(&vif->refcnt);
 	wait_event(vif->waiting_to_free, atomic_read(&vif->refcnt) == 0);
 
+<<<<<<< HEAD
+=======
+	del_timer_sync(&vif->credit_timeout);
+
+>>>>>>> 7175f4b... Truncated history
 	if (vif->irq)
 		unbind_from_irqhandler(vif->irq, vif);
 

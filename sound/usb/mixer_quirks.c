@@ -186,11 +186,14 @@ static int snd_audigy2nx_led_put(struct snd_kcontrol *kcontrol, struct snd_ctl_e
 	if (value > 1)
 		return -EINVAL;
 	changed = value != mixer->audigy2nx_leds[index];
+<<<<<<< HEAD
 	down_read(&mixer->chip->shutdown_rwsem);
 	if (mixer->chip->shutdown) {
 		err = -ENODEV;
 		goto out;
 	}
+=======
+>>>>>>> 7175f4b... Truncated history
 	if (mixer->chip->usb_id == USB_ID(0x041e, 0x3042))
 		err = snd_usb_ctl_msg(mixer->chip->dev,
 			      usb_sndctrlpipe(mixer->chip->dev, 0), 0x24,
@@ -207,8 +210,11 @@ static int snd_audigy2nx_led_put(struct snd_kcontrol *kcontrol, struct snd_ctl_e
 			      usb_sndctrlpipe(mixer->chip->dev, 0), 0x24,
 			      USB_DIR_OUT | USB_TYPE_VENDOR | USB_RECIP_OTHER,
 			      value, index + 2, NULL, 0);
+<<<<<<< HEAD
  out:
 	up_read(&mixer->chip->shutdown_rwsem);
+=======
+>>>>>>> 7175f4b... Truncated history
 	if (err < 0)
 		return err;
 	mixer->audigy2nx_leds[index] = value;
@@ -302,16 +308,23 @@ static void snd_audigy2nx_proc_read(struct snd_info_entry *entry,
 
 	for (i = 0; jacks[i].name; ++i) {
 		snd_iprintf(buffer, "%s: ", jacks[i].name);
+<<<<<<< HEAD
 		down_read(&mixer->chip->shutdown_rwsem);
 		if (mixer->chip->shutdown)
 			err = 0;
 		else
 			err = snd_usb_ctl_msg(mixer->chip->dev,
+=======
+		err = snd_usb_ctl_msg(mixer->chip->dev,
+>>>>>>> 7175f4b... Truncated history
 				      usb_rcvctrlpipe(mixer->chip->dev, 0),
 				      UAC_GET_MEM, USB_DIR_IN | USB_TYPE_CLASS |
 				      USB_RECIP_INTERFACE, 0,
 				      jacks[i].unitid << 8, buf, 3);
+<<<<<<< HEAD
 		up_read(&mixer->chip->shutdown_rwsem);
+=======
+>>>>>>> 7175f4b... Truncated history
 		if (err == 3 && (buf[0] == 3 || buf[0] == 6))
 			snd_iprintf(buffer, "%02x %02x\n", buf[1], buf[2]);
 		else
@@ -341,6 +354,7 @@ static int snd_xonar_u1_switch_put(struct snd_kcontrol *kcontrol,
 	else
 		new_status = old_status & ~0x02;
 	changed = new_status != old_status;
+<<<<<<< HEAD
 	down_read(&mixer->chip->shutdown_rwsem);
 	if (mixer->chip->shutdown)
 		err = -ENODEV;
@@ -350,6 +364,12 @@ static int snd_xonar_u1_switch_put(struct snd_kcontrol *kcontrol,
 			      USB_DIR_OUT | USB_TYPE_VENDOR | USB_RECIP_OTHER,
 			      50, 0, &new_status, 1);
 	up_read(&mixer->chip->shutdown_rwsem);
+=======
+	err = snd_usb_ctl_msg(mixer->chip->dev,
+			      usb_sndctrlpipe(mixer->chip->dev, 0), 0x08,
+			      USB_DIR_OUT | USB_TYPE_VENDOR | USB_RECIP_OTHER,
+			      50, 0, &new_status, 1);
+>>>>>>> 7175f4b... Truncated history
 	if (err < 0)
 		return err;
 	mixer->xonar_u1_status = new_status;
@@ -388,6 +408,7 @@ static int snd_nativeinstruments_control_get(struct snd_kcontrol *kcontrol,
 	u8 bRequest = (kcontrol->private_value >> 16) & 0xff;
 	u16 wIndex = kcontrol->private_value & 0xffff;
 	u8 tmp;
+<<<<<<< HEAD
 	int ret;
 
 	down_read(&mixer->chip->shutdown_rwsem);
@@ -399,6 +420,13 @@ static int snd_nativeinstruments_control_get(struct snd_kcontrol *kcontrol,
 				  0, wIndex,
 				  &tmp, sizeof(tmp), 1000);
 	up_read(&mixer->chip->shutdown_rwsem);
+=======
+
+	int ret = usb_control_msg(dev, usb_rcvctrlpipe(dev, 0), bRequest,
+				  USB_TYPE_VENDOR | USB_RECIP_DEVICE | USB_DIR_IN,
+				  0, cpu_to_le16(wIndex),
+				  &tmp, sizeof(tmp), 1000);
+>>>>>>> 7175f4b... Truncated history
 
 	if (ret < 0) {
 		snd_printk(KERN_ERR
@@ -419,6 +447,7 @@ static int snd_nativeinstruments_control_put(struct snd_kcontrol *kcontrol,
 	u8 bRequest = (kcontrol->private_value >> 16) & 0xff;
 	u16 wIndex = kcontrol->private_value & 0xffff;
 	u16 wValue = ucontrol->value.integer.value[0];
+<<<<<<< HEAD
 	int ret;
 
 	down_read(&mixer->chip->shutdown_rwsem);
@@ -430,6 +459,13 @@ static int snd_nativeinstruments_control_put(struct snd_kcontrol *kcontrol,
 				  wValue, wIndex,
 				  NULL, 0, 1000);
 	up_read(&mixer->chip->shutdown_rwsem);
+=======
+
+	int ret = usb_control_msg(dev, usb_sndctrlpipe(dev, 0), bRequest,
+				  USB_TYPE_VENDOR | USB_RECIP_DEVICE | USB_DIR_OUT,
+				  cpu_to_le16(wValue), cpu_to_le16(wIndex),
+				  NULL, 0, 1000);
+>>>>>>> 7175f4b... Truncated history
 
 	if (ret < 0) {
 		snd_printk(KERN_ERR

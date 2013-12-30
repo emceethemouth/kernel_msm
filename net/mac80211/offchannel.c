@@ -103,7 +103,12 @@ static void ieee80211_offchannel_ps_disable(struct ieee80211_sub_if_data *sdata)
 	ieee80211_sta_reset_conn_monitor(sdata);
 }
 
+<<<<<<< HEAD
 void ieee80211_offchannel_stop_vifs(struct ieee80211_local *local)
+=======
+void ieee80211_offchannel_stop_vifs(struct ieee80211_local *local,
+				    bool offchannel_ps_enable)
+>>>>>>> 7175f4b... Truncated history
 {
 	struct ieee80211_sub_if_data *sdata;
 
@@ -128,7 +133,12 @@ void ieee80211_offchannel_stop_vifs(struct ieee80211_local *local)
 
 		if (sdata->vif.type != NL80211_IFTYPE_MONITOR) {
 			netif_tx_stop_all_queues(sdata->dev);
+<<<<<<< HEAD
 			if (sdata->vif.type == NL80211_IFTYPE_STATION &&
+=======
+			if (offchannel_ps_enable &&
+			    (sdata->vif.type == NL80211_IFTYPE_STATION) &&
+>>>>>>> 7175f4b... Truncated history
 			    sdata->u.mgd.associated)
 				ieee80211_offchannel_ps_enable(sdata, true);
 		}
@@ -136,7 +146,12 @@ void ieee80211_offchannel_stop_vifs(struct ieee80211_local *local)
 	mutex_unlock(&local->iflist_mtx);
 }
 
+<<<<<<< HEAD
 void ieee80211_offchannel_return(struct ieee80211_local *local)
+=======
+void ieee80211_offchannel_return(struct ieee80211_local *local,
+				 bool offchannel_ps_disable)
+>>>>>>> 7175f4b... Truncated history
 {
 	struct ieee80211_sub_if_data *sdata;
 
@@ -149,9 +164,17 @@ void ieee80211_offchannel_return(struct ieee80211_local *local)
 			continue;
 
 		/* Tell AP we're back */
+<<<<<<< HEAD
 		if (sdata->vif.type == NL80211_IFTYPE_STATION &&
 		    sdata->u.mgd.associated)
 			ieee80211_offchannel_ps_disable(sdata);
+=======
+		if (offchannel_ps_disable &&
+		    sdata->vif.type == NL80211_IFTYPE_STATION) {
+			if (sdata->u.mgd.associated)
+				ieee80211_offchannel_ps_disable(sdata);
+		}
+>>>>>>> 7175f4b... Truncated history
 
 		if (sdata->vif.type != NL80211_IFTYPE_MONITOR) {
 			/*
@@ -229,6 +252,7 @@ static void ieee80211_hw_roc_done(struct work_struct *work)
 		return;
 	}
 
+<<<<<<< HEAD
 	/* was never transmitted */
 	if (local->hw_roc_skb) {
 		u64 cookie;
@@ -245,6 +269,8 @@ static void ieee80211_hw_roc_done(struct work_struct *work)
 		local->hw_roc_skb_for_status = NULL;
 	}
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	if (!local->hw_roc_for_tx)
 		cfg80211_remain_on_channel_expired(local->hw_roc_dev,
 						   local->hw_roc_cookie,

@@ -69,7 +69,11 @@ bool regmap_precious(struct regmap *map, unsigned int reg)
 }
 
 static bool regmap_volatile_range(struct regmap *map, unsigned int reg,
+<<<<<<< HEAD
 	size_t num)
+=======
+	unsigned int num)
+>>>>>>> 7175f4b... Truncated history
 {
 	unsigned int i;
 

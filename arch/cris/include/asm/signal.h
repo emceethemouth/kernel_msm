@@ -122,7 +122,10 @@ struct sigaction {
 	void (*sa_restorer)(void);
 	sigset_t sa_mask;		/* mask last for extensibility */
 };
+<<<<<<< HEAD
 #define __ARCH_HAS_SA_RESTORER
+=======
+>>>>>>> 7175f4b... Truncated history
 
 struct k_sigaction {
 	struct sigaction sa;

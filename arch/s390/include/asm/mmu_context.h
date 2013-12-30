@@ -13,6 +13,10 @@
 #include <asm/uaccess.h>
 #include <asm/tlbflush.h>
 #include <asm/ctl_reg.h>
+<<<<<<< HEAD
+=======
+#include <asm-generic/mm_hooks.h>
+>>>>>>> 7175f4b... Truncated history
 
 static inline int init_new_context(struct task_struct *tsk,
 				   struct mm_struct *mm)
@@ -92,6 +96,7 @@ static inline void activate_mm(struct mm_struct *prev,
         switch_mm(prev, next, current);
 }
 
+<<<<<<< HEAD
 static inline void arch_dup_mmap(struct mm_struct *oldmm,
 				 struct mm_struct *mm)
 {
@@ -105,4 +110,6 @@ static inline void arch_exit_mmap(struct mm_struct *mm)
 {
 }
 
+=======
+>>>>>>> 7175f4b... Truncated history
 #endif /* __S390_MMU_CONTEXT_H */

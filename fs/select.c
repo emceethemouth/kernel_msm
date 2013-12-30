@@ -347,8 +347,13 @@ static int max_select_fd(unsigned long n, fd_set_bits *fds)
 	struct fdtable *fdt;
 
 	/* handle last in-complete long-word first */
+<<<<<<< HEAD
 	set = ~(~0UL << (n & (BITS_PER_LONG-1)));
 	n /= BITS_PER_LONG;
+=======
+	set = ~(~0UL << (n & (__NFDBITS-1)));
+	n /= __NFDBITS;
+>>>>>>> 7175f4b... Truncated history
 	fdt = files_fdtable(current->files);
 	open_fds = fdt->open_fds + n;
 	max = 0;
@@ -375,7 +380,11 @@ get_max:
 			max++;
 			set >>= 1;
 		} while (set);
+<<<<<<< HEAD
 		max += n * BITS_PER_LONG;
+=======
+		max += n * __NFDBITS;
+>>>>>>> 7175f4b... Truncated history
 	}
 
 	return max;
@@ -437,11 +446,19 @@ int do_select(int n, fd_set_bits *fds, struct timespec *end_time)
 			in = *inp++; out = *outp++; ex = *exp++;
 			all_bits = in | out | ex;
 			if (all_bits == 0) {
+<<<<<<< HEAD
 				i += BITS_PER_LONG;
 				continue;
 			}
 
 			for (j = 0; j < BITS_PER_LONG; ++j, ++i, bit <<= 1) {
+=======
+				i += __NFDBITS;
+				continue;
+			}
+
+			for (j = 0; j < __NFDBITS; ++j, ++i, bit <<= 1) {
+>>>>>>> 7175f4b... Truncated history
 				int fput_needed;
 				if (i >= n)
 					break;

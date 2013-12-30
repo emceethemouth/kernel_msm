@@ -105,6 +105,7 @@ static void __init __free_pages_memory(unsigned long start, unsigned long end)
 		__free_pages_bootmem(pfn_to_page(i), 0);
 }
 
+<<<<<<< HEAD
 static unsigned long __init __free_memory_core(phys_addr_t start,
 				 phys_addr_t end)
 {
@@ -134,6 +135,29 @@ unsigned long __init free_low_memory_core_early(int nodeid)
 	if (size)
 		count += __free_memory_core(start, start + size);
 
+=======
+unsigned long __init free_low_memory_core_early(int nodeid)
+{
+	unsigned long count = 0;
+	phys_addr_t start, end;
+	u64 i;
+
+	/* free reserved array temporarily so that it's treated as free area */
+	memblock_free_reserved_regions();
+
+	for_each_free_mem_range(i, MAX_NUMNODES, &start, &end, NULL) {
+		unsigned long start_pfn = PFN_UP(start);
+		unsigned long end_pfn = min_t(unsigned long,
+					      PFN_DOWN(end), max_low_pfn);
+		if (start_pfn < end_pfn) {
+			__free_pages_memory(start_pfn, end_pfn);
+			count += end_pfn - start_pfn;
+		}
+	}
+
+	/* put region array back? */
+	memblock_reserve_reserved_regions();
+>>>>>>> 7175f4b... Truncated history
 	return count;
 }
 

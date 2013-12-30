@@ -42,7 +42,10 @@
 #include <net/netlabel.h>
 #include <net/request_sock.h>
 #include <linux/atomic.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+>>>>>>> 7175f4b... Truncated history
 
 /* known doi values */
 #define CIPSO_V4_DOI_UNKNOWN          0x00000000
@@ -286,6 +289,7 @@ static inline int cipso_v4_skbuff_getattr(const struct sk_buff *skb,
 static inline int cipso_v4_validate(const struct sk_buff *skb,
 				    unsigned char **option)
 {
+<<<<<<< HEAD
 	unsigned char *opt = *option;
 	unsigned char err_offset = 0;
 	u8 opt_len = opt[1];
@@ -315,6 +319,9 @@ out:
 	*option = opt + err_offset;
 	return err_offset;
 
+=======
+	return -ENOSYS;
+>>>>>>> 7175f4b... Truncated history
 }
 #endif /* CONFIG_NETLABEL */
 

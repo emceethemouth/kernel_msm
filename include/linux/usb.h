@@ -839,6 +839,7 @@ static inline int usb_make_path(struct usb_device *dev, char *buf, size_t size)
 	.bInterfaceSubClass = (sc), \
 	.bInterfaceProtocol = (pr)
 
+<<<<<<< HEAD
 /**
  * USB_VENDOR_AND_INTERFACE_INFO - describe a specific usb vendor with a class of usb interfaces
  * @vend: the 16 bit USB Vendor ID
@@ -860,6 +861,8 @@ static inline int usb_make_path(struct usb_device *dev, char *buf, size_t size)
 	.bInterfaceSubClass = (sc), \
 	.bInterfaceProtocol = (pr)
 
+=======
+>>>>>>> 7175f4b... Truncated history
 /* ----------------------------------------------------------------------- */
 
 /* Stuff for dynamic usb ids */
@@ -1457,7 +1460,10 @@ extern int usb_unlink_urb(struct urb *urb);
 extern void usb_kill_urb(struct urb *urb);
 extern void usb_poison_urb(struct urb *urb);
 extern void usb_unpoison_urb(struct urb *urb);
+<<<<<<< HEAD
 extern void usb_block_urb(struct urb *urb);
+=======
+>>>>>>> 7175f4b... Truncated history
 extern void usb_kill_anchored_urbs(struct usb_anchor *anchor);
 extern void usb_poison_anchored_urbs(struct usb_anchor *anchor);
 extern void usb_unpoison_anchored_urbs(struct usb_anchor *anchor);
@@ -1470,8 +1476,11 @@ extern struct urb *usb_get_from_anchor(struct usb_anchor *anchor);
 extern void usb_scuttle_anchored_urbs(struct usb_anchor *anchor);
 extern int usb_anchor_empty(struct usb_anchor *anchor);
 
+<<<<<<< HEAD
 #define usb_unblock_urb	usb_unpoison_urb
 
+=======
+>>>>>>> 7175f4b... Truncated history
 /**
  * usb_urb_dir_in - check if an URB describes an IN transfer
  * @urb: URB to be checked

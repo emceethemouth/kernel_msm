@@ -1341,7 +1341,10 @@ struct se_device *transport_add_device_to_core_hba(
 	dev->se_hba		= hba;
 	dev->se_sub_dev		= se_dev;
 	dev->transport		= transport;
+<<<<<<< HEAD
 	dev->dev_link_magic	= SE_DEV_LINK_MAGIC;
+=======
+>>>>>>> 7175f4b... Truncated history
 	INIT_LIST_HEAD(&dev->dev_list);
 	INIT_LIST_HEAD(&dev->dev_sep_list);
 	INIT_LIST_HEAD(&dev->dev_tmr_list);
@@ -1751,8 +1754,12 @@ static void target_complete_tmr_failure(struct work_struct *work)
 
 	se_cmd->se_tmr_req->response = TMR_LUN_DOES_NOT_EXIST;
 	se_cmd->se_tfo->queue_tm_rsp(se_cmd);
+<<<<<<< HEAD
 
 	transport_cmd_check_stop_to_fabric(se_cmd);
+=======
+	transport_generic_free_cmd(se_cmd, 0);
+>>>>>>> 7175f4b... Truncated history
 }
 
 /**
@@ -1980,7 +1987,10 @@ void transport_generic_request_failure(struct se_cmd *cmd)
 	case TCM_LOGICAL_UNIT_COMMUNICATION_FAILURE:
 	case TCM_UNKNOWN_MODE_PAGE:
 	case TCM_WRITE_PROTECTED:
+<<<<<<< HEAD
 	case TCM_ADDRESS_OUT_OF_RANGE:
+=======
+>>>>>>> 7175f4b... Truncated history
 	case TCM_CHECK_CONDITION_ABORT_CMD:
 	case TCM_CHECK_CONDITION_UNIT_ATTENTION:
 	case TCM_CHECK_CONDITION_NOT_READY:
@@ -3174,20 +3184,29 @@ static int transport_generic_cmd_sequencer(
 			/* Returns CHECK_CONDITION + INVALID_CDB_FIELD */
 			goto out_invalid_cdb_field;
 		}
+<<<<<<< HEAD
 		/*
 		 * For the overflow case keep the existing fabric provided
 		 * ->data_length.  Otherwise for the underflow case, reset
 		 * ->data_length to the smaller SCSI expected data transfer
 		 * length.
 		 */
+=======
+
+>>>>>>> 7175f4b... Truncated history
 		if (size > cmd->data_length) {
 			cmd->se_cmd_flags |= SCF_OVERFLOW_BIT;
 			cmd->residual_count = (size - cmd->data_length);
 		} else {
 			cmd->se_cmd_flags |= SCF_UNDERFLOW_BIT;
 			cmd->residual_count = (cmd->data_length - size);
+<<<<<<< HEAD
 			cmd->data_length = size;
 		}
+=======
+		}
+		cmd->data_length = size;
+>>>>>>> 7175f4b... Truncated history
 	}
 
 	if (cmd->se_cmd_flags & SCF_SCSI_DATA_SG_IO_CDB &&
@@ -3687,9 +3706,15 @@ transport_generic_get_mem(struct se_cmd *cmd)
 	return 0;
 
 out:
+<<<<<<< HEAD
 	while (i > 0) {
 		i--;
 		__free_page(sg_page(&cmd->t_data_sg[i]));
+=======
+	while (i >= 0) {
+		__free_page(sg_page(&cmd->t_data_sg[i]));
+		i--;
+>>>>>>> 7175f4b... Truncated history
 	}
 	kfree(cmd->t_data_sg);
 	cmd->t_data_sg = NULL;
@@ -4669,6 +4694,7 @@ int transport_send_check_condition_and_sense(
 		/* WRITE PROTECTED */
 		buffer[offset+SPC_ASC_KEY_OFFSET] = 0x27;
 		break;
+<<<<<<< HEAD
 	case TCM_ADDRESS_OUT_OF_RANGE:
 		/* CURRENT ERROR */
 		buffer[offset] = 0x70;
@@ -4678,6 +4704,8 @@ int transport_send_check_condition_and_sense(
 		/* LOGICAL BLOCK ADDRESS OUT OF RANGE */
 		buffer[offset+SPC_ASC_KEY_OFFSET] = 0x21;
 		break;
+=======
+>>>>>>> 7175f4b... Truncated history
 	case TCM_CHECK_CONDITION_UNIT_ATTENTION:
 		/* CURRENT ERROR */
 		buffer[offset] = 0x70;

@@ -12,7 +12,10 @@
 #include <linux/linkage.h>
 #include <linux/init.h>
 #include <asm/assembler.h>
+<<<<<<< HEAD
 #include <asm/errno.h>
+=======
+>>>>>>> 7175f4b... Truncated history
 #include <asm/unwind.h>
 
 #include "proc-macros.S"
@@ -136,6 +139,10 @@ ENTRY(v6_coherent_user_range)
 1:
  USER(	mcr	p15, 0, r0, c7, c10, 1	)	@ clean D line
 	add	r0, r0, #CACHE_LINE_SIZE
+<<<<<<< HEAD
+=======
+2:
+>>>>>>> 7175f4b... Truncated history
 	cmp	r0, r1
 	blo	1b
 #endif
@@ -154,11 +161,21 @@ ENTRY(v6_coherent_user_range)
 
 /*
  * Fault handling for the cache operation above. If the virtual address in r0
+<<<<<<< HEAD
  * isn't mapped, fail with -EFAULT.
  */
 9001:
 	mov	r0, #-EFAULT
 	mov	pc, lr
+=======
+ * isn't mapped, just try the next page.
+ */
+9001:
+	mov	r0, r0, lsr #12
+	mov	r0, r0, lsl #12
+	add	r0, r0, #4096
+	b	2b
+>>>>>>> 7175f4b... Truncated history
  UNWIND(.fnend		)
 ENDPROC(v6_coherent_user_range)
 ENDPROC(v6_coherent_kern_range)
@@ -343,9 +360,12 @@ ENTRY(v6_dma_unmap_area)
 	mov	pc, lr
 ENDPROC(v6_dma_unmap_area)
 
+<<<<<<< HEAD
 	.globl  v6_flush_kern_cache_louis
 	.equ  v6_flush_kern_cache_louis, v6_flush_kern_cache_all
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	__INITDATA
 
 	@ define struct cpu_cache_fns (see <asm/cacheflush.h> and proc-macros.S)

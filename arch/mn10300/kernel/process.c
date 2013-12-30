@@ -25,7 +25,10 @@
 #include <linux/err.h>
 #include <linux/fs.h>
 #include <linux/slab.h>
+<<<<<<< HEAD
 #include <linux/rcupdate.h>
+=======
+>>>>>>> 7175f4b... Truncated history
 #include <asm/uaccess.h>
 #include <asm/pgtable.h>
 #include <asm/io.h>
@@ -108,7 +111,10 @@ void cpu_idle(void)
 {
 	/* endless idle loop with no priority at all */
 	for (;;) {
+<<<<<<< HEAD
 		rcu_idle_enter();
+=======
+>>>>>>> 7175f4b... Truncated history
 		while (!need_resched()) {
 			void (*idle)(void);
 
@@ -123,7 +129,10 @@ void cpu_idle(void)
 			}
 			idle();
 		}
+<<<<<<< HEAD
 		rcu_idle_exit();
+=======
+>>>>>>> 7175f4b... Truncated history
 
 		schedule_preempt_disabled();
 	}

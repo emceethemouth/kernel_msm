@@ -1014,7 +1014,11 @@ int
 bcm_ether_atoe(const char *p, struct ether_addr *ea)
 {
 	int i = 0;
+<<<<<<< HEAD
 	char *ep = NULL;
+=======
+	char *ep;
+>>>>>>> 7175f4b... Truncated history
 
 	for (;;) {
 		ea->octet[i++] = (char) bcm_strtoul(p, &ep, 16);

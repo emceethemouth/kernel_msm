@@ -21,7 +21,10 @@
 #include <linux/signal.h>
 #include <linux/perf_event.h>
 #include <linux/hw_breakpoint.h>
+<<<<<<< HEAD
 #include <linux/module.h>
+=======
+>>>>>>> 7175f4b... Truncated history
 
 #include <asm/uaccess.h>
 #include <asm/pgtable.h>
@@ -166,6 +169,7 @@ static inline bool invalid_selector(u16 value)
 
 #define FLAG_MASK		FLAG_MASK_32
 
+<<<<<<< HEAD
 /*
  * X86_32 CPUs don't save ss and esp if the CPU is already in kernel mode
  * when it traps.  The previous stack will be directly underneath the saved
@@ -195,6 +199,8 @@ unsigned long kernel_stack_pointer(struct pt_regs *regs)
 }
 EXPORT_SYMBOL_GPL(kernel_stack_pointer);
 
+=======
+>>>>>>> 7175f4b... Truncated history
 static unsigned long *pt_regs_access(struct pt_regs *regs, unsigned long regno)
 {
 	BUILD_BUG_ON(offsetof(struct pt_regs, bx) != 0);
@@ -1241,6 +1247,15 @@ static long x32_arch_ptrace(struct task_struct *child,
 					     0, sizeof(struct user_i387_struct),
 					     datap);
 
+<<<<<<< HEAD
+=======
+		/* normal 64bit interface to access TLS data.
+		   Works just like arch_prctl, except that the arguments
+		   are reversed. */
+	case PTRACE_ARCH_PRCTL:
+		return do_arch_prctl(child, data, addr);
+
+>>>>>>> 7175f4b... Truncated history
 	default:
 		return compat_ptrace_request(child, request, addr, data);
 	}

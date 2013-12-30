@@ -1871,8 +1871,14 @@ static void cgroup_task_migrate(struct cgroup *cgrp, struct cgroup *oldcgrp,
 	 * trading it for newcg is protected by cgroup_mutex, we're safe to drop
 	 * it here; it will be freed under RCU.
 	 */
+<<<<<<< HEAD
 	set_bit(CGRP_RELEASABLE, &oldcgrp->flags);
 	put_css_set(oldcg);
+=======
+	put_css_set(oldcg);
+
+	set_bit(CGRP_RELEASABLE, &oldcgrp->flags);
+>>>>>>> 7175f4b... Truncated history
 }
 
 /**
@@ -2022,7 +2028,11 @@ static int cgroup_attach_proc(struct cgroup *cgrp, struct task_struct *leader)
 	if (!group)
 		return -ENOMEM;
 	/* pre-allocate to guarantee space while iterating in rcu read-side. */
+<<<<<<< HEAD
 	retval = flex_array_prealloc(group, 0, group_size, GFP_KERNEL);
+=======
+	retval = flex_array_prealloc(group, 0, group_size - 1, GFP_KERNEL);
+>>>>>>> 7175f4b... Truncated history
 	if (retval)
 		goto out_free_group_list;
 
@@ -2605,7 +2615,13 @@ static int cgroup_create_dir(struct cgroup *cgrp, struct dentry *dentry,
 		dentry->d_fsdata = cgrp;
 		inc_nlink(parent->d_inode);
 		rcu_assign_pointer(cgrp->dentry, dentry);
+<<<<<<< HEAD
 	}
+=======
+		dget(dentry);
+	}
+	dput(dentry);
+>>>>>>> 7175f4b... Truncated history
 
 	return error;
 }
@@ -2877,7 +2893,10 @@ int cgroup_scan_tasks(struct cgroup_scanner *scan)
 	struct ptr_heap tmp_heap;
 	struct ptr_heap *heap;
 	struct timespec latest_time = { 0, 0 };
+<<<<<<< HEAD
         it.task = NULL;
+=======
+>>>>>>> 7175f4b... Truncated history
 
 	if (scan->heap) {
 		/* The caller supplied our heap and pre-allocated its memory */
@@ -3214,7 +3233,10 @@ int cgroupstats_build(struct cgroupstats *stats, struct dentry *dentry)
 	struct cgroup *cgrp;
 	struct cgroup_iter it;
 	struct task_struct *tsk;
+<<<<<<< HEAD
         it.task = NULL;
+=======
+>>>>>>> 7175f4b... Truncated history
 
 	/*
 	 * Validate dentry by checking the superblock operations,
@@ -3507,7 +3529,10 @@ static int cgroup_write_event_control(struct cgroup *cgrp, struct cftype *cft,
 				      const char *buffer)
 {
 	struct cgroup_event *event = NULL;
+<<<<<<< HEAD
 	struct cgroup *cgrp_cfile;
+=======
+>>>>>>> 7175f4b... Truncated history
 	unsigned int efd, cfd;
 	struct file *efile = NULL;
 	struct file *cfile = NULL;
@@ -3563,6 +3588,7 @@ static int cgroup_write_event_control(struct cgroup *cgrp, struct cftype *cft,
 		goto fail;
 	}
 
+<<<<<<< HEAD
 	/*
 	 * The file to be monitored must be in the same cgroup as
 	 * cgroup.event_control is.
@@ -3573,6 +3599,8 @@ static int cgroup_write_event_control(struct cgroup *cgrp, struct cftype *cft,
 		goto fail;
 	}
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	if (!event->cft->register_event || !event->cft->unregister_event) {
 		ret = -EINVAL;
 		goto fail;
@@ -4526,20 +4554,45 @@ static const struct file_operations proc_cgroupstats_operations = {
  *
  * A pointer to the shared css_set was automatically copied in
  * fork.c by dup_task_struct().  However, we ignore that copy, since
+<<<<<<< HEAD
  * it was not made under the protection of RCU or cgroup_mutex, so
  * might no longer be a valid cgroup pointer.  cgroup_attach_task() might
  * have already changed current->cgroups, allowing the previously
  * referenced cgroup group to be removed and freed.
+=======
+ * it was not made under the protection of RCU, cgroup_mutex or
+ * threadgroup_change_begin(), so it might no longer be a valid
+ * cgroup pointer.  cgroup_attach_task() might have already changed
+ * current->cgroups, allowing the previously referenced cgroup
+ * group to be removed and freed.
+ *
+ * Outside the pointer validity we also need to process the css_set
+ * inheritance between threadgoup_change_begin() and
+ * threadgoup_change_end(), this way there is no leak in any process
+ * wide migration performed by cgroup_attach_proc() that could otherwise
+ * miss a thread because it is too early or too late in the fork stage.
+>>>>>>> 7175f4b... Truncated history
  *
  * At the point that cgroup_fork() is called, 'current' is the parent
  * task, and the passed argument 'child' points to the child task.
  */
 void cgroup_fork(struct task_struct *child)
 {
+<<<<<<< HEAD
 	task_lock(current);
 	child->cgroups = current->cgroups;
 	get_css_set(child->cgroups);
 	task_unlock(current);
+=======
+	/*
+	 * We don't need to task_lock() current because current->cgroups
+	 * can't be changed concurrently here. The parent obviously hasn't
+	 * exited and called cgroup_exit(), and we are synchronized against
+	 * cgroup migration through threadgroup_change_begin().
+	 */
+	child->cgroups = current->cgroups;
+	get_css_set(child->cgroups);
+>>>>>>> 7175f4b... Truncated history
 	INIT_LIST_HEAD(&child->cg_list);
 }
 
@@ -4592,10 +4645,26 @@ void cgroup_post_fork(struct task_struct *child)
 	 */
 	if (use_task_css_set_links) {
 		write_lock(&css_set_lock);
+<<<<<<< HEAD
 		task_lock(child);
 		if (list_empty(&child->cg_list))
 			list_add(&child->cg_list, &child->cgroups->tasks);
 		task_unlock(child);
+=======
+		if (list_empty(&child->cg_list)) {
+			/*
+			 * It's safe to use child->cgroups without task_lock()
+			 * here because we are protected through
+			 * threadgroup_change_begin() against concurrent
+			 * css_set change in cgroup_task_migrate(). Also
+			 * the task can't exit at that point until
+			 * wake_up_new_task() is called, so we are protected
+			 * against cgroup_exit() setting child->cgroup to
+			 * init_css_set.
+			 */
+			list_add(&child->cg_list, &child->cgroups->tasks);
+		}
+>>>>>>> 7175f4b... Truncated history
 		write_unlock(&css_set_lock);
 	}
 }

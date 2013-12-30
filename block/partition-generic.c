@@ -260,11 +260,18 @@ void delete_partition(struct gendisk *disk, int partno)
 	if (!part)
 		return;
 
+<<<<<<< HEAD
+=======
+	blk_free_devt(part_devt(part));
+>>>>>>> 7175f4b... Truncated history
 	rcu_assign_pointer(ptbl->part[partno], NULL);
 	rcu_assign_pointer(ptbl->last_lookup, NULL);
 	kobject_put(part->holder_dir);
 	device_del(part_to_dev(part));
+<<<<<<< HEAD
 	blk_free_devt(part_devt(part));
+=======
+>>>>>>> 7175f4b... Truncated history
 
 	hd_struct_put(part);
 }

@@ -132,11 +132,19 @@ struct pppoe_tag {
 
 struct pppoe_hdr {
 #if defined(__LITTLE_ENDIAN_BITFIELD)
+<<<<<<< HEAD
 	__u8 type : 4;
 	__u8 ver : 4;
 #elif defined(__BIG_ENDIAN_BITFIELD)
 	__u8 ver : 4;
 	__u8 type : 4;
+=======
+	__u8 ver : 4;
+	__u8 type : 4;
+#elif defined(__BIG_ENDIAN_BITFIELD)
+	__u8 type : 4;
+	__u8 ver : 4;
+>>>>>>> 7175f4b... Truncated history
 #else
 #error	"Please fix <asm/byteorder.h>"
 #endif

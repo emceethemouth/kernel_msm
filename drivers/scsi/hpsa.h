@@ -123,8 +123,11 @@ struct ctlr_info {
 	u64 last_intr_timestamp;
 	u32 last_heartbeat;
 	u64 last_heartbeat_timestamp;
+<<<<<<< HEAD
 	u32 heartbeat_sample_interval;
 	atomic_t firmware_flash_in_progress;
+=======
+>>>>>>> 7175f4b... Truncated history
 	u32 lockup_detected;
 	struct list_head lockup_list;
 };

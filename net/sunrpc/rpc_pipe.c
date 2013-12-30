@@ -71,9 +71,13 @@ static void rpc_purge_list(wait_queue_head_t *waitq, struct list_head *head,
 		msg->errno = err;
 		destroy_msg(msg);
 	} while (!list_empty(head));
+<<<<<<< HEAD
 
 	if (waitq)
 		wake_up(waitq);
+=======
+	wake_up(waitq);
+>>>>>>> 7175f4b... Truncated history
 }
 
 static void
@@ -93,9 +97,17 @@ rpc_timeout_upcall_queue(struct work_struct *work)
 	}
 	dentry = dget(pipe->dentry);
 	spin_unlock(&pipe->lock);
+<<<<<<< HEAD
 	rpc_purge_list(dentry ? &RPC_I(dentry->d_inode)->waitq : NULL,
 			&free_list, destroy_msg, -ETIMEDOUT);
 	dput(dentry);
+=======
+	if (dentry) {
+		rpc_purge_list(&RPC_I(dentry->d_inode)->waitq,
+			       &free_list, destroy_msg, -ETIMEDOUT);
+		dput(dentry);
+	}
+>>>>>>> 7175f4b... Truncated history
 }
 
 ssize_t rpc_pipe_generic_upcall(struct file *filp, struct rpc_pipe_msg *msg,
@@ -1157,19 +1169,28 @@ static void rpc_kill_sb(struct super_block *sb)
 	struct sunrpc_net *sn = net_generic(net, sunrpc_net_id);
 
 	mutex_lock(&sn->pipefs_sb_lock);
+<<<<<<< HEAD
 	if (sn->pipefs_sb != sb) {
 		mutex_unlock(&sn->pipefs_sb_lock);
 		goto out;
 	}
 	sn->pipefs_sb = NULL;
 	mutex_unlock(&sn->pipefs_sb_lock);
+=======
+	sn->pipefs_sb = NULL;
+	mutex_unlock(&sn->pipefs_sb_lock);
+	put_net(net);
+>>>>>>> 7175f4b... Truncated history
 	dprintk("RPC:	sending pipefs UMOUNT notification for net %p%s\n", net,
 								NET_NAME(net));
 	blocking_notifier_call_chain(&rpc_pipefs_notifier_list,
 					   RPC_PIPEFS_UMOUNT,
 					   sb);
+<<<<<<< HEAD
 	put_net(net);
 out:
+=======
+>>>>>>> 7175f4b... Truncated history
 	kill_litter_super(sb);
 }
 

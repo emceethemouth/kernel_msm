@@ -2675,7 +2675,11 @@ EXPORT_SYMBOL(pm8921_bms_get_vsense_avg);
 
 int pm8921_bms_get_battery_current(int *result_ua)
 {
+<<<<<<< HEAD
 	int vsense_uv = 0;
+=======
+	int vsense_uv;
+>>>>>>> 7175f4b... Truncated history
 	int rc = 0;
 
 	*result_ua = 0;

@@ -314,7 +314,11 @@ static struct i2c_gpio_platform_data pdata = {
 
 static struct platform_device at91sam9rl_twi_device = {
 	.name			= "i2c-gpio",
+<<<<<<< HEAD
 	.id			= 0,
+=======
+	.id			= -1,
+>>>>>>> 7175f4b... Truncated history
 	.dev.platform_data	= &pdata,
 };
 

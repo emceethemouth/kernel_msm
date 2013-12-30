@@ -419,6 +419,7 @@ blind_set:
 	goto end;
 }
 
+<<<<<<< HEAD
 static void intel_setup_cadls(struct drm_device *dev)
 {
 	struct drm_i915_private *dev_priv = dev->dev_private;
@@ -438,6 +439,8 @@ static void intel_setup_cadls(struct drm_device *dev)
 	} while (++i < 8 && disp_id != 0);
 }
 
+=======
+>>>>>>> 7175f4b... Truncated history
 void intel_opregion_init(struct drm_device *dev)
 {
 	struct drm_i915_private *dev_priv = dev->dev_private;
@@ -447,10 +450,15 @@ void intel_opregion_init(struct drm_device *dev)
 		return;
 
 	if (opregion->acpi) {
+<<<<<<< HEAD
 		if (drm_core_check_feature(dev, DRIVER_MODESET)) {
 			intel_didl_outputs(dev);
 			intel_setup_cadls(dev);
 		}
+=======
+		if (drm_core_check_feature(dev, DRIVER_MODESET))
+			intel_didl_outputs(dev);
+>>>>>>> 7175f4b... Truncated history
 
 		/* Notify BIOS we are ready to handle ACPI video ext notifs.
 		 * Right now, all the events are handled by the ACPI video module.

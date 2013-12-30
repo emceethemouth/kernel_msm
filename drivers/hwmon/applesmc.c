@@ -215,7 +215,11 @@ static int read_smc(u8 cmd, const char *key, u8 *buffer, u8 len)
 	int i;
 
 	if (send_command(cmd) || send_argument(key)) {
+<<<<<<< HEAD
 		pr_warn("%.4s: read arg fail\n", key);
+=======
+		pr_warn("%s: read arg fail\n", key);
+>>>>>>> 7175f4b... Truncated history
 		return -EIO;
 	}
 
@@ -223,7 +227,11 @@ static int read_smc(u8 cmd, const char *key, u8 *buffer, u8 len)
 
 	for (i = 0; i < len; i++) {
 		if (__wait_status(0x05)) {
+<<<<<<< HEAD
 			pr_warn("%.4s: read data fail\n", key);
+=======
+			pr_warn("%s: read data fail\n", key);
+>>>>>>> 7175f4b... Truncated history
 			return -EIO;
 		}
 		buffer[i] = inb(APPLESMC_DATA_PORT);
@@ -489,13 +497,17 @@ static int applesmc_init_smcreg_try(void)
 {
 	struct applesmc_registers *s = &smcreg;
 	bool left_light_sensor, right_light_sensor;
+<<<<<<< HEAD
 	unsigned int count;
+=======
+>>>>>>> 7175f4b... Truncated history
 	u8 tmp[1];
 	int ret;
 
 	if (s->init_complete)
 		return 0;
 
+<<<<<<< HEAD
 	ret = read_register_count(&count);
 	if (ret)
 		return ret;
@@ -508,6 +520,12 @@ static int applesmc_init_smcreg_try(void)
 	}
 	s->key_count = count;
 
+=======
+	ret = read_register_count(&s->key_count);
+	if (ret)
+		return ret;
+
+>>>>>>> 7175f4b... Truncated history
 	if (!s->cache)
 		s->cache = kcalloc(s->key_count, sizeof(*s->cache), GFP_KERNEL);
 	if (!s->cache)

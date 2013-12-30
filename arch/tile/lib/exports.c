@@ -90,6 +90,9 @@ uint64_t __ashrdi3(uint64_t, unsigned int);
 EXPORT_SYMBOL(__ashrdi3);
 uint64_t __ashldi3(uint64_t, unsigned int);
 EXPORT_SYMBOL(__ashldi3);
+<<<<<<< HEAD
 int __ffsdi2(uint64_t);
 EXPORT_SYMBOL(__ffsdi2);
+=======
+>>>>>>> 7175f4b... Truncated history
 #endif

@@ -101,8 +101,11 @@ static int nfs4_map_errors(int err)
 	case -NFS4ERR_BADOWNER:
 	case -NFS4ERR_BADNAME:
 		return -EINVAL;
+<<<<<<< HEAD
 	case -NFS4ERR_SHARE_DENIED:
 		return -EACCES;
+=======
+>>>>>>> 7175f4b... Truncated history
 	default:
 		dprintk("%s could not handle NFSv4 error %d\n",
 				__func__, -err);
@@ -307,7 +310,12 @@ static int nfs4_handle_exception(struct nfs_server *server, int errorcode, struc
 			dprintk("%s ERROR: %d Reset session\n", __func__,
 				errorcode);
 			nfs4_schedule_session_recovery(clp->cl_session);
+<<<<<<< HEAD
 			goto wait_on_recovery;
+=======
+			exception->retry = 1;
+			break;
+>>>>>>> 7175f4b... Truncated history
 #endif /* defined(CONFIG_NFS_V4_1) */
 		case -NFS4ERR_FILE_OPEN:
 			if (exception->timeout > HZ) {
@@ -319,6 +327,10 @@ static int nfs4_handle_exception(struct nfs_server *server, int errorcode, struc
 			}
 		case -NFS4ERR_GRACE:
 		case -NFS4ERR_DELAY:
+<<<<<<< HEAD
+=======
+		case -EKEYEXPIRED:
+>>>>>>> 7175f4b... Truncated history
 			ret = nfs4_delay(server->client, &exception->timeout);
 			if (ret != 0)
 				break;
@@ -1052,7 +1064,11 @@ static struct nfs4_state *nfs4_try_open_cached(struct nfs4_opendata *opendata)
 	struct nfs4_state *state = opendata->state;
 	struct nfs_inode *nfsi = NFS_I(state->inode);
 	struct nfs_delegation *delegation;
+<<<<<<< HEAD
 	int open_mode = opendata->o_arg.open_flags;
+=======
+	int open_mode = opendata->o_arg.open_flags & (O_EXCL|O_TRUNC);
+>>>>>>> 7175f4b... Truncated history
 	fmode_t fmode = opendata->o_arg.fmode;
 	nfs4_stateid stateid;
 	int ret = -EAGAIN;
@@ -1351,6 +1367,7 @@ int nfs4_open_delegation_recall(struct nfs_open_context *ctx, struct nfs4_state 
 				nfs_inode_find_state_and_recover(state->inode,
 						stateid);
 				nfs4_schedule_stateid_recovery(server, state);
+<<<<<<< HEAD
 			case -ENOMEM:
 				err = 0;
 				goto out;
@@ -1360,6 +1377,18 @@ int nfs4_open_delegation_recall(struct nfs_open_context *ctx, struct nfs4_state 
 				ssleep(1);
 				err = -EAGAIN;
 				goto out;
+=======
+			case -EKEYEXPIRED:
+				/*
+				 * User RPCSEC_GSS context has expired.
+				 * We cannot recover this stateid now, so
+				 * skip it and allow recovery thread to
+				 * proceed.
+				 */
+			case -ENOMEM:
+				err = 0;
+				goto out;
+>>>>>>> 7175f4b... Truncated history
 		}
 		err = nfs4_handle_exception(server, err, &exception);
 	} while (exception.retry);
@@ -1475,11 +1504,17 @@ static void nfs4_open_prepare(struct rpc_task *task, void *calldata)
 	data->timestamp = jiffies;
 	if (nfs4_setup_sequence(data->o_arg.server,
 				&data->o_arg.seq_args,
+<<<<<<< HEAD
 				&data->o_res.seq_res,
 				task) != 0)
 		nfs_release_seqid(data->o_arg.seqid);
 	else
 		rpc_call_start(task);
+=======
+				&data->o_res.seq_res, task))
+		return;
+	rpc_call_start(task);
+>>>>>>> 7175f4b... Truncated history
 	return;
 unlock_no_action:
 	rcu_read_unlock();
@@ -1860,7 +1895,10 @@ static struct nfs4_state *nfs4_do_open(struct inode *dir, struct dentry *dentry,
 	struct nfs4_state *res;
 	int status;
 
+<<<<<<< HEAD
 	fmode &= FMODE_READ|FMODE_WRITE;
+=======
+>>>>>>> 7175f4b... Truncated history
 	do {
 		status = _nfs4_do_open(dir, dentry, fmode, flags, sattr, cred, &res);
 		if (status == 0)
@@ -2096,10 +2134,16 @@ static void nfs4_close_prepare(struct rpc_task *task, void *data)
 	if (nfs4_setup_sequence(NFS_SERVER(calldata->inode),
 				&calldata->arg.seq_args,
 				&calldata->res.seq_res,
+<<<<<<< HEAD
 				task) != 0)
 		nfs_release_seqid(calldata->arg.seqid);
 	else
 		rpc_call_start(task);
+=======
+				task))
+		goto out;
+	rpc_call_start(task);
+>>>>>>> 7175f4b... Truncated history
 out:
 	dprintk("%s: done!\n", __func__);
 }
@@ -3150,11 +3194,19 @@ static int _nfs4_proc_readdir(struct dentry *dentry, struct rpc_cred *cred,
 			dentry->d_parent->d_name.name,
 			dentry->d_name.name,
 			(unsigned long long)cookie);
+<<<<<<< HEAD
 	nfs4_setup_readdir(cookie, NFS_I(dir)->cookieverf, dentry, &args);
 	res.pgbase = args.pgbase;
 	status = nfs4_call_sync(NFS_SERVER(dir)->client, NFS_SERVER(dir), &msg, &args.seq_args, &res.seq_res, 0);
 	if (status >= 0) {
 		memcpy(NFS_I(dir)->cookieverf, res.verifier.data, NFS4_VERIFIER_SIZE);
+=======
+	nfs4_setup_readdir(cookie, NFS_COOKIEVERF(dir), dentry, &args);
+	res.pgbase = args.pgbase;
+	status = nfs4_call_sync(NFS_SERVER(dir)->client, NFS_SERVER(dir), &msg, &args.seq_args, &res.seq_res, 0);
+	if (status >= 0) {
+		memcpy(NFS_COOKIEVERF(dir), res.verifier.data, NFS4_VERIFIER_SIZE);
+>>>>>>> 7175f4b... Truncated history
 		status += args.pgbase;
 	}
 
@@ -3916,6 +3968,10 @@ nfs4_async_handle_error(struct rpc_task *task, const struct nfs_server *server, 
 		case -NFS4ERR_DELAY:
 			nfs_inc_server_stats(server, NFSIOS_DELAY);
 		case -NFS4ERR_GRACE:
+<<<<<<< HEAD
+=======
+		case -EKEYEXPIRED:
+>>>>>>> 7175f4b... Truncated history
 			rpc_delay(task, NFS4_POLL_RETRY_MAX);
 			task->tk_status = 0;
 			return -EAGAIN;
@@ -4041,6 +4097,7 @@ static void nfs4_delegreturn_done(struct rpc_task *task, void *calldata)
 		return;
 
 	switch (task->tk_status) {
+<<<<<<< HEAD
 	case 0:
 		renew_lease(data->res.server, data->timestamp);
 		break;
@@ -4051,6 +4108,12 @@ static void nfs4_delegreturn_done(struct rpc_task *task, void *calldata)
 	case -NFS4ERR_STALE_STATEID:
 	case -NFS4ERR_EXPIRED:
 		task->tk_status = 0;
+=======
+	case -NFS4ERR_STALE_STATEID:
+	case -NFS4ERR_EXPIRED:
+	case 0:
+		renew_lease(data->res.server, data->timestamp);
+>>>>>>> 7175f4b... Truncated history
 		break;
 	default:
 		if (nfs4_async_handle_error(task, data->res.server, NULL) ==
@@ -4213,7 +4276,10 @@ static int _nfs4_proc_getlk(struct nfs4_state *state, int cmd, struct file_lock 
 			status = 0;
 	}
 	request->fl_ops->fl_release_private(request);
+<<<<<<< HEAD
 	request->fl_ops = NULL;
+=======
+>>>>>>> 7175f4b... Truncated history
 out:
 	return status;
 }
@@ -4312,7 +4378,10 @@ static void nfs4_locku_done(struct rpc_task *task, void *data)
 			if (nfs4_async_handle_error(task, calldata->server, NULL) == -EAGAIN)
 				rpc_restart_call_prepare(task);
 	}
+<<<<<<< HEAD
 	nfs_release_seqid(calldata->arg.seqid);
+=======
+>>>>>>> 7175f4b... Truncated history
 }
 
 static void nfs4_locku_prepare(struct rpc_task *task, void *data)
@@ -4329,11 +4398,17 @@ static void nfs4_locku_prepare(struct rpc_task *task, void *data)
 	calldata->timestamp = jiffies;
 	if (nfs4_setup_sequence(calldata->server,
 				&calldata->arg.seq_args,
+<<<<<<< HEAD
 				&calldata->res.seq_res,
 				task) != 0)
 		nfs_release_seqid(calldata->arg.seqid);
 	else
 		rpc_call_start(task);
+=======
+				&calldata->res.seq_res, task))
+		return;
+	rpc_call_start(task);
+>>>>>>> 7175f4b... Truncated history
 }
 
 static const struct rpc_call_ops nfs4_locku_ops = {
@@ -4478,7 +4553,11 @@ static void nfs4_lock_prepare(struct rpc_task *task, void *calldata)
 	/* Do we need to do an open_to_lock_owner? */
 	if (!(data->arg.lock_seqid->sequence->flags & NFS_SEQID_CONFIRMED)) {
 		if (nfs_wait_on_sequence(data->arg.open_seqid, task) != 0)
+<<<<<<< HEAD
 			goto out_release_lock_seqid;
+=======
+			return;
+>>>>>>> 7175f4b... Truncated history
 		data->arg.open_stateid = &state->stateid;
 		data->arg.new_lock_owner = 1;
 		data->res.open_seqid = data->arg.open_seqid;
@@ -4487,6 +4566,7 @@ static void nfs4_lock_prepare(struct rpc_task *task, void *calldata)
 	data->timestamp = jiffies;
 	if (nfs4_setup_sequence(data->server,
 				&data->arg.seq_args,
+<<<<<<< HEAD
 				&data->res.seq_res,
 				task) == 0) {
 		rpc_call_start(task);
@@ -4496,6 +4576,12 @@ static void nfs4_lock_prepare(struct rpc_task *task, void *calldata)
 out_release_lock_seqid:
 	nfs_release_seqid(data->arg.lock_seqid);
 	dprintk("%s: done!, ret = %d\n", __func__, task->tk_status);
+=======
+				&data->res.seq_res, task))
+		return;
+	rpc_call_start(task);
+	dprintk("%s: done!, ret = %d\n", __func__, data->rpc_status);
+>>>>>>> 7175f4b... Truncated history
 }
 
 static void nfs4_recover_lock_prepare(struct rpc_task *task, void *calldata)
@@ -4869,6 +4955,18 @@ int nfs4_lock_delegation_recall(struct nfs4_state *state, struct file_lock *fl)
 				nfs4_schedule_stateid_recovery(server, state);
 				err = 0;
 				goto out;
+<<<<<<< HEAD
+=======
+			case -EKEYEXPIRED:
+				/*
+				 * User RPCSEC_GSS context has expired.
+				 * We cannot recover this stateid now, so
+				 * skip it and allow recovery thread to
+				 * proceed.
+				 */
+				err = 0;
+				goto out;
+>>>>>>> 7175f4b... Truncated history
 			case -ENOMEM:
 			case -NFS4ERR_DENIED:
 				/* kill_proc(fl->fl_pid, SIGLOST, 1); */
@@ -5734,18 +5832,22 @@ static void nfs41_sequence_prepare(struct rpc_task *task, void *data)
 	rpc_call_start(task);
 }
 
+<<<<<<< HEAD
 static void nfs41_sequence_prepare_privileged(struct rpc_task *task, void *data)
 {
 	rpc_task_set_priority(task, RPC_PRIORITY_PRIVILEGED);
 	nfs41_sequence_prepare(task, data);
 }
 
+=======
+>>>>>>> 7175f4b... Truncated history
 static const struct rpc_call_ops nfs41_sequence_ops = {
 	.rpc_call_done = nfs41_sequence_call_done,
 	.rpc_call_prepare = nfs41_sequence_prepare,
 	.rpc_release = nfs41_sequence_release,
 };
 
+<<<<<<< HEAD
 static const struct rpc_call_ops nfs41_sequence_privileged_ops = {
 	.rpc_call_done = nfs41_sequence_call_done,
 	.rpc_call_prepare = nfs41_sequence_prepare_privileged,
@@ -5754,6 +5856,9 @@ static const struct rpc_call_ops nfs41_sequence_privileged_ops = {
 
 static struct rpc_task *_nfs41_proc_sequence(struct nfs_client *clp, struct rpc_cred *cred,
 					     const struct rpc_call_ops *seq_ops)
+=======
+static struct rpc_task *_nfs41_proc_sequence(struct nfs_client *clp, struct rpc_cred *cred)
+>>>>>>> 7175f4b... Truncated history
 {
 	struct nfs4_sequence_data *calldata;
 	struct rpc_message msg = {
@@ -5763,7 +5868,11 @@ static struct rpc_task *_nfs41_proc_sequence(struct nfs_client *clp, struct rpc_
 	struct rpc_task_setup task_setup_data = {
 		.rpc_client = clp->cl_rpcclient,
 		.rpc_message = &msg,
+<<<<<<< HEAD
 		.callback_ops = seq_ops,
+=======
+		.callback_ops = &nfs41_sequence_ops,
+>>>>>>> 7175f4b... Truncated history
 		.flags = RPC_TASK_ASYNC | RPC_TASK_SOFT,
 	};
 
@@ -5790,7 +5899,11 @@ static int nfs41_proc_async_sequence(struct nfs_client *clp, struct rpc_cred *cr
 
 	if ((renew_flags & NFS4_RENEW_TIMEOUT) == 0)
 		return 0;
+<<<<<<< HEAD
 	task = _nfs41_proc_sequence(clp, cred, &nfs41_sequence_ops);
+=======
+	task = _nfs41_proc_sequence(clp, cred);
+>>>>>>> 7175f4b... Truncated history
 	if (IS_ERR(task))
 		ret = PTR_ERR(task);
 	else
@@ -5804,7 +5917,11 @@ static int nfs4_proc_sequence(struct nfs_client *clp, struct rpc_cred *cred)
 	struct rpc_task *task;
 	int ret;
 
+<<<<<<< HEAD
 	task = _nfs41_proc_sequence(clp, cred, &nfs41_sequence_privileged_ops);
+=======
+	task = _nfs41_proc_sequence(clp, cred);
+>>>>>>> 7175f4b... Truncated history
 	if (IS_ERR(task)) {
 		ret = PTR_ERR(task);
 		goto out;
@@ -5984,6 +6101,7 @@ static void nfs4_layoutget_done(struct rpc_task *task, void *calldata)
 	dprintk("<-- %s\n", __func__);
 }
 
+<<<<<<< HEAD
 static size_t max_response_pages(struct nfs_server *server)
 {
 	u32 max_resp_sz = server->nfs_client->cl_session->fc_attrs.max_resp_sz;
@@ -6036,6 +6154,13 @@ static void nfs4_layoutget_release(void *calldata)
 
 	dprintk("--> %s\n", __func__);
 	nfs4_free_pages(lgp->args.layout.pages, max_pages);
+=======
+static void nfs4_layoutget_release(void *calldata)
+{
+	struct nfs4_layoutget *lgp = calldata;
+
+	dprintk("--> %s\n", __func__);
+>>>>>>> 7175f4b... Truncated history
 	put_nfs_open_context(lgp->args.ctx);
 	kfree(calldata);
 	dprintk("<-- %s\n", __func__);
@@ -6047,10 +6172,16 @@ static const struct rpc_call_ops nfs4_layoutget_call_ops = {
 	.rpc_release = nfs4_layoutget_release,
 };
 
+<<<<<<< HEAD
 int nfs4_proc_layoutget(struct nfs4_layoutget *lgp, gfp_t gfp_flags)
 {
 	struct nfs_server *server = NFS_SERVER(lgp->args.inode);
 	size_t max_pages = max_response_pages(server);
+=======
+int nfs4_proc_layoutget(struct nfs4_layoutget *lgp)
+{
+	struct nfs_server *server = NFS_SERVER(lgp->args.inode);
+>>>>>>> 7175f4b... Truncated history
 	struct rpc_task *task;
 	struct rpc_message msg = {
 		.rpc_proc = &nfs4_procedures[NFSPROC4_CLNT_LAYOUTGET],
@@ -6068,6 +6199,7 @@ int nfs4_proc_layoutget(struct nfs4_layoutget *lgp, gfp_t gfp_flags)
 
 	dprintk("--> %s\n", __func__);
 
+<<<<<<< HEAD
 	lgp->args.layout.pages = nfs4_alloc_pages(max_pages, gfp_flags);
 	if (!lgp->args.layout.pages) {
 		nfs4_layoutget_release(lgp);
@@ -6075,6 +6207,8 @@ int nfs4_proc_layoutget(struct nfs4_layoutget *lgp, gfp_t gfp_flags)
 	}
 	lgp->args.layout.pglen = max_pages * PAGE_SIZE;
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	lgp->res.layoutp = &lgp->args.layout;
 	lgp->res.seq_res.sr_slot = NULL;
 	nfs41_init_sequence(&lgp->args.seq_args, &lgp->res.seq_res, 0);
@@ -6120,8 +6254,17 @@ static void nfs4_layoutreturn_done(struct rpc_task *task, void *calldata)
 		return;
 	}
 	spin_lock(&lo->plh_inode->i_lock);
+<<<<<<< HEAD
 	if (task->tk_status == 0 && lrp->res.lrs_present)
 		pnfs_set_layout_stateid(lo, &lrp->res.stateid, true);
+=======
+	if (task->tk_status == 0) {
+		if (lrp->res.lrs_present) {
+			pnfs_set_layout_stateid(lo, &lrp->res.stateid, true);
+		} else
+			BUG_ON(!list_empty(&lo->plh_segs));
+	}
+>>>>>>> 7175f4b... Truncated history
 	lo->plh_block_lgets--;
 	spin_unlock(&lo->plh_inode->i_lock);
 	dprintk("<-- %s\n", __func__);

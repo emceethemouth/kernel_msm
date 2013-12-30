@@ -362,7 +362,11 @@ static inline void ClearPageCompound(struct page *page)
  * pages on the LRU and/or pagecache.
  */
 TESTPAGEFLAG(Compound, compound)
+<<<<<<< HEAD
 __SETPAGEFLAG(Head, compound)  __CLEARPAGEFLAG(Head, compound)
+=======
+__PAGEFLAG(Head, compound)
+>>>>>>> 7175f4b... Truncated history
 
 /*
  * PG_reclaim is used in combination with PG_compound to mark the
@@ -374,6 +378,7 @@ __SETPAGEFLAG(Head, compound)  __CLEARPAGEFLAG(Head, compound)
  * PG_compound & PG_reclaim	=> Tail page
  * PG_compound & ~PG_reclaim	=> Head page
  */
+<<<<<<< HEAD
 #define PG_head_mask ((1L << PG_compound))
 #define PG_head_tail_mask ((1L << PG_compound) | (1L << PG_reclaim))
 
@@ -382,6 +387,10 @@ static inline int PageHead(struct page *page)
 	return ((page->flags & PG_head_tail_mask) == PG_head_mask);
 }
 
+=======
+#define PG_head_tail_mask ((1L << PG_compound) | (1L << PG_reclaim))
+
+>>>>>>> 7175f4b... Truncated history
 static inline int PageTail(struct page *page)
 {
 	return ((page->flags & PG_head_tail_mask) == PG_head_tail_mask);

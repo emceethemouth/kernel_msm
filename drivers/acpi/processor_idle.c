@@ -1018,9 +1018,12 @@ static int acpi_processor_setup_cpuidle_cx(struct acpi_processor *pr)
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	if (!dev)
 		return -EINVAL;
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	dev->cpu = pr->id;
 
 	if (max_cstate == 0)
@@ -1208,7 +1211,10 @@ int acpi_processor_cst_has_changed(struct acpi_processor *pr)
 		}
 
 		/* Populate Updated C-state information */
+<<<<<<< HEAD
 		acpi_processor_get_power_info(pr);
+=======
+>>>>>>> 7175f4b... Truncated history
 		acpi_processor_setup_cpuidle_states(pr);
 
 		/* Enable all cpuidle devices */

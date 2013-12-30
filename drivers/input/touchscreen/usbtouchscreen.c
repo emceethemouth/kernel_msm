@@ -106,7 +106,10 @@ struct usbtouch_device_info {
 struct usbtouch_usb {
 	unsigned char *data;
 	dma_addr_t data_dma;
+<<<<<<< HEAD
 	int data_size;
+=======
+>>>>>>> 7175f4b... Truncated history
 	unsigned char *buffer;
 	int buf_len;
 	struct urb *irq;
@@ -1475,7 +1478,11 @@ static int usbtouch_reset_resume(struct usb_interface *intf)
 static void usbtouch_free_buffers(struct usb_device *udev,
 				  struct usbtouch_usb *usbtouch)
 {
+<<<<<<< HEAD
 	usb_free_coherent(udev, usbtouch->data_size,
+=======
+	usb_free_coherent(udev, usbtouch->type->rept_size,
+>>>>>>> 7175f4b... Truncated history
 			  usbtouch->data, usbtouch->data_dma);
 	kfree(usbtouch->buffer);
 }
@@ -1520,6 +1527,7 @@ static int usbtouch_probe(struct usb_interface *intf,
 	if (!type->process_pkt)
 		type->process_pkt = usbtouch_process_pkt;
 
+<<<<<<< HEAD
 	usbtouch->data_size = type->rept_size;
 	if (type->get_pkt_len) {
 		/*
@@ -1534,6 +1542,9 @@ static int usbtouch_probe(struct usb_interface *intf,
 	}
 
 	usbtouch->data = usb_alloc_coherent(udev, usbtouch->data_size,
+=======
+	usbtouch->data = usb_alloc_coherent(udev, type->rept_size,
+>>>>>>> 7175f4b... Truncated history
 					    GFP_KERNEL, &usbtouch->data_dma);
 	if (!usbtouch->data)
 		goto out_free;
@@ -1592,12 +1603,20 @@ static int usbtouch_probe(struct usb_interface *intf,
 	if (usb_endpoint_type(endpoint) == USB_ENDPOINT_XFER_INT)
 		usb_fill_int_urb(usbtouch->irq, udev,
 			 usb_rcvintpipe(udev, endpoint->bEndpointAddress),
+<<<<<<< HEAD
 			 usbtouch->data, usbtouch->data_size,
+=======
+			 usbtouch->data, type->rept_size,
+>>>>>>> 7175f4b... Truncated history
 			 usbtouch_irq, usbtouch, endpoint->bInterval);
 	else
 		usb_fill_bulk_urb(usbtouch->irq, udev,
 			 usb_rcvbulkpipe(udev, endpoint->bEndpointAddress),
+<<<<<<< HEAD
 			 usbtouch->data, usbtouch->data_size,
+=======
+			 usbtouch->data, type->rept_size,
+>>>>>>> 7175f4b... Truncated history
 			 usbtouch_irq, usbtouch);
 
 	usbtouch->irq->dev = udev;

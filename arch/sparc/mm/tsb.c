@@ -7,10 +7,18 @@
 #include <linux/preempt.h>
 #include <linux/slab.h>
 #include <asm/page.h>
+<<<<<<< HEAD
 #include <asm/pgtable.h>
 #include <asm/mmu_context.h>
 #include <asm/tsb.h>
 #include <asm/tlb.h>
+=======
+#include <asm/tlbflush.h>
+#include <asm/tlb.h>
+#include <asm/mmu_context.h>
+#include <asm/pgtable.h>
+#include <asm/tsb.h>
+>>>>>>> 7175f4b... Truncated history
 #include <asm/oplib.h>
 
 extern struct tsb swapper_tsb[KERNEL_TSB_NENTRIES];
@@ -45,6 +53,7 @@ void flush_tsb_kernel_range(unsigned long start, unsigned long end)
 	}
 }
 
+<<<<<<< HEAD
 static void __flush_tsb_one_entry(unsigned long tsb, unsigned long v,
 				  unsigned long hash_shift,
 				  unsigned long nentries)
@@ -59,13 +68,30 @@ static void __flush_tsb_one_entry(unsigned long tsb, unsigned long v,
 	tsb_flush(ent, tag);
 }
 
+=======
+>>>>>>> 7175f4b... Truncated history
 static void __flush_tsb_one(struct tlb_batch *tb, unsigned long hash_shift,
 			    unsigned long tsb, unsigned long nentries)
 {
 	unsigned long i;
 
+<<<<<<< HEAD
 	for (i = 0; i < tb->tlb_nr; i++)
 		__flush_tsb_one_entry(tsb, tb->vaddrs[i], hash_shift, nentries);
+=======
+	for (i = 0; i < tb->tlb_nr; i++) {
+		unsigned long v = tb->vaddrs[i];
+		unsigned long tag, ent, hash;
+
+		v &= ~0x1UL;
+
+		hash = tsb_hash(v, hash_shift, nentries);
+		ent = tsb + (hash * sizeof(struct tsb));
+		tag = (v >> 22UL);
+
+		tsb_flush(ent, tag);
+	}
+>>>>>>> 7175f4b... Truncated history
 }
 
 void flush_tsb_user(struct tlb_batch *tb)
@@ -93,6 +119,7 @@ void flush_tsb_user(struct tlb_batch *tb)
 	spin_unlock_irqrestore(&mm->context.lock, flags);
 }
 
+<<<<<<< HEAD
 void flush_tsb_user_page(struct mm_struct *mm, unsigned long vaddr)
 {
 	unsigned long nentries, base, flags;
@@ -117,6 +144,8 @@ void flush_tsb_user_page(struct mm_struct *mm, unsigned long vaddr)
 	spin_unlock_irqrestore(&mm->context.lock, flags);
 }
 
+=======
+>>>>>>> 7175f4b... Truncated history
 #if defined(CONFIG_SPARC64_PAGE_SIZE_8KB)
 #define HV_PGSZ_IDX_BASE	HV_PGSZ_IDX_8K
 #define HV_PGSZ_MASK_BASE	HV_PGSZ_MASK_8K

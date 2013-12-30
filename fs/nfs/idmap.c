@@ -57,6 +57,7 @@ unsigned int nfs_idmap_cache_timeout = 600;
 static const struct cred *id_resolver_cache;
 static struct key_type key_type_id_resolver_legacy;
 
+<<<<<<< HEAD
 struct idmap {
 	struct rpc_pipe		*idmap_pipe;
 	struct key_construction	*idmap_key_cons;
@@ -68,6 +69,8 @@ struct idmap_legacy_upcalldata {
 	struct idmap_msg idmap_msg;
 	struct idmap *idmap;
 };
+=======
+>>>>>>> 7175f4b... Truncated history
 
 /**
  * nfs_fattr_init_names - initialise the nfs_fattr owner_name/group_name fields
@@ -211,18 +214,24 @@ static int nfs_idmap_init_keyring(void)
 	if (ret < 0)
 		goto failed_put_key;
 
+<<<<<<< HEAD
 	ret = register_key_type(&key_type_id_resolver_legacy);
 	if (ret < 0)
 		goto failed_reg_legacy;
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	set_bit(KEY_FLAG_ROOT_CAN_CLEAR, &keyring->flags);
 	cred->thread_keyring = keyring;
 	cred->jit_keyring = KEY_REQKEY_DEFL_THREAD_KEYRING;
 	id_resolver_cache = cred;
 	return 0;
 
+<<<<<<< HEAD
 failed_reg_legacy:
 	unregister_key_type(&key_type_id_resolver);
+=======
+>>>>>>> 7175f4b... Truncated history
 failed_put_key:
 	key_put(keyring);
 failed_put_cred:
@@ -234,7 +243,10 @@ static void nfs_idmap_quit_keyring(void)
 {
 	key_revoke(id_resolver_cache->thread_keyring);
 	unregister_key_type(&key_type_id_resolver);
+<<<<<<< HEAD
 	unregister_key_type(&key_type_id_resolver_legacy);
+=======
+>>>>>>> 7175f4b... Truncated history
 	put_cred(id_resolver_cache);
 }
 
@@ -328,12 +340,18 @@ static ssize_t nfs_idmap_get_key(const char *name, size_t namelen,
 					    name, namelen, type, data,
 					    data_size, NULL);
 	if (ret < 0) {
+<<<<<<< HEAD
 		mutex_lock(&idmap->idmap_mutex);
 		ret = nfs_idmap_request_key(&key_type_id_resolver_legacy,
 					    name, namelen, type, data,
 					    data_size, idmap);
 		idmap->idmap_key_cons = NULL;
 		mutex_unlock(&idmap->idmap_mutex);
+=======
+		ret = nfs_idmap_request_key(&key_type_id_resolver_legacy,
+					    name, namelen, type, data,
+					    data_size, idmap);
+>>>>>>> 7175f4b... Truncated history
 	}
 	return ret;
 }
@@ -375,6 +393,14 @@ static int nfs_idmap_lookup_id(const char *name, size_t namelen, const char *typ
 /* idmap classic begins here */
 module_param(nfs_idmap_cache_timeout, int, 0644);
 
+<<<<<<< HEAD
+=======
+struct idmap {
+	struct rpc_pipe		*idmap_pipe;
+	struct key_construction	*idmap_key_cons;
+};
+
+>>>>>>> 7175f4b... Truncated history
 enum {
 	Opt_find_uid, Opt_find_gid, Opt_find_user, Opt_find_group, Opt_find_err
 };
@@ -390,18 +416,28 @@ static const match_table_t nfs_idmap_tokens = {
 static int nfs_idmap_legacy_upcall(struct key_construction *, const char *, void *);
 static ssize_t idmap_pipe_downcall(struct file *, const char __user *,
 				   size_t);
+<<<<<<< HEAD
 static void idmap_release_pipe(struct inode *);
+=======
+>>>>>>> 7175f4b... Truncated history
 static void idmap_pipe_destroy_msg(struct rpc_pipe_msg *);
 
 static const struct rpc_pipe_ops idmap_upcall_ops = {
 	.upcall		= rpc_pipe_generic_upcall,
 	.downcall	= idmap_pipe_downcall,
+<<<<<<< HEAD
 	.release_pipe	= idmap_release_pipe,
+=======
+>>>>>>> 7175f4b... Truncated history
 	.destroy_msg	= idmap_pipe_destroy_msg,
 };
 
 static struct key_type key_type_id_resolver_legacy = {
+<<<<<<< HEAD
 	.name		= "id_legacy",
+=======
+	.name		= "id_resolver",
+>>>>>>> 7175f4b... Truncated history
 	.instantiate	= user_instantiate,
 	.match		= user_match,
 	.revoke		= user_revoke,
@@ -487,7 +523,10 @@ nfs_idmap_new(struct nfs_client *clp)
 		return error;
 	}
 	idmap->idmap_pipe = pipe;
+<<<<<<< HEAD
 	mutex_init(&idmap->idmap_mutex);
+=======
+>>>>>>> 7175f4b... Truncated history
 
 	clp->cl_idmap = idmap;
 	return 0;
@@ -612,8 +651,12 @@ void nfs_idmap_quit(void)
 	nfs_idmap_quit_keyring();
 }
 
+<<<<<<< HEAD
 static int nfs_idmap_prepare_message(char *desc, struct idmap *idmap,
 				     struct idmap_msg *im,
+=======
+static int nfs_idmap_prepare_message(char *desc, struct idmap_msg *im,
+>>>>>>> 7175f4b... Truncated history
 				     struct rpc_pipe_msg *msg)
 {
 	substring_t substr;
@@ -656,11 +699,15 @@ static int nfs_idmap_legacy_upcall(struct key_construction *cons,
 				   const char *op,
 				   void *aux)
 {
+<<<<<<< HEAD
 	struct idmap_legacy_upcalldata *data;
+=======
+>>>>>>> 7175f4b... Truncated history
 	struct rpc_pipe_msg *msg;
 	struct idmap_msg *im;
 	struct idmap *idmap = (struct idmap *)aux;
 	struct key *key = cons->key;
+<<<<<<< HEAD
 	int ret = -ENOMEM;
 
 	/* msg and im are freed in idmap_pipe_destroy_msg */
@@ -677,10 +724,32 @@ static int nfs_idmap_legacy_upcall(struct key_construction *cons,
 		goto out2;
 
 	BUG_ON(idmap->idmap_key_cons != NULL);
+=======
+	int ret;
+
+	/* msg and im are freed in idmap_pipe_destroy_msg */
+	msg = kmalloc(sizeof(*msg), GFP_KERNEL);
+	if (IS_ERR(msg)) {
+		ret = PTR_ERR(msg);
+		goto out0;
+	}
+
+	im = kmalloc(sizeof(*im), GFP_KERNEL);
+	if (IS_ERR(im)) {
+		ret = PTR_ERR(im);
+		goto out1;
+	}
+
+	ret = nfs_idmap_prepare_message(key->description, im, msg);
+	if (ret < 0)
+		goto out2;
+
+>>>>>>> 7175f4b... Truncated history
 	idmap->idmap_key_cons = cons;
 
 	ret = rpc_queue_upcall(idmap->idmap_pipe, msg);
 	if (ret < 0)
+<<<<<<< HEAD
 		goto out3;
 
 	return ret;
@@ -691,6 +760,19 @@ out2:
 	kfree(data);
 out1:
 	complete_request_key(cons, ret);
+=======
+		goto out2;
+
+	return ret;
+
+out2:
+	kfree(im);
+out1:
+	kfree(msg);
+out0:
+	key_revoke(cons->key);
+	key_revoke(cons->authkey);
+>>>>>>> 7175f4b... Truncated history
 	return ret;
 }
 
@@ -724,11 +806,16 @@ idmap_pipe_downcall(struct file *filp, const char __user *src, size_t mlen)
 {
 	struct rpc_inode *rpci = RPC_I(filp->f_path.dentry->d_inode);
 	struct idmap *idmap = (struct idmap *)rpci->private;
+<<<<<<< HEAD
 	struct key_construction *cons;
+=======
+	struct key_construction *cons = idmap->idmap_key_cons;
+>>>>>>> 7175f4b... Truncated history
 	struct idmap_msg im;
 	size_t namelen_in;
 	int ret;
 
+<<<<<<< HEAD
 	/* If instantiation is successful, anyone waiting for key construction
 	 * will have been woken up and someone else may now have used
 	 * idmap_key_cons - so after this point we may no longer touch it.
@@ -736,6 +823,8 @@ idmap_pipe_downcall(struct file *filp, const char __user *src, size_t mlen)
 	cons = ACCESS_ONCE(idmap->idmap_key_cons);
 	idmap->idmap_key_cons = NULL;
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	if (mlen != sizeof(im)) {
 		ret = -ENOSPC;
 		goto out;
@@ -747,8 +836,14 @@ idmap_pipe_downcall(struct file *filp, const char __user *src, size_t mlen)
 	}
 
 	if (!(im.im_status & IDMAP_STATUS_SUCCESS)) {
+<<<<<<< HEAD
 		ret = -ENOKEY;
 		goto out;
+=======
+		ret = mlen;
+		complete_request_key(idmap->idmap_key_cons, -ENOKEY);
+		goto out_incomplete;
+>>>>>>> 7175f4b... Truncated history
 	}
 
 	namelen_in = strnlen(im.im_name, IDMAP_NAMESZ);
@@ -764,13 +859,19 @@ idmap_pipe_downcall(struct file *filp, const char __user *src, size_t mlen)
 	}
 
 out:
+<<<<<<< HEAD
 	complete_request_key(cons, ret);
+=======
+	complete_request_key(idmap->idmap_key_cons, ret);
+out_incomplete:
+>>>>>>> 7175f4b... Truncated history
 	return ret;
 }
 
 static void
 idmap_pipe_destroy_msg(struct rpc_pipe_msg *msg)
 {
+<<<<<<< HEAD
 	struct idmap_legacy_upcalldata *data = container_of(msg,
 			struct idmap_legacy_upcalldata,
 			pipe_msg);
@@ -791,6 +892,11 @@ idmap_release_pipe(struct inode *inode)
 	struct rpc_inode *rpci = RPC_I(inode);
 	struct idmap *idmap = (struct idmap *)rpci->private;
 	idmap->idmap_key_cons = NULL;
+=======
+	/* Free memory allocated in nfs_idmap_legacy_upcall() */
+	kfree(msg->data);
+	kfree(msg);
+>>>>>>> 7175f4b... Truncated history
 }
 
 int nfs_map_name_to_uid(const struct nfs_server *server, const char *name, size_t namelen, __u32 *uid)

@@ -1422,10 +1422,15 @@ static int do_cpu_nanosleep(const clockid_t which_clock, int flags,
 		while (!signal_pending(current)) {
 			if (timer.it.cpu.expires.sched == 0) {
 				/*
+<<<<<<< HEAD
 				 * Our timer fired and was reset, below
 				 * deletion can not fail.
 				 */
 				posix_cpu_timer_del(&timer);
+=======
+				 * Our timer fired and was reset.
+				 */
+>>>>>>> 7175f4b... Truncated history
 				spin_unlock_irq(&timer.it_lock);
 				return 0;
 			}
@@ -1443,6 +1448,7 @@ static int do_cpu_nanosleep(const clockid_t which_clock, int flags,
 		 * We were interrupted by a signal.
 		 */
 		sample_to_timespec(which_clock, timer.it.cpu.expires, rqtp);
+<<<<<<< HEAD
 		error = posix_cpu_timer_set(&timer, 0, &zero_it, it);
 		if (!error) {
 			/*
@@ -1463,6 +1469,11 @@ static int do_cpu_nanosleep(const clockid_t which_clock, int flags,
 			spin_unlock_irq(&timer.it_lock);
 		}
 
+=======
+		posix_cpu_timer_set(&timer, 0, &zero_it, it);
+		spin_unlock_irq(&timer.it_lock);
+
+>>>>>>> 7175f4b... Truncated history
 		if ((it->it_value.tv_sec | it->it_value.tv_nsec) == 0) {
 			/*
 			 * It actually did fire already.

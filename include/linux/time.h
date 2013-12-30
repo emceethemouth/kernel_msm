@@ -107,6 +107,7 @@ static inline struct timespec timespec_sub(struct timespec lhs,
 	return ts_delta;
 }
 
+<<<<<<< HEAD
 #define KTIME_MAX			((s64)~((u64)1 << 63))
 #if (BITS_PER_LONG == 64)
 # define KTIME_SEC_MAX			(KTIME_MAX / NSEC_PER_SEC)
@@ -137,6 +138,13 @@ static inline bool timespec_valid_strict(const struct timespec *ts)
 		return false;
 	return true;
 }
+=======
+/*
+ * Returns true if the timespec is norm, false if denorm:
+ */
+#define timespec_valid(ts) \
+	(((ts)->tv_sec >= 0) && (((unsigned long) (ts)->tv_nsec) < NSEC_PER_SEC))
+>>>>>>> 7175f4b... Truncated history
 
 extern void read_persistent_clock(struct timespec *ts);
 extern void read_boot_clock(struct timespec *ts);
@@ -283,6 +291,17 @@ static __always_inline void timespec_add_ns(struct timespec *a, u64 ns)
 
 #endif /* __KERNEL__ */
 
+<<<<<<< HEAD
+=======
+#define NFDBITS			__NFDBITS
+
+#define FD_SETSIZE		__FD_SETSIZE
+#define FD_SET(fd,fdsetp)	__FD_SET(fd,fdsetp)
+#define FD_CLR(fd,fdsetp)	__FD_CLR(fd,fdsetp)
+#define FD_ISSET(fd,fdsetp)	__FD_ISSET(fd,fdsetp)
+#define FD_ZERO(fdsetp)		__FD_ZERO(fdsetp)
+
+>>>>>>> 7175f4b... Truncated history
 /*
  * Names of the interval timers, and structure
  * defining a timer setting:

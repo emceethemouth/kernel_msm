@@ -74,10 +74,13 @@
 #define FTDI_OPENDCC_THROTTLE_PID	0xBFDA
 #define FTDI_OPENDCC_GATEWAY_PID	0xBFDB
 #define FTDI_OPENDCC_GBM_PID	0xBFDC
+<<<<<<< HEAD
 #define FTDI_OPENDCC_GBM_BOOST_PID	0xBFDD
 
 /* NZR SEM 16+ USB (http://www.nzr.de) */
 #define FTDI_NZR_SEM_USB_PID	0xC1E0	/* NZR SEM-LOG16+ */
+=======
+>>>>>>> 7175f4b... Truncated history
 
 /*
  * RR-CirKits LocoBuffer USB (http://www.rr-cirkits.com)
@@ -148,11 +151,14 @@
 #define XSENS_CONVERTER_6_PID	0xD38E
 #define XSENS_CONVERTER_7_PID	0xD38F
 
+<<<<<<< HEAD
 /**
  * Zolix (www.zolix.com.cb) product ids
  */
 #define FTDI_OMNI1509			0xD491	/* Omni1509 embedded USB-serial */
 
+=======
+>>>>>>> 7175f4b... Truncated history
 /*
  * NDI (www.ndigital.com) product ids
  */
@@ -210,7 +216,11 @@
 
 /*
  * ELV USB devices submitted by Christian Abt of ELV (www.elv.de).
+<<<<<<< HEAD
  * Almost all of these devices use FTDI's vendor ID (0x0403).
+=======
+ * All of these devices use FTDI's vendor ID (0x0403).
+>>>>>>> 7175f4b... Truncated history
  * Further IDs taken from ELV Windows .inf file.
  *
  * The previously included PID for the UO 100 module was incorrect.
@@ -218,8 +228,11 @@
  *
  * Armin Laeuger originally sent the PID for the UM 100 module.
  */
+<<<<<<< HEAD
 #define FTDI_ELV_VID	0x1B1F	/* ELV AG */
 #define FTDI_ELV_WS300_PID	0xC006	/* eQ3 WS 300 PC II */
+=======
+>>>>>>> 7175f4b... Truncated history
 #define FTDI_ELV_USR_PID	0xE000	/* ELV Universal-Sound-Recorder */
 #define FTDI_ELV_MSM1_PID	0xE001	/* ELV Mini-Sound-Modul */
 #define FTDI_ELV_KL100_PID	0xE002	/* ELV Kfz-Leistungsmesser KL 100 */
@@ -525,11 +538,14 @@
  */
 #define FTDI_TAVIR_STK500_PID	0xFA33	/* STK500 AVR programmer */
 
+<<<<<<< HEAD
 /*
  * TIAO product ids (FTDI_VID)
  * http://www.tiaowiki.com/w/Main_Page
  */
 #define FTDI_TIAO_UMPA_PID	0x8a98	/* TIAO/DIYGADGET USB Multi-Protocol Adapter */
+=======
+>>>>>>> 7175f4b... Truncated history
 
 
 /********************************/
@@ -555,10 +571,14 @@
 /*
  * Microchip Technology, Inc.
  *
+<<<<<<< HEAD
  * MICROCHIP_VID (0x04D8) and MICROCHIP_USB_BOARD_PID (0x000A) are
  * used by single function CDC ACM class based firmware demo
  * applications.  The VID/PID has also been used in firmware
  * emulating FTDI serial chips by:
+=======
+ * MICROCHIP_VID (0x04D8) and MICROCHIP_USB_BOARD_PID (0x000A) are also used by:
+>>>>>>> 7175f4b... Truncated history
  * Hornby Elite - Digital Command Control Console
  * http://www.hornby.com/hornby-dcc/controllers/
  */
@@ -585,6 +605,7 @@
 #define CONTEC_COM1USBH_PID	0x8311	/* COM-1(USB)H */
 
 /*
+<<<<<<< HEAD
  * Mitsubishi Electric Corp. (http://www.meau.com)
  * Submitted by Konstantin Holoborodko
  */
@@ -592,6 +613,8 @@
 #define MITSUBISHI_FXUSB_PID	0x0284 /* USB/RS422 converters: FX-USB-AW/-BD */
 
 /*
+=======
+>>>>>>> 7175f4b... Truncated history
  * Definitions for B&B Electronics products.
  */
 #define BANDB_VID		0x0856	/* B&B Electronics Vendor ID */
@@ -767,6 +790,7 @@
 #define TTI_VID			0x103E	/* Vendor Id */
 #define TTI_QL355P_PID		0x03E8	/* TTi QL355P power supply */
 
+<<<<<<< HEAD
 /*
  * Newport Cooperation (www.newport.com)
  */
@@ -775,6 +799,8 @@
 #define NEWPORT_CONEX_CC_PID		0x3002
 #define NEWPORT_CONEX_AGP_PID		0x3006
 
+=======
+>>>>>>> 7175f4b... Truncated history
 /* Interbiometrics USB I/O Board */
 /* Developed for Interbiometrics by Rudolf Gugler */
 #define INTERBIOMETRICS_VID              0x1209
@@ -815,6 +841,7 @@
 /*
  * RT Systems programming cables for various ham radios
  */
+<<<<<<< HEAD
 #define RTSYSTEMS_VID		0x2100	/* Vendor ID */
 #define RTSYSTEMS_USB_S03_PID	0x9001	/* RTS-03 USB to Serial Adapter */
 #define RTSYSTEMS_USB_59_PID	0x9e50	/* USB-59 USB to 8 pin plug */
@@ -877,6 +904,11 @@
  */
 #define KONDO_VID 		0x165c
 #define KONDO_USB_SERIAL_PID	0x0002
+=======
+#define RTSYSTEMS_VID			0x2100	/* Vendor ID */
+#define RTSYSTEMS_SERIAL_VX7_PID	0x9e52	/* Serial converter for VX-7 Radios using FT232RL */
+#define RTSYSTEMS_CT29B_PID		0x9e54	/* CT29B Radio Cable */
+>>>>>>> 7175f4b... Truncated history
 
 /*
  * Bayer Ascensia Contour blood glucose meter USB-converter cable.
@@ -1177,8 +1209,12 @@
  * STMicroelectonics
  */
 #define ST_VID			0x0483
+<<<<<<< HEAD
 #define ST_STMCLT_2232_PID	0x3746
 #define ST_STMCLT_4232_PID	0x3747
+=======
+#define ST_STMCLT1030_PID	0x3747 /* ST Micro Connect Lite STMCLT1030 */
+>>>>>>> 7175f4b... Truncated history
 
 /*
  * Papouch products (http://www.papouch.com/)
@@ -1301,6 +1337,7 @@
  * ATI command output: Cinterion MC55i
  */
 #define FTDI_CINTERION_MC55I_PID	0xA951
+<<<<<<< HEAD
 
 /*
  * Product: Comet Caller ID decoder
@@ -1313,3 +1350,5 @@
  * Manufacturer: Smart GSM Team
  */
 #define FTDI_Z3X_PID		0x0011
+=======
+>>>>>>> 7175f4b... Truncated history

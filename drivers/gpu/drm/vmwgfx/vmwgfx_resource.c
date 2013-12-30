@@ -1917,6 +1917,7 @@ err_ref:
 	vmw_resource_unreference(&res);
 	return ret;
 }
+<<<<<<< HEAD
 
 
 int vmw_dumb_create(struct drm_file *file_priv,
@@ -1990,3 +1991,5 @@ int vmw_dumb_destroy(struct drm_file *file_priv,
 	return ttm_ref_object_base_unref(vmw_fpriv(file_priv)->tfile,
 					 handle, TTM_REF_USAGE);
 }
+=======
+>>>>>>> 7175f4b... Truncated history

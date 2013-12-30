@@ -1456,7 +1456,11 @@ static int wm8904_set_fmt(struct snd_soc_dai *dai, unsigned int fmt)
 
 	switch (fmt & SND_SOC_DAIFMT_FORMAT_MASK) {
 	case SND_SOC_DAIFMT_DSP_B:
+<<<<<<< HEAD
 		aif1 |= 0x3 | WM8904_AIF_LRCLK_INV;
+=======
+		aif1 |= WM8904_AIF_LRCLK_INV;
+>>>>>>> 7175f4b... Truncated history
 	case SND_SOC_DAIFMT_DSP_A:
 		aif1 |= 0x3;
 		break;
@@ -2084,6 +2088,10 @@ static int wm8904_probe(struct snd_soc_codec *codec)
 {
 	struct wm8904_priv *wm8904 = snd_soc_codec_get_drvdata(codec);
 	struct wm8904_pdata *pdata = wm8904->pdata;
+<<<<<<< HEAD
+=======
+	u16 *reg_cache = codec->reg_cache;
+>>>>>>> 7175f4b... Truncated history
 	int ret, i;
 
 	codec->cache_sync = 1;
@@ -2179,18 +2187,28 @@ static int wm8904_probe(struct snd_soc_codec *codec)
 			if (!pdata->gpio_cfg[i])
 				continue;
 
+<<<<<<< HEAD
 			regmap_update_bits(wm8904->regmap,
 					   WM8904_GPIO_CONTROL_1 + i,
 					   0xffff,
 					   pdata->gpio_cfg[i]);
+=======
+			reg_cache[WM8904_GPIO_CONTROL_1 + i]
+				= pdata->gpio_cfg[i] & 0xffff;
+>>>>>>> 7175f4b... Truncated history
 		}
 
 		/* Zero is the default value for these anyway */
 		for (i = 0; i < WM8904_MIC_REGS; i++)
+<<<<<<< HEAD
 			regmap_update_bits(wm8904->regmap,
 					   WM8904_MIC_BIAS_CONTROL_0 + i,
 					   0xffff,
 					   pdata->mic_cfg[i]);
+=======
+			reg_cache[WM8904_MIC_BIAS_CONTROL_0 + i]
+				= pdata->mic_cfg[i];
+>>>>>>> 7175f4b... Truncated history
 	}
 
 	/* Set Class W by default - this will be managed by the Class

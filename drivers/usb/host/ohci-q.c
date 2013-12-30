@@ -1128,6 +1128,7 @@ dl_done_list (struct ohci_hcd *ohci)
 
 	while (td) {
 		struct td	*td_next = td->next_dl_td;
+<<<<<<< HEAD
 		struct ed	*ed = td->ed;
 
 		/*
@@ -1147,6 +1148,8 @@ dl_done_list (struct ohci_hcd *ohci)
 			takeback_td(ohci, td2);
 		}
 
+=======
+>>>>>>> 7175f4b... Truncated history
 		takeback_td(ohci, td);
 		td = td_next;
 	}

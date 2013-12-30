@@ -2161,6 +2161,7 @@ static int rt2800_get_gain_calibration_delta(struct rt2x00_dev *rt2x00dev)
 	int i;
 
 	/*
+<<<<<<< HEAD
 	 * First check if temperature compensation is supported.
 	 */
 	rt2x00_eeprom_read(rt2x00dev, EEPROM_NIC_CONF1, &eeprom);
@@ -2168,6 +2169,8 @@ static int rt2800_get_gain_calibration_delta(struct rt2x00_dev *rt2x00dev)
 		return 0;
 
 	/*
+=======
+>>>>>>> 7175f4b... Truncated history
 	 * Read TSSI boundaries for temperature compensation from
 	 * the EEPROM.
 	 *
@@ -2242,7 +2245,11 @@ static int rt2800_get_gain_calibration_delta(struct rt2x00_dev *rt2x00dev)
 	/*
 	 * Check if temperature compensation is supported.
 	 */
+<<<<<<< HEAD
 	if (tssi_bounds[4] == 0xff || step == 0xff)
+=======
+	if (tssi_bounds[4] == 0xff)
+>>>>>>> 7175f4b... Truncated history
 		return 0;
 
 	/*
@@ -4634,8 +4641,13 @@ int rt2800_probe_hw_mode(struct rt2x00_dev *rt2x00dev)
 		default_power2 = rt2x00_eeprom_addr(rt2x00dev, EEPROM_TXPOWER_A2);
 
 		for (i = 14; i < spec->num_channels; i++) {
+<<<<<<< HEAD
 			info[i].default_power1 = default_power1[i - 14];
 			info[i].default_power2 = default_power2[i - 14];
+=======
+			info[i].default_power1 = default_power1[i];
+			info[i].default_power2 = default_power2[i];
+>>>>>>> 7175f4b... Truncated history
 		}
 	}
 

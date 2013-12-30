@@ -497,7 +497,12 @@ static void addrconf_forward_change(struct net *net, __s32 newf)
 	struct net_device *dev;
 	struct inet6_dev *idev;
 
+<<<<<<< HEAD
 	for_each_netdev(net, dev) {
+=======
+	rcu_read_lock();
+	for_each_netdev_rcu(net, dev) {
+>>>>>>> 7175f4b... Truncated history
 		idev = __in6_dev_get(dev);
 		if (idev) {
 			int changed = (!idev->cnf.forwarding) ^ (!newf);
@@ -506,6 +511,10 @@ static void addrconf_forward_change(struct net *net, __s32 newf)
 				dev_forward_change(idev);
 		}
 	}
+<<<<<<< HEAD
+=======
+	rcu_read_unlock();
+>>>>>>> 7175f4b... Truncated history
 }
 
 static int addrconf_fixup_forwarding(struct ctl_table *table, int *p, int newf)
@@ -797,6 +806,7 @@ static void ipv6_del_addr(struct inet6_ifaddr *ifp)
 		struct in6_addr prefix;
 		struct rt6_info *rt;
 		struct net *net = dev_net(ifp->idev->dev);
+<<<<<<< HEAD
 		struct flowi6 fl6 = {};
 
 		ipv6_addr_prefix(&prefix, &ifp->addr, ifp->prefix_len);
@@ -807,6 +817,12 @@ static void ipv6_del_addr(struct inet6_ifaddr *ifp)
 
 		if (rt != net->ipv6.ip6_null_entry &&
 		    addrconf_is_prefix_route(rt)) {
+=======
+		ipv6_addr_prefix(&prefix, &ifp->addr, ifp->prefix_len);
+		rt = rt6_lookup(net, &prefix, NULL, ifp->idev->dev->ifindex, 1);
+
+		if (rt && addrconf_is_prefix_route(rt)) {
+>>>>>>> 7175f4b... Truncated history
 			if (onlink == 0) {
 				ip6_del_rt(rt);
 				rt = NULL;
@@ -914,10 +930,19 @@ retry:
 	if (ifp->flags & IFA_F_OPTIMISTIC)
 		addr_flags |= IFA_F_OPTIMISTIC;
 
+<<<<<<< HEAD
 	ift = ipv6_add_addr(idev, &addr, tmp_plen,
 			    ipv6_addr_type(&addr)&IPV6_ADDR_SCOPE_MASK,
 			    addr_flags);
 	if (IS_ERR(ift)) {
+=======
+	ift = !max_addresses ||
+	      ipv6_count_addresses(idev) < max_addresses ?
+		ipv6_add_addr(idev, &addr, tmp_plen,
+			      ipv6_addr_type(&addr)&IPV6_ADDR_SCOPE_MASK,
+			      addr_flags) : NULL;
+	if (!ift || IS_ERR(ift)) {
+>>>>>>> 7175f4b... Truncated history
 		in6_ifa_put(ifp);
 		in6_dev_put(idev);
 		printk(KERN_INFO
@@ -1235,6 +1260,7 @@ try_nextdev:
 }
 EXPORT_SYMBOL(ipv6_dev_get_saddr);
 
+<<<<<<< HEAD
 int __ipv6_get_lladdr(struct inet6_dev *idev, struct in6_addr *addr,
 		      unsigned char banned_flags)
 {
@@ -1252,6 +1278,8 @@ int __ipv6_get_lladdr(struct inet6_dev *idev, struct in6_addr *addr,
 	return err;
 }
 
+=======
+>>>>>>> 7175f4b... Truncated history
 int ipv6_get_lladdr(struct net_device *dev, struct in6_addr *addr,
 		    unsigned char banned_flags)
 {
@@ -1261,8 +1289,22 @@ int ipv6_get_lladdr(struct net_device *dev, struct in6_addr *addr,
 	rcu_read_lock();
 	idev = __in6_dev_get(dev);
 	if (idev) {
+<<<<<<< HEAD
 		read_lock_bh(&idev->lock);
 		err = __ipv6_get_lladdr(idev, addr, banned_flags);
+=======
+		struct inet6_ifaddr *ifp;
+
+		read_lock_bh(&idev->lock);
+		list_for_each_entry(ifp, &idev->addr_list, if_list) {
+			if (ifp->scope == IFA_LINK &&
+			    !(ifp->flags & banned_flags)) {
+				*addr = ifp->addr;
+				err = 0;
+				break;
+			}
+		}
+>>>>>>> 7175f4b... Truncated history
 		read_unlock_bh(&idev->lock);
 	}
 	rcu_read_unlock();
@@ -1756,7 +1798,11 @@ static struct rt6_info *addrconf_get_prefix_route(const struct in6_addr *pfx,
 			continue;
 		if ((rt->rt6i_flags & flags) != flags)
 			continue;
+<<<<<<< HEAD
 		if ((rt->rt6i_flags & noflags) != 0)
+=======
+		if ((noflags != 0) && ((rt->rt6i_flags & flags) != 0))
+>>>>>>> 7175f4b... Truncated history
 			continue;
 		dst_hold(&rt->dst);
 		break;
@@ -2421,9 +2467,12 @@ static void sit_add_v4_addrs(struct inet6_dev *idev)
 static void init_loopback(struct net_device *dev)
 {
 	struct inet6_dev  *idev;
+<<<<<<< HEAD
 	struct net_device *sp_dev;
 	struct inet6_ifaddr *sp_ifa;
 	struct rt6_info *sp_rt;
+=======
+>>>>>>> 7175f4b... Truncated history
 
 	/* ::1 */
 
@@ -2435,6 +2484,7 @@ static void init_loopback(struct net_device *dev)
 	}
 
 	add_addr(idev, &in6addr_loopback, 128, IFA_HOST);
+<<<<<<< HEAD
 
 	/* Add routes to other interface's IPv6 addresses */
 	for_each_netdev(dev_net(dev), sp_dev) {
@@ -2464,6 +2514,8 @@ static void init_loopback(struct net_device *dev)
 		}
 		read_unlock_bh(&idev->lock);
 	}
+=======
+>>>>>>> 7175f4b... Truncated history
 }
 
 static void addrconf_add_linklocal(struct inet6_dev *idev, const struct in6_addr *addr)
@@ -3150,15 +3202,23 @@ static struct inet6_ifaddr *if6_get_first(struct seq_file *seq, loff_t pos)
 		struct hlist_node *n;
 		hlist_for_each_entry_rcu_bh(ifa, n, &inet6_addr_lst[state->bucket],
 					 addr_lst) {
+<<<<<<< HEAD
 			if (!net_eq(dev_net(ifa->idev->dev), net))
 				continue;
+=======
+>>>>>>> 7175f4b... Truncated history
 			/* sync with offset */
 			if (p < state->offset) {
 				p++;
 				continue;
 			}
 			state->offset++;
+<<<<<<< HEAD
 			return ifa;
+=======
+			if (net_eq(dev_net(ifa->idev->dev), net))
+				return ifa;
+>>>>>>> 7175f4b... Truncated history
 		}
 
 		/* prepare for next bucket */
@@ -3176,20 +3236,32 @@ static struct inet6_ifaddr *if6_get_next(struct seq_file *seq,
 	struct hlist_node *n = &ifa->addr_lst;
 
 	hlist_for_each_entry_continue_rcu_bh(ifa, n, addr_lst) {
+<<<<<<< HEAD
 		if (!net_eq(dev_net(ifa->idev->dev), net))
 			continue;
 		state->offset++;
 		return ifa;
+=======
+		state->offset++;
+		if (net_eq(dev_net(ifa->idev->dev), net))
+			return ifa;
+>>>>>>> 7175f4b... Truncated history
 	}
 
 	while (++state->bucket < IN6_ADDR_HSIZE) {
 		state->offset = 0;
 		hlist_for_each_entry_rcu_bh(ifa, n,
 				     &inet6_addr_lst[state->bucket], addr_lst) {
+<<<<<<< HEAD
 			if (!net_eq(dev_net(ifa->idev->dev), net))
 				continue;
 			state->offset++;
 			return ifa;
+=======
+			state->offset++;
+			if (net_eq(dev_net(ifa->idev->dev), net))
+				return ifa;
+>>>>>>> 7175f4b... Truncated history
 		}
 	}
 
@@ -4748,6 +4820,7 @@ static void addrconf_sysctl_unregister(struct inet6_dev *idev)
 
 static int __net_init addrconf_init_net(struct net *net)
 {
+<<<<<<< HEAD
 	int err = -ENOMEM;
 	struct ipv6_devconf *all, *dflt;
 
@@ -4762,6 +4835,28 @@ static int __net_init addrconf_init_net(struct net *net)
 	/* these will be inherited by all namespaces */
 	dflt->autoconf = ipv6_defaults.autoconf;
 	dflt->disable_ipv6 = ipv6_defaults.disable_ipv6;
+=======
+	int err;
+	struct ipv6_devconf *all, *dflt;
+
+	err = -ENOMEM;
+	all = &ipv6_devconf;
+	dflt = &ipv6_devconf_dflt;
+
+	if (!net_eq(net, &init_net)) {
+		all = kmemdup(all, sizeof(ipv6_devconf), GFP_KERNEL);
+		if (all == NULL)
+			goto err_alloc_all;
+
+		dflt = kmemdup(dflt, sizeof(ipv6_devconf_dflt), GFP_KERNEL);
+		if (dflt == NULL)
+			goto err_alloc_dflt;
+	} else {
+		/* these will be inherited by all namespaces */
+		dflt->autoconf = ipv6_defaults.autoconf;
+		dflt->disable_ipv6 = ipv6_defaults.disable_ipv6;
+	}
+>>>>>>> 7175f4b... Truncated history
 
 	net->ipv6.devconf_all = all;
 	net->ipv6.devconf_dflt = dflt;

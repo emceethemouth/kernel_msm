@@ -86,12 +86,16 @@ nope:
 static void release_data_buffer(struct buffer_head *bh)
 {
 	if (buffer_freed(bh)) {
+<<<<<<< HEAD
 		WARN_ON_ONCE(buffer_dirty(bh));
 		clear_buffer_freed(bh);
 		clear_buffer_mapped(bh);
 		clear_buffer_new(bh);
 		clear_buffer_req(bh);
 		bh->b_bdev = NULL;
+=======
+		clear_buffer_freed(bh);
+>>>>>>> 7175f4b... Truncated history
 		release_buffer_page(bh);
 	} else
 		put_bh(bh);
@@ -858,6 +862,7 @@ restart_loop:
 		 * there's no point in keeping a checkpoint record for
 		 * it. */
 
+<<<<<<< HEAD
 		/*
 		 * A buffer which has been freed while still being journaled by
 		 * a previous transaction.
@@ -887,6 +892,19 @@ restart_loop:
 				clear_buffer_req(bh);
 				bh->b_bdev = NULL;
 			}
+=======
+		/* A buffer which has been freed while still being
+		 * journaled by a previous transaction may end up still
+		 * being dirty here, but we want to avoid writing back
+		 * that buffer in the future after the "add to orphan"
+		 * operation been committed,  That's not only a performance
+		 * gain, it also stops aliasing problems if the buffer is
+		 * left behind for writeback and gets reallocated for another
+		 * use in a different page. */
+		if (buffer_freed(bh) && !jh->b_next_transaction) {
+			clear_buffer_freed(bh);
+			clear_buffer_jbddirty(bh);
+>>>>>>> 7175f4b... Truncated history
 		}
 
 		if (buffer_jbddirty(bh)) {

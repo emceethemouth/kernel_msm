@@ -3957,6 +3957,7 @@ il_connection_init_rx_config(struct il_priv *il)
 
 	memset(&il->staging, 0, sizeof(il->staging));
 
+<<<<<<< HEAD
 	switch (il->iw_mode) {
 	case NL80211_IFTYPE_UNSPECIFIED:
 		il->staging.dev_type = RXON_DEV_TYPE_ESS;
@@ -3966,12 +3967,24 @@ il_connection_init_rx_config(struct il_priv *il)
 		il->staging.filter_flags = RXON_FILTER_ACCEPT_GRP_MSK;
 		break;
 	case NL80211_IFTYPE_ADHOC:
+=======
+	if (!il->vif) {
+		il->staging.dev_type = RXON_DEV_TYPE_ESS;
+	} else if (il->vif->type == NL80211_IFTYPE_STATION) {
+		il->staging.dev_type = RXON_DEV_TYPE_ESS;
+		il->staging.filter_flags = RXON_FILTER_ACCEPT_GRP_MSK;
+	} else if (il->vif->type == NL80211_IFTYPE_ADHOC) {
+>>>>>>> 7175f4b... Truncated history
 		il->staging.dev_type = RXON_DEV_TYPE_IBSS;
 		il->staging.flags = RXON_FLG_SHORT_PREAMBLE_MSK;
 		il->staging.filter_flags =
 		    RXON_FILTER_BCON_AWARE_MSK | RXON_FILTER_ACCEPT_GRP_MSK;
+<<<<<<< HEAD
 		break;
 	default:
+=======
+	} else {
+>>>>>>> 7175f4b... Truncated history
 		IL_ERR("Unsupported interface type %d\n", il->vif->type);
 		return;
 	}
@@ -4554,7 +4567,12 @@ out:
 EXPORT_SYMBOL(il_mac_add_interface);
 
 static void
+<<<<<<< HEAD
 il_teardown_interface(struct il_priv *il, struct ieee80211_vif *vif)
+=======
+il_teardown_interface(struct il_priv *il, struct ieee80211_vif *vif,
+		      bool mode_change)
+>>>>>>> 7175f4b... Truncated history
 {
 	lockdep_assert_held(&il->mutex);
 
@@ -4563,7 +4581,13 @@ il_teardown_interface(struct il_priv *il, struct ieee80211_vif *vif)
 		il_force_scan_end(il);
 	}
 
+<<<<<<< HEAD
 	il_set_mode(il);
+=======
+	if (!mode_change)
+		il_set_mode(il);
+
+>>>>>>> 7175f4b... Truncated history
 }
 
 void
@@ -4576,8 +4600,13 @@ il_mac_remove_interface(struct ieee80211_hw *hw, struct ieee80211_vif *vif)
 
 	WARN_ON(il->vif != vif);
 	il->vif = NULL;
+<<<<<<< HEAD
 	il->iw_mode = NL80211_IFTYPE_UNSPECIFIED;
 	il_teardown_interface(il, vif);
+=======
+
+	il_teardown_interface(il, vif, false);
+>>>>>>> 7175f4b... Truncated history
 	memset(il->bssid, 0, ETH_ALEN);
 
 	D_MAC80211("leave\n");
@@ -4659,7 +4688,10 @@ il_force_reset(struct il_priv *il, bool external)
 
 	return 0;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL(il_force_reset);
+=======
+>>>>>>> 7175f4b... Truncated history
 
 int
 il_mac_change_interface(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
@@ -4687,10 +4719,25 @@ il_mac_change_interface(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
 	}
 
 	/* success */
+<<<<<<< HEAD
 	vif->type = newtype;
 	vif->p2p = false;
 	il->iw_mode = newtype;
 	il_teardown_interface(il, vif);
+=======
+	il_teardown_interface(il, vif, true);
+	vif->type = newtype;
+	vif->p2p = false;
+	err = il_set_mode(il);
+	WARN_ON(err);
+	/*
+	 * We've switched internally, but submitting to the
+	 * device may have failed for some reason. Mask this
+	 * error, because otherwise mac80211 will not switch
+	 * (and set the interface type back) and we'll be
+	 * out of sync with it.
+	 */
+>>>>>>> 7175f4b... Truncated history
 	err = 0;
 
 out:
@@ -4761,12 +4808,23 @@ il_bg_watchdog(unsigned long data)
 		return;
 
 	/* monitor and check for other stuck queues */
+<<<<<<< HEAD
 	for (cnt = 0; cnt < il->hw_params.max_txq_num; cnt++) {
 		/* skip as we already checked the command queue */
 		if (cnt == il->cmd_queue)
 			continue;
 		if (il_check_stuck_queue(il, cnt))
 			return;
+=======
+	if (il_is_any_associated(il)) {
+		for (cnt = 0; cnt < il->hw_params.max_txq_num; cnt++) {
+			/* skip as we already checked the command queue */
+			if (cnt == il->cmd_queue)
+				continue;
+			if (il_check_stuck_queue(il, cnt))
+				return;
+		}
+>>>>>>> 7175f4b... Truncated history
 	}
 
 	mod_timer(&il->watchdog,

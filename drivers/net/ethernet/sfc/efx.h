@@ -30,7 +30,10 @@ extern netdev_tx_t
 efx_enqueue_skb(struct efx_tx_queue *tx_queue, struct sk_buff *skb);
 extern void efx_xmit_done(struct efx_tx_queue *tx_queue, unsigned int index);
 extern int efx_setup_tc(struct net_device *net_dev, u8 num_tc);
+<<<<<<< HEAD
 extern unsigned int efx_tx_max_skb_descs(struct efx_nic *efx);
+=======
+>>>>>>> 7175f4b... Truncated history
 
 /* RX */
 extern int efx_probe_rx_queue(struct efx_rx_queue *rx_queue);
@@ -53,6 +56,7 @@ extern void efx_schedule_slow_fill(struct efx_rx_queue *rx_queue);
 #define EFX_MAX_EVQ_SIZE 16384UL
 #define EFX_MIN_EVQ_SIZE 512UL
 
+<<<<<<< HEAD
 /* Maximum number of TCP segments we support for soft-TSO */
 #define EFX_TSO_MAX_SEGS	100
 
@@ -62,6 +66,12 @@ extern void efx_schedule_slow_fill(struct efx_rx_queue *rx_queue);
  */
 #define EFX_RXQ_MIN_ENT		128U
 #define EFX_TXQ_MIN_ENT(efx)	(2 * efx_tx_max_skb_descs(efx))
+=======
+/* The smallest [rt]xq_entries that the driver supports. Callers of
+ * efx_wake_queue() assume that they can subsequently send at least one
+ * skb. Falcon/A1 may require up to three descriptors per skb_frag. */
+#define EFX_MIN_RING_SIZE (roundup_pow_of_two(2 * 3 * MAX_SKB_FRAGS))
+>>>>>>> 7175f4b... Truncated history
 
 /* Filters */
 extern int efx_probe_filters(struct efx_nic *efx);
@@ -162,6 +172,7 @@ extern void efx_link_status_changed(struct efx_nic *efx);
 extern void efx_link_set_advertising(struct efx_nic *efx, u32);
 extern void efx_link_set_wanted_fc(struct efx_nic *efx, u8);
 
+<<<<<<< HEAD
 static inline void efx_device_detach_sync(struct efx_nic *efx)
 {
 	struct net_device *dev = efx->net_dev;
@@ -175,4 +186,6 @@ static inline void efx_device_detach_sync(struct efx_nic *efx)
 	netif_tx_unlock_bh(dev);
 }
 
+=======
+>>>>>>> 7175f4b... Truncated history
 #endif /* EFX_EFX_H */

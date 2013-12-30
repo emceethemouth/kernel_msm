@@ -54,10 +54,14 @@ static int rawsock_release(struct socket *sock)
 {
 	struct sock *sk = sock->sk;
 
+<<<<<<< HEAD
 	pr_debug("sock=%p sk=%p\n", sock, sk);
 
 	if (!sk)
 		return 0;
+=======
+	pr_debug("sock=%p\n", sock);
+>>>>>>> 7175f4b... Truncated history
 
 	sock_orphan(sk);
 	sock_put(sk);
@@ -235,6 +239,11 @@ static int rawsock_recvmsg(struct kiocb *iocb, struct socket *sock,
 	if (!skb)
 		return rc;
 
+<<<<<<< HEAD
+=======
+	msg->msg_namelen = 0;
+
+>>>>>>> 7175f4b... Truncated history
 	copied = skb->len;
 	if (len < copied) {
 		msg->msg_flags |= MSG_TRUNC;

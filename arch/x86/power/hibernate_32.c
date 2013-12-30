@@ -129,6 +129,11 @@ static int resume_physical_mapping_init(pgd_t *pgd_base)
 		}
 	}
 
+<<<<<<< HEAD
+=======
+	resume_map_numa_kva(pgd_base);
+
+>>>>>>> 7175f4b... Truncated history
 	return 0;
 }
 

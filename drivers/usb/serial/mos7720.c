@@ -44,7 +44,11 @@
 #define DRIVER_DESC "Moschip USB Serial Driver"
 
 /* default urb timeout */
+<<<<<<< HEAD
 #define MOS_WDR_TIMEOUT	5000
+=======
+#define MOS_WDR_TIMEOUT	(HZ * 5)
+>>>>>>> 7175f4b... Truncated history
 
 #define MOS_MAX_PORT	0x02
 #define MOS_WRITE	0x0E
@@ -97,7 +101,10 @@ struct urbtracker {
 	struct list_head        urblist_entry;
 	struct kref             ref_count;
 	struct urb              *urb;
+<<<<<<< HEAD
 	struct usb_ctrlrequest	*setup;
+=======
+>>>>>>> 7175f4b... Truncated history
 };
 
 enum mos7715_pp_modes {
@@ -235,6 +242,7 @@ static int read_mos_reg(struct usb_serial *serial, unsigned int serial_portnum,
 	__u8 requesttype = (__u8)0xc0;
 	__u16 index = get_reg_index(reg);
 	__u16 value = get_reg_value(reg, serial_portnum);
+<<<<<<< HEAD
 	u8 *buf;
 	int status;
 
@@ -251,6 +259,13 @@ static int read_mos_reg(struct usb_serial *serial, unsigned int serial_portnum,
 			"mos7720: usb_control_msg() failed: %d", status);
 	kfree(buf);
 
+=======
+	int status = usb_control_msg(usbdev, pipe, request, requesttype, value,
+				     index, data, 1, MOS_WDR_TIMEOUT);
+	if (status < 0)
+		dev_err(&usbdev->dev,
+			"mos7720: usb_control_msg() failed: %d", status);
+>>>>>>> 7175f4b... Truncated history
 	return status;
 }
 
@@ -280,7 +295,10 @@ static void destroy_urbtracker(struct kref *kref)
 	struct mos7715_parport *mos_parport = urbtrack->mos_parport;
 	dbg("%s called", __func__);
 	usb_free_urb(urbtrack->urb);
+<<<<<<< HEAD
 	kfree(urbtrack->setup);
+=======
+>>>>>>> 7175f4b... Truncated history
 	kfree(urbtrack);
 	kref_put(&mos_parport->ref_count, destroy_mos_parport);
 }
@@ -365,6 +383,10 @@ static int write_parport_reg_nonblock(struct mos7715_parport *mos_parport,
 	struct urbtracker *urbtrack;
 	int ret_val;
 	unsigned long flags;
+<<<<<<< HEAD
+=======
+	struct usb_ctrlrequest setup;
+>>>>>>> 7175f4b... Truncated history
 	struct usb_serial *serial = mos_parport->serial;
 	struct usb_device *usbdev = serial->dev;
 	dbg("%s called", __func__);
@@ -383,6 +405,7 @@ static int write_parport_reg_nonblock(struct mos7715_parport *mos_parport,
 		kfree(urbtrack);
 		return -ENOMEM;
 	}
+<<<<<<< HEAD
 	urbtrack->setup = kmalloc(sizeof(*urbtrack->setup), GFP_ATOMIC);
 	if (!urbtrack->setup) {
 		usb_free_urb(urbtrack->urb);
@@ -397,6 +420,16 @@ static int write_parport_reg_nonblock(struct mos7715_parport *mos_parport,
 	usb_fill_control_urb(urbtrack->urb, usbdev,
 			     usb_sndctrlpipe(usbdev, 0),
 			     (unsigned char *)urbtrack->setup,
+=======
+	setup.bRequestType = (__u8)0x40;
+	setup.bRequest = (__u8)0x0e;
+	setup.wValue = get_reg_value(reg, dummy);
+	setup.wIndex = get_reg_index(reg);
+	setup.wLength = 0;
+	usb_fill_control_urb(urbtrack->urb, usbdev,
+			     usb_sndctrlpipe(usbdev, 0),
+			     (unsigned char *)&setup,
+>>>>>>> 7175f4b... Truncated history
 			     NULL, 0, async_complete, urbtrack);
 	kref_init(&urbtrack->ref_count);
 	INIT_LIST_HEAD(&urbtrack->urblist_entry);
@@ -1708,7 +1741,11 @@ static void change_port_settings(struct tty_struct *tty,
 		mos7720_port->shadowMCR |= (UART_MCR_XONANY);
 		/* To set hardware flow control to the specified *
 		 * serial port, in SP1/2_CONTROL_REG             */
+<<<<<<< HEAD
 		if (port_number)
+=======
+		if (port->number)
+>>>>>>> 7175f4b... Truncated history
 			write_mos_reg(serial, dummy, SP_CONTROL_REG, 0x01);
 		else
 			write_mos_reg(serial, dummy, SP_CONTROL_REG, 0x02);
@@ -2112,7 +2149,11 @@ static int mos7720_startup(struct usb_serial *serial)
 
 	/* setting configuration feature to one */
 	usb_control_msg(serial->dev, usb_sndctrlpipe(serial->dev, 0),
+<<<<<<< HEAD
 			(__u8)0x03, 0x00, 0x01, 0x00, NULL, 0x00, 5000);
+=======
+			(__u8)0x03, 0x00, 0x01, 0x00, NULL, 0x00, 5*HZ);
+>>>>>>> 7175f4b... Truncated history
 
 	/* start the interrupt urb */
 	ret_val = usb_submit_urb(serial->port[0]->interrupt_in_urb, GFP_KERNEL);
@@ -2157,7 +2198,11 @@ static void mos7720_release(struct usb_serial *serial)
 		/* wait for synchronous usb calls to return */
 		if (mos_parport->msg_pending)
 			wait_for_completion_timeout(&mos_parport->syncmsg_compl,
+<<<<<<< HEAD
 					    msecs_to_jiffies(MOS_WDR_TIMEOUT));
+=======
+						    MOS_WDR_TIMEOUT);
+>>>>>>> 7175f4b... Truncated history
 
 		parport_remove_port(mos_parport->pp);
 		usb_set_serial_data(serial, NULL);

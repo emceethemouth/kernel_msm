@@ -3405,7 +3405,11 @@ il4965_remove_dynamic_key(struct il_priv *il,
 		return 0;
 	}
 
+<<<<<<< HEAD
 	if (il->stations[sta_id].sta.key.key_flags & STA_KEY_FLG_INVALID) {
+=======
+	if (il->stations[sta_id].sta.key.key_offset == WEP_INVALID_OFFSET) {
+>>>>>>> 7175f4b... Truncated history
 		IL_WARN("Removing wrong key %d 0x%x\n", keyconf->keyidx,
 			key_flags);
 		spin_unlock_irqrestore(&il->sta_lock, flags);
@@ -3420,7 +3424,11 @@ il4965_remove_dynamic_key(struct il_priv *il,
 	memset(&il->stations[sta_id].sta.key, 0, sizeof(struct il4965_keyinfo));
 	il->stations[sta_id].sta.key.key_flags =
 	    STA_KEY_FLG_NO_ENC | STA_KEY_FLG_INVALID;
+<<<<<<< HEAD
 	il->stations[sta_id].sta.key.key_offset = keyconf->hw_key_idx;
+=======
+	il->stations[sta_id].sta.key.key_offset = WEP_INVALID_OFFSET;
+>>>>>>> 7175f4b... Truncated history
 	il->stations[sta_id].sta.sta.modify_mask = STA_MODIFY_KEY_MASK;
 	il->stations[sta_id].sta.mode = STA_CONTROL_MODIFY_MSK;
 
@@ -4411,6 +4419,7 @@ il4965_irq_tasklet(struct il_priv *il)
 		 * is killed. Hence update the killswitch state here. The
 		 * rfkill handler will care about restarting if needed.
 		 */
+<<<<<<< HEAD
 		if (hw_rf_kill) {
 			set_bit(S_RFKILL, &il->status);
 		} else {
@@ -4418,6 +4427,15 @@ il4965_irq_tasklet(struct il_priv *il)
 			il_force_reset(il, true);
 		}
 		wiphy_rfkill_set_hw_state(il->hw->wiphy, hw_rf_kill);
+=======
+		if (!test_bit(S_ALIVE, &il->status)) {
+			if (hw_rf_kill)
+				set_bit(S_RFKILL, &il->status);
+			else
+				clear_bit(S_RFKILL, &il->status);
+			wiphy_rfkill_set_hw_state(il->hw->wiphy, hw_rf_kill);
+		}
+>>>>>>> 7175f4b... Truncated history
 
 		handled |= CSR_INT_BIT_RF_KILL;
 	}
@@ -5285,9 +5303,12 @@ il4965_alive_start(struct il_priv *il)
 
 	il->active_rate = RATES_MASK;
 
+<<<<<<< HEAD
 	il_power_update_mode(il, true);
 	D_INFO("Updated power mode\n");
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	if (il_is_associated(il)) {
 		struct il_rxon_cmd *active_rxon =
 		    (struct il_rxon_cmd *)&il->active;
@@ -5318,6 +5339,12 @@ il4965_alive_start(struct il_priv *il)
 	D_INFO("ALIVE processing complete.\n");
 	wake_up(&il->wait_command_queue);
 
+<<<<<<< HEAD
+=======
+	il_power_update_mode(il, true);
+	D_INFO("Updated power mode\n");
+
+>>>>>>> 7175f4b... Truncated history
 	return;
 
 restart:

@@ -1968,9 +1968,13 @@ int reiserfs_paste_into_item(struct reiserfs_transaction_handle *th, struct tree
 		       key2type(&(key->on_disk_key)));
 #endif
 
+<<<<<<< HEAD
 	reiserfs_write_unlock(inode->i_sb);
 	retval = dquot_alloc_space_nodirty(inode, pasted_size);
 	reiserfs_write_lock(inode->i_sb);
+=======
+	retval = dquot_alloc_space_nodirty(inode, pasted_size);
+>>>>>>> 7175f4b... Truncated history
 	if (retval) {
 		pathrelse(search_path);
 		return retval;
@@ -2063,11 +2067,17 @@ int reiserfs_insert_item(struct reiserfs_transaction_handle *th,
 			       "reiserquota insert_item(): allocating %u id=%u type=%c",
 			       quota_bytes, inode->i_uid, head2type(ih));
 #endif
+<<<<<<< HEAD
 		reiserfs_write_unlock(inode->i_sb);
 		/* We can't dirty inode here. It would be immediately written but
 		 * appropriate stat item isn't inserted yet... */
 		retval = dquot_alloc_space_nodirty(inode, quota_bytes);
 		reiserfs_write_lock(inode->i_sb);
+=======
+		/* We can't dirty inode here. It would be immediately written but
+		 * appropriate stat item isn't inserted yet... */
+		retval = dquot_alloc_space_nodirty(inode, quota_bytes);
+>>>>>>> 7175f4b... Truncated history
 		if (retval) {
 			pathrelse(path);
 			return retval;

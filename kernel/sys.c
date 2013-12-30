@@ -322,6 +322,10 @@ void kernel_restart_prepare(char *cmd)
 	system_state = SYSTEM_RESTART;
 	usermodehelper_disable();
 	device_shutdown();
+<<<<<<< HEAD
+=======
+	syscore_shutdown();
+>>>>>>> 7175f4b... Truncated history
 }
 
 /**
@@ -355,6 +359,7 @@ int unregister_reboot_notifier(struct notifier_block *nb)
 }
 EXPORT_SYMBOL(unregister_reboot_notifier);
 
+<<<<<<< HEAD
 /* Add backwards compatibility for stable trees. */
 #ifndef PF_NO_SETAFFINITY
 #define PF_NO_SETAFFINITY		PF_THREAD_BOUND
@@ -378,6 +383,8 @@ static void migrate_to_reboot_cpu(void)
 	set_cpus_allowed_ptr(current, cpumask_of(cpu));
 }
 
+=======
+>>>>>>> 7175f4b... Truncated history
 /**
  *	kernel_restart - reboot the system
  *	@cmd: pointer to buffer containing command to execute for restart
@@ -389,8 +396,11 @@ static void migrate_to_reboot_cpu(void)
 void kernel_restart(char *cmd)
 {
 	kernel_restart_prepare(cmd);
+<<<<<<< HEAD
 	migrate_to_reboot_cpu();
 	syscore_shutdown();
+=======
+>>>>>>> 7175f4b... Truncated history
 	if (!cmd)
 		printk(KERN_EMERG "Restarting system.\n");
 	else
@@ -416,7 +426,10 @@ static void kernel_shutdown_prepare(enum system_states state)
 void kernel_halt(void)
 {
 	kernel_shutdown_prepare(SYSTEM_HALT);
+<<<<<<< HEAD
 	migrate_to_reboot_cpu();
+=======
+>>>>>>> 7175f4b... Truncated history
 	syscore_shutdown();
 	printk(KERN_EMERG "System halted.\n");
 	kmsg_dump(KMSG_DUMP_HALT);
@@ -435,7 +448,11 @@ void kernel_power_off(void)
 	kernel_shutdown_prepare(SYSTEM_POWER_OFF);
 	if (pm_power_off_prepare)
 		pm_power_off_prepare();
+<<<<<<< HEAD
 	migrate_to_reboot_cpu();
+=======
+	disable_nonboot_cpus();
+>>>>>>> 7175f4b... Truncated history
 	syscore_shutdown();
 	printk(KERN_EMERG "Power down.\n");
 	kmsg_dump(KMSG_DUMP_POWEROFF);

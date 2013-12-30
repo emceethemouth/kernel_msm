@@ -406,9 +406,13 @@ z180_cmdstream_issueibcmds(struct kgsl_device_private *dev_priv,
 
 	mutex_lock(&device->mutex);
 
+<<<<<<< HEAD
 	result = kgsl_active_count_get(device);
 	if (result)
 		goto error_active_count;
+=======
+	kgsl_active_count_get(device);
+>>>>>>> 7175f4b... Truncated history
 
 	if (cmdbatch == NULL) {
 		result = EINVAL;
@@ -517,7 +521,11 @@ error:
 		*timestamp, cmdbatch ? cmdbatch->flags : 0, result, 0);
 
 	kgsl_active_count_put(device);
+<<<<<<< HEAD
 error_active_count:
+=======
+
+>>>>>>> 7175f4b... Truncated history
 	mutex_unlock(&device->mutex);
 
 	return (int)result;
@@ -865,6 +873,7 @@ static int z180_waittimestamp(struct kgsl_device *device,
 	if (msecs == -1)
 		msecs = Z180_IDLE_TIMEOUT;
 
+<<<<<<< HEAD
 	status = kgsl_active_count_get(device);
 	if (!status) {
 		mutex_unlock(&device->mutex);
@@ -872,6 +881,11 @@ static int z180_waittimestamp(struct kgsl_device *device,
 		mutex_lock(&device->mutex);
 		kgsl_active_count_put(device);
 	}
+=======
+	mutex_unlock(&device->mutex);
+	status = z180_wait(device, context, timestamp, msecs);
+	mutex_lock(&device->mutex);
+>>>>>>> 7175f4b... Truncated history
 
 	return status;
 }
@@ -920,17 +934,23 @@ z180_drawctxt_create(struct kgsl_device_private *dev_priv,
 static int
 z180_drawctxt_detach(struct kgsl_context *context)
 {
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> 7175f4b... Truncated history
 	struct kgsl_device *device;
 	struct z180_device *z180_dev;
 
 	device = context->device;
 	z180_dev = Z180_DEVICE(device);
 
+<<<<<<< HEAD
 	ret = kgsl_active_count_get(device);
 	if (ret)
 		return ret;
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	z180_idle(device);
 
 	if (z180_dev->ringbuffer.prevctx == context->id) {
@@ -942,7 +962,10 @@ z180_drawctxt_detach(struct kgsl_context *context)
 				KGSL_MMUFLAGS_PTUPDATE);
 	}
 
+<<<<<<< HEAD
 	kgsl_active_count_put(device);
+=======
+>>>>>>> 7175f4b... Truncated history
 	return 0;
 }
 

@@ -52,7 +52,10 @@
 #include <linux/io.h>
 #include <asm/irq.h>
 #include <linux/fcntl.h>
+<<<<<<< HEAD
 #include <linux/platform_device.h>
+=======
+>>>>>>> 7175f4b... Truncated history
 #ifdef LIRC_ON_SA1100
 #include <asm/hardware.h>
 #ifdef CONFIG_SA1100_COLLIE
@@ -488,11 +491,17 @@ static struct lirc_driver driver = {
 	.owner		= THIS_MODULE,
 };
 
+<<<<<<< HEAD
 static struct platform_device *lirc_sir_dev;
 
 static int init_chrdev(void)
 {
 	driver.dev = &lirc_sir_dev->dev;
+=======
+
+static int init_chrdev(void)
+{
+>>>>>>> 7175f4b... Truncated history
 	driver.minor = lirc_register_driver(&driver);
 	if (driver.minor < 0) {
 		printk(KERN_ERR LIRC_DRIVER_NAME ": init_chrdev() failed.\n");
@@ -1218,6 +1227,7 @@ static int init_lirc_sir(void)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int __devinit lirc_sir_probe(struct platform_device *dev)
 {
 	return 0;
@@ -1236,11 +1246,14 @@ static struct platform_driver lirc_sir_driver = {
 		.owner	= THIS_MODULE,
 	},
 };
+=======
+>>>>>>> 7175f4b... Truncated history
 
 static int __init lirc_sir_init(void)
 {
 	int retval;
 
+<<<<<<< HEAD
 	retval = platform_driver_register(&lirc_sir_driver);
 	if (retval) {
 		printk(KERN_ERR LIRC_DRIVER_NAME ": Platform driver register "
@@ -1283,6 +1296,17 @@ pdev_add_fail:
 pdev_alloc_fail:
 	platform_driver_unregister(&lirc_sir_driver);
 	return retval;
+=======
+	retval = init_chrdev();
+	if (retval < 0)
+		return retval;
+	retval = init_lirc_sir();
+	if (retval) {
+		drop_chrdev();
+		return retval;
+	}
+	return 0;
+>>>>>>> 7175f4b... Truncated history
 }
 
 static void __exit lirc_sir_exit(void)
@@ -1290,8 +1314,11 @@ static void __exit lirc_sir_exit(void)
 	drop_hardware();
 	drop_chrdev();
 	drop_port();
+<<<<<<< HEAD
 	platform_device_unregister(lirc_sir_dev);
 	platform_driver_unregister(&lirc_sir_driver);
+=======
+>>>>>>> 7175f4b... Truncated history
 	printk(KERN_INFO LIRC_DRIVER_NAME ": Uninstalled.\n");
 }
 

@@ -1165,6 +1165,7 @@ xfs_buf_bio_end_io(
 {
 	xfs_buf_t		*bp = (xfs_buf_t *)bio->bi_private;
 
+<<<<<<< HEAD
 	/*
 	 * don't overwrite existing errors - otherwise we can lose errors on
 	 * buffers that require multiple bios to complete.
@@ -1173,6 +1174,11 @@ xfs_buf_bio_end_io(
 		xfs_buf_ioerror(bp, -error);
 
 	if (!bp->b_error && xfs_buf_is_vmapped(bp) && (bp->b_flags & XBF_READ))
+=======
+	xfs_buf_ioerror(bp, -error);
+
+	if (!error && xfs_buf_is_vmapped(bp) && (bp->b_flags & XBF_READ))
+>>>>>>> 7175f4b... Truncated history
 		invalidate_kernel_vmap_range(bp->b_addr, xfs_buf_vmap_len(bp));
 
 	_xfs_buf_ioend(bp, 1);
@@ -1248,11 +1254,14 @@ next_chunk:
 		if (size)
 			goto next_chunk;
 	} else {
+<<<<<<< HEAD
 		/*
 		 * This is guaranteed not to be the last io reference count
 		 * because the caller (xfs_buf_iorequest) holds a count itself.
 		 */
 		atomic_dec(&bp->b_io_remaining);
+=======
+>>>>>>> 7175f4b... Truncated history
 		xfs_buf_ioerror(bp, EIO);
 		bio_put(bio);
 	}

@@ -578,7 +578,11 @@ void dmaengine_get(void)
 				list_del_rcu(&device->global_node);
 				break;
 			} else if (err)
+<<<<<<< HEAD
 				pr_debug("%s: failed to get %s: (%d)\n",
+=======
+				pr_err("%s: failed to get %s: (%d)\n",
+>>>>>>> 7175f4b... Truncated history
 					__func__, dma_chan_name(chan), err);
 		}
 	}

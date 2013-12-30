@@ -140,15 +140,26 @@ void core_tmr_abort_task(
 		printk("ABORT_TASK: Found referenced %s task_tag: %u\n",
 			se_cmd->se_tfo->get_fabric_name(), ref_tag);
 
+<<<<<<< HEAD
 		spin_lock(&se_cmd->t_state_lock);
 		if (se_cmd->transport_state & CMD_T_COMPLETE) {
 			printk("ABORT_TASK: ref_tag: %u already complete, skipping\n", ref_tag);
 			spin_unlock(&se_cmd->t_state_lock);
+=======
+		spin_lock_irq(&se_cmd->t_state_lock);
+		if (se_cmd->transport_state & CMD_T_COMPLETE) {
+			printk("ABORT_TASK: ref_tag: %u already complete, skipping\n", ref_tag);
+			spin_unlock_irq(&se_cmd->t_state_lock);
+>>>>>>> 7175f4b... Truncated history
 			spin_unlock_irqrestore(&se_sess->sess_cmd_lock, flags);
 			goto out;
 		}
 		se_cmd->transport_state |= CMD_T_ABORTED;
+<<<<<<< HEAD
 		spin_unlock(&se_cmd->t_state_lock);
+=======
+		spin_unlock_irq(&se_cmd->t_state_lock);
+>>>>>>> 7175f4b... Truncated history
 
 		list_del_init(&se_cmd->se_cmd_list);
 		kref_get(&se_cmd->cmd_kref);

@@ -1370,10 +1370,13 @@ static void netxen_mask_aer_correctable(struct netxen_adapter *adapter)
 	struct pci_dev *root = pdev->bus->self;
 	u32 aer_pos;
 
+<<<<<<< HEAD
 	/* root bus? */
 	if (!root)
 		return;
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	if (adapter->ahw.board_type != NETXEN_BRDTYPE_P3_4_GB_MM &&
 		adapter->ahw.board_type != NETXEN_BRDTYPE_P3_10G_TP)
 		return;
@@ -1956,12 +1959,18 @@ unwind:
 	while (--i >= 0) {
 		nf = &pbuf->frag_array[i+1];
 		pci_unmap_page(pdev, nf->dma, nf->length, PCI_DMA_TODEVICE);
+<<<<<<< HEAD
 		nf->dma = 0ULL;
+=======
+>>>>>>> 7175f4b... Truncated history
 	}
 
 	nf = &pbuf->frag_array[0];
 	pci_unmap_single(pdev, nf->dma, skb_headlen(skb), PCI_DMA_TODEVICE);
+<<<<<<< HEAD
 	nf->dma = 0ULL;
+=======
+>>>>>>> 7175f4b... Truncated history
 
 out_err:
 	return -ENOMEM;

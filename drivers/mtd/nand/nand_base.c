@@ -2888,6 +2888,7 @@ static int nand_flash_detect_onfi(struct mtd_info *mtd, struct nand_chip *chip,
 	sanitize_string(p->model, sizeof(p->model));
 	if (!mtd->name)
 		mtd->name = p->model;
+<<<<<<< HEAD
 
 	mtd->writesize = le32_to_cpu(p->byte_per_page);
 
@@ -2903,12 +2904,24 @@ static int nand_flash_detect_onfi(struct mtd_info *mtd, struct nand_chip *chip,
 
 	/* See erasesize comment */
 	chip->chipsize = 1 << (fls(le32_to_cpu(p->blocks_per_lun)) - 1);
+=======
+	mtd->writesize = le32_to_cpu(p->byte_per_page);
+	mtd->erasesize = le32_to_cpu(p->pages_per_block) * mtd->writesize;
+	mtd->oobsize = le16_to_cpu(p->spare_bytes_per_page);
+	chip->chipsize = le32_to_cpu(p->blocks_per_lun);
+>>>>>>> 7175f4b... Truncated history
 	chip->chipsize *= (uint64_t)mtd->erasesize * p->lun_count;
 	*busw = 0;
 	if (le16_to_cpu(p->features) & 1)
 		*busw = NAND_BUSWIDTH_16;
 
+<<<<<<< HEAD
 	chip->options |= NAND_NO_READRDY | NAND_NO_AUTOINCR;
+=======
+	chip->options &= ~NAND_CHIPOPTIONS_MSK;
+	chip->options |= (NAND_NO_READRDY |
+			NAND_NO_AUTOINCR) & NAND_CHIPOPTIONS_MSK;
+>>>>>>> 7175f4b... Truncated history
 
 	pr_info("ONFI flash detected\n");
 	return 1;
@@ -3073,8 +3086,14 @@ static struct nand_flash_dev *nand_get_flash_type(struct mtd_info *mtd,
 			mtd->erasesize <<= ((id_data[3] & 0x03) << 1);
 		}
 	}
+<<<<<<< HEAD
 	/* Get chip options */
 	chip->options |= type->options;
+=======
+	/* Get chip options, preserve non chip based options */
+	chip->options &= ~NAND_CHIPOPTIONS_MSK;
+	chip->options |= type->options & NAND_CHIPOPTIONS_MSK;
+>>>>>>> 7175f4b... Truncated history
 
 	/*
 	 * Check if chip is not a Samsung device. Do not clear the

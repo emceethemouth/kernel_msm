@@ -713,9 +713,15 @@ static int iscsi_add_notunderstood_response(
 	}
 	INIT_LIST_HEAD(&extra_response->er_list);
 
+<<<<<<< HEAD
 	strlcpy(extra_response->key, key, sizeof(extra_response->key));
 	strlcpy(extra_response->value, NOTUNDERSTOOD,
 		sizeof(extra_response->value));
+=======
+	strncpy(extra_response->key, key, strlen(key) + 1);
+	strncpy(extra_response->value, NOTUNDERSTOOD,
+			strlen(NOTUNDERSTOOD) + 1);
+>>>>>>> 7175f4b... Truncated history
 
 	list_add_tail(&extra_response->er_list,
 			&param_list->extra_response_list);
@@ -1571,6 +1577,11 @@ int iscsi_decode_text_input(
 
 		if (phase & PHASE_SECURITY) {
 			if (iscsi_check_for_auth_key(key) > 0) {
+<<<<<<< HEAD
+=======
+				char *tmpptr = key + strlen(key);
+				*tmpptr = '=';
+>>>>>>> 7175f4b... Truncated history
 				kfree(tmpbuf);
 				return 1;
 			}

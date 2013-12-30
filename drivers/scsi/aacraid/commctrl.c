@@ -508,8 +508,12 @@ static int aac_send_raw_srb(struct aac_dev* dev, void __user * arg)
 		goto cleanup;
 	}
 
+<<<<<<< HEAD
 	if ((fibsize < (sizeof(struct user_aac_srb) - sizeof(struct user_sgentry))) ||
 	    (fibsize > (dev->max_fib_size - sizeof(struct aac_fibhdr)))) {
+=======
+	if (fibsize > (dev->max_fib_size - sizeof(struct aac_fibhdr))) {
+>>>>>>> 7175f4b... Truncated history
 		rcode = -EINVAL;
 		goto cleanup;
 	}

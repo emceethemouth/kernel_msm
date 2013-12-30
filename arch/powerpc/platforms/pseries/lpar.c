@@ -187,6 +187,7 @@ static long pSeries_lpar_hpte_remove(unsigned long hpte_group)
 					   (0x1UL << 4), &dummy1, &dummy2);
 		if (lpar_rc == H_SUCCESS)
 			return i;
+<<<<<<< HEAD
 
 		/*
 		 * The test for adjunct partition is performed before the
@@ -194,6 +195,9 @@ static long pSeries_lpar_hpte_remove(unsigned long hpte_group)
 		 * check for that as well.
 		 */
 		BUG_ON(lpar_rc != H_NOT_FOUND && lpar_rc != H_RESOURCE);
+=======
+		BUG_ON(lpar_rc != H_NOT_FOUND);
+>>>>>>> 7175f4b... Truncated history
 
 		slot_offset++;
 		slot_offset &= 0x7;

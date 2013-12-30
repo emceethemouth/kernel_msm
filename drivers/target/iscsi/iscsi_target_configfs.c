@@ -415,7 +415,11 @@ static ssize_t __iscsi_##prefix##_store_##name(				\
 	if (!capable(CAP_SYS_ADMIN))					\
 		return -EPERM;						\
 									\
+<<<<<<< HEAD
 	snprintf(auth->name, sizeof(auth->name), "%s", page);		\
+=======
+	snprintf(auth->name, PAGE_SIZE, "%s", page);			\
+>>>>>>> 7175f4b... Truncated history
 	if (!strncmp("NULL", auth->name, 4))				\
 		auth->naf_flags &= ~flags;				\
 	else								\

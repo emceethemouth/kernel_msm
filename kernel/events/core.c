@@ -193,6 +193,12 @@ static void cpu_ctx_sched_in(struct perf_cpu_context *cpuctx,
 static void update_context_time(struct perf_event_context *ctx);
 static u64 perf_event_time(struct perf_event *event);
 
+<<<<<<< HEAD
+=======
+static void ring_buffer_attach(struct perf_event *event,
+			       struct ring_buffer *rb);
+
+>>>>>>> 7175f4b... Truncated history
 void __weak perf_event_print_debug(void)	{ }
 
 extern __weak const char *perf_pmu_name(void)
@@ -250,9 +256,15 @@ perf_cgroup_match(struct perf_event *event)
 	return !event->cgrp || event->cgrp == cpuctx->cgrp;
 }
 
+<<<<<<< HEAD
 static inline bool perf_tryget_cgroup(struct perf_event *event)
 {
 	return css_tryget(&event->cgrp->css);
+=======
+static inline void perf_get_cgroup(struct perf_event *event)
+{
+	css_get(&event->cgrp->css);
+>>>>>>> 7175f4b... Truncated history
 }
 
 static inline void perf_put_cgroup(struct perf_event *event)
@@ -368,8 +380,11 @@ void perf_cgroup_switch(struct task_struct *task, int mode)
 
 	list_for_each_entry_rcu(pmu, &pmus, entry) {
 		cpuctx = this_cpu_ptr(pmu->pmu_cpu_context);
+<<<<<<< HEAD
 		if (cpuctx->unique_pmu != pmu)
 			continue; /* ensure we process each cpuctx once */
+=======
+>>>>>>> 7175f4b... Truncated history
 
 		/*
 		 * perf_cgroup_events says at least one
@@ -393,10 +408,16 @@ void perf_cgroup_switch(struct task_struct *task, int mode)
 
 			if (mode & PERF_CGROUP_SWIN) {
 				WARN_ON_ONCE(cpuctx->cgrp);
+<<<<<<< HEAD
 				/*
 				 * set cgrp before ctxsw in to allow
 				 * event_filter_match() to not have to pass
 				 * task around
+=======
+				/* set cgrp before ctxsw in to
+				 * allow event_filter_match() to not
+				 * have to pass task around
+>>>>>>> 7175f4b... Truncated history
 				 */
 				cpuctx->cgrp = perf_cgroup_from_task(task);
 				cpu_ctx_sched_in(cpuctx, EVENT_ALL, task);
@@ -484,11 +505,15 @@ static inline int perf_cgroup_connect(int fd, struct perf_event *event,
 	event->cgrp = cgrp;
 
 	/* must be done before we fput() the file */
+<<<<<<< HEAD
 	if (!perf_tryget_cgroup(event)) {
 		event->cgrp = NULL;
 		ret = -ENOENT;
 		goto out;
 	}
+=======
+	perf_get_cgroup(event);
+>>>>>>> 7175f4b... Truncated history
 
 	/*
 	 * all events in a group must monitor
@@ -726,6 +751,7 @@ perf_lock_task_context(struct task_struct *task, int ctxn, unsigned long *flags)
 {
 	struct perf_event_context *ctx;
 
+<<<<<<< HEAD
 retry:
 	/*
 	 * One of the few rules of preemptible RCU is that one cannot do
@@ -738,6 +764,10 @@ retry:
 	 */
 	preempt_disable();
 	rcu_read_lock();
+=======
+	rcu_read_lock();
+retry:
+>>>>>>> 7175f4b... Truncated history
 	ctx = rcu_dereference(task->perf_event_ctxp[ctxn]);
 	if (ctx) {
 		/*
@@ -753,8 +783,11 @@ retry:
 		raw_spin_lock_irqsave(&ctx->lock, *flags);
 		if (ctx != rcu_dereference(task->perf_event_ctxp[ctxn])) {
 			raw_spin_unlock_irqrestore(&ctx->lock, *flags);
+<<<<<<< HEAD
 			rcu_read_unlock();
 			preempt_enable();
+=======
+>>>>>>> 7175f4b... Truncated history
 			goto retry;
 		}
 
@@ -764,7 +797,10 @@ retry:
 		}
 	}
 	rcu_read_unlock();
+<<<<<<< HEAD
 	preempt_enable();
+=======
+>>>>>>> 7175f4b... Truncated history
 	return ctx;
 }
 
@@ -918,6 +954,7 @@ list_add_event(struct perf_event *event, struct perf_event_context *ctx)
 }
 
 /*
+<<<<<<< HEAD
  * Initialize event state based on the perf_event_attr::disabled.
  */
 static inline void perf_event__state_init(struct perf_event *event)
@@ -927,6 +964,8 @@ static inline void perf_event__state_init(struct perf_event *event)
 }
 
 /*
+=======
+>>>>>>> 7175f4b... Truncated history
  * Called at perf_event creation and when events are attached/detached from a
  * group.
  */
@@ -1731,6 +1770,7 @@ static int __perf_event_enable(void *info)
 	struct perf_cpu_context *cpuctx = __get_cpu_context(ctx);
 	int err;
 
+<<<<<<< HEAD
 	/*
 	 * There's a time window between 'ctx->is_active' check
 	 * in perf_event_enable function and this place having:
@@ -1741,6 +1781,9 @@ static int __perf_event_enable(void *info)
 	 * by perf_event_exit_task.
 	 */
 	if (!ctx->is_active)
+=======
+	if (WARN_ON_ONCE(!ctx->is_active))
+>>>>>>> 7175f4b... Truncated history
 		return -EINVAL;
 
 	raw_spin_lock(&ctx->lock);
@@ -2884,7 +2927,10 @@ static void free_event_rcu(struct rcu_head *head)
 }
 
 static void ring_buffer_put(struct ring_buffer *rb);
+<<<<<<< HEAD
 static void ring_buffer_detach(struct perf_event *event, struct ring_buffer *rb);
+=======
+>>>>>>> 7175f4b... Truncated history
 
 static void free_event(struct perf_event *event)
 {
@@ -2909,14 +2955,21 @@ static void free_event(struct perf_event *event)
 		if (has_branch_stack(event)) {
 			static_key_slow_dec_deferred(&perf_sched_events);
 			/* is system-wide event */
+<<<<<<< HEAD
 			if (!(event->attach_state & PERF_ATTACH_TASK)) {
 				atomic_dec(&per_cpu(perf_branch_stack_events,
 						    event->cpu));
 			}
+=======
+			if (!(event->attach_state & PERF_ATTACH_TASK))
+				atomic_dec(&per_cpu(perf_branch_stack_events,
+						    event->cpu));
+>>>>>>> 7175f4b... Truncated history
 		}
 	}
 
 	if (event->rb) {
+<<<<<<< HEAD
 		struct ring_buffer *rb;
 
 		/*
@@ -2933,6 +2986,10 @@ static void free_event(struct perf_event *event)
 			ring_buffer_put(rb); /* could be last */
 		}
 		mutex_unlock(&event->mmap_mutex);
+=======
+		ring_buffer_put(event->rb);
+		event->rb = NULL;
+>>>>>>> 7175f4b... Truncated history
 	}
 
 	if (is_cgroup_event(event))
@@ -2980,12 +3037,21 @@ EXPORT_SYMBOL_GPL(perf_event_release_kernel);
 /*
  * Called when the last reference to the file is gone.
  */
+<<<<<<< HEAD
 static void put_event(struct perf_event *event)
 {
 	struct task_struct *owner;
 
 	if (!atomic_long_dec_and_test(&event->refcount))
 		return;
+=======
+static int perf_release(struct inode *inode, struct file *file)
+{
+	struct perf_event *event = file->private_data;
+	struct task_struct *owner;
+
+	file->private_data = NULL;
+>>>>>>> 7175f4b... Truncated history
 
 	rcu_read_lock();
 	owner = ACCESS_ONCE(event->owner);
@@ -3020,6 +3086,7 @@ static void put_event(struct perf_event *event)
 		put_task_struct(owner);
 	}
 
+<<<<<<< HEAD
 	perf_event_release_kernel(event);
 }
 
@@ -3027,6 +3094,9 @@ static int perf_release(struct inode *inode, struct file *file)
 {
 	put_event(file->private_data);
 	return 0;
+=======
+	return perf_event_release_kernel(event);
+>>>>>>> 7175f4b... Truncated history
 }
 
 u64 perf_event_read_value(struct perf_event *event, u64 *enabled, u64 *running)
@@ -3170,6 +3240,7 @@ static unsigned int perf_poll(struct file *file, poll_table *wait)
 	unsigned int events = POLL_HUP;
 
 	/*
+<<<<<<< HEAD
 	 * Pin the event->rb by taking event->mmap_mutex; otherwise
 	 * perf_event_set_output() can swizzle our rb and make us miss wakeups.
 	 */
@@ -3177,6 +3248,32 @@ static unsigned int perf_poll(struct file *file, poll_table *wait)
 	rb = event->rb;
 	if (rb)
 		events = atomic_xchg(&rb->poll, 0);
+=======
+	 * Race between perf_event_set_output() and perf_poll(): perf_poll()
+	 * grabs the rb reference but perf_event_set_output() overrides it.
+	 * Here is the timeline for two threads T1, T2:
+	 * t0: T1, rb = rcu_dereference(event->rb)
+	 * t1: T2, old_rb = event->rb
+	 * t2: T2, event->rb = new rb
+	 * t3: T2, ring_buffer_detach(old_rb)
+	 * t4: T1, ring_buffer_attach(rb1)
+	 * t5: T1, poll_wait(event->waitq)
+	 *
+	 * To avoid this problem, we grab mmap_mutex in perf_poll()
+	 * thereby ensuring that the assignment of the new ring buffer
+	 * and the detachment of the old buffer appear atomic to perf_poll()
+	 */
+	mutex_lock(&event->mmap_mutex);
+
+	rcu_read_lock();
+	rb = rcu_dereference(event->rb);
+	if (rb) {
+		ring_buffer_attach(event, rb);
+		events = atomic_xchg(&rb->poll, 0);
+	}
+	rcu_read_unlock();
+
+>>>>>>> 7175f4b... Truncated history
 	mutex_unlock(&event->mmap_mutex);
 
 	poll_wait(file, &event->waitq, wait);
@@ -3262,7 +3359,11 @@ unlock:
 
 static const struct file_operations perf_fops;
 
+<<<<<<< HEAD
 static struct file *perf_fget_light(int fd, int *fput_needed)
+=======
+static struct perf_event *perf_fget_light(int fd, int *fput_needed)
+>>>>>>> 7175f4b... Truncated history
 {
 	struct file *file;
 
@@ -3276,7 +3377,11 @@ static struct file *perf_fget_light(int fd, int *fput_needed)
 		return ERR_PTR(-EBADF);
 	}
 
+<<<<<<< HEAD
 	return file;
+=======
+	return file->private_data;
+>>>>>>> 7175f4b... Truncated history
 }
 
 static int perf_event_set_output(struct perf_event *event,
@@ -3308,21 +3413,34 @@ static long perf_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 
 	case PERF_EVENT_IOC_SET_OUTPUT:
 	{
+<<<<<<< HEAD
 		struct file *output_file = NULL;
+=======
+>>>>>>> 7175f4b... Truncated history
 		struct perf_event *output_event = NULL;
 		int fput_needed = 0;
 		int ret;
 
 		if (arg != -1) {
+<<<<<<< HEAD
 			output_file = perf_fget_light(arg, &fput_needed);
 			if (IS_ERR(output_file))
 				return PTR_ERR(output_file);
 			output_event = output_file->private_data;
+=======
+			output_event = perf_fget_light(arg, &fput_needed);
+			if (IS_ERR(output_event))
+				return PTR_ERR(output_event);
+>>>>>>> 7175f4b... Truncated history
 		}
 
 		ret = perf_event_set_output(event, output_event);
 		if (output_event)
+<<<<<<< HEAD
 			fput_light(output_file, fput_needed);
+=======
+			fput_light(output_event->filp, fput_needed);
+>>>>>>> 7175f4b... Truncated history
 
 		return ret;
 	}
@@ -3493,12 +3611,25 @@ static void ring_buffer_attach(struct perf_event *event,
 		return;
 
 	spin_lock_irqsave(&rb->event_lock, flags);
+<<<<<<< HEAD
 	if (list_empty(&event->rb_entry))
 		list_add(&event->rb_entry, &rb->event_list);
 	spin_unlock_irqrestore(&rb->event_lock, flags);
 }
 
 static void ring_buffer_detach(struct perf_event *event, struct ring_buffer *rb)
+=======
+	if (!list_empty(&event->rb_entry))
+		goto unlock;
+
+	list_add(&event->rb_entry, &rb->event_list);
+unlock:
+	spin_unlock_irqrestore(&rb->event_lock, flags);
+}
+
+static void ring_buffer_detach(struct perf_event *event,
+			       struct ring_buffer *rb)
+>>>>>>> 7175f4b... Truncated history
 {
 	unsigned long flags;
 
@@ -3517,10 +3648,20 @@ static void ring_buffer_wakeup(struct perf_event *event)
 
 	rcu_read_lock();
 	rb = rcu_dereference(event->rb);
+<<<<<<< HEAD
 	if (rb) {
 		list_for_each_entry_rcu(event, &rb->event_list, rb_entry)
 			wake_up_all(&event->waitq);
 	}
+=======
+	if (!rb)
+		goto unlock;
+
+	list_for_each_entry_rcu(event, &rb->event_list, rb_entry)
+		wake_up_all(&event->waitq);
+
+unlock:
+>>>>>>> 7175f4b... Truncated history
 	rcu_read_unlock();
 }
 
@@ -3549,10 +3690,25 @@ static struct ring_buffer *ring_buffer_get(struct perf_event *event)
 
 static void ring_buffer_put(struct ring_buffer *rb)
 {
+<<<<<<< HEAD
 	if (!atomic_dec_and_test(&rb->refcount))
 		return;
 
 	WARN_ON_ONCE(!list_empty(&rb->event_list));
+=======
+	struct perf_event *event, *n;
+	unsigned long flags;
+
+	if (!atomic_dec_and_test(&rb->refcount))
+		return;
+
+	spin_lock_irqsave(&rb->event_lock, flags);
+	list_for_each_entry_safe(event, n, &rb->event_list, rb_entry) {
+		list_del_init(&event->rb_entry);
+		wake_up_all(&event->waitq);
+	}
+	spin_unlock_irqrestore(&rb->event_lock, flags);
+>>>>>>> 7175f4b... Truncated history
 
 	call_rcu(&rb->rcu_head, rb_free_rcu);
 }
@@ -3562,6 +3718,7 @@ static void perf_mmap_open(struct vm_area_struct *vma)
 	struct perf_event *event = vma->vm_file->private_data;
 
 	atomic_inc(&event->mmap_count);
+<<<<<<< HEAD
 	atomic_inc(&event->rb->mmap_count);
 }
 
@@ -3573,10 +3730,15 @@ static void perf_mmap_open(struct vm_area_struct *vma)
  * the buffer here, where we still have a VM context. This means we need
  * to detach all events redirecting to us.
  */
+=======
+}
+
+>>>>>>> 7175f4b... Truncated history
 static void perf_mmap_close(struct vm_area_struct *vma)
 {
 	struct perf_event *event = vma->vm_file->private_data;
 
+<<<<<<< HEAD
 	struct ring_buffer *rb = event->rb;
 	struct user_struct *mmap_user = rb->mmap_user;
 	int mmap_locked = rb->mmap_locked;
@@ -3656,6 +3818,22 @@ again:
 	free_uid(mmap_user);
 
 	ring_buffer_put(rb); /* could be last */
+=======
+	if (atomic_dec_and_mutex_lock(&event->mmap_count, &event->mmap_mutex)) {
+		unsigned long size = perf_data_size(event->rb);
+		struct user_struct *user = event->mmap_user;
+		struct ring_buffer *rb = event->rb;
+
+		atomic_long_sub((size >> PAGE_SHIFT) + 1, &user->locked_vm);
+		vma->vm_mm->pinned_vm -= event->mmap_locked;
+		rcu_assign_pointer(event->rb, NULL);
+		ring_buffer_detach(event, rb);
+		mutex_unlock(&event->mmap_mutex);
+
+		ring_buffer_put(rb);
+		free_uid(user);
+	}
+>>>>>>> 7175f4b... Truncated history
 }
 
 static const struct vm_operations_struct perf_mmap_vmops = {
@@ -3705,6 +3883,7 @@ static int perf_mmap(struct file *file, struct vm_area_struct *vma)
 		return -EINVAL;
 
 	WARN_ON_ONCE(event->ctx->parent_ctx);
+<<<<<<< HEAD
 again:
 	mutex_lock(&event->mmap_mutex);
 	if (event->rb) {
@@ -3723,6 +3902,14 @@ again:
 			goto again;
 		}
 
+=======
+	mutex_lock(&event->mmap_mutex);
+	if (event->rb) {
+		if (event->rb->nr_pages == nr_pages)
+			atomic_inc(&event->rb->refcount);
+		else
+			ret = -EINVAL;
+>>>>>>> 7175f4b... Truncated history
 		goto unlock;
 	}
 
@@ -3763,6 +3950,7 @@ again:
 		ret = -ENOMEM;
 		goto unlock;
 	}
+<<<<<<< HEAD
 
 	atomic_set(&rb->mmap_count, 1);
 	rb->mmap_locked = extra;
@@ -3773,6 +3961,14 @@ again:
 
 	ring_buffer_attach(event, rb);
 	rcu_assign_pointer(event->rb, rb);
+=======
+	rcu_assign_pointer(event->rb, rb);
+
+	atomic_long_add(user_extra, &user->locked_vm);
+	event->mmap_locked = extra;
+	event->mmap_user = get_current_user();
+	vma->vm_mm->pinned_vm += event->mmap_locked;
+>>>>>>> 7175f4b... Truncated history
 
 	perf_event_update_userpage(event);
 
@@ -3781,11 +3977,15 @@ unlock:
 		atomic_inc(&event->mmap_count);
 	mutex_unlock(&event->mmap_mutex);
 
+<<<<<<< HEAD
 	/*
 	 * Since pinned accounting is per vm we cannot allow fork() to copy our
 	 * vma.
 	 */
 	vma->vm_flags |= VM_DONTCOPY | VM_RESERVED;
+=======
+	vma->vm_flags |= VM_RESERVED;
+>>>>>>> 7175f4b... Truncated history
 	vma->vm_ops = &perf_mmap_vmops;
 
 	return ret;
@@ -4335,7 +4535,11 @@ static void perf_event_task_event(struct perf_task_event *task_event)
 	rcu_read_lock();
 	list_for_each_entry_rcu(pmu, &pmus, entry) {
 		cpuctx = get_cpu_ptr(pmu->pmu_cpu_context);
+<<<<<<< HEAD
 		if (cpuctx->unique_pmu != pmu)
+=======
+		if (cpuctx->active_pmu != pmu)
+>>>>>>> 7175f4b... Truncated history
 			goto next;
 		perf_event_task_ctx(&cpuctx->ctx, task_event);
 
@@ -4481,7 +4685,11 @@ static void perf_event_comm_event(struct perf_comm_event *comm_event)
 	rcu_read_lock();
 	list_for_each_entry_rcu(pmu, &pmus, entry) {
 		cpuctx = get_cpu_ptr(pmu->pmu_cpu_context);
+<<<<<<< HEAD
 		if (cpuctx->unique_pmu != pmu)
+=======
+		if (cpuctx->active_pmu != pmu)
+>>>>>>> 7175f4b... Truncated history
 			goto next;
 		perf_event_comm_ctx(&cpuctx->ctx, comm_event);
 
@@ -4677,7 +4885,11 @@ got_name:
 	rcu_read_lock();
 	list_for_each_entry_rcu(pmu, &pmus, entry) {
 		cpuctx = get_cpu_ptr(pmu->pmu_cpu_context);
+<<<<<<< HEAD
 		if (cpuctx->unique_pmu != pmu)
+=======
+		if (cpuctx->active_pmu != pmu)
+>>>>>>> 7175f4b... Truncated history
 			goto next;
 		perf_event_mmap_ctx(&cpuctx->ctx, mmap_event,
 					vma->vm_flags & VM_EXEC);
@@ -5753,8 +5965,13 @@ static void update_pmu_context(struct pmu *pmu, struct pmu *old_pmu)
 
 		cpuctx = per_cpu_ptr(pmu->pmu_cpu_context, cpu);
 
+<<<<<<< HEAD
 		if (cpuctx->unique_pmu == old_pmu)
 			cpuctx->unique_pmu = pmu;
+=======
+		if (cpuctx->active_pmu == old_pmu)
+			cpuctx->active_pmu = pmu;
+>>>>>>> 7175f4b... Truncated history
 	}
 }
 
@@ -5889,7 +6106,11 @@ skip_type:
 		cpuctx->ctx.pmu = pmu;
 		cpuctx->jiffies_interval = 1;
 		INIT_LIST_HEAD(&cpuctx->rotation_list);
+<<<<<<< HEAD
 		cpuctx->unique_pmu = pmu;
+=======
+		cpuctx->active_pmu = pmu;
+>>>>>>> 7175f4b... Truncated history
 	}
 
 got_cpu_context:
@@ -6041,7 +6262,10 @@ perf_event_alloc(struct perf_event_attr *attr, int cpu,
 
 	mutex_init(&event->mmap_mutex);
 
+<<<<<<< HEAD
 	atomic_long_set(&event->refcount, 1);
+=======
+>>>>>>> 7175f4b... Truncated history
 	event->cpu		= cpu;
 	event->attr		= *attr;
 	event->group_leader	= group_leader;
@@ -6074,7 +6298,12 @@ perf_event_alloc(struct perf_event_attr *attr, int cpu,
 	event->overflow_handler	= overflow_handler;
 	event->overflow_handler_context = context;
 
+<<<<<<< HEAD
 	perf_event__state_init(event);
+=======
+	if (attr->disabled)
+		event->state = PERF_EVENT_STATE_OFF;
+>>>>>>> 7175f4b... Truncated history
 
 	pmu = NULL;
 
@@ -6273,8 +6502,11 @@ set:
 	if (atomic_read(&event->mmap_count))
 		goto unlock;
 
+<<<<<<< HEAD
 	old_rb = event->rb;
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	if (output_event) {
 		/* get the rb we want to redirect to */
 		rb = ring_buffer_get(output_event);
@@ -6282,6 +6514,7 @@ set:
 			goto unlock;
 	}
 
+<<<<<<< HEAD
 	if (old_rb)
 		ring_buffer_detach(event, old_rb);
 
@@ -6300,10 +6533,21 @@ set:
 		wake_up_all(&event->waitq);
 	}
 
+=======
+	old_rb = event->rb;
+	rcu_assign_pointer(event->rb, rb);
+	if (old_rb)
+		ring_buffer_detach(event, old_rb);
+>>>>>>> 7175f4b... Truncated history
 	ret = 0;
 unlock:
 	mutex_unlock(&event->mmap_mutex);
 
+<<<<<<< HEAD
+=======
+	if (old_rb)
+		ring_buffer_put(old_rb);
+>>>>>>> 7175f4b... Truncated history
 out:
 	return ret;
 }
@@ -6365,12 +6609,21 @@ SYSCALL_DEFINE5(perf_event_open,
 		return event_fd;
 
 	if (group_fd != -1) {
+<<<<<<< HEAD
 		group_file = perf_fget_light(group_fd, &fput_needed);
 		if (IS_ERR(group_file)) {
 			err = PTR_ERR(group_file);
 			goto err_fd;
 		}
 		group_leader = group_file->private_data;
+=======
+		group_leader = perf_fget_light(group_fd, &fput_needed);
+		if (IS_ERR(group_leader)) {
+			err = PTR_ERR(group_leader);
+			goto err_fd;
+		}
+		group_file = group_leader->filp;
+>>>>>>> 7175f4b... Truncated history
 		if (flags & PERF_FLAG_FD_OUTPUT)
 			output_event = group_leader;
 		if (flags & PERF_FLAG_FD_NO_GROUP)
@@ -6496,6 +6749,7 @@ SYSCALL_DEFINE5(perf_event_open,
 
 		mutex_lock(&gctx->mutex);
 		perf_remove_from_context(group_leader);
+<<<<<<< HEAD
 
 		/*
 		 * Removing from the context ends up with disabled
@@ -6507,12 +6761,21 @@ SYSCALL_DEFINE5(perf_event_open,
 				    group_entry) {
 			perf_remove_from_context(sibling);
 			perf_event__state_init(sibling);
+=======
+		list_for_each_entry(sibling, &group_leader->sibling_list,
+				    group_entry) {
+			perf_remove_from_context(sibling);
+>>>>>>> 7175f4b... Truncated history
 			put_ctx(gctx);
 		}
 		mutex_unlock(&gctx->mutex);
 		put_ctx(gctx);
 	}
 
+<<<<<<< HEAD
+=======
+	event->filp = event_file;
+>>>>>>> 7175f4b... Truncated history
 	WARN_ON_ONCE(ctx->parent_ctx);
 	mutex_lock(&ctx->mutex);
 
@@ -6602,6 +6865,10 @@ perf_event_create_kernel_counter(struct perf_event_attr *attr, int cpu,
 		goto err_free;
 	}
 
+<<<<<<< HEAD
+=======
+	event->filp = NULL;
+>>>>>>> 7175f4b... Truncated history
 	WARN_ON_ONCE(ctx->parent_ctx);
 	mutex_lock(&ctx->mutex);
 	perf_install_in_context(ctx, event, cpu);
@@ -6650,7 +6917,11 @@ static void sync_child_event(struct perf_event *child_event,
 	 * Release the parent event, if this was the last
 	 * reference to it.
 	 */
+<<<<<<< HEAD
 	put_event(parent_event);
+=======
+	fput(parent_event->filp);
+>>>>>>> 7175f4b... Truncated history
 }
 
 static void
@@ -6726,8 +6997,14 @@ static void perf_event_exit_task_context(struct task_struct *child, int ctxn)
 	 *
 	 *   __perf_event_exit_task()
 	 *     sync_child_event()
+<<<<<<< HEAD
 	 *       put_event()
 	 *         mutex_lock(&ctx->mutex)
+=======
+	 *       fput(parent_event->filp)
+	 *         perf_release()
+	 *           mutex_lock(&ctx->mutex)
+>>>>>>> 7175f4b... Truncated history
 	 *
 	 * But since its the parent context it won't be the same instance.
 	 */
@@ -6795,7 +7072,11 @@ static void perf_free_event(struct perf_event *event,
 	list_del_init(&event->child_list);
 	mutex_unlock(&parent->child_mutex);
 
+<<<<<<< HEAD
 	put_event(parent);
+=======
+	fput(parent->filp);
+>>>>>>> 7175f4b... Truncated history
 
 	perf_group_detach(event);
 	list_del_event(event, ctx);
@@ -6875,12 +7156,15 @@ inherit_event(struct perf_event *parent_event,
 				           NULL, NULL);
 	if (IS_ERR(child_event))
 		return child_event;
+<<<<<<< HEAD
 
 	if (!atomic_long_inc_not_zero(&parent_event->refcount)) {
 		free_event(child_event);
 		return NULL;
 	}
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	get_ctx(child_ctx);
 
 	/*
@@ -6922,6 +7206,17 @@ inherit_event(struct perf_event *parent_event,
 	raw_spin_unlock_irqrestore(&child_ctx->lock, flags);
 
 	/*
+<<<<<<< HEAD
+=======
+	 * Get a reference to the parent filp - we will fput it
+	 * when the child event exits. This is safe to do because
+	 * we are in the parent and we know that the filp still
+	 * exists and has a nonzero count:
+	 */
+	atomic_long_inc(&parent_event->filp->f_count);
+
+	/*
+>>>>>>> 7175f4b... Truncated history
 	 * Link this into the parent event's child list
 	 */
 	WARN_ON_ONCE(parent_event->ctx->parent_ctx);
@@ -6978,7 +7273,11 @@ inherit_task_group(struct perf_event *event, struct task_struct *parent,
 		 * child.
 		 */
 
+<<<<<<< HEAD
 		child_ctx = alloc_perf_context(parent_ctx->pmu, child);
+=======
+		child_ctx = alloc_perf_context(event->pmu, child);
+>>>>>>> 7175f4b... Truncated history
 		if (!child_ctx)
 			return -ENOMEM;
 

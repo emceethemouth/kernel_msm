@@ -56,6 +56,7 @@ struct page {
 		};
 
 		union {
+<<<<<<< HEAD
 #if defined(CONFIG_HAVE_CMPXCHG_DOUBLE) && \
 	defined(CONFIG_HAVE_ALIGNED_STRUCT_PAGE)
 			/* Used for cmpxchg_double in slub */
@@ -68,6 +69,10 @@ struct page {
 			 */
 			unsigned counters;
 #endif
+=======
+			/* Used for cmpxchg_double in slub */
+			unsigned long counters;
+>>>>>>> 7175f4b... Truncated history
 
 			struct {
 

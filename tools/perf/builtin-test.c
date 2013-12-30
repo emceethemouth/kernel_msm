@@ -1154,6 +1154,7 @@ static int test__parse_events(void)
 	return ret;
 }
 
+<<<<<<< HEAD
 static int sched__get_first_possible_cpu(pid_t pid, cpu_set_t *maskp)
 {
 	int i, cpu = -1, nrcpus = 1024;
@@ -1161,6 +1162,21 @@ realloc:
 	CPU_ZERO(maskp);
 
 	if (sched_getaffinity(pid, sizeof(*maskp), maskp) == -1) {
+=======
+static int sched__get_first_possible_cpu(pid_t pid, cpu_set_t **maskp,
+					 size_t *sizep)
+{
+	cpu_set_t *mask;
+	size_t size;
+	int i, cpu = -1, nrcpus = 1024;
+realloc:
+	mask = CPU_ALLOC(nrcpus);
+	size = CPU_ALLOC_SIZE(nrcpus);
+	CPU_ZERO_S(size, mask);
+
+	if (sched_getaffinity(pid, size, mask) == -1) {
+		CPU_FREE(mask);
+>>>>>>> 7175f4b... Truncated history
 		if (errno == EINVAL && nrcpus < (1024 << 8)) {
 			nrcpus = nrcpus << 2;
 			goto realloc;
@@ -1170,6 +1186,7 @@ realloc:
 	}
 
 	for (i = 0; i < nrcpus; i++) {
+<<<<<<< HEAD
 		if (CPU_ISSET(i, maskp)) {
 			if (cpu == -1)
 				cpu = i;
@@ -1178,6 +1195,21 @@ realloc:
 		}
 	}
 
+=======
+		if (CPU_ISSET_S(i, size, mask)) {
+			if (cpu == -1) {
+				cpu = i;
+				*maskp = mask;
+				*sizep = size;
+			} else
+				CPU_CLR_S(i, size, mask);
+		}
+	}
+
+	if (cpu == -1)
+		CPU_FREE(mask);
+
+>>>>>>> 7175f4b... Truncated history
 	return cpu;
 }
 
@@ -1188,8 +1220,13 @@ static int test__PERF_RECORD(void)
 		.freq	    = 10,
 		.mmap_pages = 256,
 	};
+<<<<<<< HEAD
 	cpu_set_t cpu_mask;
 	size_t cpu_mask_size = sizeof(cpu_mask);
+=======
+	cpu_set_t *cpu_mask = NULL;
+	size_t cpu_mask_size = 0;
+>>>>>>> 7175f4b... Truncated history
 	struct perf_evlist *evlist = perf_evlist__new(NULL, NULL);
 	struct perf_evsel *evsel;
 	struct perf_sample sample;
@@ -1254,7 +1291,12 @@ static int test__PERF_RECORD(void)
 	evsel->attr.sample_type |= PERF_SAMPLE_TIME;
 	perf_evlist__config_attrs(evlist, &opts);
 
+<<<<<<< HEAD
 	err = sched__get_first_possible_cpu(evlist->workload.pid, &cpu_mask);
+=======
+	err = sched__get_first_possible_cpu(evlist->workload.pid, &cpu_mask,
+					    &cpu_mask_size);
+>>>>>>> 7175f4b... Truncated history
 	if (err < 0) {
 		pr_debug("sched__get_first_possible_cpu: %s\n", strerror(errno));
 		goto out_delete_evlist;
@@ -1265,9 +1307,15 @@ static int test__PERF_RECORD(void)
 	/*
 	 * So that we can check perf_sample.cpu on all the samples.
 	 */
+<<<<<<< HEAD
 	if (sched_setaffinity(evlist->workload.pid, cpu_mask_size, &cpu_mask) < 0) {
 		pr_debug("sched_setaffinity: %s\n", strerror(errno));
 		goto out_delete_evlist;
+=======
+	if (sched_setaffinity(evlist->workload.pid, cpu_mask_size, cpu_mask) < 0) {
+		pr_debug("sched_setaffinity: %s\n", strerror(errno));
+		goto out_free_cpu_mask;
+>>>>>>> 7175f4b... Truncated history
 	}
 
 	/*
@@ -1460,6 +1508,11 @@ found_exit:
 	}
 out_err:
 	perf_evlist__munmap(evlist);
+<<<<<<< HEAD
+=======
+out_free_cpu_mask:
+	CPU_FREE(cpu_mask);
+>>>>>>> 7175f4b... Truncated history
 out_delete_evlist:
 	perf_evlist__delete(evlist);
 out:

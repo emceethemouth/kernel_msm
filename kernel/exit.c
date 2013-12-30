@@ -471,7 +471,11 @@ static void close_files(struct files_struct * files)
 	rcu_read_unlock();
 	for (;;) {
 		unsigned long set;
+<<<<<<< HEAD
 		i = j * BITS_PER_LONG;
+=======
+		i = j * __NFDBITS;
+>>>>>>> 7175f4b... Truncated history
 		if (i >= fdt->max_fds)
 			break;
 		set = fdt->open_fds[j++];
@@ -644,7 +648,10 @@ static void exit_mm(struct task_struct * tsk)
 	mm_release(tsk, mm);
 	if (!mm)
 		return;
+<<<<<<< HEAD
 	sync_mm_rss(mm);
+=======
+>>>>>>> 7175f4b... Truncated history
 	/*
 	 * Serialize with any possible pending coredump.
 	 * We must hold mmap_sem around checking core_state

@@ -71,8 +71,11 @@ int get_compat_msghdr(struct msghdr *kmsg, struct compat_msghdr __user *umsg)
 	    __get_user(kmsg->msg_controllen, &umsg->msg_controllen) ||
 	    __get_user(kmsg->msg_flags, &umsg->msg_flags))
 		return -EFAULT;
+<<<<<<< HEAD
 	if (kmsg->msg_namelen > sizeof(struct sockaddr_storage))
 		kmsg->msg_namelen = sizeof(struct sockaddr_storage);
+=======
+>>>>>>> 7175f4b... Truncated history
 	kmsg->msg_name = compat_ptr(tmp1);
 	kmsg->msg_iov = compat_ptr(tmp2);
 	kmsg->msg_control = compat_ptr(tmp3);
@@ -93,8 +96,12 @@ int verify_compat_iovec(struct msghdr *kern_msg, struct iovec *kern_iov,
 			if (err < 0)
 				return err;
 		}
+<<<<<<< HEAD
 		if (kern_msg->msg_name)
 			kern_msg->msg_name = kern_address;
+=======
+		kern_msg->msg_name = kern_address;
+>>>>>>> 7175f4b... Truncated history
 	} else
 		kern_msg->msg_name = NULL;
 
@@ -224,8 +231,11 @@ int put_cmsg_compat(struct msghdr *kmsg, int level, int type, int len, void *dat
 {
 	struct compat_cmsghdr __user *cm = (struct compat_cmsghdr __user *) kmsg->msg_control;
 	struct compat_cmsghdr cmhdr;
+<<<<<<< HEAD
 	struct compat_timeval ctv;
 	struct compat_timespec cts[3];
+=======
+>>>>>>> 7175f4b... Truncated history
 	int cmlen;
 
 	if (cm == NULL || kmsg->msg_controllen < sizeof(*cm)) {
@@ -234,6 +244,11 @@ int put_cmsg_compat(struct msghdr *kmsg, int level, int type, int len, void *dat
 	}
 
 	if (!COMPAT_USE_64BIT_TIME) {
+<<<<<<< HEAD
+=======
+		struct compat_timeval ctv;
+		struct compat_timespec cts[3];
+>>>>>>> 7175f4b... Truncated history
 		if (level == SOL_SOCKET && type == SCM_TIMESTAMP) {
 			struct timeval *tv = (struct timeval *)data;
 			ctv.tv_sec = tv->tv_sec;
@@ -746,25 +761,36 @@ static unsigned char nas[21] = {
 
 asmlinkage long compat_sys_sendmsg(int fd, struct compat_msghdr __user *msg, unsigned flags)
 {
+<<<<<<< HEAD
 	if (flags & MSG_CMSG_COMPAT)
 		return -EINVAL;
 	return __sys_sendmsg(fd, (struct msghdr __user *)msg, flags | MSG_CMSG_COMPAT);
+=======
+	return sys_sendmsg(fd, (struct msghdr __user *)msg, flags | MSG_CMSG_COMPAT);
+>>>>>>> 7175f4b... Truncated history
 }
 
 asmlinkage long compat_sys_sendmmsg(int fd, struct compat_mmsghdr __user *mmsg,
 				    unsigned vlen, unsigned int flags)
 {
+<<<<<<< HEAD
 	if (flags & MSG_CMSG_COMPAT)
 		return -EINVAL;
+=======
+>>>>>>> 7175f4b... Truncated history
 	return __sys_sendmmsg(fd, (struct mmsghdr __user *)mmsg, vlen,
 			      flags | MSG_CMSG_COMPAT);
 }
 
 asmlinkage long compat_sys_recvmsg(int fd, struct compat_msghdr __user *msg, unsigned int flags)
 {
+<<<<<<< HEAD
 	if (flags & MSG_CMSG_COMPAT)
 		return -EINVAL;
 	return __sys_recvmsg(fd, (struct msghdr __user *)msg, flags | MSG_CMSG_COMPAT);
+=======
+	return sys_recvmsg(fd, (struct msghdr __user *)msg, flags | MSG_CMSG_COMPAT);
+>>>>>>> 7175f4b... Truncated history
 }
 
 asmlinkage long compat_sys_recv(int fd, void __user *buf, size_t len, unsigned flags)
@@ -786,9 +812,12 @@ asmlinkage long compat_sys_recvmmsg(int fd, struct compat_mmsghdr __user *mmsg,
 	int datagrams;
 	struct timespec ktspec;
 
+<<<<<<< HEAD
 	if (flags & MSG_CMSG_COMPAT)
 		return -EINVAL;
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	if (COMPAT_USE_64BIT_TIME)
 		return __sys_recvmmsg(fd, (struct mmsghdr __user *)mmsg, vlen,
 				      flags | MSG_CMSG_COMPAT,

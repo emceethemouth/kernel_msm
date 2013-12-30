@@ -369,8 +369,15 @@ if ($hz eq '--can') {
 		die "Usage: $0 HZ\n";
 	}
 
+<<<<<<< HEAD
 	$cv = $canned_values{$hz};
 	@val = defined($cv) ? @$cv : compute_values($hz);
+=======
+	@val = @{$canned_values{$hz}};
+	if (!defined(@val)) {
+		@val = compute_values($hz);
+	}
+>>>>>>> 7175f4b... Truncated history
 	output($hz, @val);
 }
 exit 0;

@@ -530,8 +530,12 @@ static int crypto_shash_report(struct sk_buff *skb, struct crypto_alg *alg)
 	struct crypto_report_hash rhash;
 	struct shash_alg *salg = __crypto_shash_alg(alg);
 
+<<<<<<< HEAD
 	strncpy(rhash.type, "shash", sizeof(rhash.type));
 
+=======
+	snprintf(rhash.type, CRYPTO_MAX_ALG_NAME, "%s", "shash");
+>>>>>>> 7175f4b... Truncated history
 	rhash.blocksize = alg->cra_blocksize;
 	rhash.digestsize = salg->digestsize;
 

@@ -680,13 +680,17 @@ static int efx_ethtool_set_ringparam(struct net_device *net_dev,
 				     struct ethtool_ringparam *ring)
 {
 	struct efx_nic *efx = netdev_priv(net_dev);
+<<<<<<< HEAD
 	u32 txq_entries;
+=======
+>>>>>>> 7175f4b... Truncated history
 
 	if (ring->rx_mini_pending || ring->rx_jumbo_pending ||
 	    ring->rx_pending > EFX_MAX_DMAQ_SIZE ||
 	    ring->tx_pending > EFX_MAX_DMAQ_SIZE)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	if (ring->rx_pending < EFX_RXQ_MIN_ENT) {
 		netif_err(efx, drv, efx->net_dev,
 			  "RX queues cannot be smaller than %u\n",
@@ -701,6 +705,17 @@ static int efx_ethtool_set_ringparam(struct net_device *net_dev,
 			   txq_entries);
 
 	return efx_realloc_channels(efx, ring->rx_pending, txq_entries);
+=======
+	if (ring->rx_pending < EFX_MIN_RING_SIZE ||
+	    ring->tx_pending < EFX_MIN_RING_SIZE) {
+		netif_err(efx, drv, efx->net_dev,
+			  "TX and RX queues cannot be smaller than %ld\n",
+			  EFX_MIN_RING_SIZE);
+		return -EINVAL;
+	}
+
+	return efx_realloc_channels(efx, ring->rx_pending, ring->tx_pending);
+>>>>>>> 7175f4b... Truncated history
 }
 
 static int efx_ethtool_set_pauseparam(struct net_device *net_dev,
@@ -863,8 +878,13 @@ static int efx_ethtool_get_class_rule(struct efx_nic *efx,
 				       &ip_entry->ip4dst, &ip_entry->pdst);
 	if (rc != 0) {
 		rc = efx_filter_get_ipv4_full(
+<<<<<<< HEAD
 			&spec, &proto, &ip_entry->ip4dst, &ip_entry->pdst,
 			&ip_entry->ip4src, &ip_entry->psrc);
+=======
+			&spec, &proto, &ip_entry->ip4src, &ip_entry->psrc,
+			&ip_entry->ip4dst, &ip_entry->pdst);
+>>>>>>> 7175f4b... Truncated history
 		EFX_WARN_ON_PARANOID(rc);
 		ip_mask->ip4src = ~0;
 		ip_mask->psrc = ~0;

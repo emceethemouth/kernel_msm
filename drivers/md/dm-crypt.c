@@ -1699,11 +1699,19 @@ static int crypt_map(struct dm_target *ti, struct bio *bio,
 	return DM_MAPIO_SUBMITTED;
 }
 
+<<<<<<< HEAD
 static void crypt_status(struct dm_target *ti, status_type_t type,
 			 char *result, unsigned int maxlen)
 {
 	struct crypt_config *cc = ti->private;
 	unsigned i, sz = 0;
+=======
+static int crypt_status(struct dm_target *ti, status_type_t type,
+			char *result, unsigned int maxlen)
+{
+	struct crypt_config *cc = ti->private;
+	unsigned int sz = 0;
+>>>>>>> 7175f4b... Truncated history
 
 	switch (type) {
 	case STATUSTYPE_INFO:
@@ -1713,11 +1721,25 @@ static void crypt_status(struct dm_target *ti, status_type_t type,
 	case STATUSTYPE_TABLE:
 		DMEMIT("%s ", cc->cipher_string);
 
+<<<<<<< HEAD
 		if (cc->key_size > 0)
 			for (i = 0; i < cc->key_size; i++)
 				DMEMIT("%02x", cc->key[i]);
 		else
 			DMEMIT("-");
+=======
+		if (cc->key_size > 0) {
+			if ((maxlen - sz) < ((cc->key_size << 1) + 1))
+				return -ENOMEM;
+
+			crypt_encode_key(result + sz, cc->key, cc->key_size);
+			sz += cc->key_size << 1;
+		} else {
+			if (sz >= maxlen)
+				return -ENOMEM;
+			result[sz++] = '-';
+		}
+>>>>>>> 7175f4b... Truncated history
 
 		DMEMIT(" %llu %s %llu", (unsigned long long)cc->iv_offset,
 				cc->dev->name, (unsigned long long)cc->start);
@@ -1727,6 +1749,10 @@ static void crypt_status(struct dm_target *ti, status_type_t type,
 
 		break;
 	}
+<<<<<<< HEAD
+=======
+	return 0;
+>>>>>>> 7175f4b... Truncated history
 }
 
 static void crypt_postsuspend(struct dm_target *ti)
@@ -1862,4 +1888,8 @@ module_exit(dm_crypt_exit);
 
 MODULE_AUTHOR("Christophe Saout <christophe@saout.de>");
 MODULE_DESCRIPTION(DM_NAME " target for transparent encryption / decryption");
+<<<<<<< HEAD
 MODULE_LICENSE("GPL");
+=======
+MODULE_LICENSE("GPL");
+>>>>>>> 7175f4b... Truncated history

@@ -142,7 +142,10 @@ int genl_register_mc_group(struct genl_family *family,
 	int err = 0;
 
 	BUG_ON(grp->name[0] == '\0');
+<<<<<<< HEAD
 	BUG_ON(memchr(grp->name, '\0', GENL_NAMSIZ) == NULL);
+=======
+>>>>>>> 7175f4b... Truncated history
 
 	genl_lock();
 

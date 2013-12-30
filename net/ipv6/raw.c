@@ -107,6 +107,7 @@ found:
  *	0 - deliver
  *	1 - block
  */
+<<<<<<< HEAD
 static int icmpv6_filter(const struct sock *sk, const struct sk_buff *skb)
 {
 	struct icmp6hdr *_hdr;
@@ -121,6 +122,23 @@ static int icmpv6_filter(const struct sock *sk, const struct sk_buff *skb)
 		return (data[type >> 5] & (1U << (type & 31))) != 0;
 	}
 	return 1;
+=======
+static __inline__ int icmpv6_filter(struct sock *sk, struct sk_buff *skb)
+{
+	struct icmp6hdr *icmph;
+	struct raw6_sock *rp = raw6_sk(sk);
+
+	if (pskb_may_pull(skb, sizeof(struct icmp6hdr))) {
+		__u32 *data = &rp->filter.data[0];
+		int bit_nr;
+
+		icmph = (struct icmp6hdr *) skb->data;
+		bit_nr = icmph->icmp6_type;
+
+		return (data[bit_nr >> 5] & (1 << (bit_nr & 31))) != 0;
+	}
+	return 0;
+>>>>>>> 7175f4b... Truncated history
 }
 
 #if defined(CONFIG_IPV6_MIP6) || defined(CONFIG_IPV6_MIP6_MODULE)
@@ -457,11 +475,22 @@ static int rawv6_recvmsg(struct kiocb *iocb, struct sock *sk,
 	if (flags & MSG_OOB)
 		return -EOPNOTSUPP;
 
+<<<<<<< HEAD
 	if (flags & MSG_ERRQUEUE)
 		return ipv6_recv_error(sk, msg, len, addr_len);
 
 	if (np->rxpmtu && np->rxopt.bits.rxpmtu)
 		return ipv6_recv_rxpmtu(sk, msg, len, addr_len);
+=======
+	if (addr_len)
+		*addr_len=sizeof(*sin6);
+
+	if (flags & MSG_ERRQUEUE)
+		return ipv6_recv_error(sk, msg, len);
+
+	if (np->rxpmtu && np->rxopt.bits.rxpmtu)
+		return ipv6_recv_rxpmtu(sk, msg, len);
+>>>>>>> 7175f4b... Truncated history
 
 	skb = skb_recv_datagram(sk, flags, noblock, &err);
 	if (!skb)
@@ -496,7 +525,10 @@ static int rawv6_recvmsg(struct kiocb *iocb, struct sock *sk,
 		sin6->sin6_scope_id = 0;
 		if (ipv6_addr_type(&sin6->sin6_addr) & IPV6_ADDR_LINKLOCAL)
 			sin6->sin6_scope_id = IP6CB(skb)->iif;
+<<<<<<< HEAD
 		*addr_len = sizeof(*sin6);
+=======
+>>>>>>> 7175f4b... Truncated history
 	}
 
 	sock_recv_ts_and_drops(msg, sk, skb);

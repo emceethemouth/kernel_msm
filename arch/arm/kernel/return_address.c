@@ -58,7 +58,11 @@ void *return_address(unsigned int level)
 
 #else /* if defined(CONFIG_FRAME_POINTER) && !defined(CONFIG_ARM_UNWIND) */
 
+<<<<<<< HEAD
 #if 0
+=======
+#if defined(CONFIG_ARM_UNWIND)
+>>>>>>> 7175f4b... Truncated history
 #warning "TODO: return_address should use unwind tables"
 #endif
 

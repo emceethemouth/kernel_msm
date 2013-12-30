@@ -851,7 +851,10 @@ int cpdma_chan_stop(struct cpdma_chan *chan)
 
 		next_dma = desc_read(desc, hw_next);
 		chan->head = desc_from_phys(pool, next_dma);
+<<<<<<< HEAD
 		chan->count--;
+=======
+>>>>>>> 7175f4b... Truncated history
 		chan->stats.teardown_dequeue++;
 
 		/* issue callback without locks held */

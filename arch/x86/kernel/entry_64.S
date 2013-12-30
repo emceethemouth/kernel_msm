@@ -1351,7 +1351,11 @@ ENTRY(xen_failsafe_callback)
 	CFI_RESTORE r11
 	addq $0x30,%rsp
 	CFI_ADJUST_CFA_OFFSET -0x30
+<<<<<<< HEAD
 	pushq_cfi $-1 /* orig_ax = -1 => not a system call */
+=======
+	pushq_cfi $0
+>>>>>>> 7175f4b... Truncated history
 	SAVE_ALL
 	jmp error_exit
 	CFI_ENDPROC

@@ -420,6 +420,7 @@ err:
 	return -EINVAL;
 }
 
+<<<<<<< HEAD
 static int xfrm_replay_recheck_esn(struct xfrm_state *x,
 				   struct sk_buff *skb, __be32 net_seq)
 {
@@ -432,6 +433,8 @@ static int xfrm_replay_recheck_esn(struct xfrm_state *x,
 	return xfrm_replay_check_esn(x, skb, net_seq);
 }
 
+=======
+>>>>>>> 7175f4b... Truncated history
 static void xfrm_replay_advance_esn(struct xfrm_state *x, __be32 net_seq)
 {
 	unsigned int bitnr, nr, i;
@@ -491,7 +494,10 @@ static void xfrm_replay_advance_esn(struct xfrm_state *x, __be32 net_seq)
 static struct xfrm_replay xfrm_replay_legacy = {
 	.advance	= xfrm_replay_advance,
 	.check		= xfrm_replay_check,
+<<<<<<< HEAD
 	.recheck	= xfrm_replay_check,
+=======
+>>>>>>> 7175f4b... Truncated history
 	.notify		= xfrm_replay_notify,
 	.overflow	= xfrm_replay_overflow,
 };
@@ -499,7 +505,10 @@ static struct xfrm_replay xfrm_replay_legacy = {
 static struct xfrm_replay xfrm_replay_bmp = {
 	.advance	= xfrm_replay_advance_bmp,
 	.check		= xfrm_replay_check_bmp,
+<<<<<<< HEAD
 	.recheck	= xfrm_replay_check_bmp,
+=======
+>>>>>>> 7175f4b... Truncated history
 	.notify		= xfrm_replay_notify_bmp,
 	.overflow	= xfrm_replay_overflow_bmp,
 };
@@ -507,7 +516,10 @@ static struct xfrm_replay xfrm_replay_bmp = {
 static struct xfrm_replay xfrm_replay_esn = {
 	.advance	= xfrm_replay_advance_esn,
 	.check		= xfrm_replay_check_esn,
+<<<<<<< HEAD
 	.recheck	= xfrm_replay_recheck_esn,
+=======
+>>>>>>> 7175f4b... Truncated history
 	.notify		= xfrm_replay_notify_bmp,
 	.overflow	= xfrm_replay_overflow_esn,
 };

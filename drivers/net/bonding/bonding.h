@@ -18,7 +18,10 @@
 #include <linux/timer.h>
 #include <linux/proc_fs.h>
 #include <linux/if_bonding.h>
+<<<<<<< HEAD
 #include <linux/etherdevice.h>
+=======
+>>>>>>> 7175f4b... Truncated history
 #include <linux/cpumask.h>
 #include <linux/in6.h>
 #include <linux/netpoll.h>
@@ -451,6 +454,7 @@ static inline void bond_destroy_proc_dir(struct bond_net *bn)
 }
 #endif
 
+<<<<<<< HEAD
 static inline struct slave *bond_slave_has_mac(struct bonding *bond,
 					       const u8 *mac)
 {
@@ -463,6 +467,8 @@ static inline struct slave *bond_slave_has_mac(struct bonding *bond,
 
 	return NULL;
 }
+=======
+>>>>>>> 7175f4b... Truncated history
 
 /* exported from bond_main.c */
 extern int bond_net_id;

@@ -58,7 +58,11 @@ static inline int __init is_exclusive_device(struct acpi_device *dev)
 	if (!(('0' <= (c) && (c) <= '9') || ('A' <= (c) && (c) <= 'F'))) \
 		return 0
 #define TEST_ALPHA(c) \
+<<<<<<< HEAD
 	if (!('A' <= (c) && (c) <= 'Z')) \
+=======
+	if (!('@' <= (c) || (c) <= 'Z')) \
+>>>>>>> 7175f4b... Truncated history
 		return 0
 static int __init ispnpidacpi(const char *id)
 {
@@ -95,9 +99,12 @@ static int pnpacpi_set_resources(struct pnp_dev *dev)
 		return -ENODEV;
 	}
 
+<<<<<<< HEAD
 	if (WARN_ON_ONCE(acpi_dev != dev->data))
 		dev->data = acpi_dev;
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	ret = pnpacpi_build_resource_template(dev, &buffer);
 	if (ret)
 		return ret;

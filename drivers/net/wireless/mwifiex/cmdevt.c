@@ -816,6 +816,12 @@ mwifiex_cmd_timeout_func(unsigned long function_context)
 		return;
 	}
 	cmd_node = adapter->curr_cmd;
+<<<<<<< HEAD
+=======
+	if (cmd_node->wait_q_enabled)
+		adapter->cmd_wait_q.status = -ETIMEDOUT;
+
+>>>>>>> 7175f4b... Truncated history
 	if (cmd_node) {
 		adapter->dbg.timeout_cmd_id =
 			adapter->dbg.last_cmd_id[adapter->dbg.last_cmd_index];
@@ -861,6 +867,7 @@ mwifiex_cmd_timeout_func(unsigned long function_context)
 
 		dev_err(adapter->dev, "ps_mode=%d ps_state=%d\n",
 			adapter->ps_mode, adapter->ps_state);
+<<<<<<< HEAD
 
 		if (cmd_node->wait_q_enabled) {
 			adapter->cmd_wait_q.status = -ETIMEDOUT;
@@ -869,6 +876,8 @@ mwifiex_cmd_timeout_func(unsigned long function_context)
 			/* reset cmd_sent flag to unblock new commands */
 			adapter->cmd_sent = false;
 		}
+=======
+>>>>>>> 7175f4b... Truncated history
 	}
 	if (adapter->hw_status == MWIFIEX_HW_STATUS_INITIALIZING)
 		mwifiex_init_fw_complete(adapter);
@@ -1084,7 +1093,10 @@ mwifiex_process_hs_config(struct mwifiex_adapter *adapter)
 	adapter->if_ops.wakeup(adapter);
 	adapter->hs_activated = false;
 	adapter->is_hs_configured = false;
+<<<<<<< HEAD
 	adapter->is_suspended = false;
+=======
+>>>>>>> 7175f4b... Truncated history
 	mwifiex_hs_activated_event(mwifiex_get_priv(adapter,
 						    MWIFIEX_BSS_ROLE_ANY),
 				   false);

@@ -22,7 +22,10 @@
 #define _V4L2_CTRLS_H
 
 #include <linux/list.h>
+<<<<<<< HEAD
 #include <linux/mutex.h>
+=======
+>>>>>>> 7175f4b... Truncated history
 #include <linux/videodev2.h>
 
 /* forward references */

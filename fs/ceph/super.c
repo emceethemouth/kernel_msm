@@ -70,6 +70,7 @@ static int ceph_statfs(struct dentry *dentry, struct kstatfs *buf)
 	/*
 	 * express utilization in terms of large blocks to avoid
 	 * overflow on 32-bit machines.
+<<<<<<< HEAD
 	 *
 	 * NOTE: for the time being, we make bsize == frsize to humor
 	 * not-yet-ancient versions of glibc that are broken.
@@ -78,6 +79,10 @@ static int ceph_statfs(struct dentry *dentry, struct kstatfs *buf)
 	 */
 	buf->f_bsize = 1 << CEPH_BLOCK_SHIFT;
 	buf->f_frsize = 1 << CEPH_BLOCK_SHIFT;
+=======
+	 */
+	buf->f_bsize = 1 << CEPH_BLOCK_SHIFT;
+>>>>>>> 7175f4b... Truncated history
 	buf->f_blocks = le64_to_cpu(st.kb) >> (CEPH_BLOCK_SHIFT-10);
 	buf->f_bfree = le64_to_cpu(st.kb_avail) >> (CEPH_BLOCK_SHIFT-10);
 	buf->f_bavail = le64_to_cpu(st.kb_avail) >> (CEPH_BLOCK_SHIFT-10);
@@ -85,6 +90,10 @@ static int ceph_statfs(struct dentry *dentry, struct kstatfs *buf)
 	buf->f_files = le64_to_cpu(st.num_objects);
 	buf->f_ffree = -1;
 	buf->f_namelen = NAME_MAX;
+<<<<<<< HEAD
+=======
+	buf->f_frsize = PAGE_CACHE_SIZE;
+>>>>>>> 7175f4b... Truncated history
 
 	/* leave fsid little-endian, regardless of host endianness */
 	fsid = *(u64 *)(&monmap->fsid) ^ *((u64 *)&monmap->fsid + 1);
@@ -392,6 +401,11 @@ static int ceph_show_options(struct seq_file *m, struct dentry *root)
 		seq_printf(m, ",mount_timeout=%d", opt->mount_timeout);
 	if (opt->osd_idle_ttl != CEPH_OSD_IDLE_TTL_DEFAULT)
 		seq_printf(m, ",osd_idle_ttl=%d", opt->osd_idle_ttl);
+<<<<<<< HEAD
+=======
+	if (opt->osd_timeout != CEPH_OSD_TIMEOUT_DEFAULT)
+		seq_printf(m, ",osdtimeout=%d", opt->osd_timeout);
+>>>>>>> 7175f4b... Truncated history
 	if (opt->osd_keepalive_timeout != CEPH_OSD_KEEPALIVE_DEFAULT)
 		seq_printf(m, ",osdkeepalivetimeout=%d",
 			   opt->osd_keepalive_timeout);

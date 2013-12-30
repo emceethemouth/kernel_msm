@@ -146,14 +146,22 @@ int vmbus_open(struct vmbus_channel *newchannel, u32 send_ringbuffer_size,
 
 	if (ret != 0) {
 		err = ret;
+<<<<<<< HEAD
 		goto error0;
+=======
+		goto errorout;
+>>>>>>> 7175f4b... Truncated history
 	}
 
 	ret = hv_ringbuffer_init(
 		&newchannel->inbound, in, recv_ringbuffer_size);
 	if (ret != 0) {
 		err = ret;
+<<<<<<< HEAD
 		goto error0;
+=======
+		goto errorout;
+>>>>>>> 7175f4b... Truncated history
 	}
 
 
@@ -168,7 +176,11 @@ int vmbus_open(struct vmbus_channel *newchannel, u32 send_ringbuffer_size,
 
 	if (ret != 0) {
 		err = ret;
+<<<<<<< HEAD
 		goto error0;
+=======
+		goto errorout;
+>>>>>>> 7175f4b... Truncated history
 	}
 
 	/* Create and init the channel open message */
@@ -177,7 +189,11 @@ int vmbus_open(struct vmbus_channel *newchannel, u32 send_ringbuffer_size,
 			   GFP_KERNEL);
 	if (!open_info) {
 		err = -ENOMEM;
+<<<<<<< HEAD
 		goto error0;
+=======
+		goto errorout;
+>>>>>>> 7175f4b... Truncated history
 	}
 
 	init_completion(&open_info->waitevent);
@@ -193,7 +209,11 @@ int vmbus_open(struct vmbus_channel *newchannel, u32 send_ringbuffer_size,
 
 	if (userdatalen > MAX_USER_DEFINED_BYTES) {
 		err = -EINVAL;
+<<<<<<< HEAD
 		goto error0;
+=======
+		goto errorout;
+>>>>>>> 7175f4b... Truncated history
 	}
 
 	if (userdatalen)
@@ -208,18 +228,30 @@ int vmbus_open(struct vmbus_channel *newchannel, u32 send_ringbuffer_size,
 			       sizeof(struct vmbus_channel_open_channel));
 
 	if (ret != 0)
+<<<<<<< HEAD
 		goto error1;
+=======
+		goto cleanup;
+>>>>>>> 7175f4b... Truncated history
 
 	t = wait_for_completion_timeout(&open_info->waitevent, 5*HZ);
 	if (t == 0) {
 		err = -ETIMEDOUT;
+<<<<<<< HEAD
 		goto error1;
+=======
+		goto errorout;
+>>>>>>> 7175f4b... Truncated history
 	}
 
 
 	if (open_info->response.open_result.status)
 		err = open_info->response.open_result.status;
 
+<<<<<<< HEAD
+=======
+cleanup:
+>>>>>>> 7175f4b... Truncated history
 	spin_lock_irqsave(&vmbus_connection.channelmsg_lock, flags);
 	list_del(&open_info->msglistentry);
 	spin_unlock_irqrestore(&vmbus_connection.channelmsg_lock, flags);
@@ -227,12 +259,18 @@ int vmbus_open(struct vmbus_channel *newchannel, u32 send_ringbuffer_size,
 	kfree(open_info);
 	return err;
 
+<<<<<<< HEAD
 error1:
 	spin_lock_irqsave(&vmbus_connection.channelmsg_lock, flags);
 	list_del(&open_info->msglistentry);
 	spin_unlock_irqrestore(&vmbus_connection.channelmsg_lock, flags);
 
 error0:
+=======
+errorout:
+	hv_ringbuffer_cleanup(&newchannel->outbound);
+	hv_ringbuffer_cleanup(&newchannel->inbound);
+>>>>>>> 7175f4b... Truncated history
 	free_pages((unsigned long)out,
 		get_order(send_ringbuffer_size + recv_ringbuffer_size));
 	kfree(open_info);

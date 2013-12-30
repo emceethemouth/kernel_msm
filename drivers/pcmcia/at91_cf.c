@@ -100,9 +100,15 @@ static int at91_cf_get_status(struct pcmcia_socket *s, u_int *sp)
 		int vcc	= gpio_is_valid(cf->board->vcc_pin);
 
 		*sp = SS_DETECT | SS_3VCARD;
+<<<<<<< HEAD
 		if (!rdy || gpio_get_value(cf->board->irq_pin))
 			*sp |= SS_READY;
 		if (!vcc || gpio_get_value(cf->board->vcc_pin))
+=======
+		if (!rdy || gpio_get_value(rdy))
+			*sp |= SS_READY;
+		if (!vcc || gpio_get_value(vcc))
+>>>>>>> 7175f4b... Truncated history
 			*sp |= SS_POWERON;
 	} else
 		*sp = 0;

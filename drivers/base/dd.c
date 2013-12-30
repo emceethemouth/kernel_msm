@@ -160,8 +160,11 @@ static int deferred_probe_initcall(void)
 
 	driver_deferred_probe_enable = true;
 	driver_deferred_probe_trigger();
+<<<<<<< HEAD
 	/* Sort as many dependencies as possible before exiting initcalls */
 	flush_workqueue(deferred_wq);
+=======
+>>>>>>> 7175f4b... Truncated history
 	return 0;
 }
 late_initcall(deferred_probe_initcall);

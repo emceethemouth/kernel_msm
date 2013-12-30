@@ -4217,7 +4217,11 @@ static void update_global_block_rsv(struct btrfs_fs_info *fs_info)
 	spin_lock(&sinfo->lock);
 	spin_lock(&block_rsv->lock);
 
+<<<<<<< HEAD
 	block_rsv->size = min_t(u64, num_bytes, 512 * 1024 * 1024);
+=======
+	block_rsv->size = num_bytes;
+>>>>>>> 7175f4b... Truncated history
 
 	num_bytes = sinfo->bytes_used + sinfo->bytes_pinned +
 		    sinfo->bytes_reserved + sinfo->bytes_readonly +
@@ -4486,6 +4490,7 @@ int btrfs_delalloc_reserve_metadata(struct inode *inode, u64 num_bytes)
 		 * If the inodes csum_bytes is the same as the original
 		 * csum_bytes then we know we haven't raced with any free()ers
 		 * so we can just reduce our inodes csum bytes and carry on.
+<<<<<<< HEAD
 		 */
 		if (BTRFS_I(inode)->csum_bytes == csum_bytes) {
 			calc_csum_metadata_size(inode, num_bytes, 0);
@@ -4529,6 +4534,16 @@ int btrfs_delalloc_reserve_metadata(struct inode *inode, u64 num_bytes)
 			else
 				to_free = 0;
 		}
+=======
+		 * Otherwise we have to do the normal free thing to account for
+		 * the case that the free side didn't free up its reserve
+		 * because of this outstanding reservation.
+		 */
+		if (BTRFS_I(inode)->csum_bytes == csum_bytes)
+			calc_csum_metadata_size(inode, num_bytes, 0);
+		else
+			to_free = calc_csum_metadata_size(inode, num_bytes, 0);
+>>>>>>> 7175f4b... Truncated history
 		spin_unlock(&BTRFS_I(inode)->lock);
 		if (dropped)
 			to_free += btrfs_calc_trans_metadata_size(root, dropped);
@@ -6846,7 +6861,10 @@ int btrfs_drop_snapshot(struct btrfs_root *root,
 	int err = 0;
 	int ret;
 	int level;
+<<<<<<< HEAD
 	bool root_dropped = false;
+=======
+>>>>>>> 7175f4b... Truncated history
 
 	path = btrfs_alloc_path();
 	if (!path) {
@@ -6904,7 +6922,10 @@ int btrfs_drop_snapshot(struct btrfs_root *root,
 		while (1) {
 			btrfs_tree_lock(path->nodes[level]);
 			btrfs_set_lock_blocking(path->nodes[level]);
+<<<<<<< HEAD
 			path->locks[level] = BTRFS_WRITE_LOCK_BLOCKING;
+=======
+>>>>>>> 7175f4b... Truncated history
 
 			ret = btrfs_lookup_extent_info(trans, root,
 						path->nodes[level]->start,
@@ -6921,7 +6942,10 @@ int btrfs_drop_snapshot(struct btrfs_root *root,
 				break;
 
 			btrfs_tree_unlock(path->nodes[level]);
+<<<<<<< HEAD
 			path->locks[level] = 0;
+=======
+>>>>>>> 7175f4b... Truncated history
 			WARN_ON(wc->refs[level] != 1);
 			level--;
 		}
@@ -7017,13 +7041,17 @@ int btrfs_drop_snapshot(struct btrfs_root *root,
 		free_extent_buffer(root->commit_root);
 		kfree(root);
 	}
+<<<<<<< HEAD
 	root_dropped = true;
+=======
+>>>>>>> 7175f4b... Truncated history
 out_end_trans:
 	btrfs_end_transaction_throttle(trans, tree_root);
 out_free:
 	kfree(wc);
 	btrfs_free_path(path);
 out:
+<<<<<<< HEAD
 	/*
 	 * So if we need to stop dropping the snapshot for whatever reason we
 	 * need to make sure to add it back to the dead root list so that we
@@ -7033,6 +7061,8 @@ out:
 	 */
 	if (root_dropped == false)
 		btrfs_add_dead_root(root);
+=======
+>>>>>>> 7175f4b... Truncated history
 	if (err)
 		btrfs_std_error(root->fs_info, err);
 	return err;

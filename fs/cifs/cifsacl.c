@@ -225,6 +225,7 @@ sid_to_str(struct cifs_sid *sidptr, char *sidstr)
 }
 
 static void
+<<<<<<< HEAD
 cifs_copy_sid(struct cifs_sid *dst, const struct cifs_sid *src)
 {
 	memcpy(dst, src, sizeof(*dst));
@@ -232,6 +233,8 @@ cifs_copy_sid(struct cifs_sid *dst, const struct cifs_sid *src)
 }
 
 static void
+=======
+>>>>>>> 7175f4b... Truncated history
 id_rb_insert(struct rb_root *root, struct cifs_sid *sidptr,
 		struct cifs_sid_id **psidid, char *typestr)
 {
@@ -255,7 +258,11 @@ id_rb_insert(struct rb_root *root, struct cifs_sid *sidptr,
 		}
 	}
 
+<<<<<<< HEAD
 	cifs_copy_sid(&(*psidid)->sid, sidptr);
+=======
+	memcpy(&(*psidid)->sid, sidptr, sizeof(struct cifs_sid));
+>>>>>>> 7175f4b... Truncated history
 	(*psidid)->time = jiffies - (SID_MAP_RETRY + 1);
 	(*psidid)->refcount = 0;
 
@@ -361,7 +368,11 @@ id_to_sid(unsigned long cid, uint sidtype, struct cifs_sid *ssid)
 	 * any fields of the node after a reference is put .
 	 */
 	if (test_bit(SID_ID_MAPPED, &psidid->state)) {
+<<<<<<< HEAD
 		cifs_copy_sid(ssid, &psidid->sid);
+=======
+		memcpy(ssid, &psidid->sid, sizeof(struct cifs_sid));
+>>>>>>> 7175f4b... Truncated history
 		psidid->time = jiffies; /* update ts for accessing */
 		goto id_sid_out;
 	}
@@ -377,6 +388,7 @@ id_to_sid(unsigned long cid, uint sidtype, struct cifs_sid *ssid)
 		if (IS_ERR(sidkey)) {
 			rc = -EINVAL;
 			cFYI(1, "%s: Can't map and id to a SID", __func__);
+<<<<<<< HEAD
 		} else if (sidkey->datalen < sizeof(struct cifs_sid)) {
 			rc = -EIO;
 			cFYI(1, "%s: Downcall contained malformed key "
@@ -385,6 +397,16 @@ id_to_sid(unsigned long cid, uint sidtype, struct cifs_sid *ssid)
 			lsid = (struct cifs_sid *)sidkey->payload.data;
 			cifs_copy_sid(&psidid->sid, lsid);
 			cifs_copy_sid(ssid, &psidid->sid);
+=======
+		} else {
+			lsid = (struct cifs_sid *)sidkey->payload.data;
+			memcpy(&psidid->sid, lsid,
+				sidkey->datalen < sizeof(struct cifs_sid) ?
+				sidkey->datalen : sizeof(struct cifs_sid));
+			memcpy(ssid, &psidid->sid,
+				sidkey->datalen < sizeof(struct cifs_sid) ?
+				sidkey->datalen : sizeof(struct cifs_sid));
+>>>>>>> 7175f4b... Truncated history
 			set_bit(SID_ID_MAPPED, &psidid->state);
 			key_put(sidkey);
 			kfree(psidid->sidstr);
@@ -403,7 +425,11 @@ id_to_sid(unsigned long cid, uint sidtype, struct cifs_sid *ssid)
 			return rc;
 		}
 		if (test_bit(SID_ID_MAPPED, &psidid->state))
+<<<<<<< HEAD
 			cifs_copy_sid(ssid, &psidid->sid);
+=======
+			memcpy(ssid, &psidid->sid, sizeof(struct cifs_sid));
+>>>>>>> 7175f4b... Truncated history
 		else
 			rc = -EINVAL;
 	}
@@ -682,6 +708,11 @@ int compare_sids(const struct cifs_sid *ctsid, const struct cifs_sid *cwsid)
 static void copy_sec_desc(const struct cifs_ntsd *pntsd,
 				struct cifs_ntsd *pnntsd, __u32 sidsoffset)
 {
+<<<<<<< HEAD
+=======
+	int i;
+
+>>>>>>> 7175f4b... Truncated history
 	struct cifs_sid *owner_sid_ptr, *group_sid_ptr;
 	struct cifs_sid *nowner_sid_ptr, *ngroup_sid_ptr;
 
@@ -697,14 +728,34 @@ static void copy_sec_desc(const struct cifs_ntsd *pntsd,
 	owner_sid_ptr = (struct cifs_sid *)((char *)pntsd +
 				le32_to_cpu(pntsd->osidoffset));
 	nowner_sid_ptr = (struct cifs_sid *)((char *)pnntsd + sidsoffset);
+<<<<<<< HEAD
 	cifs_copy_sid(nowner_sid_ptr, owner_sid_ptr);
+=======
+
+	nowner_sid_ptr->revision = owner_sid_ptr->revision;
+	nowner_sid_ptr->num_subauth = owner_sid_ptr->num_subauth;
+	for (i = 0; i < 6; i++)
+		nowner_sid_ptr->authority[i] = owner_sid_ptr->authority[i];
+	for (i = 0; i < 5; i++)
+		nowner_sid_ptr->sub_auth[i] = owner_sid_ptr->sub_auth[i];
+>>>>>>> 7175f4b... Truncated history
 
 	/* copy group sid */
 	group_sid_ptr = (struct cifs_sid *)((char *)pntsd +
 				le32_to_cpu(pntsd->gsidoffset));
 	ngroup_sid_ptr = (struct cifs_sid *)((char *)pnntsd + sidsoffset +
 					sizeof(struct cifs_sid));
+<<<<<<< HEAD
 	cifs_copy_sid(ngroup_sid_ptr, group_sid_ptr);
+=======
+
+	ngroup_sid_ptr->revision = group_sid_ptr->revision;
+	ngroup_sid_ptr->num_subauth = group_sid_ptr->num_subauth;
+	for (i = 0; i < 6; i++)
+		ngroup_sid_ptr->authority[i] = group_sid_ptr->authority[i];
+	for (i = 0; i < 5; i++)
+		ngroup_sid_ptr->sub_auth[i] = group_sid_ptr->sub_auth[i];
+>>>>>>> 7175f4b... Truncated history
 
 	return;
 }
@@ -1113,7 +1164,12 @@ static int build_sec_desc(struct cifs_ntsd *pntsd, struct cifs_ntsd *pnntsd,
 				kfree(nowner_sid_ptr);
 				return rc;
 			}
+<<<<<<< HEAD
 			cifs_copy_sid(owner_sid_ptr, nowner_sid_ptr);
+=======
+			memcpy(owner_sid_ptr, nowner_sid_ptr,
+					sizeof(struct cifs_sid));
+>>>>>>> 7175f4b... Truncated history
 			kfree(nowner_sid_ptr);
 			*aclflag = CIFS_ACL_OWNER;
 		}
@@ -1131,7 +1187,12 @@ static int build_sec_desc(struct cifs_ntsd *pntsd, struct cifs_ntsd *pnntsd,
 				kfree(ngroup_sid_ptr);
 				return rc;
 			}
+<<<<<<< HEAD
 			cifs_copy_sid(group_sid_ptr, ngroup_sid_ptr);
+=======
+			memcpy(group_sid_ptr, ngroup_sid_ptr,
+					sizeof(struct cifs_sid));
+>>>>>>> 7175f4b... Truncated history
 			kfree(ngroup_sid_ptr);
 			*aclflag = CIFS_ACL_GROUP;
 		}

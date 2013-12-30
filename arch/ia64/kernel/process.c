@@ -29,7 +29,10 @@
 #include <linux/kdebug.h>
 #include <linux/utsname.h>
 #include <linux/tracehook.h>
+<<<<<<< HEAD
 #include <linux/rcupdate.h>
+=======
+>>>>>>> 7175f4b... Truncated history
 
 #include <asm/cpu.h>
 #include <asm/delay.h>
@@ -302,7 +305,10 @@ cpu_idle (void)
 
 	/* endless idle loop with no priority at all */
 	while (1) {
+<<<<<<< HEAD
 		rcu_idle_enter();
+=======
+>>>>>>> 7175f4b... Truncated history
 		if (can_do_pal_halt) {
 			current_thread_info()->status &= ~TS_POLLING;
 			/*
@@ -333,7 +339,10 @@ cpu_idle (void)
 			normal_xtp();
 #endif
 		}
+<<<<<<< HEAD
 		rcu_idle_exit();
+=======
+>>>>>>> 7175f4b... Truncated history
 		schedule_preempt_disabled();
 		check_pgt_cache();
 		if (cpu_is_offline(cpu))

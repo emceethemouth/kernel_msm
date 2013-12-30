@@ -333,6 +333,7 @@ static struct async *async_getcompleted(struct dev_state *ps)
 static struct async *async_getpending(struct dev_state *ps,
 					     void __user *userurb)
 {
+<<<<<<< HEAD
 	struct async *as;
 
 	list_for_each_entry(as, &ps->async_pending, asynclist)
@@ -341,6 +342,19 @@ static struct async *async_getpending(struct dev_state *ps,
 			return as;
 		}
 
+=======
+	unsigned long flags;
+	struct async *as;
+
+	spin_lock_irqsave(&ps->lock, flags);
+	list_for_each_entry(as, &ps->async_pending, asynclist)
+		if (as->userurb == userurb) {
+			list_del_init(&as->asynclist);
+			spin_unlock_irqrestore(&ps->lock, flags);
+			return as;
+		}
+	spin_unlock_irqrestore(&ps->lock, flags);
+>>>>>>> 7175f4b... Truncated history
 	return NULL;
 }
 
@@ -395,7 +409,10 @@ static void cancel_bulk_urbs(struct dev_state *ps, unsigned bulk_addr)
 __releases(ps->lock)
 __acquires(ps->lock)
 {
+<<<<<<< HEAD
 	struct urb *urb;
+=======
+>>>>>>> 7175f4b... Truncated history
 	struct async *as;
 
 	/* Mark all the pending URBs that match bulk_addr, up to but not
@@ -418,11 +435,16 @@ __acquires(ps->lock)
 	list_for_each_entry(as, &ps->async_pending, asynclist) {
 		if (as->bulk_status == AS_UNLINK) {
 			as->bulk_status = 0;		/* Only once */
+<<<<<<< HEAD
 			urb = as->urb;
 			usb_get_urb(urb);
 			spin_unlock(&ps->lock);		/* Allow completions */
 			usb_unlink_urb(urb);
 			usb_put_urb(urb);
+=======
+			spin_unlock(&ps->lock);		/* Allow completions */
+			usb_unlink_urb(as->urb);
+>>>>>>> 7175f4b... Truncated history
 			spin_lock(&ps->lock);
 			goto rescan;
 		}
@@ -473,7 +495,10 @@ static void async_completed(struct urb *urb)
 
 static void destroy_async(struct dev_state *ps, struct list_head *list)
 {
+<<<<<<< HEAD
 	struct urb *urb;
+=======
+>>>>>>> 7175f4b... Truncated history
 	struct async *as;
 	unsigned long flags;
 
@@ -481,6 +506,7 @@ static void destroy_async(struct dev_state *ps, struct list_head *list)
 	while (!list_empty(list)) {
 		as = list_entry(list->next, struct async, asynclist);
 		list_del_init(&as->asynclist);
+<<<<<<< HEAD
 		urb = as->urb;
 		usb_get_urb(urb);
 
@@ -488,6 +514,12 @@ static void destroy_async(struct dev_state *ps, struct list_head *list)
 		spin_unlock_irqrestore(&ps->lock, flags);
 		usb_kill_urb(urb);
 		usb_put_urb(urb);
+=======
+
+		/* drop the spinlock so the completion handler can run */
+		spin_unlock_irqrestore(&ps->lock, flags);
+		usb_kill_urb(as->urb);
+>>>>>>> 7175f4b... Truncated history
 		spin_lock_irqsave(&ps->lock, flags);
 	}
 	spin_unlock_irqrestore(&ps->lock, flags);
@@ -681,6 +713,7 @@ static int check_ctrlrecip(struct dev_state *ps, unsigned int requesttype,
 	index &= 0xff;
 	switch (requesttype & USB_RECIP_MASK) {
 	case USB_RECIP_ENDPOINT:
+<<<<<<< HEAD
 		if ((index & ~USB_DIR_IN) == 0)
 			return 0;
 		ret = findintfep(ps->dev, index);
@@ -700,6 +733,9 @@ static int check_ctrlrecip(struct dev_state *ps, unsigned int requesttype,
 					__func__, task_pid_nr(current),
 					current->comm, index, index ^ 0x80);
 		}
+=======
+		ret = findintfep(ps->dev, index);
+>>>>>>> 7175f4b... Truncated history
 		if (ret >= 0)
 			ret = checkintf(ps, ret);
 		break;
@@ -1433,6 +1469,7 @@ static int proc_submiturb(struct dev_state *ps, void __user *arg)
 
 static int proc_unlinkurb(struct dev_state *ps, void __user *arg)
 {
+<<<<<<< HEAD
 	struct urb *urb;
 	struct async *as;
 	unsigned long flags;
@@ -1451,6 +1488,14 @@ static int proc_unlinkurb(struct dev_state *ps, void __user *arg)
 	usb_kill_urb(urb);
 	usb_put_urb(urb);
 
+=======
+	struct async *as;
+
+	as = async_getpending(ps, arg);
+	if (!as)
+		return -EINVAL;
+	usb_kill_urb(as->urb);
+>>>>>>> 7175f4b... Truncated history
 	return 0;
 }
 
@@ -1633,6 +1678,7 @@ static int processcompl_compat(struct async *as, void __user * __user *arg)
 	void __user *addr = as->userurb;
 	unsigned int i;
 
+<<<<<<< HEAD
 	if (as->userbuffer && urb->actual_length) {
 		if (urb->number_of_packets > 0)		/* Isochronous */
 			i = urb->transfer_buffer_length;
@@ -1641,6 +1687,12 @@ static int processcompl_compat(struct async *as, void __user * __user *arg)
 		if (copy_to_user(as->userbuffer, urb->transfer_buffer, i))
 			return -EFAULT;
 	}
+=======
+	if (as->userbuffer && urb->actual_length)
+		if (copy_to_user(as->userbuffer, urb->transfer_buffer,
+				 urb->actual_length))
+			return -EFAULT;
+>>>>>>> 7175f4b... Truncated history
 	if (put_user(as->status, &userurb->status))
 		return -EFAULT;
 	if (put_user(urb->actual_length, &userurb->actual_length))

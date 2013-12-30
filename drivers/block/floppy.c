@@ -4161,7 +4161,10 @@ static int __init floppy_init(void)
 
 		disks[dr]->queue = blk_init_queue(do_fd_request, &floppy_lock);
 		if (!disks[dr]->queue) {
+<<<<<<< HEAD
 			put_disk(disks[dr]);
+=======
+>>>>>>> 7175f4b... Truncated history
 			err = -ENOMEM;
 			goto out_put_disk;
 		}

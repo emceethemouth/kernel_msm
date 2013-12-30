@@ -162,7 +162,10 @@ struct SenseSubsystem_info {
 #define BMIC_WRITE 0x27
 #define BMIC_CACHE_FLUSH 0xc2
 #define HPSA_CACHE_FLUSH 0x01	/* C2 was already being used by HPSA */
+<<<<<<< HEAD
 #define BMIC_FLASH_FIRMWARE 0xF7
+=======
+>>>>>>> 7175f4b... Truncated history
 
 /* Command List Structure */
 union SCSI3Addr {

@@ -137,6 +137,7 @@ static inline unsigned long long get_clock_monotonic(void)
 	return get_clock_xt() - sched_clock_base_cc;
 }
 
+<<<<<<< HEAD
 /**
  * tod_to_ns - convert a TOD format value to nanoseconds
  * @todval: to be converted TOD format value
@@ -165,4 +166,6 @@ static inline unsigned long long tod_to_ns(unsigned long long todval)
 	return ns;
 }
 
+=======
+>>>>>>> 7175f4b... Truncated history
 #endif

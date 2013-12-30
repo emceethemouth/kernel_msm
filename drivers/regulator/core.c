@@ -3395,8 +3395,11 @@ unset_supplies:
 	unset_regulator_supplies(rdev);
 
 scrub:
+<<<<<<< HEAD
 	if (rdev->supply)
 		regulator_put(rdev->supply);
+=======
+>>>>>>> 7175f4b... Truncated history
 	kfree(rdev->constraints);
 	device_unregister(&rdev->dev);
 	/* device core frees rdev */

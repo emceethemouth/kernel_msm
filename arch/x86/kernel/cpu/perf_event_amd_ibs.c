@@ -9,7 +9,10 @@
 #include <linux/perf_event.h>
 #include <linux/module.h>
 #include <linux/pci.h>
+<<<<<<< HEAD
 #include <linux/syscore_ops.h>
+=======
+>>>>>>> 7175f4b... Truncated history
 
 #include <asm/apic.h>
 
@@ -210,6 +213,7 @@ out:
 	return ret;
 }
 
+<<<<<<< HEAD
 static void ibs_eilvt_setup(void)
 {
 	/*
@@ -222,6 +226,8 @@ static void ibs_eilvt_setup(void)
 		force_ibs_eilvt_setup();
 }
 
+=======
+>>>>>>> 7175f4b... Truncated history
 static inline int get_ibs_lvt_offset(void)
 {
 	u64 val;
@@ -257,6 +263,7 @@ static void clear_APIC_ibs(void *dummy)
 		setup_APIC_eilvt(offset, 0, APIC_EILVT_MSG_FIX, 1);
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_PM
 
 static int perf_ibs_suspend(void)
@@ -287,6 +294,8 @@ static inline void perf_ibs_pm_init(void) { }
 
 #endif
 
+=======
+>>>>>>> 7175f4b... Truncated history
 static int __cpuinit
 perf_ibs_cpu_notifier(struct notifier_block *self, unsigned long action, void *hcpu)
 {
@@ -313,12 +322,26 @@ static __init int amd_ibs_init(void)
 	if (!caps)
 		return -ENODEV;	/* ibs not supported by the cpu */
 
+<<<<<<< HEAD
 	ibs_eilvt_setup();
+=======
+	/*
+	 * Force LVT offset assignment for family 10h: The offsets are
+	 * not assigned by the BIOS for this family, so the OS is
+	 * responsible for doing it. If the OS assignment fails, fall
+	 * back to BIOS settings and try to setup this.
+	 */
+	if (boot_cpu_data.x86 == 0x10)
+		force_ibs_eilvt_setup();
+>>>>>>> 7175f4b... Truncated history
 
 	if (!ibs_eilvt_valid())
 		goto out;
 
+<<<<<<< HEAD
 	perf_ibs_pm_init();
+=======
+>>>>>>> 7175f4b... Truncated history
 	get_online_cpus();
 	ibs_caps = caps;
 	/* make ibs_caps visible to other cpus: */

@@ -56,7 +56,11 @@ int hfsplus_submit_bio(struct super_block *sb, sector_t sector,
 	DECLARE_COMPLETION_ONSTACK(wait);
 	struct bio *bio;
 	int ret = 0;
+<<<<<<< HEAD
 	u64 io_size;
+=======
+	unsigned int io_size;
+>>>>>>> 7175f4b... Truncated history
 	loff_t start;
 	int offset;
 

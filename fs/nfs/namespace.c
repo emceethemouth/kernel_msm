@@ -37,7 +37,10 @@ static struct vfsmount *nfs_do_submount(struct dentry *dentry,
  * @dentry - pointer to dentry
  * @buffer - result buffer
  * @buflen - length of buffer
+<<<<<<< HEAD
  * @flags - options (see below)
+=======
+>>>>>>> 7175f4b... Truncated history
  *
  * Helper function for constructing the server pathname
  * by arbitrary hashed dentry.
@@ -45,6 +48,7 @@ static struct vfsmount *nfs_do_submount(struct dentry *dentry,
  * This is mainly for use in figuring out the path on the
  * server side when automounting on top of an existing partition
  * and in generating /proc/mounts and friends.
+<<<<<<< HEAD
  *
  * Supported flags:
  * NFS_PATH_CANONICAL: ensure there is exactly one slash after
@@ -53,6 +57,10 @@ static struct vfsmount *nfs_do_submount(struct dentry *dentry,
  */
 char *nfs_path(char **p, struct dentry *dentry, char *buffer, ssize_t buflen,
 	       unsigned flags)
+=======
+ */
+char *nfs_path(char **p, struct dentry *dentry, char *buffer, ssize_t buflen)
+>>>>>>> 7175f4b... Truncated history
 {
 	char *end;
 	int namelen;
@@ -85,7 +93,11 @@ rename_retry:
 		rcu_read_unlock();
 		goto rename_retry;
 	}
+<<<<<<< HEAD
 	if ((flags & NFS_PATH_CANONICAL) && *end != '/') {
+=======
+	if (*end != '/') {
+>>>>>>> 7175f4b... Truncated history
 		if (--buflen < 0) {
 			spin_unlock(&dentry->d_lock);
 			rcu_read_unlock();
@@ -102,11 +114,17 @@ rename_retry:
 		return end;
 	}
 	namelen = strlen(base);
+<<<<<<< HEAD
 	if (flags & NFS_PATH_CANONICAL) {
 		/* Strip off excess slashes in base string */
 		while (namelen > 0 && base[namelen - 1] == '/')
 			namelen--;
 	}
+=======
+	/* Strip off excess slashes in base string */
+	while (namelen > 0 && base[namelen - 1] == '/')
+		namelen--;
+>>>>>>> 7175f4b... Truncated history
 	buflen -= namelen;
 	if (buflen < 0) {
 		spin_unlock(&dentry->d_lock);
@@ -253,6 +271,7 @@ out_nofree:
 	return mnt;
 }
 
+<<<<<<< HEAD
 static int
 nfs_namespace_getattr(struct vfsmount *mnt, struct dentry *dentry, struct kstat *stat)
 {
@@ -278,6 +297,13 @@ const struct inode_operations nfs_mountpoint_inode_operations = {
 const struct inode_operations nfs_referral_inode_operations = {
 	.getattr	= nfs_namespace_getattr,
 	.setattr	= nfs_namespace_setattr,
+=======
+const struct inode_operations nfs_mountpoint_inode_operations = {
+	.getattr	= nfs_getattr,
+};
+
+const struct inode_operations nfs_referral_inode_operations = {
+>>>>>>> 7175f4b... Truncated history
 };
 
 static void nfs_expire_automounts(struct work_struct *work)

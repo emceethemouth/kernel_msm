@@ -183,7 +183,11 @@ int get_user_pages_fast(unsigned long start, int nr_pages, int write,
 	addr = start;
 	len = (unsigned long) nr_pages << PAGE_SHIFT;
 	end = start + len;
+<<<<<<< HEAD
 	if ((end < start) || (end > TASK_SIZE))
+=======
+	if (end < start)
+>>>>>>> 7175f4b... Truncated history
 		goto slow_irqon;
 
 	/*

@@ -1278,14 +1278,21 @@ static void pn533_deactivate_target(struct nfc_dev *nfc_dev, u32 target_idx)
 static int pn533_in_dep_link_up_complete(struct pn533 *dev, void *arg,
 						u8 *params, int params_len)
 {
+<<<<<<< HEAD
+=======
+	struct pn533_cmd_jump_dep *cmd;
+>>>>>>> 7175f4b... Truncated history
 	struct pn533_cmd_jump_dep_response *resp;
 	struct nfc_target nfc_target;
 	u8 target_gt_len;
 	int rc;
+<<<<<<< HEAD
 	struct pn533_cmd_jump_dep *cmd = (struct pn533_cmd_jump_dep *)arg;
 	u8 active = cmd->active;
 
 	kfree(arg);
+=======
+>>>>>>> 7175f4b... Truncated history
 
 	if (params_len == -ENOENT) {
 		nfc_dev_dbg(&dev->interface->dev, "");
@@ -1307,6 +1314,10 @@ static int pn533_in_dep_link_up_complete(struct pn533 *dev, void *arg,
 	}
 
 	resp = (struct pn533_cmd_jump_dep_response *) params;
+<<<<<<< HEAD
+=======
+	cmd = (struct pn533_cmd_jump_dep *) arg;
+>>>>>>> 7175f4b... Truncated history
 	rc = resp->status & PN533_CMD_RET_MASK;
 	if (rc != PN533_CMD_RET_SUCCESS) {
 		nfc_dev_err(&dev->interface->dev,
@@ -1336,7 +1347,11 @@ static int pn533_in_dep_link_up_complete(struct pn533 *dev, void *arg,
 	if (rc == 0)
 		rc = nfc_dep_link_is_up(dev->nfc_dev,
 						dev->nfc_dev->targets[0].idx,
+<<<<<<< HEAD
 						!active, NFC_RF_INITIATOR);
+=======
+						!cmd->active, NFC_RF_INITIATOR);
+>>>>>>> 7175f4b... Truncated history
 
 	return 0;
 }
@@ -1387,8 +1402,17 @@ static int pn533_dep_link_up(struct nfc_dev *nfc_dev, int target_idx,
 	rc = pn533_send_cmd_frame_async(dev, dev->out_frame, dev->in_frame,
 				dev->in_maxlen,	pn533_in_dep_link_up_complete,
 				cmd, GFP_KERNEL);
+<<<<<<< HEAD
 	if (rc < 0)
 		kfree(cmd);
+=======
+	if (rc)
+		goto out;
+
+
+out:
+	kfree(cmd);
+>>>>>>> 7175f4b... Truncated history
 
 	return rc;
 }

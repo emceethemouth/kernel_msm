@@ -680,6 +680,7 @@ void drm_mm_debug_table(struct drm_mm *mm, const char *prefix)
 EXPORT_SYMBOL(drm_mm_debug_table);
 
 #if defined(CONFIG_DEBUG_FS)
+<<<<<<< HEAD
 static unsigned long drm_mm_dump_hole(struct seq_file *m, struct drm_mm_node *entry)
 {
 	unsigned long hole_start, hole_end, hole_size;
@@ -696,19 +697,44 @@ static unsigned long drm_mm_dump_hole(struct seq_file *m, struct drm_mm_node *en
 	return 0;
 }
 
+=======
+>>>>>>> 7175f4b... Truncated history
 int drm_mm_dump_table(struct seq_file *m, struct drm_mm *mm)
 {
 	struct drm_mm_node *entry;
 	unsigned long total_used = 0, total_free = 0, total = 0;
+<<<<<<< HEAD
 
 	total_free += drm_mm_dump_hole(m, &mm->head_node);
+=======
+	unsigned long hole_start, hole_end, hole_size;
+
+	hole_start = drm_mm_hole_node_start(&mm->head_node);
+	hole_end = drm_mm_hole_node_end(&mm->head_node);
+	hole_size = hole_end - hole_start;
+	if (hole_size)
+		seq_printf(m, "0x%08lx-0x%08lx: 0x%08lx: free\n",
+				hole_start, hole_end, hole_size);
+	total_free += hole_size;
+>>>>>>> 7175f4b... Truncated history
 
 	drm_mm_for_each_node(entry, mm) {
 		seq_printf(m, "0x%08lx-0x%08lx: 0x%08lx: used\n",
 				entry->start, entry->start + entry->size,
 				entry->size);
 		total_used += entry->size;
+<<<<<<< HEAD
 		total_free += drm_mm_dump_hole(m, entry);
+=======
+		if (entry->hole_follows) {
+			hole_start = drm_mm_hole_node_start(entry);
+			hole_end = drm_mm_hole_node_end(entry);
+			hole_size = hole_end - hole_start;
+			seq_printf(m, "0x%08lx-0x%08lx: 0x%08lx: free\n",
+					hole_start, hole_end, hole_size);
+			total_free += hole_size;
+		}
+>>>>>>> 7175f4b... Truncated history
 	}
 	total = total_free + total_used;
 

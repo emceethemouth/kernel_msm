@@ -35,7 +35,10 @@
 #include <linux/crc32.h>
 #include <linux/usb/usbnet.h>
 #include <linux/slab.h>
+<<<<<<< HEAD
 #include <linux/if_vlan.h>
+=======
+>>>>>>> 7175f4b... Truncated history
 
 #define DRIVER_VERSION "22-Dec-2011"
 #define DRIVER_NAME "asix"
@@ -322,7 +325,11 @@ static int asix_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
 			return 0;
 		}
 
+<<<<<<< HEAD
 		if ((size > dev->net->mtu + ETH_HLEN + VLAN_HLEN) ||
+=======
+		if ((size > dev->net->mtu + ETH_HLEN) ||
+>>>>>>> 7175f4b... Truncated history
 		    (size + offset > skb->len)) {
 			netdev_err(dev->net, "asix_rx_fixup() Bad RX Length %d\n",
 				   size);
@@ -1604,10 +1611,13 @@ static const struct usb_device_id	products [] = {
 	USB_DEVICE (0x2001, 0x3c05),
 	.driver_info = (unsigned long) &ax88772_info,
 }, {
+<<<<<<< HEAD
        // DLink DUB-E100 H/W Ver C1
        USB_DEVICE (0x2001, 0x1a02),
        .driver_info = (unsigned long) &ax88772_info,
 }, {
+=======
+>>>>>>> 7175f4b... Truncated history
 	// Linksys USB1000
 	USB_DEVICE (0x1737, 0x0039),
 	.driver_info = (unsigned long) &ax88178_info,

@@ -170,8 +170,11 @@ void br_dev_delete(struct net_device *dev, struct list_head *head)
 		del_nbp(p);
 	}
 
+<<<<<<< HEAD
 	br_fdb_delete_by_port(br, NULL, 1);
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	del_timer_sync(&br->gc_timer);
 
 	br_sysfs_delbr(br->dev);
@@ -242,7 +245,10 @@ int br_add_bridge(struct net *net, const char *name)
 		return -ENOMEM;
 
 	dev_net_set(dev, net);
+<<<<<<< HEAD
 	dev->rtnl_link_ops = &br_link_ops;
+=======
+>>>>>>> 7175f4b... Truncated history
 
 	res = register_netdev(dev);
 	if (res)

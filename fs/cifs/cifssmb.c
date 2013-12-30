@@ -89,6 +89,7 @@ static struct {
 /* Forward declarations */
 static void cifs_readv_complete(struct work_struct *work);
 
+<<<<<<< HEAD
 #ifdef CONFIG_HIGHMEM
 /*
  * On arches that have high memory, kmap address space is limited. By
@@ -115,6 +116,8 @@ cifs_kmap_unlock(void)
 #define cifs_kmap_unlock() do { ; } while(0)
 #endif /* CONFIG_HIGHMEM */
 
+=======
+>>>>>>> 7175f4b... Truncated history
 /* Mark as invalid, all open files on tree connections since they
    were closed when session to server was lost */
 static void mark_open_files_invalid(struct cifs_tcon *pTcon)
@@ -1583,7 +1586,10 @@ cifs_readv_receive(struct TCP_Server_Info *server, struct mid_q_entry *mid)
 	eof_index = eof ? (eof - 1) >> PAGE_CACHE_SHIFT : 0;
 	cFYI(1, "eof=%llu eof_index=%lu", eof, eof_index);
 
+<<<<<<< HEAD
 	cifs_kmap_lock();
+=======
+>>>>>>> 7175f4b... Truncated history
 	list_for_each_entry_safe(page, tpage, &rdata->pages, lru) {
 		if (remaining >= PAGE_CACHE_SIZE) {
 			/* enough data to fill the page */
@@ -1633,7 +1639,10 @@ cifs_readv_receive(struct TCP_Server_Info *server, struct mid_q_entry *mid)
 			page_cache_release(page);
 		}
 	}
+<<<<<<< HEAD
 	cifs_kmap_unlock();
+=======
+>>>>>>> 7175f4b... Truncated history
 
 	/* issue the read if we have any iovecs left to fill */
 	if (rdata->nr_iov > 1) {
@@ -2222,9 +2231,13 @@ cifs_async_writev(struct cifs_writedata *wdata)
 	 * and set the iov_len properly for each one. It may also set
 	 * wdata->bytes too.
 	 */
+<<<<<<< HEAD
 	cifs_kmap_lock();
 	wdata->marshal_iov(iov, wdata);
 	cifs_kmap_unlock();
+=======
+	wdata->marshal_iov(iov, wdata);
+>>>>>>> 7175f4b... Truncated history
 
 	cFYI(1, "async write at %llu %u bytes", wdata->offset, wdata->bytes);
 
@@ -4374,7 +4387,11 @@ int
 CIFSFindFirst(const int xid, struct cifs_tcon *tcon,
 	      const char *searchName,
 	      const struct nls_table *nls_codepage,
+<<<<<<< HEAD
 	      __u16 *pnetfid, __u16 search_flags,
+=======
+	      __u16 *pnetfid,
+>>>>>>> 7175f4b... Truncated history
 	      struct cifs_search_info *psrch_inf, int remap, const char dirsep)
 {
 /* level 257 SMB_ */
@@ -4446,7 +4463,12 @@ findFirstRetry:
 	    cpu_to_le16(ATTR_READONLY | ATTR_HIDDEN | ATTR_SYSTEM |
 			ATTR_DIRECTORY);
 	pSMB->SearchCount = cpu_to_le16(CIFSMaxBufSize/sizeof(FILE_UNIX_INFO));
+<<<<<<< HEAD
 	pSMB->SearchFlags = cpu_to_le16(search_flags);
+=======
+	pSMB->SearchFlags = cpu_to_le16(CIFS_SEARCH_CLOSE_AT_END |
+		CIFS_SEARCH_RETURN_RESUME);
+>>>>>>> 7175f4b... Truncated history
 	pSMB->InformationLevel = cpu_to_le16(psrch_inf->info_level);
 
 	/* BB what should we set StorageType to? Does it matter? BB */
@@ -4516,8 +4538,13 @@ findFirstRetry:
 	return rc;
 }
 
+<<<<<<< HEAD
 int CIFSFindNext(const int xid, struct cifs_tcon *tcon, __u16 searchHandle,
 		 __u16 search_flags, struct cifs_search_info *psrch_inf)
+=======
+int CIFSFindNext(const int xid, struct cifs_tcon *tcon,
+		 __u16 searchHandle, struct cifs_search_info *psrch_inf)
+>>>>>>> 7175f4b... Truncated history
 {
 	TRANSACTION2_FNEXT_REQ *pSMB = NULL;
 	TRANSACTION2_FNEXT_RSP *pSMBr = NULL;
@@ -4560,7 +4587,12 @@ int CIFSFindNext(const int xid, struct cifs_tcon *tcon, __u16 searchHandle,
 		cpu_to_le16(CIFSMaxBufSize / sizeof(FILE_UNIX_INFO));
 	pSMB->InformationLevel = cpu_to_le16(psrch_inf->info_level);
 	pSMB->ResumeKey = psrch_inf->resume_key;
+<<<<<<< HEAD
 	pSMB->SearchFlags = cpu_to_le16(search_flags);
+=======
+	pSMB->SearchFlags =
+	      cpu_to_le16(CIFS_SEARCH_CLOSE_AT_END | CIFS_SEARCH_RETURN_RESUME);
+>>>>>>> 7175f4b... Truncated history
 
 	name_len = psrch_inf->resume_name_len;
 	params += name_len;

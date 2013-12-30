@@ -215,11 +215,14 @@ int dm_table_create(struct dm_table **result, fmode_t mode,
 
 	num_targets = dm_round_up(num_targets, KEYS_PER_NODE);
 
+<<<<<<< HEAD
 	if (!num_targets) {
 		kfree(t);
 		return -ENOMEM;
 	}
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	if (alloc_targets(t, num_targets)) {
 		kfree(t);
 		t = NULL;
@@ -586,6 +589,7 @@ static int adjoin(struct dm_table *table, struct dm_target *ti)
 
 /*
  * Used to dynamically allocate the arg array.
+<<<<<<< HEAD
  *
  * We do first allocation with GFP_NOIO because dm-mpath and dm-thin must
  * process messages even if some device is suspended. These messages have a
@@ -593,11 +597,14 @@ static int adjoin(struct dm_table *table, struct dm_target *ti)
  *
  * On the other hand, dm-switch needs to process bulk data using messages and
  * excessive use of GFP_NOIO could cause trouble.
+=======
+>>>>>>> 7175f4b... Truncated history
  */
 static char **realloc_argv(unsigned *array_size, char **old_argv)
 {
 	char **argv;
 	unsigned new_size;
+<<<<<<< HEAD
 	gfp_t gfp;
 
 	if (*array_size) {
@@ -608,6 +615,11 @@ static char **realloc_argv(unsigned *array_size, char **old_argv)
 		gfp = GFP_NOIO;
 	}
 	argv = kmalloc(new_size * sizeof(*argv), gfp);
+=======
+
+	new_size = *array_size ? *array_size * 2 : 64;
+	argv = kmalloc(new_size * sizeof(*argv), GFP_KERNEL);
+>>>>>>> 7175f4b... Truncated history
 	if (argv) {
 		memcpy(argv, old_argv, *array_size * sizeof(*argv));
 		*array_size = new_size;

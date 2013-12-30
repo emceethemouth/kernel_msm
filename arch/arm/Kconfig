@@ -601,7 +601,11 @@ config ARCH_IXP4XX
 	select ARCH_HAS_DMA_SET_COHERENT_MASK
 	select CLKSRC_MMIO
 	select CPU_XSCALE
+<<<<<<< HEAD
 	select ARCH_REQUIRE_GPIOLIB
+=======
+	select GENERIC_GPIO
+>>>>>>> 7175f4b... Truncated history
 	select GENERIC_CLOCKEVENTS
 	select MIGHT_HAVE_PCI
 	select NEED_MACH_IO_H
@@ -624,7 +628,10 @@ config ARCH_KIRKWOOD
 	bool "Marvell Kirkwood"
 	select CPU_FEROCEON
 	select PCI
+<<<<<<< HEAD
 	select PCI_QUIRKS
+=======
+>>>>>>> 7175f4b... Truncated history
 	select ARCH_REQUIRE_GPIOLIB
 	select GENERIC_CLOCKEVENTS
 	select NEED_MACH_IO_H
@@ -1481,6 +1488,7 @@ config KSAPI
           Scorpion processor supported hardware performance counters on a per
           thread basis or AXI counters on an overall system basis.
 
+<<<<<<< HEAD
 config ARM_ERRATA_775420
        bool "ARM errata: A data cache maintenance operation which aborts, might lead to deadlock"
        depends on CPU_V7
@@ -1491,6 +1499,8 @@ config ARM_ERRATA_775420
 	 to deadlock. This workaround puts DSB before executing ISB if
 	 an abort may occur on cache maintenance.
 
+=======
+>>>>>>> 7175f4b... Truncated history
 endmenu
 
 source "arch/arm/common/Kconfig"
@@ -2223,6 +2233,7 @@ config ATAGS_PROC
 	  Should the atags used to boot the kernel be exported in an "atags"
 	  file in procfs. Useful with kexec.
 
+<<<<<<< HEAD
 config KEXEC_HARDBOOT
 	bool "Support hard booting to a kexec kernel"
 	depends on KEXEC
@@ -2249,6 +2260,8 @@ config KEXEC_HARDBOOT
 	  kernel capable of performing a hardboot kexec.  It is _not_ required by a
 	  kexec'd kernel.
 
+=======
+>>>>>>> 7175f4b... Truncated history
 config CRASH_DUMP
 	bool "Build kdump crash kernel (EXPERIMENTAL)"
 	depends on EXPERIMENTAL
@@ -2283,7 +2296,10 @@ source "drivers/cpufreq/Kconfig"
 config CPU_FREQ_IMX
 	tristate "CPUfreq driver for i.MX CPUs"
 	depends on ARCH_MXC && CPU_FREQ
+<<<<<<< HEAD
 	select CPU_FREQ_TABLE
+=======
+>>>>>>> 7175f4b... Truncated history
 	help
 	  This enables the CPUfreq driver for i.MX CPUs.
 

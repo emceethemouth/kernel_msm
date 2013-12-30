@@ -377,6 +377,7 @@ DECLARE_EVENT_CLASS(xen_mmu_pgd,
 DEFINE_XEN_MMU_PGD_EVENT(xen_mmu_pgd_pin);
 DEFINE_XEN_MMU_PGD_EVENT(xen_mmu_pgd_unpin);
 
+<<<<<<< HEAD
 TRACE_EVENT(xen_mmu_flush_tlb_all,
 	    TP_PROTO(int x),
 	    TP_ARGS(x),
@@ -385,6 +386,8 @@ TRACE_EVENT(xen_mmu_flush_tlb_all,
 	    TP_printk("%s", "")
 	);
 
+=======
+>>>>>>> 7175f4b... Truncated history
 TRACE_EVENT(xen_mmu_flush_tlb,
 	    TP_PROTO(int x),
 	    TP_ARGS(x),

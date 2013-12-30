@@ -453,10 +453,14 @@ int objio_read_pagelist(struct nfs_read_data *rdata)
 	objios->ios->done = _read_done;
 	dprintk("%s: offset=0x%llx length=0x%x\n", __func__,
 		rdata->args.offset, rdata->args.count);
+<<<<<<< HEAD
 	ret = ore_read(objios->ios);
 	if (unlikely(ret))
 		objio_free_result(&objios->oir);
 	return ret;
+=======
+	return ore_read(objios->ios);
+>>>>>>> 7175f4b... Truncated history
 }
 
 /*
@@ -487,6 +491,7 @@ static struct page *__r4w_get_page(void *priv, u64 offset, bool *uptodate)
 	struct objio_state *objios = priv;
 	struct nfs_write_data *wdata = objios->oir.rpcdata;
 	pgoff_t index = offset / PAGE_SIZE;
+<<<<<<< HEAD
 	struct page *page;
 	loff_t i_size = i_size_read(wdata->inode);
 
@@ -497,6 +502,10 @@ static struct page *__r4w_get_page(void *priv, u64 offset, bool *uptodate)
 	}
 
 	page = find_get_page(wdata->inode->i_mapping, index);
+=======
+	struct page *page = find_get_page(wdata->inode->i_mapping, index);
+
+>>>>>>> 7175f4b... Truncated history
 	if (!page) {
 		page = find_or_create_page(wdata->inode->i_mapping,
 						index, GFP_NOFS);
@@ -517,10 +526,15 @@ static struct page *__r4w_get_page(void *priv, u64 offset, bool *uptodate)
 
 static void __r4w_put_page(void *priv, struct page *page)
 {
+<<<<<<< HEAD
 	dprintk("%s: index=0x%lx\n", __func__,
 		(page == ZERO_PAGE(0)) ? -1UL : page->index);
 	if (ZERO_PAGE(0) != page)
 		page_cache_release(page);
+=======
+	dprintk("%s: index=0x%lx\n", __func__, page->index);
+	page_cache_release(page);
+>>>>>>> 7175f4b... Truncated history
 	return;
 }
 
@@ -550,10 +564,15 @@ int objio_write_pagelist(struct nfs_write_data *wdata, int how)
 	dprintk("%s: offset=0x%llx length=0x%x\n", __func__,
 		wdata->args.offset, wdata->args.count);
 	ret = ore_write(objios->ios);
+<<<<<<< HEAD
 	if (unlikely(ret)) {
 		objio_free_result(&objios->oir);
 		return ret;
 	}
+=======
+	if (unlikely(ret))
+		return ret;
+>>>>>>> 7175f4b... Truncated history
 
 	if (objios->sync)
 		_write_done(objios->ios, objios);
@@ -589,7 +608,10 @@ static struct pnfs_layoutdriver_type objlayout_type = {
 	.flags                   = PNFS_LAYOUTRET_ON_SETATTR |
 				   PNFS_LAYOUTRET_ON_ERROR,
 
+<<<<<<< HEAD
 	.owner		       	 = THIS_MODULE,
+=======
+>>>>>>> 7175f4b... Truncated history
 	.alloc_layout_hdr        = objlayout_alloc_layout_hdr,
 	.free_layout_hdr         = objlayout_free_layout_hdr,
 

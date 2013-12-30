@@ -30,6 +30,17 @@
 
 #define GSL_RB_NOP_SIZEDWORDS				2
 
+<<<<<<< HEAD
+=======
+/*
+ * CP DEBUG settings for all cores:
+ * DYNAMIC_CLK_DISABLE [27] - turn off the dynamic clock control
+ * PROG_END_PTR_ENABLE [25] - Allow 128 bit writes to the VBIF
+ */
+
+#define CP_DEBUG_DEFAULT ((1 << 27) | (1 << 25))
+
+>>>>>>> 7175f4b... Truncated history
 void adreno_ringbuffer_submit(struct adreno_ringbuffer *rb)
 {
 	struct adreno_device *adreno_dev = ADRENO_DEVICE(rb->device);
@@ -207,19 +218,42 @@ err:
  * adreno_ringbuffer_load_pm4_ucode() - Load pm4 ucode
  * @device: Pointer to a KGSL device
  * @start: Starting index in pm4 ucode to load
+<<<<<<< HEAD
  * @end: Ending index of pm4 ucode to load
+=======
+>>>>>>> 7175f4b... Truncated history
  * @addr: Address to load the pm4 ucode
  *
  * Load the pm4 ucode from @start at @addr.
  */
+<<<<<<< HEAD
 inline int adreno_ringbuffer_load_pm4_ucode(struct kgsl_device *device,
 			unsigned int start, unsigned int end, unsigned int addr)
+=======
+int adreno_ringbuffer_load_pm4_ucode(struct kgsl_device *device,
+					unsigned int start, unsigned int addr)
+>>>>>>> 7175f4b... Truncated history
 {
 	struct adreno_device *adreno_dev = ADRENO_DEVICE(device);
 	int i;
 
+<<<<<<< HEAD
 	adreno_writereg(adreno_dev, ADRENO_REG_CP_ME_RAM_WADDR, addr);
 	for (i = start; i < end; i++)
+=======
+	if (adreno_dev->pm4_fw == NULL) {
+		int ret = adreno_ringbuffer_read_pm4_ucode(device);
+		if (ret)
+			return ret;
+	}
+
+	KGSL_DRV_INFO(device, "loading pm4 ucode version: %d\n",
+		adreno_dev->pm4_fw_version);
+
+	adreno_writereg(adreno_dev, ADRENO_REG_CP_DEBUG, CP_DEBUG_DEFAULT);
+	adreno_writereg(adreno_dev, ADRENO_REG_CP_ME_RAM_WADDR, addr);
+	for (i = start; i < adreno_dev->pm4_fw_size; i++)
+>>>>>>> 7175f4b... Truncated history
 		adreno_writereg(adreno_dev, ADRENO_REG_CP_ME_RAM_DATA,
 					adreno_dev->pm4_fw[i]);
 
@@ -261,17 +295,26 @@ err:
  * adreno_ringbuffer_load_pfp_ucode() - Load pfp ucode
  * @device: Pointer to a KGSL device
  * @start: Starting index in pfp ucode to load
+<<<<<<< HEAD
  * @end: Ending index of pfp ucode to load
+=======
+>>>>>>> 7175f4b... Truncated history
  * @addr: Address to load the pfp ucode
  *
  * Load the pfp ucode from @start at @addr.
  */
+<<<<<<< HEAD
 inline int adreno_ringbuffer_load_pfp_ucode(struct kgsl_device *device,
 			unsigned int start, unsigned int end, unsigned int addr)
+=======
+int adreno_ringbuffer_load_pfp_ucode(struct kgsl_device *device,
+					unsigned int start, unsigned int addr)
+>>>>>>> 7175f4b... Truncated history
 {
 	struct adreno_device *adreno_dev = ADRENO_DEVICE(device);
 	int i;
 
+<<<<<<< HEAD
 	adreno_writereg(adreno_dev, ADRENO_REG_CP_PFP_UCODE_ADDR, addr);
 	for (i = start; i < end; i++)
 		adreno_writereg(adreno_dev, ADRENO_REG_CP_PFP_UCODE_DATA,
@@ -362,17 +405,51 @@ static int _ringbuffer_bootstrap_ucode(struct adreno_ringbuffer *rb,
 
 /**
  * _ringbuffer_setup_common() - Ringbuffer start
+=======
+	if (adreno_dev->pfp_fw == NULL) {
+		int ret = adreno_ringbuffer_read_pfp_ucode(device);
+		if (ret)
+			return ret;
+	}
+
+	KGSL_DRV_INFO(device, "loading pfp ucode version: %d\n",
+			adreno_dev->pfp_fw_version);
+
+	adreno_writereg(adreno_dev, ADRENO_REG_CP_PFP_UCODE_ADDR,
+						addr);
+	for (i = start; i < adreno_dev->pfp_fw_size; i++)
+		adreno_writereg(adreno_dev, ADRENO_REG_CP_PFP_UCODE_DATA,
+						adreno_dev->pfp_fw[i]);
+
+	return 0;
+}
+
+/**
+ * _ringbuffer_start_common() - Ringbuffer start
+>>>>>>> 7175f4b... Truncated history
  * @rb: Pointer to adreno ringbuffer
  *
  * Setup ringbuffer for GPU.
  */
+<<<<<<< HEAD
 void _ringbuffer_setup_common(struct adreno_ringbuffer *rb)
 {
+=======
+int _ringbuffer_start_common(struct adreno_ringbuffer *rb)
+{
+	int status;
+>>>>>>> 7175f4b... Truncated history
 	union reg_cp_rb_cntl cp_rb_cntl;
 	unsigned int rb_cntl;
 	struct kgsl_device *device = rb->device;
 	struct adreno_device *adreno_dev = ADRENO_DEVICE(device);
 
+<<<<<<< HEAD
+=======
+	if (rb->flags & KGSL_FLAGS_STARTED)
+		return 0;
+
+>>>>>>> 7175f4b... Truncated history
 	kgsl_sharedmem_set(rb->device, &rb->memptrs_desc, 0, 0,
 			   sizeof(struct kgsl_rbmemptrs));
 
@@ -445,6 +522,7 @@ void _ringbuffer_setup_common(struct adreno_ringbuffer *rb)
 		kgsl_regwrite(device, REG_CP_QUEUE_THRESHOLDS, 0x003E2008);
 
 	rb->wptr = 0;
+<<<<<<< HEAD
 }
 
 /**
@@ -458,6 +536,8 @@ int _ringbuffer_start_common(struct adreno_ringbuffer *rb)
 	int status;
 	struct kgsl_device *device = rb->device;
 	struct adreno_device *adreno_dev = ADRENO_DEVICE(device);
+=======
+>>>>>>> 7175f4b... Truncated history
 
 	/* clear ME_HALT to start micro engine */
 	adreno_writereg(adreno_dev, ADRENO_REG_CP_ME_CNTL, 0);
@@ -489,6 +569,7 @@ int adreno_ringbuffer_warm_start(struct adreno_ringbuffer *rb)
 	struct kgsl_device *device = rb->device;
 	struct adreno_device *adreno_dev = ADRENO_DEVICE(device);
 
+<<<<<<< HEAD
 	if (rb->flags & KGSL_FLAGS_STARTED)
 		return 0;
 
@@ -532,10 +613,31 @@ int adreno_ringbuffer_cold_start(struct adreno_ringbuffer *rb)
 	int status;
 	struct kgsl_device *device = rb->device;
 	struct adreno_device *adreno_dev = ADRENO_DEVICE(device);
+=======
+	/* load the CP ucode */
+	status = adreno_ringbuffer_load_pm4_ucode(device,
+			adreno_dev->pm4_jt_idx, adreno_dev->pm4_jt_addr);
+	if (status != 0)
+		return status;
+
+	/* load the prefetch parser ucode */
+	status = adreno_ringbuffer_load_pfp_ucode(device,
+			adreno_dev->pfp_jt_idx, adreno_dev->pfp_jt_addr);
+	if (status != 0)
+		return status;
+
+	return _ringbuffer_start_common(rb);
+}
+
+int adreno_ringbuffer_start(struct adreno_ringbuffer *rb)
+{
+	int status;
+>>>>>>> 7175f4b... Truncated history
 
 	if (rb->flags & KGSL_FLAGS_STARTED)
 		return 0;
 
+<<<<<<< HEAD
 	_ringbuffer_setup_common(rb);
 
 	/* If bootstrapping if supported to load ucode */
@@ -582,6 +684,19 @@ int adreno_ringbuffer_cold_start(struct adreno_ringbuffer *rb)
 	status = _ringbuffer_start_common(rb);
 
 	return status;
+=======
+	/* load the CP ucode */
+	status = adreno_ringbuffer_load_pm4_ucode(rb->device, 1, 0);
+	if (status != 0)
+		return status;
+
+	/* load the prefetch parser ucode */
+	status = adreno_ringbuffer_load_pfp_ucode(rb->device, 1, 0);
+	if (status != 0)
+		return status;
+
+	return _ringbuffer_start_common(rb);
+>>>>>>> 7175f4b... Truncated history
 }
 
 void adreno_ringbuffer_stop(struct adreno_ringbuffer *rb)
@@ -1134,9 +1249,12 @@ adreno_ringbuffer_issueibcmds(struct kgsl_device_private *dev_priv,
 	/* For now everybody has the same priority */
 	cmdbatch->priority = ADRENO_CONTEXT_DEFAULT_PRIORITY;
 
+<<<<<<< HEAD
 	/* wait for the suspend gate */
 	wait_for_completion(&device->cmdbatch_gate);
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	/* Queue the command in the ringbuffer */
 	ret = adreno_dispatcher_queue_cmd(adreno_dev, drawctxt, cmdbatch,
 		timestamp);

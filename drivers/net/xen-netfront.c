@@ -1935,6 +1935,7 @@ static int __devexit xennet_remove(struct xenbus_device *dev)
 
 	dev_dbg(&dev->dev, "%s\n", dev->nodename);
 
+<<<<<<< HEAD
 	xennet_disconnect_backend(info);
 
 	xennet_sysfs_delif(info->netdev);
@@ -1943,6 +1944,16 @@ static int __devexit xennet_remove(struct xenbus_device *dev)
 
 	del_timer_sync(&info->rx_refill_timer);
 
+=======
+	unregister_netdev(info->netdev);
+
+	xennet_disconnect_backend(info);
+
+	del_timer_sync(&info->rx_refill_timer);
+
+	xennet_sysfs_delif(info->netdev);
+
+>>>>>>> 7175f4b... Truncated history
 	free_percpu(info->stats);
 
 	free_netdev(info->netdev);

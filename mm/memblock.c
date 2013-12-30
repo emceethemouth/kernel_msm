@@ -37,8 +37,11 @@ struct memblock memblock __initdata_memblock = {
 
 int memblock_debug __initdata_memblock;
 static int memblock_can_resize __initdata_memblock;
+<<<<<<< HEAD
 static int memblock_memory_in_slab __initdata_memblock = 0;
 static int memblock_reserved_in_slab __initdata_memblock = 0;
+=======
+>>>>>>> 7175f4b... Truncated history
 
 /* inline so we don't get a warning when pr_debug is compiled out */
 static inline const char *memblock_type_name(struct memblock_type *type)
@@ -143,6 +146,33 @@ phys_addr_t __init_memblock memblock_find_in_range(phys_addr_t start,
 					   MAX_NUMNODES);
 }
 
+<<<<<<< HEAD
+=======
+/*
+ * Free memblock.reserved.regions
+ */
+int __init_memblock memblock_free_reserved_regions(void)
+{
+	if (memblock.reserved.regions == memblock_reserved_init_regions)
+		return 0;
+
+	return memblock_free(__pa(memblock.reserved.regions),
+		 sizeof(struct memblock_region) * memblock.reserved.max);
+}
+
+/*
+ * Reserve memblock.reserved.regions
+ */
+int __init_memblock memblock_reserve_reserved_regions(void)
+{
+	if (memblock.reserved.regions == memblock_reserved_init_regions)
+		return 0;
+
+	return memblock_reserve(__pa(memblock.reserved.regions),
+		 sizeof(struct memblock_region) * memblock.reserved.max);
+}
+
+>>>>>>> 7175f4b... Truncated history
 static void __init_memblock memblock_remove_region(struct memblock_type *type, unsigned long r)
 {
 	type->total_size -= type->regions[r].size;
@@ -160,6 +190,7 @@ static void __init_memblock memblock_remove_region(struct memblock_type *type, u
 	}
 }
 
+<<<<<<< HEAD
 phys_addr_t __init_memblock get_allocated_memblock_reserved_regions_info(
 					phys_addr_t *addr)
 {
@@ -196,6 +227,13 @@ static int __init_memblock memblock_double_array(struct memblock_type *type,
 	phys_addr_t old_size, new_size, addr;
 	int use_slab = slab_is_available();
 	int *in_slab;
+=======
+static int __init_memblock memblock_double_array(struct memblock_type *type)
+{
+	struct memblock_region *new_array, *old_array;
+	phys_addr_t old_size, new_size, addr;
+	int use_slab = slab_is_available();
+>>>>>>> 7175f4b... Truncated history
 
 	/* We don't allow resizing until we know about the reserved regions
 	 * of memory that aren't suitable for allocation
@@ -206,6 +244,7 @@ static int __init_memblock memblock_double_array(struct memblock_type *type,
 	/* Calculate new doubled size */
 	old_size = type->max * sizeof(struct memblock_region);
 	new_size = old_size << 1;
+<<<<<<< HEAD
 	/*
 	 * We need to allocated new one align to PAGE_SIZE,
 	 *   so we can free them completely later.
@@ -218,6 +257,8 @@ static int __init_memblock memblock_double_array(struct memblock_type *type,
 		in_slab = &memblock_memory_in_slab;
 	else
 		in_slab = &memblock_reserved_in_slab;
+=======
+>>>>>>> 7175f4b... Truncated history
 
 	/* Try to find some space for it.
 	 *
@@ -233,6 +274,7 @@ static int __init_memblock memblock_double_array(struct memblock_type *type,
 	if (use_slab) {
 		new_array = kmalloc(new_size, GFP_KERNEL);
 		addr = new_array ? __pa(new_array) : 0;
+<<<<<<< HEAD
 	} else {
 		/* only exclude range when trying to double reserved.regions */
 		if (type != &memblock.reserved)
@@ -248,11 +290,19 @@ static int __init_memblock memblock_double_array(struct memblock_type *type,
 
 		new_array = addr ? __va(addr) : 0;
 	}
+=======
+	} else
+		addr = memblock_find_in_range(0, MEMBLOCK_ALLOC_ACCESSIBLE, new_size, sizeof(phys_addr_t));
+>>>>>>> 7175f4b... Truncated history
 	if (!addr) {
 		pr_err("memblock: Failed to double %s array from %ld to %ld entries !\n",
 		       memblock_type_name(type), type->max, type->max * 2);
 		return -1;
 	}
+<<<<<<< HEAD
+=======
+	new_array = __va(addr);
+>>>>>>> 7175f4b... Truncated history
 
 	memblock_dbg("memblock: %s array is doubled to %ld at [%#010llx-%#010llx]",
 		 memblock_type_name(type), type->max * 2, (u64)addr, (u64)addr + new_size - 1);
@@ -267,6 +317,7 @@ static int __init_memblock memblock_double_array(struct memblock_type *type,
 	type->regions = new_array;
 	type->max <<= 1;
 
+<<<<<<< HEAD
 	/* Free old array. We needn't free it if the array is the
 	 * static one
 	 */
@@ -284,6 +335,23 @@ static int __init_memblock memblock_double_array(struct memblock_type *type,
 
 	/* Update slab flag */
 	*in_slab = use_slab;
+=======
+	/* If we use SLAB that's it, we are done */
+	if (use_slab)
+		return 0;
+
+	/* Add the new reserved region now. Should not fail ! */
+	BUG_ON(memblock_reserve(addr, new_size));
+
+	/* If the array wasn't our static init one, then free it. We only do
+	 * that before SLAB is available as later on, we don't know whether
+	 * to use kfree or free_bootmem_pages(). Shouldn't be a big deal
+	 * anyways
+	 */
+	if (old_array != memblock_memory_init_regions &&
+	    old_array != memblock_reserved_init_regions)
+		memblock_free(__pa(old_array), old_size);
+>>>>>>> 7175f4b... Truncated history
 
 	return 0;
 }
@@ -422,7 +490,11 @@ repeat:
 	 */
 	if (!insert) {
 		while (type->cnt + nr_new > type->max)
+<<<<<<< HEAD
 			if (memblock_double_array(type, obase, size) < 0)
+=======
+			if (memblock_double_array(type) < 0)
+>>>>>>> 7175f4b... Truncated history
 				return -ENOMEM;
 		insert = true;
 		goto repeat;
@@ -473,7 +545,11 @@ static int __init_memblock memblock_isolate_range(struct memblock_type *type,
 
 	/* we'll create at most two more regions */
 	while (type->cnt + 2 > type->max)
+<<<<<<< HEAD
 		if (memblock_double_array(type, base, size) < 0)
+=======
+		if (memblock_double_array(type) < 0)
+>>>>>>> 7175f4b... Truncated history
 			return -ENOMEM;
 
 	for (i = 0; i < type->cnt; i++) {
@@ -914,6 +990,7 @@ int __init_memblock memblock_is_region_reserved(phys_addr_t base, phys_addr_t si
 	return memblock_overlaps_region(&memblock.reserved, base, size) >= 0;
 }
 
+<<<<<<< HEAD
 void __init_memblock memblock_trim_memory(phys_addr_t align)
 {
 	int i;
@@ -938,6 +1015,8 @@ void __init_memblock memblock_trim_memory(phys_addr_t align)
 		}
 	}
 }
+=======
+>>>>>>> 7175f4b... Truncated history
 
 void __init_memblock memblock_set_current_limit(phys_addr_t limit)
 {

@@ -637,7 +637,10 @@ static void aer_recover_work_func(struct work_struct *work)
 			continue;
 		}
 		do_recovery(pdev, entry.severity);
+<<<<<<< HEAD
 		pci_dev_put(pdev);
+=======
+>>>>>>> 7175f4b... Truncated history
 	}
 }
 #endif

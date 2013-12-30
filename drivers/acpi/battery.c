@@ -34,7 +34,10 @@
 #include <linux/dmi.h>
 #include <linux/slab.h>
 #include <linux/suspend.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+>>>>>>> 7175f4b... Truncated history
 
 #ifdef CONFIG_ACPI_PROCFS_POWER
 #include <linux/proc_fs.h>
@@ -96,6 +99,7 @@ enum {
 	ACPI_BATTERY_ALARM_PRESENT,
 	ACPI_BATTERY_XINFO_PRESENT,
 	ACPI_BATTERY_QUIRK_PERCENTAGE_CAPACITY,
+<<<<<<< HEAD
 	/* On Lenovo Thinkpad models from 2010 and 2011, the power unit
 	   switches between mWh and mAh depending on whether the system
 	   is running on battery or not.  When mAh is the unit, most
@@ -108,6 +112,8 @@ enum {
 	   post-1.29 BIOS), but as of Nov. 2012, no such update is
 	   available for the 2010 models.  */
 	ACPI_BATTERY_QUIRK_THINKPAD_MAH,
+=======
+>>>>>>> 7175f4b... Truncated history
 };
 
 struct acpi_battery {
@@ -117,7 +123,10 @@ struct acpi_battery {
 	struct acpi_device *device;
 	struct notifier_block pm_nb;
 	unsigned long update_time;
+<<<<<<< HEAD
 	int revision;
+=======
+>>>>>>> 7175f4b... Truncated history
 	int rate_now;
 	int capacity_now;
 	int voltage_now;
@@ -351,7 +360,10 @@ static struct acpi_offsets info_offsets[] = {
 };
 
 static struct acpi_offsets extended_info_offsets[] = {
+<<<<<<< HEAD
 	{offsetof(struct acpi_battery, revision), 0},
+=======
+>>>>>>> 7175f4b... Truncated history
 	{offsetof(struct acpi_battery, power_unit), 0},
 	{offsetof(struct acpi_battery, design_capacity), 0},
 	{offsetof(struct acpi_battery, full_charge_capacity), 0},
@@ -444,6 +456,7 @@ static int acpi_battery_get_info(struct acpi_battery *battery)
 	kfree(buffer.pointer);
 	if (test_bit(ACPI_BATTERY_QUIRK_PERCENTAGE_CAPACITY, &battery->flags))
 		battery->full_charge_capacity = battery->design_capacity;
+<<<<<<< HEAD
 	if (test_bit(ACPI_BATTERY_QUIRK_THINKPAD_MAH, &battery->flags) &&
 	    battery->power_unit && battery->design_voltage) {
 		battery->design_capacity = battery->design_capacity *
@@ -459,6 +472,8 @@ static int acpi_battery_get_info(struct acpi_battery *battery)
 		   it's impossible to tell if they would need an adjustment
 		   or not if their values were higher.  */
 	}
+=======
+>>>>>>> 7175f4b... Truncated history
 	return result;
 }
 
@@ -507,11 +522,14 @@ static int acpi_battery_get_state(struct acpi_battery *battery)
 	    && battery->capacity_now >= 0 && battery->capacity_now <= 100)
 		battery->capacity_now = (battery->capacity_now *
 				battery->full_charge_capacity) / 100;
+<<<<<<< HEAD
 	if (test_bit(ACPI_BATTERY_QUIRK_THINKPAD_MAH, &battery->flags) &&
 	    battery->power_unit && battery->design_voltage) {
 		battery->capacity_now = battery->capacity_now *
 		    10000 / battery->design_voltage;
 	}
+=======
+>>>>>>> 7175f4b... Truncated history
 	return result;
 }
 
@@ -621,6 +639,7 @@ static void sysfs_remove_battery(struct acpi_battery *battery)
 	mutex_unlock(&battery->sysfs_lock);
 }
 
+<<<<<<< HEAD
 static void find_battery(const struct dmi_header *dm, void *private)
 {
 	struct acpi_battery *battery = (struct acpi_battery *)private;
@@ -639,6 +658,8 @@ static void find_battery(const struct dmi_header *dm, void *private)
 	}
 }
 
+=======
+>>>>>>> 7175f4b... Truncated history
 /*
  * According to the ACPI spec, some kinds of primary batteries can
  * report percentage battery remaining capacity directly to OS.
@@ -664,6 +685,7 @@ static void acpi_battery_quirks(struct acpi_battery *battery)
 		battery->capacity_now = (battery->capacity_now *
 				battery->full_charge_capacity) / 100;
 	}
+<<<<<<< HEAD
 
 	if (test_bit(ACPI_BATTERY_QUIRK_THINKPAD_MAH, &battery->flags))
 		return ;
@@ -690,6 +712,8 @@ static void acpi_battery_quirks(struct acpi_battery *battery)
 			}
 		}
 	}
+=======
+>>>>>>> 7175f4b... Truncated history
 }
 
 static int acpi_battery_update(struct acpi_battery *battery)
@@ -722,6 +746,7 @@ static int acpi_battery_update(struct acpi_battery *battery)
 
 static void acpi_battery_refresh(struct acpi_battery *battery)
 {
+<<<<<<< HEAD
 	int power_unit;
 
 	if (!battery->bat.dev)
@@ -735,6 +760,13 @@ static void acpi_battery_refresh(struct acpi_battery *battery)
 		return;
 
 	/* The battery has changed its reporting units. */
+=======
+	if (!battery->bat.dev)
+		return;
+
+	acpi_battery_get_info(battery);
+	/* The battery may have changed its reporting units. */
+>>>>>>> 7175f4b... Truncated history
 	sysfs_remove_battery(battery);
 	sysfs_add_battery(battery);
 }

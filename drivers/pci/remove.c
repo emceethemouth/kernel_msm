@@ -19,8 +19,11 @@ static void pci_free_resources(struct pci_dev *dev)
 
 static void pci_stop_dev(struct pci_dev *dev)
 {
+<<<<<<< HEAD
 	pci_pme_active(dev, false);
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	if (dev->is_added) {
 		pci_proc_detach_device(dev);
 		pci_remove_sysfs_dev_files(dev);

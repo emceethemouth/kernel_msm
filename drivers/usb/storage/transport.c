@@ -467,7 +467,11 @@ static int usb_stor_bulk_transfer_sglist(struct us_data *us, unsigned int pipe,
 int usb_stor_bulk_srb(struct us_data* us, unsigned int pipe,
 		      struct scsi_cmnd* srb)
 {
+<<<<<<< HEAD
 	unsigned int partial = 0;
+=======
+	unsigned int partial;
+>>>>>>> 7175f4b... Truncated history
 	int result = usb_stor_bulk_transfer_sglist(us, pipe, scsi_sglist(srb),
 				      scsi_sg_count(srb), scsi_bufflen(srb),
 				      &partial);
@@ -490,7 +494,11 @@ int usb_stor_bulk_transfer_sg(struct us_data* us, unsigned int pipe,
 		void *buf, unsigned int length_left, int use_sg, int *residual)
 {
 	int result;
+<<<<<<< HEAD
 	unsigned int partial = 0;
+=======
+	unsigned int partial;
+>>>>>>> 7175f4b... Truncated history
 
 	/* are we scatter-gathering? */
 	if (use_sg) {

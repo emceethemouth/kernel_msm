@@ -141,6 +141,7 @@ static void radeon_benchmark_move(struct radeon_device *rdev, unsigned size,
 						     sdomain, ddomain, "dma");
 	}
 
+<<<<<<< HEAD
 	if (rdev->asic->copy.blit) {
 		time = radeon_benchmark_do_move(rdev, size, saddr, daddr,
 						RADEON_BENCHMARK_COPY_BLIT, n);
@@ -150,6 +151,15 @@ static void radeon_benchmark_move(struct radeon_device *rdev, unsigned size,
 			radeon_benchmark_log_results(n, size, time,
 						     sdomain, ddomain, "blit");
 	}
+=======
+	time = radeon_benchmark_do_move(rdev, size, saddr, daddr,
+					RADEON_BENCHMARK_COPY_BLIT, n);
+	if (time < 0)
+		goto out_cleanup;
+	if (time > 0)
+		radeon_benchmark_log_results(n, size, time,
+					     sdomain, ddomain, "blit");
+>>>>>>> 7175f4b... Truncated history
 
 out_cleanup:
 	if (sobj) {

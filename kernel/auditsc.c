@@ -913,7 +913,11 @@ static int audit_filter_inode_name(struct task_struct *tsk,
 	int h = audit_hash_ino((u32)n->ino);
 	struct list_head *list = &audit_inode_hash[h];
 	struct audit_entry *e;
+<<<<<<< HEAD
 	enum audit_state state = 0;
+=======
+	enum audit_state state;
+>>>>>>> 7175f4b... Truncated history
 
 	word = AUDIT_WORD(ctx->major);
 	bit  = AUDIT_BIT(ctx->major);

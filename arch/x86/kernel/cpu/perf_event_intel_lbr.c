@@ -310,7 +310,11 @@ void intel_pmu_lbr_read(void)
  * - in case there is no HW filter
  * - in case the HW filter has errata or limitations
  */
+<<<<<<< HEAD
 static int intel_pmu_setup_sw_lbr_filter(struct perf_event *event)
+=======
+static void intel_pmu_setup_sw_lbr_filter(struct perf_event *event)
+>>>>>>> 7175f4b... Truncated history
 {
 	u64 br_type = event->attr.branch_sample_type;
 	int mask = 0;
@@ -318,11 +322,16 @@ static int intel_pmu_setup_sw_lbr_filter(struct perf_event *event)
 	if (br_type & PERF_SAMPLE_BRANCH_USER)
 		mask |= X86_BR_USER;
 
+<<<<<<< HEAD
 	if (br_type & PERF_SAMPLE_BRANCH_KERNEL) {
 		if (perf_paranoid_kernel() && !capable(CAP_SYS_ADMIN))
 			return -EACCES;
 		mask |= X86_BR_KERNEL;
 	}
+=======
+	if (br_type & PERF_SAMPLE_BRANCH_KERNEL)
+		mask |= X86_BR_KERNEL;
+>>>>>>> 7175f4b... Truncated history
 
 	/* we ignore BRANCH_HV here */
 
@@ -342,8 +351,11 @@ static int intel_pmu_setup_sw_lbr_filter(struct perf_event *event)
 	 * be used by fixup code for some CPU
 	 */
 	event->hw.branch_reg.reg = mask;
+<<<<<<< HEAD
 
 	return 0;
+=======
+>>>>>>> 7175f4b... Truncated history
 }
 
 /*
@@ -391,9 +403,13 @@ int intel_pmu_setup_lbr_filter(struct perf_event *event)
 	/*
 	 * setup SW LBR filter
 	 */
+<<<<<<< HEAD
 	ret = intel_pmu_setup_sw_lbr_filter(event);
 	if (ret)
 		return ret;
+=======
+	intel_pmu_setup_sw_lbr_filter(event);
+>>>>>>> 7175f4b... Truncated history
 
 	/*
 	 * setup HW LBR filter, if any
@@ -449,6 +465,7 @@ static int branch_type(unsigned long from, unsigned long to)
 			return X86_BR_NONE;
 
 		addr = buf;
+<<<<<<< HEAD
 	} else {
 		/*
 		 * The LBR logs any address in the IP, even if the IP just
@@ -461,6 +478,10 @@ static int branch_type(unsigned long from, unsigned long to)
 		else
 			return X86_BR_NONE;
 	}
+=======
+	} else
+		addr = (void *)from;
+>>>>>>> 7175f4b... Truncated history
 
 	/*
 	 * decoder needs to know the ABI especially

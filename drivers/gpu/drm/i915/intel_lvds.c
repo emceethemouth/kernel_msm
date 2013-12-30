@@ -408,7 +408,17 @@ static void intel_lvds_prepare(struct drm_encoder *encoder)
 {
 	struct intel_lvds *intel_lvds = to_intel_lvds(encoder);
 
+<<<<<<< HEAD
 	intel_lvds_disable(intel_lvds);
+=======
+	/*
+	 * Prior to Ironlake, we must disable the pipe if we want to adjust
+	 * the panel fitter. However at all other times we can just reset
+	 * the registers regardless.
+	 */
+	if (!HAS_PCH_SPLIT(encoder->dev) && intel_lvds->pfit_dirty)
+		intel_lvds_disable(intel_lvds);
+>>>>>>> 7175f4b... Truncated history
 }
 
 static void intel_lvds_commit(struct drm_encoder *encoder)
@@ -741,6 +751,7 @@ static const struct dmi_system_id intel_no_lvds[] = {
 	},
 	{
 		.callback = intel_no_lvds_dmi_callback,
+<<<<<<< HEAD
 		.ident = "Hewlett-Packard HP t5740",
 		.matches = {
 			DMI_MATCH(DMI_BOARD_VENDOR, "Hewlett-Packard"),
@@ -749,6 +760,8 @@ static const struct dmi_system_id intel_no_lvds[] = {
 	},
 	{
 		.callback = intel_no_lvds_dmi_callback,
+=======
+>>>>>>> 7175f4b... Truncated history
 		.ident = "Hewlett-Packard t5745",
 		.matches = {
 			DMI_MATCH(DMI_BOARD_VENDOR, "Hewlett-Packard"),
@@ -771,6 +784,7 @@ static const struct dmi_system_id intel_no_lvds[] = {
 			DMI_MATCH(DMI_BOARD_NAME, "MS-7469"),
 		},
 	},
+<<<<<<< HEAD
 	{
 		.callback = intel_no_lvds_dmi_callback,
 		.ident = "Gigabyte GA-D525TUD",
@@ -795,6 +809,8 @@ static const struct dmi_system_id intel_no_lvds[] = {
 			DMI_MATCH(DMI_PRODUCT_NAME, "ESPRIMO Q900"),
 		},
 	},
+=======
+>>>>>>> 7175f4b... Truncated history
 
 	{ }	/* terminating entry */
 };
@@ -1091,8 +1107,12 @@ bool intel_lvds_init(struct drm_device *dev)
 		goto failed;
 
 out:
+<<<<<<< HEAD
 	if (HAS_PCH_SPLIT(dev) &&
 	    !(dev_priv->quirks & QUIRK_NO_PCH_PWM_ENABLE)) {
+=======
+	if (HAS_PCH_SPLIT(dev)) {
+>>>>>>> 7175f4b... Truncated history
 		u32 pwm;
 
 		pipe = (I915_READ(PCH_LVDS) & LVDS_PIPEB_SELECT) ? 1 : 0;

@@ -319,9 +319,16 @@ fail:
 	if (f->hs_descriptors)
 		usb_free_descriptors(f->hs_descriptors);
 
+<<<<<<< HEAD
 	if (eem->port.out_ep)
 		eem->port.out_ep->driver_data = NULL;
 	if (eem->port.in_ep)
+=======
+	/* we might as well release our claims on endpoints */
+	if (eem->port.out_ep->desc)
+		eem->port.out_ep->driver_data = NULL;
+	if (eem->port.in_ep->desc)
+>>>>>>> 7175f4b... Truncated history
 		eem->port.in_ep->driver_data = NULL;
 
 	ERROR(cdev, "%s: can't bind, err %d\n", f->name, status);

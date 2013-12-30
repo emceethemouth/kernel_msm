@@ -313,6 +313,7 @@ struct page *read_swap_cache_async(swp_entry_t entry, gfp_t gfp_mask,
 		 * Swap entry may have been freed since our caller observed it.
 		 */
 		err = swapcache_prepare(entry);
+<<<<<<< HEAD
 		if (err == -EEXIST) {
 			radix_tree_preload_end();
 			/*
@@ -331,6 +332,10 @@ struct page *read_swap_cache_async(swp_entry_t entry, gfp_t gfp_mask,
 			 * tasks to run.
 			 */
 			cond_resched();
+=======
+		if (err == -EEXIST) {	/* seems racy */
+			radix_tree_preload_end();
+>>>>>>> 7175f4b... Truncated history
 			continue;
 		}
 		if (err) {		/* swp entry is obsolete ? */

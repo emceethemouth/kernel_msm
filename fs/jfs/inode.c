@@ -125,7 +125,11 @@ int jfs_write_inode(struct inode *inode, struct writeback_control *wbc)
 {
 	int wait = wbc->sync_mode == WB_SYNC_ALL;
 
+<<<<<<< HEAD
 	if (inode->i_nlink == 0)
+=======
+	if (test_cflag(COMMIT_Nolink, inode))
+>>>>>>> 7175f4b... Truncated history
 		return 0;
 	/*
 	 * If COMMIT_DIRTY is not set, the inode isn't really dirty.

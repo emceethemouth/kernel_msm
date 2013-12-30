@@ -139,12 +139,15 @@ struct net_bridge_mdb_entry *br_mdb_get(struct net_bridge *br,
 {
 	struct net_bridge_mdb_htable *mdb = rcu_dereference(br->mdb);
 	struct br_ip ip;
+<<<<<<< HEAD
 	int i = 0;
 	ip.u.ip4 = 0;
 
 	for (i=0; i<16; i++)
 		ip.u.ip6.s6_addr[i] = 0;
 
+=======
+>>>>>>> 7175f4b... Truncated history
 
 	if (br->multicast_disabled)
 		return NULL;
@@ -473,9 +476,14 @@ static struct sk_buff *br_ip6_multicast_alloc_query(struct net_bridge *br,
 	skb_set_transport_header(skb, skb->len);
 	mldq = (struct mld_msg *) icmp6_hdr(skb);
 
+<<<<<<< HEAD
 	interval = ipv6_addr_any(group) ?
 			br->multicast_query_response_interval :
 			br->multicast_last_member_interval;
+=======
+	interval = ipv6_addr_any(group) ? br->multicast_last_member_interval :
+					  br->multicast_query_response_interval;
+>>>>>>> 7175f4b... Truncated history
 
 	mldq->mld_type = ICMPV6_MGM_QUERY;
 	mldq->mld_code = 0;
@@ -1161,8 +1169,12 @@ static int br_ip6_multicast_query(struct net_bridge *br,
 		mld2q = (struct mld2_query *)icmp6_hdr(skb);
 		if (!mld2q->mld2q_nsrcs)
 			group = &mld2q->mld2q_mca;
+<<<<<<< HEAD
 
 		max_delay = max(msecs_to_jiffies(MLDV2_MRC(ntohs(mld2q->mld2q_mrc))), 1UL);
+=======
+		max_delay = mld2q->mld2q_mrc ? MLDV2_MRC(mld2q->mld2q_mrc) : 1;
+>>>>>>> 7175f4b... Truncated history
 	}
 
 	if (!group)
@@ -1750,7 +1762,11 @@ int br_multicast_set_hash_max(struct net_bridge *br, unsigned long val)
 	u32 old;
 	struct net_bridge_mdb_htable *mdb;
 
+<<<<<<< HEAD
 	spin_lock_bh(&br->multicast_lock);
+=======
+	spin_lock(&br->multicast_lock);
+>>>>>>> 7175f4b... Truncated history
 	if (!netif_running(br->dev))
 		goto unlock;
 
@@ -1782,7 +1798,11 @@ rollback:
 	}
 
 unlock:
+<<<<<<< HEAD
 	spin_unlock_bh(&br->multicast_lock);
+=======
+	spin_unlock(&br->multicast_lock);
+>>>>>>> 7175f4b... Truncated history
 
 	return err;
 }

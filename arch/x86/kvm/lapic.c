@@ -1278,12 +1278,22 @@ void __kvm_migrate_apic_timer(struct kvm_vcpu *vcpu)
 void kvm_lapic_sync_from_vapic(struct kvm_vcpu *vcpu)
 {
 	u32 data;
+<<<<<<< HEAD
+=======
+	void *vapic;
+>>>>>>> 7175f4b... Truncated history
 
 	if (!irqchip_in_kernel(vcpu->kvm) || !vcpu->arch.apic->vapic_addr)
 		return;
 
+<<<<<<< HEAD
 	kvm_read_guest_cached(vcpu->kvm, &vcpu->arch.apic->vapic_cache, &data,
 			      sizeof(u32));
+=======
+	vapic = kmap_atomic(vcpu->arch.apic->vapic_page);
+	data = *(u32 *)(vapic + offset_in_page(vcpu->arch.apic->vapic_addr));
+	kunmap_atomic(vapic);
+>>>>>>> 7175f4b... Truncated history
 
 	apic_set_tpr(vcpu->arch.apic, data & 0xff);
 }
@@ -1293,6 +1303,10 @@ void kvm_lapic_sync_to_vapic(struct kvm_vcpu *vcpu)
 	u32 data, tpr;
 	int max_irr, max_isr;
 	struct kvm_lapic *apic;
+<<<<<<< HEAD
+=======
+	void *vapic;
+>>>>>>> 7175f4b... Truncated history
 
 	if (!irqchip_in_kernel(vcpu->kvm) || !vcpu->arch.apic->vapic_addr)
 		return;
@@ -1307,6 +1321,7 @@ void kvm_lapic_sync_to_vapic(struct kvm_vcpu *vcpu)
 		max_isr = 0;
 	data = (tpr & 0xff) | ((max_isr & 0xf0) << 8) | (max_irr << 24);
 
+<<<<<<< HEAD
 	kvm_write_guest_cached(vcpu->kvm, &vcpu->arch.apic->vapic_cache, &data,
 			       sizeof(u32));
 }
@@ -1325,6 +1340,19 @@ int kvm_lapic_set_vapic_addr(struct kvm_vcpu *vcpu, gpa_t vapic_addr)
 
 	vcpu->arch.apic->vapic_addr = vapic_addr;
 	return 0;
+=======
+	vapic = kmap_atomic(vcpu->arch.apic->vapic_page);
+	*(u32 *)(vapic + offset_in_page(vcpu->arch.apic->vapic_addr)) = data;
+	kunmap_atomic(vapic);
+}
+
+void kvm_lapic_set_vapic_addr(struct kvm_vcpu *vcpu, gpa_t vapic_addr)
+{
+	if (!irqchip_in_kernel(vcpu->kvm))
+		return;
+
+	vcpu->arch.apic->vapic_addr = vapic_addr;
+>>>>>>> 7175f4b... Truncated history
 }
 
 int kvm_x2apic_msr_write(struct kvm_vcpu *vcpu, u32 msr, u64 data)

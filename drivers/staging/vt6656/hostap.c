@@ -153,7 +153,11 @@ static int hostap_disable_hostapd(PSDevice pDevice, int rtnl_locked)
             DBG_PRT(MSG_LEVEL_DEBUG, KERN_INFO "%s: Netdevice %s unregistered\n",
 		       pDevice->dev->name, pDevice->apdev->name);
 	}
+<<<<<<< HEAD
 	free_netdev(pDevice->apdev);
+=======
+	kfree(pDevice->apdev);
+>>>>>>> 7175f4b... Truncated history
 	pDevice->apdev = NULL;
     pDevice->bEnable8021x = FALSE;
     pDevice->bEnableHostWEP = FALSE;

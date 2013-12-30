@@ -1854,7 +1854,11 @@ static void speakup_bits(struct vc_data *vc)
 
 static int handle_goto(struct vc_data *vc, u_char type, u_char ch, u_short key)
 {
+<<<<<<< HEAD
 	static u_char goto_buf[8];
+=======
+	static u_char *goto_buf = "\0\0\0\0\0\0";
+>>>>>>> 7175f4b... Truncated history
 	static int num;
 	int maxlen, go_pos;
 	char *cp;

@@ -829,7 +829,11 @@ static int qh_schedule(struct ehci_hcd *ehci, struct ehci_qh *qh)
 {
 	int		status;
 	unsigned	uframe;
+<<<<<<< HEAD
 	__hc32		c_mask = 0;
+=======
+	__hc32		c_mask;
+>>>>>>> 7175f4b... Truncated history
 	unsigned	frame;		/* 0..(qh->period - 1), or NO_FRAME */
 	struct ehci_qh_hw	*hw = qh->hw;
 

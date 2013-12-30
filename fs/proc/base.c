@@ -1838,7 +1838,11 @@ static int tid_fd_revalidate(struct dentry *dentry, struct nameidata *nd)
 			rcu_read_lock();
 			file = fcheck_files(files, fd);
 			if (file) {
+<<<<<<< HEAD
 				unsigned f_mode = file->f_mode;
+=======
+				unsigned i_mode, f_mode = file->f_mode;
+>>>>>>> 7175f4b... Truncated history
 
 				rcu_read_unlock();
 				put_files_struct(files);
@@ -1854,6 +1858,7 @@ static int tid_fd_revalidate(struct dentry *dentry, struct nameidata *nd)
 					inode->i_gid = 0;
 				}
 
+<<<<<<< HEAD
 				if (S_ISLNK(inode->i_mode)) {
 					unsigned i_mode = S_IFLNK;
 					if (f_mode & FMODE_READ)
@@ -1862,6 +1867,14 @@ static int tid_fd_revalidate(struct dentry *dentry, struct nameidata *nd)
 						i_mode |= S_IWUSR | S_IXUSR;
 					inode->i_mode = i_mode;
 				}
+=======
+				i_mode = S_IFLNK;
+				if (f_mode & FMODE_READ)
+					i_mode |= S_IRUSR | S_IXUSR;
+				if (f_mode & FMODE_WRITE)
+					i_mode |= S_IWUSR | S_IXUSR;
+				inode->i_mode = i_mode;
+>>>>>>> 7175f4b... Truncated history
 
 				security_task_to_inode(task, inode);
 				put_task_struct(task);
@@ -1896,7 +1909,10 @@ static struct dentry *proc_fd_instantiate(struct inode *dir,
 	ei = PROC_I(inode);
 	ei->fd = fd;
 
+<<<<<<< HEAD
 	inode->i_mode = S_IFLNK;
+=======
+>>>>>>> 7175f4b... Truncated history
 	inode->i_op = &proc_pid_link_inode_operations;
 	inode->i_size = 64;
 	ei->op.proc_get_link = proc_fd_link;

@@ -1361,8 +1361,13 @@ static char device_status_char(struct mirror *m)
 }
 
 
+<<<<<<< HEAD
 static void mirror_status(struct dm_target *ti, status_type_t type,
 			  char *result, unsigned int maxlen)
+=======
+static int mirror_status(struct dm_target *ti, status_type_t type,
+			 char *result, unsigned int maxlen)
+>>>>>>> 7175f4b... Truncated history
 {
 	unsigned int m, sz = 0;
 	struct mirror_set *ms = (struct mirror_set *) ti->private;
@@ -1397,6 +1402,11 @@ static void mirror_status(struct dm_target *ti, status_type_t type,
 		if (ms->features & DM_RAID1_HANDLE_ERRORS)
 			DMEMIT(" 1 handle_errors");
 	}
+<<<<<<< HEAD
+=======
+
+	return 0;
+>>>>>>> 7175f4b... Truncated history
 }
 
 static int mirror_iterate_devices(struct dm_target *ti,

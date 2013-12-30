@@ -125,8 +125,11 @@ typedef unsigned long sigset_t;
 extern void do_notify_resume(struct pt_regs *, void *, __u32);
 # endif /* __KERNEL__ */
 
+<<<<<<< HEAD
 #define __ARCH_HAS_SA_RESTORER
 
+=======
+>>>>>>> 7175f4b... Truncated history
 #ifdef __i386__
 # ifdef __KERNEL__
 struct old_sigaction {

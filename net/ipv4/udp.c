@@ -768,7 +768,11 @@ send:
 /*
  * Push out all pending data as one UDP datagram. Socket is locked.
  */
+<<<<<<< HEAD
 int udp_push_pending_frames(struct sock *sk)
+=======
+static int udp_push_pending_frames(struct sock *sk)
+>>>>>>> 7175f4b... Truncated history
 {
 	struct udp_sock  *up = udp_sk(sk);
 	struct inet_sock *inet = inet_sk(sk);
@@ -787,7 +791,10 @@ out:
 	up->pending = 0;
 	return err;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL(udp_push_pending_frames);
+=======
+>>>>>>> 7175f4b... Truncated history
 
 int udp_sendmsg(struct kiocb *iocb, struct sock *sk, struct msghdr *msg,
 		size_t len)
@@ -940,7 +947,11 @@ int udp_sendmsg(struct kiocb *iocb, struct sock *sk, struct msghdr *msg,
 			err = PTR_ERR(rt);
 			rt = NULL;
 			if (err == -ENETUNREACH)
+<<<<<<< HEAD
 				IP_INC_STATS(net, IPSTATS_MIB_OUTNOROUTES);
+=======
+				IP_INC_STATS_BH(net, IPSTATS_MIB_OUTNOROUTES);
+>>>>>>> 7175f4b... Truncated history
 			goto out;
 		}
 
@@ -1039,9 +1050,12 @@ int udp_sendpage(struct sock *sk, struct page *page, int offset,
 	struct udp_sock *up = udp_sk(sk);
 	int ret;
 
+<<<<<<< HEAD
 	if (flags & MSG_SENDPAGE_NOTLAST)
 		flags |= MSG_MORE;
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	if (!up->pending) {
 		struct msghdr msg = {	.msg_flags = flags|MSG_MORE };
 
@@ -1177,8 +1191,19 @@ int udp_recvmsg(struct kiocb *iocb, struct sock *sk, struct msghdr *msg,
 	int is_udplite = IS_UDPLITE(sk);
 	bool slow;
 
+<<<<<<< HEAD
 	if (flags & MSG_ERRQUEUE)
 		return ip_recv_error(sk, msg, len, addr_len);
+=======
+	/*
+	 *	Check any passed addresses
+	 */
+	if (addr_len)
+		*addr_len = sizeof(*sin);
+
+	if (flags & MSG_ERRQUEUE)
+		return ip_recv_error(sk, msg, len);
+>>>>>>> 7175f4b... Truncated history
 
 try_again:
 	skb = __skb_recv_datagram(sk, flags | (noblock ? MSG_DONTWAIT : 0),
@@ -1231,7 +1256,10 @@ try_again:
 		sin->sin_port = udp_hdr(skb)->source;
 		sin->sin_addr.s_addr = ip_hdr(skb)->saddr;
 		memset(sin->sin_zero, 0, sizeof(sin->sin_zero));
+<<<<<<< HEAD
 		*addr_len = sizeof(*sin);
+=======
+>>>>>>> 7175f4b... Truncated history
 	}
 	if (inet->cmsg_flags)
 		ip_cmsg_recv(msg, skb);

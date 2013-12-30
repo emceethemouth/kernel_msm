@@ -166,7 +166,10 @@ static int chap_server_compute_md5(
 {
 	char *endptr;
 	unsigned long id;
+<<<<<<< HEAD
 	unsigned char id_as_uchar;
+=======
+>>>>>>> 7175f4b... Truncated history
 	unsigned char digest[MD5_SIGNATURE_SIZE];
 	unsigned char type, response[MD5_SIGNATURE_SIZE * 2 + 2];
 	unsigned char identifier[10], *challenge = NULL;
@@ -174,7 +177,10 @@ static int chap_server_compute_md5(
 	unsigned char client_digest[MD5_SIGNATURE_SIZE];
 	unsigned char server_digest[MD5_SIGNATURE_SIZE];
 	unsigned char chap_n[MAX_CHAP_N_SIZE], chap_r[MAX_RESPONSE_LENGTH];
+<<<<<<< HEAD
 	size_t compare_len;
+=======
+>>>>>>> 7175f4b... Truncated history
 	struct iscsi_chap *chap = conn->auth_protocol;
 	struct crypto_hash *tfm;
 	struct hash_desc desc;
@@ -213,9 +219,13 @@ static int chap_server_compute_md5(
 		goto out;
 	}
 
+<<<<<<< HEAD
 	/* Include the terminating NULL in the compare */
 	compare_len = strlen(auth->userid) + 1;
 	if (strncmp(chap_n, auth->userid, compare_len) != 0) {
+=======
+	if (memcmp(chap_n, auth->userid, strlen(auth->userid)) != 0) {
+>>>>>>> 7175f4b... Truncated history
 		pr_err("CHAP_N values do not match!\n");
 		goto out;
 	}
@@ -359,9 +369,13 @@ static int chap_server_compute_md5(
 		goto out;
 	}
 
+<<<<<<< HEAD
 	/* To handle both endiannesses */
 	id_as_uchar = id;
 	sg_init_one(&sg, &id_as_uchar, 1);
+=======
+	sg_init_one(&sg, &id, 1);
+>>>>>>> 7175f4b... Truncated history
 	ret = crypto_hash_update(&desc, &sg, 1);
 	if (ret < 0) {
 		pr_err("crypto_hash_update() failed for id\n");

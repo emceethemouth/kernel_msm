@@ -68,6 +68,11 @@ struct linux_binprm {
 #define BINPRM_FLAGS_EXECFD_BIT 1
 #define BINPRM_FLAGS_EXECFD (1 << BINPRM_FLAGS_EXECFD_BIT)
 
+<<<<<<< HEAD
+=======
+#define BINPRM_MAX_RECURSION 4
+
+>>>>>>> 7175f4b... Truncated history
 /* Function parameter for binfmt->coredump */
 struct coredump_params {
 	long signr;
@@ -113,6 +118,12 @@ extern void setup_new_exec(struct linux_binprm * bprm);
 extern void would_dump(struct linux_binprm *, struct file *);
 
 extern int suid_dumpable;
+<<<<<<< HEAD
+=======
+#define SUID_DUMP_DISABLE	0	/* No setuid dumping */
+#define SUID_DUMP_USER		1	/* Dump as user of process */
+#define SUID_DUMP_ROOT		2	/* Dump as root */
+>>>>>>> 7175f4b... Truncated history
 
 /* Stack area protections */
 #define EXSTACK_DEFAULT   0	/* Whatever the arch defaults to */
@@ -123,7 +134,10 @@ extern int setup_arg_pages(struct linux_binprm * bprm,
 			   unsigned long stack_top,
 			   int executable_stack);
 extern int bprm_mm_init(struct linux_binprm *bprm);
+<<<<<<< HEAD
 extern int bprm_change_interp(char *interp, struct linux_binprm *bprm);
+=======
+>>>>>>> 7175f4b... Truncated history
 extern int copy_strings_kernel(int argc, const char *const *argv,
 			       struct linux_binprm *bprm);
 extern int prepare_bprm_creds(struct linux_binprm *bprm);

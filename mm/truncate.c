@@ -394,12 +394,19 @@ invalidate_complete_page2(struct address_space *mapping, struct page *page)
 	if (page_has_private(page) && !try_to_release_page(page, GFP_KERNEL))
 		return 0;
 
+<<<<<<< HEAD
 	clear_page_mlock(page);
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	spin_lock_irq(&mapping->tree_lock);
 	if (PageDirty(page))
 		goto failed;
 
+<<<<<<< HEAD
+=======
+	clear_page_mlock(page);
+>>>>>>> 7175f4b... Truncated history
 	BUG_ON(page_has_private(page));
 	__delete_from_page_cache(page);
 	spin_unlock_irq(&mapping->tree_lock);

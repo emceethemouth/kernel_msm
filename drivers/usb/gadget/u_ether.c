@@ -861,8 +861,11 @@ static int eth_stop(struct net_device *net)
 	spin_lock_irqsave(&dev->lock, flags);
 	if (dev->port_usb) {
 		struct gether	*link = dev->port_usb;
+<<<<<<< HEAD
 		const struct usb_endpoint_descriptor *in;
 		const struct usb_endpoint_descriptor *out;
+=======
+>>>>>>> 7175f4b... Truncated history
 
 		if (link->close)
 			link->close(link);
@@ -878,8 +881,11 @@ static int eth_stop(struct net_device *net)
 		 */
 		usb_ep_disable(link->in_ep);
 		usb_ep_disable(link->out_ep);
+<<<<<<< HEAD
 		in = link->in_ep->desc;
 		out = link->out_ep->desc;
+=======
+>>>>>>> 7175f4b... Truncated history
 		if (netif_carrier_ok(net)) {
 			if (config_ep_by_speed(dev->gadget, &link->func,
 					       link->in_ep) ||
@@ -890,8 +896,11 @@ static int eth_stop(struct net_device *net)
 				return -EINVAL;
 			}
 			DBG(dev, "host still using in/out endpoints\n");
+<<<<<<< HEAD
 			link->in_ep->desc = in;
 			link->out_ep->desc = out;
+=======
+>>>>>>> 7175f4b... Truncated history
 			usb_ep_enable(link->in_ep);
 			usb_ep_enable(link->out_ep);
 		}
@@ -1023,6 +1032,15 @@ int gether_setup_name(struct usb_gadget *g, u8 ethaddr[ETH_ALEN],
 
 	SET_ETHTOOL_OPS(net, &ops);
 
+<<<<<<< HEAD
+=======
+	/* two kinds of host-initiated state changes:
+	 *  - iff DATA transfer is active, carrier is "on"
+	 *  - tx queueing enabled if open *and* carrier is "on"
+	 */
+	netif_carrier_off(net);
+
+>>>>>>> 7175f4b... Truncated history
 	dev->gadget = g;
 	SET_NETDEV_DEV(net, &g->dev);
 	SET_NETDEV_DEVTYPE(net, &gadget_type);
@@ -1036,12 +1054,15 @@ int gether_setup_name(struct usb_gadget *g, u8 ethaddr[ETH_ALEN],
 		INFO(dev, "HOST MAC %pM\n", dev->host_mac);
 
 		the_dev = dev;
+<<<<<<< HEAD
 
 		/* two kinds of host-initiated state changes:
 		 *  - iff DATA transfer is active, carrier is "on"
 		 *  - tx queueing enabled if open *and* carrier is "on"
 		 */
 		netif_carrier_off(net);
+=======
+>>>>>>> 7175f4b... Truncated history
 	}
 
 	return status;

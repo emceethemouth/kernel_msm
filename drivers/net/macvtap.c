@@ -506,11 +506,18 @@ static int zerocopy_sg_from_iovec(struct sk_buff *skb, const struct iovec *from,
 		if (copy > size) {
 			++from;
 			--count;
+<<<<<<< HEAD
 			offset = 0;
 		} else
 			offset += size;
 		copy -= size;
 		offset1 += size;
+=======
+		}
+		copy -= size;
+		offset1 += size;
+		offset = 0;
+>>>>>>> 7175f4b... Truncated history
 	}
 
 	if (len == offset1)
@@ -520,6 +527,7 @@ static int zerocopy_sg_from_iovec(struct sk_buff *skb, const struct iovec *from,
 		struct page *page[MAX_SKB_FRAGS];
 		int num_pages;
 		unsigned long base;
+<<<<<<< HEAD
 		unsigned long truesize;
 
 		len = from->iov_len - offset;
@@ -544,6 +552,26 @@ static int zerocopy_sg_from_iovec(struct sk_buff *skb, const struct iovec *from,
 		skb->len += len;
 		skb->truesize += truesize;
 		atomic_add(truesize, &skb->sk->sk_wmem_alloc);
+=======
+
+		len = from->iov_len - offset1;
+		if (!len) {
+			offset1 = 0;
+			++from;
+			continue;
+		}
+		base = (unsigned long)from->iov_base + offset1;
+		size = ((base & ~PAGE_MASK) + len + ~PAGE_MASK) >> PAGE_SHIFT;
+		num_pages = get_user_pages_fast(base, size, 0, &page[i]);
+		if ((num_pages != size) ||
+		    (num_pages > MAX_SKB_FRAGS - skb_shinfo(skb)->nr_frags))
+			/* put_page is in skb free */
+			return -EFAULT;
+		skb->data_len += len;
+		skb->len += len;
+		skb->truesize += len;
+		atomic_add(len, &skb->sk->sk_wmem_alloc);
+>>>>>>> 7175f4b... Truncated history
 		while (len) {
 			int off = base & ~PAGE_MASK;
 			int size = min_t(int, len, PAGE_SIZE - off);
@@ -554,7 +582,11 @@ static int zerocopy_sg_from_iovec(struct sk_buff *skb, const struct iovec *from,
 			len -= size;
 			i++;
 		}
+<<<<<<< HEAD
 		offset = 0;
+=======
+		offset1 = 0;
+>>>>>>> 7175f4b... Truncated history
 		++from;
 	}
 	return 0;
@@ -642,6 +674,7 @@ static int macvtap_skb_to_vnet_hdr(const struct sk_buff *skb,
 	return 0;
 }
 
+<<<<<<< HEAD
 static unsigned long iov_pages(const struct iovec *iv, int offset,
 			       unsigned long nr_segs)
 {
@@ -664,6 +697,8 @@ static unsigned long iov_pages(const struct iovec *iv, int offset,
 
 	return pages;
 }
+=======
+>>>>>>> 7175f4b... Truncated history
 
 /* Get packet from user space buffer */
 static ssize_t macvtap_get_user(struct macvtap_queue *q, struct msghdr *m,
@@ -676,9 +711,14 @@ static ssize_t macvtap_get_user(struct macvtap_queue *q, struct msghdr *m,
 	int err;
 	struct virtio_net_hdr vnet_hdr = { 0 };
 	int vnet_hdr_len = 0;
+<<<<<<< HEAD
 	int copylen = 0;
 	bool zerocopy = false;
 	size_t linear;
+=======
+	int copylen;
+	bool zerocopy = false;
+>>>>>>> 7175f4b... Truncated history
 
 	if (q->flags & IFF_VNET_HDR) {
 		vnet_hdr_len = q->vnet_hdr_sz;
@@ -706,6 +746,7 @@ static ssize_t macvtap_get_user(struct macvtap_queue *q, struct msghdr *m,
 	if (unlikely(len < ETH_HLEN))
 		goto err;
 
+<<<<<<< HEAD
 	err = -EMSGSIZE;
 	if (unlikely(count > UIO_MAXIOV))
 		goto err;
@@ -739,6 +780,33 @@ static ssize_t macvtap_get_user(struct macvtap_queue *q, struct msghdr *m,
 		}
 	}
 
+=======
+	if (m && m->msg_control && sock_flag(&q->sk, SOCK_ZEROCOPY))
+		zerocopy = true;
+
+	if (zerocopy) {
+		/* There are 256 bytes to be copied in skb, so there is enough
+		 * room for skb expand head in case it is used.
+		 * The rest buffer is mapped from userspace.
+		 */
+		copylen = vnet_hdr.hdr_len;
+		if (!copylen)
+			copylen = GOODCOPY_LEN;
+	} else
+		copylen = len;
+
+	skb = macvtap_alloc_skb(&q->sk, NET_IP_ALIGN, copylen,
+				vnet_hdr.hdr_len, noblock, &err);
+	if (!skb)
+		goto err;
+
+	if (zerocopy) {
+		err = zerocopy_sg_from_iovec(skb, iv, vnet_hdr_len, count);
+		skb_shinfo(skb)->tx_flags |= SKBTX_DEV_ZEROCOPY;
+	} else
+		err = skb_copy_datagram_from_iovec(skb, 0, iv, vnet_hdr_len,
+						   len);
+>>>>>>> 7175f4b... Truncated history
 	if (err)
 		goto err_kfree;
 
@@ -755,10 +823,15 @@ static ssize_t macvtap_get_user(struct macvtap_queue *q, struct msghdr *m,
 	rcu_read_lock_bh();
 	vlan = rcu_dereference_bh(q->vlan);
 	/* copy skb_ubuf_info for callback when skb has no error */
+<<<<<<< HEAD
 	if (zerocopy) {
 		skb_shinfo(skb)->destructor_arg = m->msg_control;
 		skb_shinfo(skb)->tx_flags |= SKBTX_DEV_ZEROCOPY;
 	}
+=======
+	if (zerocopy)
+		skb_shinfo(skb)->destructor_arg = m->msg_control;
+>>>>>>> 7175f4b... Truncated history
 	if (vlan)
 		macvlan_start_xmit(skb, vlan->dev);
 	else
@@ -797,10 +870,18 @@ static ssize_t macvtap_put_user(struct macvtap_queue *q,
 				const struct sk_buff *skb,
 				const struct iovec *iv, int len)
 {
+<<<<<<< HEAD
 	int ret;
 	int vnet_hdr_len = 0;
 	int vlan_offset = 0;
 	int copied, total;
+=======
+	struct macvlan_dev *vlan;
+	int ret;
+	int vnet_hdr_len = 0;
+	int vlan_offset = 0;
+	int copied;
+>>>>>>> 7175f4b... Truncated history
 
 	if (q->flags & IFF_VNET_HDR) {
 		struct virtio_net_hdr vnet_hdr;
@@ -815,8 +896,12 @@ static ssize_t macvtap_put_user(struct macvtap_queue *q,
 		if (memcpy_toiovecend(iv, (void *)&vnet_hdr, 0, sizeof(vnet_hdr)))
 			return -EFAULT;
 	}
+<<<<<<< HEAD
 	total = copied = vnet_hdr_len;
 	total += skb->len;
+=======
+	copied = vnet_hdr_len;
+>>>>>>> 7175f4b... Truncated history
 
 	if (!vlan_tx_tag_present(skb))
 		len = min_t(int, skb->len, len);
@@ -831,7 +916,10 @@ static ssize_t macvtap_put_user(struct macvtap_queue *q,
 
 		vlan_offset = offsetof(struct vlan_ethhdr, h_vlan_proto);
 		len = min_t(int, skb->len + VLAN_HLEN, len);
+<<<<<<< HEAD
 		total += VLAN_HLEN;
+=======
+>>>>>>> 7175f4b... Truncated history
 
 		copy = min_t(int, vlan_offset, len);
 		ret = skb_copy_datagram_const_iovec(skb, 0, iv, copied, copy);
@@ -849,9 +937,22 @@ static ssize_t macvtap_put_user(struct macvtap_queue *q,
 	}
 
 	ret = skb_copy_datagram_const_iovec(skb, vlan_offset, iv, copied, len);
+<<<<<<< HEAD
 
 done:
 	return ret ? ret : total;
+=======
+	copied += len;
+
+done:
+	rcu_read_lock_bh();
+	vlan = rcu_dereference_bh(q->vlan);
+	if (vlan)
+		macvlan_count_rx(vlan, copied - vnet_hdr_len, ret == 0, 0);
+	rcu_read_unlock_bh();
+
+	return ret ? ret : copied;
+>>>>>>> 7175f4b... Truncated history
 }
 
 static ssize_t macvtap_do_read(struct macvtap_queue *q, struct kiocb *iocb,
@@ -905,9 +1006,13 @@ static ssize_t macvtap_aio_read(struct kiocb *iocb, const struct iovec *iv,
 	}
 
 	ret = macvtap_do_read(q, iocb, iv, len, file->f_flags & O_NONBLOCK);
+<<<<<<< HEAD
 	ret = min_t(ssize_t, ret, len);
 	if (ret > 0)
 		iocb->ki_pos = ret;
+=======
+	ret = min_t(ssize_t, ret, len); /* XXX copied from tun.c. Why? */
+>>>>>>> 7175f4b... Truncated history
 out:
 	return ret;
 }

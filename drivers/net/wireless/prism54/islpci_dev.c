@@ -811,10 +811,13 @@ static const struct net_device_ops islpci_netdev_ops = {
 	.ndo_validate_addr	= eth_validate_addr,
 };
 
+<<<<<<< HEAD
 static struct device_type wlan_type = {
 	.name	= "wlan",
 };
 
+=======
+>>>>>>> 7175f4b... Truncated history
 struct net_device *
 islpci_setup(struct pci_dev *pdev)
 {
@@ -825,8 +828,14 @@ islpci_setup(struct pci_dev *pdev)
 		return ndev;
 
 	pci_set_drvdata(pdev, ndev);
+<<<<<<< HEAD
 	SET_NETDEV_DEV(ndev, &pdev->dev);
 	SET_NETDEV_DEVTYPE(ndev, &wlan_type);
+=======
+#if defined(SET_NETDEV_DEV)
+	SET_NETDEV_DEV(ndev, &pdev->dev);
+#endif
+>>>>>>> 7175f4b... Truncated history
 
 	/* setup the structure members */
 	ndev->base_addr = pci_resource_start(pdev, 0);

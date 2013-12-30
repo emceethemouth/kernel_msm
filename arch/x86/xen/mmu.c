@@ -1203,6 +1203,7 @@ unsigned long xen_read_cr2_direct(void)
 	return this_cpu_read(xen_vcpu_info.arch.cr2);
 }
 
+<<<<<<< HEAD
 void xen_flush_tlb_all(void)
 {
 	struct mmuext_op *op;
@@ -1222,6 +1223,8 @@ void xen_flush_tlb_all(void)
 
 	preempt_enable();
 }
+=======
+>>>>>>> 7175f4b... Truncated history
 static void xen_flush_tlb(void)
 {
 	struct mmuext_op *op;
@@ -2076,7 +2079,10 @@ static const struct pv_mmu_ops xen_mmu_ops __initconst = {
 	.lazy_mode = {
 		.enter = paravirt_enter_lazy_mmu,
 		.leave = xen_leave_lazy_mmu,
+<<<<<<< HEAD
 		.flush = paravirt_flush_lazy_mmu,
+=======
+>>>>>>> 7175f4b... Truncated history
 	},
 
 	.set_fixmap = xen_set_fixmap,
@@ -2384,7 +2390,11 @@ int xen_remap_domain_mfn_range(struct vm_area_struct *vma,
 	err = 0;
 out:
 
+<<<<<<< HEAD
 	xen_flush_tlb_all();
+=======
+	flush_tlb_all();
+>>>>>>> 7175f4b... Truncated history
 
 	return err;
 }

@@ -27,7 +27,10 @@
 #include <sysdev/fsl_pci.h>
 #include <asm/udbg.h>
 #include <asm/fsl_guts.h>
+<<<<<<< HEAD
 #include <asm/fsl_lbc.h>
+=======
+>>>>>>> 7175f4b... Truncated history
 #include "smp.h"
 
 #include "mpc85xx.h"
@@ -143,6 +146,7 @@ static void p1022ds_set_gamma_table(enum fsl_diu_monitor_port port,
 {
 }
 
+<<<<<<< HEAD
 struct fsl_law {
 	u32	lawbar;
 	u32	reserved1;
@@ -196,10 +200,16 @@ static phys_addr_t lbc_br_to_phys(const void *ecm, unsigned int count, u32 br)
 
 /**
  * p1022ds_set_monitor_port: switch the output to a different monitor port
+=======
+/**
+ * p1022ds_set_monitor_port: switch the output to a different monitor port
+ *
+>>>>>>> 7175f4b... Truncated history
  */
 static void p1022ds_set_monitor_port(enum fsl_diu_monitor_port port)
 {
 	struct device_node *guts_node;
+<<<<<<< HEAD
 	struct device_node *lbc_node = NULL;
 	struct device_node *law_node = NULL;
 	struct ccsr_guts __iomem *guts;
@@ -211,6 +221,12 @@ static void p1022ds_set_monitor_port(enum fsl_diu_monitor_port port)
 	u32 br0, or0, br1, or1;
 	const __be32 *iprop;
 	unsigned int num_laws;
+=======
+	struct device_node *indirect_node = NULL;
+	struct ccsr_guts __iomem *guts;
+	u8 __iomem *lbc_lcs0_ba = NULL;
+	u8 __iomem *lbc_lcs1_ba = NULL;
+>>>>>>> 7175f4b... Truncated history
 	u8 b;
 
 	/* Map the global utilities registers. */
@@ -226,6 +242,7 @@ static void p1022ds_set_monitor_port(enum fsl_diu_monitor_port port)
 		goto exit;
 	}
 
+<<<<<<< HEAD
 	lbc_node = of_find_compatible_node(NULL, NULL, "fsl,p1022-elbc");
 	if (!lbc_node) {
 		pr_err("p1022ds: missing localbus node\n");
@@ -319,6 +336,24 @@ static void p1022ds_set_monitor_port(enum fsl_diu_monitor_port port)
 	if (!lbc_lcs1_ba) {
 		pr_err("p1022ds: could not ioremap CS1 address %llx\n",
 		       (unsigned long long)cs1_addr);
+=======
+	indirect_node = of_find_compatible_node(NULL, NULL,
+					     "fsl,p1022ds-indirect-pixis");
+	if (!indirect_node) {
+		pr_err("p1022ds: missing pixis indirect mode node\n");
+		goto exit;
+	}
+
+	lbc_lcs0_ba = of_iomap(indirect_node, 0);
+	if (!lbc_lcs0_ba) {
+		pr_err("p1022ds: could not map localbus chip select 0\n");
+		goto exit;
+	}
+
+	lbc_lcs1_ba = of_iomap(indirect_node, 1);
+	if (!lbc_lcs1_ba) {
+		pr_err("p1022ds: could not map localbus chip select 1\n");
+>>>>>>> 7175f4b... Truncated history
 		goto exit;
 	}
 
@@ -389,6 +424,7 @@ exit:
 		iounmap(lbc_lcs1_ba);
 	if (lbc_lcs0_ba)
 		iounmap(lbc_lcs0_ba);
+<<<<<<< HEAD
 	if (lbc)
 		iounmap(lbc);
 	if (ecm)
@@ -398,6 +434,12 @@ exit:
 
 	of_node_put(law_node);
 	of_node_put(lbc_node);
+=======
+	if (guts)
+		iounmap(guts);
+
+	of_node_put(indirect_node);
+>>>>>>> 7175f4b... Truncated history
 	of_node_put(guts_node);
 }
 
@@ -495,8 +537,11 @@ static void __init disable_one_node(struct device_node *np, struct property *new
 		prom_update_property(np, new, old);
 	else
 		prom_add_property(np, new);
+<<<<<<< HEAD
 
 	pr_info("p1022ds: disabling %s node\n", np->full_name);
+=======
+>>>>>>> 7175f4b... Truncated history
 }
 
 /* TRUE if there is a "video=fslfb" command-line parameter. */
@@ -561,27 +606,39 @@ static void __init p1022_ds_setup_arch(void)
 	diu_ops.valid_monitor_port	= p1022ds_valid_monitor_port;
 
 	/*
+<<<<<<< HEAD
 	 * Disable the NOR and NAND flash nodes if there is video=fslfb...
 	 * command-line parameter.  When the DIU is active, the localbus is
 	 * unavailable, so we have to disable these nodes before the MTD
 	 * driver loads.
+=======
+	 * Disable the NOR flash node if there is video=fslfb... command-line
+	 * parameter.  When the DIU is active, NOR flash is unavailable, so we
+	 * have to disable the node before the MTD driver loads.
+>>>>>>> 7175f4b... Truncated history
 	 */
 	if (fslfb) {
 		struct device_node *np =
 			of_find_compatible_node(NULL, NULL, "fsl,p1022-elbc");
 
 		if (np) {
+<<<<<<< HEAD
 			struct device_node *np2;
 
 			of_node_get(np);
 			np2 = of_find_compatible_node(np, NULL, "cfi-flash");
 			if (np2) {
+=======
+			np = of_find_compatible_node(np, NULL, "cfi-flash");
+			if (np) {
+>>>>>>> 7175f4b... Truncated history
 				static struct property nor_status = {
 					.name = "status",
 					.value = "disabled",
 					.length = sizeof("disabled"),
 				};
 
+<<<<<<< HEAD
 				disable_one_node(np2, &nor_status);
 				of_node_put(np2);
 			}
@@ -601,6 +658,13 @@ static void __init p1022_ds_setup_arch(void)
 			}
 
 			of_node_put(np);
+=======
+				pr_info("p1022ds: disabling %s node",
+					np->full_name);
+				disable_one_node(np, &nor_status);
+				of_node_put(np);
+			}
+>>>>>>> 7175f4b... Truncated history
 		}
 
 	}

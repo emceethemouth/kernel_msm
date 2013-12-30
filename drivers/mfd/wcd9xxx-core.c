@@ -105,6 +105,7 @@ int wcd9xxx_reg_read(struct wcd9xxx *wcd9xxx, unsigned short reg)
 }
 EXPORT_SYMBOL_GPL(wcd9xxx_reg_read);
 
+<<<<<<< HEAD
 #ifdef CONFIG_SOUND_CONTROL_HAX_3_GPL
 int wcd9xxx_reg_read_safe(struct wcd9xxx *wcd9xxx, unsigned short reg)
 {
@@ -121,6 +122,8 @@ int wcd9xxx_reg_read_safe(struct wcd9xxx *wcd9xxx, unsigned short reg)
 EXPORT_SYMBOL_GPL(wcd9xxx_reg_read_safe);
 #endif
 
+=======
+>>>>>>> 7175f4b... Truncated history
 static int wcd9xxx_write(struct wcd9xxx *wcd9xxx, unsigned short reg,
 			int bytes, void *src, bool interface_reg)
 {
@@ -735,9 +738,14 @@ static int wcd9xxx_enable_static_supplies(struct wcd9xxx *wcd9xxx,
 	}
 
 	while (ret && --i)
+<<<<<<< HEAD
 		if (i < wcd9xxx->num_of_supplies)
 			if (!pdata->regulator[i].ondemand)
 				regulator_disable(wcd9xxx->supplies[i].consumer);
+=======
+		if (!pdata->regulator[i].ondemand)
+			regulator_disable(wcd9xxx->supplies[i].consumer);
+>>>>>>> 7175f4b... Truncated history
 
 	return ret;
 }

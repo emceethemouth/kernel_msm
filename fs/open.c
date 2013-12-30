@@ -396,10 +396,17 @@ SYSCALL_DEFINE1(fchdir, unsigned int, fd)
 {
 	struct file *file;
 	struct inode *inode;
+<<<<<<< HEAD
 	int error, fput_needed;
 
 	error = -EBADF;
 	file = fget_raw_light(fd, &fput_needed);
+=======
+	int error;
+
+	error = -EBADF;
+	file = fget(fd);
+>>>>>>> 7175f4b... Truncated history
 	if (!file)
 		goto out;
 
@@ -413,7 +420,11 @@ SYSCALL_DEFINE1(fchdir, unsigned int, fd)
 	if (!error)
 		set_fs_pwd(current->fs, &file->f_path);
 out_putf:
+<<<<<<< HEAD
 	fput_light(file, fput_needed);
+=======
+	fput(file);
+>>>>>>> 7175f4b... Truncated history
 out:
 	return error;
 }
@@ -882,10 +893,16 @@ static inline int build_open_flags(int flags, umode_t mode, struct open_flags *o
 	int lookup_flags = 0;
 	int acc_mode;
 
+<<<<<<< HEAD
 	if (flags & O_CREAT)
 		op->mode = (mode & S_IALLUGO) | S_IFREG;
 	else
 		op->mode = 0;
+=======
+	if (!(flags & O_CREAT))
+		mode = 0;
+	op->mode = mode;
+>>>>>>> 7175f4b... Truncated history
 
 	/* Must never be set by userspace */
 	flags &= ~FMODE_NONOTIFY;

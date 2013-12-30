@@ -22,9 +22,15 @@
 
 #include "drm_fb_helper.h"
 
+<<<<<<< HEAD
 #define DL_DEFIO_WRITE_DELAY    (HZ/20) /* fb_deferred_io.delay in jiffies */
 
 static int fb_defio = 0;  /* Optionally enable experimental fb_defio mmap support */
+=======
+#define DL_DEFIO_WRITE_DELAY    5 /* fb_deferred_io.delay in jiffies */
+
+static int fb_defio = 1;  /* Optionally enable experimental fb_defio mmap support */
+>>>>>>> 7175f4b... Truncated history
 static int fb_bpp = 16;
 
 module_param(fb_bpp, int, S_IWUSR | S_IRUSR | S_IWGRP | S_IRGRP);
@@ -114,10 +120,16 @@ static void udlfb_dpy_deferred_io(struct fb_info *info,
 	list_for_each_entry(cur, &fbdefio->pagelist, lru) {
 
 		if (udl_render_hline(dev, (ufbdev->ufb.base.bits_per_pixel / 8),
+<<<<<<< HEAD
 				     &urb, (char *) info->fix.smem_start,
 				     &cmd, cur->index << PAGE_SHIFT,
 				     cur->index << PAGE_SHIFT,
 				     PAGE_SIZE, &bytes_identical, &bytes_sent))
+=======
+				  &urb, (char *) info->fix.smem_start,
+				  &cmd, cur->index << PAGE_SHIFT,
+				  PAGE_SIZE, &bytes_identical, &bytes_sent))
+>>>>>>> 7175f4b... Truncated history
 			goto error;
 		bytes_rendered += PAGE_SIZE;
 	}
@@ -153,9 +165,12 @@ int udl_handle_damage(struct udl_framebuffer *fb, int x, int y,
 	struct urb *urb;
 	int aligned_x;
 	int bpp = (fb->base.bits_per_pixel / 8);
+<<<<<<< HEAD
 	int x2, y2;
 	bool store_for_later = false;
 	unsigned long flags;
+=======
+>>>>>>> 7175f4b... Truncated history
 
 	if (!fb->active_16)
 		return 0;
@@ -163,6 +178,11 @@ int udl_handle_damage(struct udl_framebuffer *fb, int x, int y,
 	if (!fb->obj->vmapping)
 		udl_gem_vmap(fb->obj);
 
+<<<<<<< HEAD
+=======
+	start_cycles = get_cycles();
+
+>>>>>>> 7175f4b... Truncated history
 	aligned_x = DL_ALIGN_DOWN(x, sizeof(unsigned long));
 	width = DL_ALIGN_UP(width + (x-aligned_x), sizeof(unsigned long));
 	x = aligned_x;
@@ -172,6 +192,7 @@ int udl_handle_damage(struct udl_framebuffer *fb, int x, int y,
 	    (y + height > fb->base.height))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	/* if we are in atomic just store the info
 	   can't test inside spin lock */
 	if (in_atomic())
@@ -206,11 +227,14 @@ int udl_handle_damage(struct udl_framebuffer *fb, int x, int y,
 	spin_unlock_irqrestore(&fb->dirty_lock, flags);
 	start_cycles = get_cycles();
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	urb = udl_get_urb(dev);
 	if (!urb)
 		return 0;
 	cmd = urb->transfer_buffer;
 
+<<<<<<< HEAD
 	for (i = y; i <= y2 ; i++) {
 		const int line_offset = fb->base.pitches[0] * i;
 		const int byte_offset = line_offset + (x * bpp);
@@ -219,6 +243,15 @@ int udl_handle_damage(struct udl_framebuffer *fb, int x, int y,
 				     (char *) fb->obj->vmapping,
 				     &cmd, byte_offset, dev_byte_offset,
 				     (x2 - x + 1) * bpp,
+=======
+	for (i = y; i < y + height ; i++) {
+		const int line_offset = fb->base.pitches[0] * i;
+		const int byte_offset = line_offset + (x * bpp);
+
+		if (udl_render_hline(dev, bpp, &urb,
+				     (char *) fb->obj->vmapping,
+				     &cmd, byte_offset, width * bpp,
+>>>>>>> 7175f4b... Truncated history
 				     &bytes_identical, &bytes_sent))
 			goto error;
 	}
@@ -443,7 +476,10 @@ udl_framebuffer_init(struct drm_device *dev,
 {
 	int ret;
 
+<<<<<<< HEAD
 	spin_lock_init(&ufb->dirty_lock);
+=======
+>>>>>>> 7175f4b... Truncated history
 	ufb->obj = obj;
 	ret = drm_framebuffer_init(dev, &ufb->base, &udlfb_funcs);
 	drm_helper_mode_fill_fb_struct(&ufb->base, mode_cmd);

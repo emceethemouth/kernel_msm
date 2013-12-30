@@ -607,6 +607,7 @@ check_range(struct mm_struct *mm, unsigned long start, unsigned long end,
 	return first;
 }
 
+<<<<<<< HEAD
 /*
  * Apply policy to a single VMA
  * This must be called with the mmap_sem held for writing.
@@ -617,12 +618,20 @@ static int vma_replace_policy(struct vm_area_struct *vma,
 	int err;
 	struct mempolicy *old;
 	struct mempolicy *new;
+=======
+/* Apply policy to a single VMA */
+static int policy_vma(struct vm_area_struct *vma, struct mempolicy *new)
+{
+	int err = 0;
+	struct mempolicy *old = vma->vm_policy;
+>>>>>>> 7175f4b... Truncated history
 
 	pr_debug("vma %lx-%lx/%lx vm_ops %p vm_file %p set_policy %p\n",
 		 vma->vm_start, vma->vm_end, vma->vm_pgoff,
 		 vma->vm_ops, vma->vm_file,
 		 vma->vm_ops ? vma->vm_ops->set_policy : NULL);
 
+<<<<<<< HEAD
 	new = mpol_dup(pol);
 	if (IS_ERR(new))
 		return PTR_ERR(new);
@@ -640,6 +649,15 @@ static int vma_replace_policy(struct vm_area_struct *vma,
 	return 0;
  err_out:
 	mpol_put(new);
+=======
+	if (vma->vm_ops && vma->vm_ops->set_policy)
+		err = vma->vm_ops->set_policy(vma, new);
+	if (!err) {
+		mpol_get(new);
+		vma->vm_policy = new;
+		mpol_put(old);
+	}
+>>>>>>> 7175f4b... Truncated history
 	return err;
 }
 
@@ -691,7 +709,11 @@ static int mbind_range(struct mm_struct *mm, unsigned long start,
 			if (err)
 				goto out;
 		}
+<<<<<<< HEAD
 		err = vma_replace_policy(vma, new_pol);
+=======
+		err = policy_vma(vma, new_pol);
+>>>>>>> 7175f4b... Truncated history
 		if (err)
 			goto out;
 	}
@@ -1532,6 +1554,7 @@ struct mempolicy *get_vma_policy(struct task_struct *task,
 									addr);
 			if (vpol)
 				pol = vpol;
+<<<<<<< HEAD
 		} else if (vma->vm_policy) {
 			pol = vma->vm_policy;
 
@@ -1544,6 +1567,10 @@ struct mempolicy *get_vma_policy(struct task_struct *task,
 			if (mpol_needs_cond_ref(pol))
 				mpol_get(pol);
 		}
+=======
+		} else if (vma->vm_policy)
+			pol = vma->vm_policy;
+>>>>>>> 7175f4b... Truncated history
 	}
 	if (!pol)
 		pol = &default_policy;
@@ -2009,6 +2036,31 @@ struct mempolicy *__mpol_dup(struct mempolicy *old)
 	return new;
 }
 
+<<<<<<< HEAD
+=======
+/*
+ * If *frompol needs [has] an extra ref, copy *frompol to *tompol ,
+ * eliminate the * MPOL_F_* flags that require conditional ref and
+ * [NOTE!!!] drop the extra ref.  Not safe to reference *frompol directly
+ * after return.  Use the returned value.
+ *
+ * Allows use of a mempolicy for, e.g., multiple allocations with a single
+ * policy lookup, even if the policy needs/has extra ref on lookup.
+ * shmem_readahead needs this.
+ */
+struct mempolicy *__mpol_cond_copy(struct mempolicy *tompol,
+						struct mempolicy *frompol)
+{
+	if (!mpol_needs_cond_ref(frompol))
+		return frompol;
+
+	*tompol = *frompol;
+	tompol->flags &= ~MPOL_F_SHARED;	/* copy doesn't need unref */
+	__mpol_put(frompol);
+	return tompol;
+}
+
+>>>>>>> 7175f4b... Truncated history
 /* Slow path of a mempolicy comparison */
 bool __mpol_equal(struct mempolicy *a, struct mempolicy *b)
 {
@@ -2045,7 +2097,11 @@ bool __mpol_equal(struct mempolicy *a, struct mempolicy *b)
  */
 
 /* lookup first element intersecting start-end */
+<<<<<<< HEAD
 /* Caller holds sp->mutex */
+=======
+/* Caller holds sp->lock */
+>>>>>>> 7175f4b... Truncated history
 static struct sp_node *
 sp_lookup(struct shared_policy *sp, unsigned long start, unsigned long end)
 {
@@ -2109,12 +2165,17 @@ mpol_shared_policy_lookup(struct shared_policy *sp, unsigned long idx)
 
 	if (!sp->root.rb_node)
 		return NULL;
+<<<<<<< HEAD
 	mutex_lock(&sp->mutex);
+=======
+	spin_lock(&sp->lock);
+>>>>>>> 7175f4b... Truncated history
 	sn = sp_lookup(sp, idx, idx+1);
 	if (sn) {
 		mpol_get(sn->policy);
 		pol = sn->policy;
 	}
+<<<<<<< HEAD
 	mutex_unlock(&sp->mutex);
 	return pol;
 }
@@ -2125,16 +2186,28 @@ static void sp_free(struct sp_node *n)
 	kmem_cache_free(sn_cache, n);
 }
 
+=======
+	spin_unlock(&sp->lock);
+	return pol;
+}
+
+>>>>>>> 7175f4b... Truncated history
 static void sp_delete(struct shared_policy *sp, struct sp_node *n)
 {
 	pr_debug("deleting %lx-l%lx\n", n->start, n->end);
 	rb_erase(&n->nd, &sp->root);
+<<<<<<< HEAD
 	sp_free(n);
+=======
+	mpol_put(n->policy);
+	kmem_cache_free(sn_cache, n);
+>>>>>>> 7175f4b... Truncated history
 }
 
 static struct sp_node *sp_alloc(unsigned long start, unsigned long end,
 				struct mempolicy *pol)
 {
+<<<<<<< HEAD
 	struct sp_node *n;
 	struct mempolicy *newpol;
 
@@ -2153,6 +2226,17 @@ static struct sp_node *sp_alloc(unsigned long start, unsigned long end,
 	n->end = end;
 	n->policy = newpol;
 
+=======
+	struct sp_node *n = kmem_cache_alloc(sn_cache, GFP_KERNEL);
+
+	if (!n)
+		return NULL;
+	n->start = start;
+	n->end = end;
+	mpol_get(pol);
+	pol->flags |= MPOL_F_SHARED;	/* for unref */
+	n->policy = pol;
+>>>>>>> 7175f4b... Truncated history
 	return n;
 }
 
@@ -2160,10 +2244,17 @@ static struct sp_node *sp_alloc(unsigned long start, unsigned long end,
 static int shared_policy_replace(struct shared_policy *sp, unsigned long start,
 				 unsigned long end, struct sp_node *new)
 {
+<<<<<<< HEAD
 	struct sp_node *n;
 	int ret = 0;
 
 	mutex_lock(&sp->mutex);
+=======
+	struct sp_node *n, *new2 = NULL;
+
+restart:
+	spin_lock(&sp->lock);
+>>>>>>> 7175f4b... Truncated history
 	n = sp_lookup(sp, start, end);
 	/* Take care of old policies in the same range. */
 	while (n && n->start < end) {
@@ -2176,6 +2267,7 @@ static int shared_policy_replace(struct shared_policy *sp, unsigned long start,
 		} else {
 			/* Old policy spanning whole new range. */
 			if (n->end > end) {
+<<<<<<< HEAD
 				struct sp_node *new2;
 				new2 = sp_alloc(end, n->end, n->policy);
 				if (!new2) {
@@ -2184,6 +2276,18 @@ static int shared_policy_replace(struct shared_policy *sp, unsigned long start,
 				}
 				n->end = start;
 				sp_insert(sp, new2);
+=======
+				if (!new2) {
+					spin_unlock(&sp->lock);
+					new2 = sp_alloc(end, n->end, n->policy);
+					if (!new2)
+						return -ENOMEM;
+					goto restart;
+				}
+				n->end = start;
+				sp_insert(sp, new2);
+				new2 = NULL;
+>>>>>>> 7175f4b... Truncated history
 				break;
 			} else
 				n->end = start;
@@ -2194,9 +2298,18 @@ static int shared_policy_replace(struct shared_policy *sp, unsigned long start,
 	}
 	if (new)
 		sp_insert(sp, new);
+<<<<<<< HEAD
 out:
 	mutex_unlock(&sp->mutex);
 	return ret;
+=======
+	spin_unlock(&sp->lock);
+	if (new2) {
+		mpol_put(new2->policy);
+		kmem_cache_free(sn_cache, new2);
+	}
+	return 0;
+>>>>>>> 7175f4b... Truncated history
 }
 
 /**
@@ -2214,7 +2327,11 @@ void mpol_shared_policy_init(struct shared_policy *sp, struct mempolicy *mpol)
 	int ret;
 
 	sp->root = RB_ROOT;		/* empty tree == default mempolicy */
+<<<<<<< HEAD
 	mutex_init(&sp->mutex);
+=======
+	spin_lock_init(&sp->lock);
+>>>>>>> 7175f4b... Truncated history
 
 	if (mpol) {
 		struct vm_area_struct pvma;
@@ -2268,7 +2385,11 @@ int mpol_set_shared_policy(struct shared_policy *info,
 	}
 	err = shared_policy_replace(info, vma->vm_pgoff, vma->vm_pgoff+sz, new);
 	if (err && new)
+<<<<<<< HEAD
 		sp_free(new);
+=======
+		kmem_cache_free(sn_cache, new);
+>>>>>>> 7175f4b... Truncated history
 	return err;
 }
 
@@ -2280,14 +2401,26 @@ void mpol_free_shared_policy(struct shared_policy *p)
 
 	if (!p->root.rb_node)
 		return;
+<<<<<<< HEAD
 	mutex_lock(&p->mutex);
+=======
+	spin_lock(&p->lock);
+>>>>>>> 7175f4b... Truncated history
 	next = rb_first(&p->root);
 	while (next) {
 		n = rb_entry(next, struct sp_node, nd);
 		next = rb_next(&n->nd);
+<<<<<<< HEAD
 		sp_delete(p, n);
 	}
 	mutex_unlock(&p->mutex);
+=======
+		rb_erase(&n->nd, &p->root);
+		mpol_put(n->policy);
+		kmem_cache_free(sn_cache, n);
+	}
+	spin_unlock(&p->lock);
+>>>>>>> 7175f4b... Truncated history
 }
 
 /* assumes fs == KERNEL_DS */
@@ -2344,7 +2477,12 @@ void numa_default_policy(void)
  */
 
 /*
+<<<<<<< HEAD
  * "local" is implemented internally by MPOL_PREFERRED with MPOL_F_LOCAL flag.
+=======
+ * "local" is pseudo-policy:  MPOL_PREFERRED with MPOL_F_LOCAL flag
+ * Used only for mpol_parse_str() and mpol_to_str()
+>>>>>>> 7175f4b... Truncated history
  */
 #define MPOL_LOCAL MPOL_MAX
 static const char * const policy_modes[] =
@@ -2359,14 +2497,22 @@ static const char * const policy_modes[] =
 
 #ifdef CONFIG_TMPFS
 /**
+<<<<<<< HEAD
  * mpol_parse_str - parse string to mempolicy, for tmpfs mpol mount option.
  * @str:  string containing mempolicy to parse
  * @mpol:  pointer to struct mempolicy pointer, returned on success.
  * @unused:  redundant argument, to be removed later.
+=======
+ * mpol_parse_str - parse string to mempolicy
+ * @str:  string containing mempolicy to parse
+ * @mpol:  pointer to struct mempolicy pointer, returned on success.
+ * @no_context:  flag whether to "contextualize" the mempolicy
+>>>>>>> 7175f4b... Truncated history
  *
  * Format of input:
  *	<mode>[=<flags>][:<nodelist>]
  *
+<<<<<<< HEAD
  * On success, returns 0, else 1
  */
 int mpol_parse_str(char *str, struct mempolicy **mpol, int unused)
@@ -2374,6 +2520,22 @@ int mpol_parse_str(char *str, struct mempolicy **mpol, int unused)
 	struct mempolicy *new = NULL;
 	unsigned short mode;
 	unsigned short mode_flags;
+=======
+ * if @no_context is true, save the input nodemask in w.user_nodemask in
+ * the returned mempolicy.  This will be used to "clone" the mempolicy in
+ * a specific context [cpuset] at a later time.  Used to parse tmpfs mpol
+ * mount option.  Note that if 'static' or 'relative' mode flags were
+ * specified, the input nodemask will already have been saved.  Saving
+ * it again is redundant, but safe.
+ *
+ * On success, returns 0, else 1
+ */
+int mpol_parse_str(char *str, struct mempolicy **mpol, int no_context)
+{
+	struct mempolicy *new = NULL;
+	unsigned short mode;
+	unsigned short uninitialized_var(mode_flags);
+>>>>>>> 7175f4b... Truncated history
 	nodemask_t nodes;
 	char *nodelist = strchr(str, ':');
 	char *flags = strchr(str, '=');
@@ -2461,6 +2623,7 @@ int mpol_parse_str(char *str, struct mempolicy **mpol, int unused)
 	if (IS_ERR(new))
 		goto out;
 
+<<<<<<< HEAD
 	/*
 	 * Save nodes for mpol_to_str() to show the tmpfs mount options
 	 * for /proc/mounts, /proc/pid/mounts and /proc/pid/mountinfo.
@@ -2478,6 +2641,26 @@ int mpol_parse_str(char *str, struct mempolicy **mpol, int unused)
 	 */
 	new->w.user_nodemask = nodes;
 
+=======
+	if (no_context) {
+		/* save for contextualization */
+		new->w.user_nodemask = nodes;
+	} else {
+		int ret;
+		NODEMASK_SCRATCH(scratch);
+		if (scratch) {
+			task_lock(current);
+			ret = mpol_set_nodemask(new, &nodes, scratch);
+			task_unlock(current);
+		} else
+			ret = -ENOMEM;
+		NODEMASK_SCRATCH_FREE(scratch);
+		if (ret) {
+			mpol_put(new);
+			goto out;
+		}
+	}
+>>>>>>> 7175f4b... Truncated history
 	err = 0;
 
 out:
@@ -2497,13 +2680,21 @@ out:
  * @buffer:  to contain formatted mempolicy string
  * @maxlen:  length of @buffer
  * @pol:  pointer to mempolicy to be formatted
+<<<<<<< HEAD
  * @unused:  redundant argument, to be removed later.
+=======
+ * @no_context:  "context free" mempolicy - use nodemask in w.user_nodemask
+>>>>>>> 7175f4b... Truncated history
  *
  * Convert a mempolicy into a string.
  * Returns the number of characters in buffer (if positive)
  * or an error (negative)
  */
+<<<<<<< HEAD
 int mpol_to_str(char *buffer, int maxlen, struct mempolicy *pol, int unused)
+=======
+int mpol_to_str(char *buffer, int maxlen, struct mempolicy *pol, int no_context)
+>>>>>>> 7175f4b... Truncated history
 {
 	char *p = buffer;
 	int l;
@@ -2529,7 +2720,11 @@ int mpol_to_str(char *buffer, int maxlen, struct mempolicy *pol, int unused)
 	case MPOL_PREFERRED:
 		nodes_clear(nodes);
 		if (flags & MPOL_F_LOCAL)
+<<<<<<< HEAD
 			mode = MPOL_LOCAL;
+=======
+			mode = MPOL_LOCAL;	/* pseudo-policy */
+>>>>>>> 7175f4b... Truncated history
 		else
 			node_set(pol->v.preferred_node, nodes);
 		break;
@@ -2537,11 +2732,22 @@ int mpol_to_str(char *buffer, int maxlen, struct mempolicy *pol, int unused)
 	case MPOL_BIND:
 		/* Fall through */
 	case MPOL_INTERLEAVE:
+<<<<<<< HEAD
 		nodes = pol->v.nodes;
 		break;
 
 	default:
 		return -EINVAL;
+=======
+		if (no_context)
+			nodes = pol->w.user_nodemask;
+		else
+			nodes = pol->v.nodes;
+		break;
+
+	default:
+		BUG();
+>>>>>>> 7175f4b... Truncated history
 	}
 
 	l = strlen(policy_modes[mode]);

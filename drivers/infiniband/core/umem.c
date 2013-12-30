@@ -269,7 +269,11 @@ void ib_umem_release(struct ib_umem *umem)
 	} else
 		down_write(&mm->mmap_sem);
 
+<<<<<<< HEAD
 	current->mm->pinned_vm -= diff;
+=======
+	current->mm->locked_vm -= diff;
+>>>>>>> 7175f4b... Truncated history
 	up_write(&mm->mmap_sem);
 	mmput(mm);
 	kfree(umem);

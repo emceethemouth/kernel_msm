@@ -1062,7 +1062,11 @@ fail_register:
 /*
  * Switch this queue to the given IO scheduler.
  */
+<<<<<<< HEAD
 static int __elevator_change(struct request_queue *q, const char *name)
+=======
+int elevator_change(struct request_queue *q, const char *name)
+>>>>>>> 7175f4b... Truncated history
 {
 	char elevator_name[ELV_NAME_MAX];
 	struct elevator_type *e;
@@ -1084,6 +1088,7 @@ static int __elevator_change(struct request_queue *q, const char *name)
 
 	return elevator_switch(q, e);
 }
+<<<<<<< HEAD
 
 int elevator_change(struct request_queue *q, const char *name)
 {
@@ -1096,6 +1101,8 @@ int elevator_change(struct request_queue *q, const char *name)
 
 	return ret;
 }
+=======
+>>>>>>> 7175f4b... Truncated history
 EXPORT_SYMBOL(elevator_change);
 
 ssize_t elv_iosched_store(struct request_queue *q, const char *name,
@@ -1106,7 +1113,11 @@ ssize_t elv_iosched_store(struct request_queue *q, const char *name,
 	if (!q->elevator)
 		return count;
 
+<<<<<<< HEAD
 	ret = __elevator_change(q, name);
+=======
+	ret = elevator_change(q, name);
+>>>>>>> 7175f4b... Truncated history
 	if (!ret)
 		return count;
 

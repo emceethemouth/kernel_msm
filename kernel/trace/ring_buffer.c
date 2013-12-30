@@ -2708,7 +2708,11 @@ unsigned long ring_buffer_oldest_event_ts(struct ring_buffer *buffer, int cpu)
 	unsigned long flags;
 	struct ring_buffer_per_cpu *cpu_buffer;
 	struct buffer_page *bpage;
+<<<<<<< HEAD
 	unsigned long ret = 0;
+=======
+	unsigned long ret;
+>>>>>>> 7175f4b... Truncated history
 
 	if (!cpumask_test_cpu(cpu, buffer->cpumask))
 		return 0;
@@ -2723,8 +2727,12 @@ unsigned long ring_buffer_oldest_event_ts(struct ring_buffer *buffer, int cpu)
 		bpage = cpu_buffer->reader_page;
 	else
 		bpage = rb_set_head_page(cpu_buffer);
+<<<<<<< HEAD
 	if (bpage)
 		ret = bpage->page->time_stamp;
+=======
+	ret = bpage->page->time_stamp;
+>>>>>>> 7175f4b... Truncated history
 	raw_spin_unlock_irqrestore(&cpu_buffer->reader_lock, flags);
 
 	return ret;
@@ -3031,8 +3039,11 @@ rb_get_reader_page(struct ring_buffer_per_cpu *cpu_buffer)
 	 * Splice the empty reader page into the list around the head.
 	 */
 	reader = rb_set_head_page(cpu_buffer);
+<<<<<<< HEAD
 	if (!reader)
 		goto out;
+=======
+>>>>>>> 7175f4b... Truncated history
 	cpu_buffer->reader_page->list.next = rb_list_head(reader->list.next);
 	cpu_buffer->reader_page->list.prev = reader->list.prev;
 

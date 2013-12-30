@@ -1058,8 +1058,12 @@ static int lmLogSync(struct jfs_log * log, int hard_sync)
  */
 void jfs_syncpt(struct jfs_log *log, int hard_sync)
 {	LOG_LOCK(log);
+<<<<<<< HEAD
 	if (!test_bit(log_QUIESCE, &log->flag))
 		lmLogSync(log, hard_sync);
+=======
+	lmLogSync(log, hard_sync);
+>>>>>>> 7175f4b... Truncated history
 	LOG_UNLOCK(log);
 }
 

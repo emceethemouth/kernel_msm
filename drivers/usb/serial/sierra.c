@@ -171,6 +171,10 @@ static int sierra_probe(struct usb_serial *serial,
 {
 	int result = 0;
 	struct usb_device *udev;
+<<<<<<< HEAD
+=======
+	struct sierra_intf_private *data;
+>>>>>>> 7175f4b... Truncated history
 	u8 ifnum;
 
 	udev = serial->dev;
@@ -198,6 +202,14 @@ static int sierra_probe(struct usb_serial *serial,
 		return -ENODEV;
 	}
 
+<<<<<<< HEAD
+=======
+	data = serial->private = kzalloc(sizeof(struct sierra_intf_private), GFP_KERNEL);
+	if (!data)
+		return -ENOMEM;
+	spin_lock_init(&data->susp_lock);
+
+>>>>>>> 7175f4b... Truncated history
 	return result;
 }
 
@@ -298,10 +310,13 @@ static const struct usb_device_id id_table[] = {
 	{ USB_DEVICE(0x1199, 0x68A3), 	/* Sierra Wireless Direct IP modems */
 	  .driver_info = (kernel_ulong_t)&direct_ip_interface_blacklist
 	},
+<<<<<<< HEAD
 	/* AT&T Direct IP LTE modems */
 	{ USB_DEVICE_AND_INTERFACE_INFO(0x0F3D, 0x68AA, 0xFF, 0xFF, 0xFF),
 	  .driver_info = (kernel_ulong_t)&direct_ip_interface_blacklist
 	},
+=======
+>>>>>>> 7175f4b... Truncated history
 	{ USB_DEVICE(0x0f3d, 0x68A3), 	/* Airprime/Sierra Wireless Direct IP modems */
 	  .driver_info = (kernel_ulong_t)&direct_ip_interface_blacklist
 	},
@@ -890,19 +905,35 @@ static int sierra_open(struct tty_struct *tty, struct usb_serial_port *port)
 
 static void sierra_dtr_rts(struct usb_serial_port *port, int on)
 {
+<<<<<<< HEAD
+=======
+	struct usb_serial *serial = port->serial;
+>>>>>>> 7175f4b... Truncated history
 	struct sierra_port_private *portdata;
 
 	portdata = usb_get_serial_port_data(port);
 	portdata->rts_state = on;
 	portdata->dtr_state = on;
 
+<<<<<<< HEAD
 	sierra_send_setup(port);
+=======
+	if (serial->dev) {
+		mutex_lock(&serial->disc_mutex);
+		if (!serial->disconnected)
+			sierra_send_setup(port);
+		mutex_unlock(&serial->disc_mutex);
+	}
+>>>>>>> 7175f4b... Truncated history
 }
 
 static int sierra_startup(struct usb_serial *serial)
 {
 	struct usb_serial_port *port;
+<<<<<<< HEAD
 	struct sierra_intf_private *intfdata;
+=======
+>>>>>>> 7175f4b... Truncated history
 	struct sierra_port_private *portdata;
 	struct sierra_iface_info *himemoryp = NULL;
 	int i;
@@ -910,6 +941,7 @@ static int sierra_startup(struct usb_serial *serial)
 
 	dev_dbg(&serial->dev->dev, "%s\n", __func__);
 
+<<<<<<< HEAD
 	intfdata = kzalloc(sizeof(*intfdata), GFP_KERNEL);
 	if (!intfdata)
 		return -ENOMEM;
@@ -918,6 +950,8 @@ static int sierra_startup(struct usb_serial *serial)
 
 	usb_set_serial_data(serial, intfdata);
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	/* Set Device mode to D0 */
 	sierra_set_power_state(serial->dev, 0x0000);
 
@@ -933,7 +967,11 @@ static int sierra_startup(struct usb_serial *serial)
 			dev_dbg(&port->dev, "%s: kmalloc for "
 				"sierra_port_private (%d) failed!\n",
 				__func__, i);
+<<<<<<< HEAD
 			goto err;
+=======
+			return -ENOMEM;
+>>>>>>> 7175f4b... Truncated history
 		}
 		spin_lock_init(&portdata->lock);
 		init_usb_anchor(&portdata->active);
@@ -970,6 +1008,7 @@ static int sierra_startup(struct usb_serial *serial)
 	}
 
 	return 0;
+<<<<<<< HEAD
 err:
 	for (--i; i >= 0; --i) {
 		portdata = usb_get_serial_port_data(serial->port[i]);
@@ -978,6 +1017,8 @@ err:
 	kfree(intfdata);
 
 	return -ENOMEM;
+=======
+>>>>>>> 7175f4b... Truncated history
 }
 
 static void sierra_release(struct usb_serial *serial)
@@ -997,7 +1038,10 @@ static void sierra_release(struct usb_serial *serial)
 			continue;
 		kfree(portdata);
 	}
+<<<<<<< HEAD
 	kfree(serial->private);
+=======
+>>>>>>> 7175f4b... Truncated history
 }
 
 #ifdef CONFIG_PM

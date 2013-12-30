@@ -28,7 +28,10 @@
 #include <linux/clockchips.h>
 #include <linux/io.h>
 #include <linux/export.h>
+<<<<<<< HEAD
 #include <linux/gpio.h>
+=======
+>>>>>>> 7175f4b... Truncated history
 
 #include <mach/udc.h>
 #include <mach/hardware.h>
@@ -108,7 +111,11 @@ static signed char irq2gpio[32] = {
 	 7,  8,  9, 10, 11, 12, -1, -1,
 };
 
+<<<<<<< HEAD
 static int ixp4xx_gpio_to_irq(struct gpio_chip *chip, unsigned gpio)
+=======
+int gpio_to_irq(int gpio)
+>>>>>>> 7175f4b... Truncated history
 {
 	int irq;
 
@@ -118,6 +125,10 @@ static int ixp4xx_gpio_to_irq(struct gpio_chip *chip, unsigned gpio)
 	}
 	return -EINVAL;
 }
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL(gpio_to_irq);
+>>>>>>> 7175f4b... Truncated history
 
 int irq_to_gpio(unsigned int irq)
 {
@@ -383,6 +394,7 @@ static struct platform_device *ixp46x_devices[] __initdata = {
 unsigned long ixp4xx_exp_bus_size;
 EXPORT_SYMBOL(ixp4xx_exp_bus_size);
 
+<<<<<<< HEAD
 static int ixp4xx_gpio_direction_input(struct gpio_chip *chip, unsigned gpio)
 {
 	gpio_line_config(gpio, IXP4XX_GPIO_IN);
@@ -425,14 +437,19 @@ static struct gpio_chip ixp4xx_gpio_chip = {
 	.ngpio			= 16,
 };
 
+=======
+>>>>>>> 7175f4b... Truncated history
 void __init ixp4xx_sys_init(void)
 {
 	ixp4xx_exp_bus_size = SZ_16M;
 
 	platform_add_devices(ixp4xx_devices, ARRAY_SIZE(ixp4xx_devices));
 
+<<<<<<< HEAD
 	gpiochip_add(&ixp4xx_gpio_chip);
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	if (cpu_is_ixp46x()) {
 		int region;
 

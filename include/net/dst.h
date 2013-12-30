@@ -60,7 +60,10 @@ struct dst_entry {
 #define DST_NOCOUNT		0x0020
 #define DST_NOPEER		0x0040
 #define DST_FAKE_RTABLE		0x0080
+<<<<<<< HEAD
 #define DST_XFRM_TUNNEL		0x0100
+=======
+>>>>>>> 7175f4b... Truncated history
 
 	short			error;
 	short			obsolete;
@@ -464,22 +467,28 @@ static inline struct dst_entry *xfrm_lookup(struct net *net,
 {
 	return dst_orig;
 } 
+<<<<<<< HEAD
 
 static inline struct xfrm_state *dst_xfrm(const struct dst_entry *dst)
 {
 	return NULL;
 }
 
+=======
+>>>>>>> 7175f4b... Truncated history
 #else
 extern struct dst_entry *xfrm_lookup(struct net *net, struct dst_entry *dst_orig,
 				     const struct flowi *fl, struct sock *sk,
 				     int flags);
+<<<<<<< HEAD
 
 /* skb attached with this dst needs transformation if dst->xfrm is valid */
 static inline struct xfrm_state *dst_xfrm(const struct dst_entry *dst)
 {
 	return dst->xfrm;
 }
+=======
+>>>>>>> 7175f4b... Truncated history
 #endif
 
 #endif /* _NET_DST_H */

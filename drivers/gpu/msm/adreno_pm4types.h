@@ -164,8 +164,11 @@
 
 #define CP_SET_PROTECTED_MODE  0x5f /* sets the register protection mode */
 
+<<<<<<< HEAD
 #define CP_BOOTSTRAP_UCODE  0x6f /* bootstraps microcode */
 
+=======
+>>>>>>> 7175f4b... Truncated history
 /*
  * for a3xx
  */

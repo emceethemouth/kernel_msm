@@ -8,7 +8,10 @@
 
 #include <linux/device-mapper.h>
 #include <linux/export.h>
+<<<<<<< HEAD
 #include <linux/vmalloc.h>
+=======
+>>>>>>> 7175f4b... Truncated history
 
 #ifdef CONFIG_DM_DEBUG_SPACE_MAPS
 
@@ -90,6 +93,7 @@ static int ca_create(struct count_array *ca, struct dm_space_map *sm)
 
 	ca->nr = nr_blocks;
 	ca->nr_free = nr_blocks;
+<<<<<<< HEAD
 
 	if (!nr_blocks)
 		ca->counts = NULL;
@@ -98,15 +102,23 @@ static int ca_create(struct count_array *ca, struct dm_space_map *sm)
 		if (!ca->counts)
 			return -ENOMEM;
 	}
+=======
+	ca->counts = kzalloc(sizeof(*ca->counts) * nr_blocks, GFP_KERNEL);
+	if (!ca->counts)
+		return -ENOMEM;
+>>>>>>> 7175f4b... Truncated history
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static void ca_destroy(struct count_array *ca)
 {
 	vfree(ca->counts);
 }
 
+=======
+>>>>>>> 7175f4b... Truncated history
 static int ca_load(struct count_array *ca, struct dm_space_map *sm)
 {
 	int r;
@@ -137,6 +149,7 @@ static int ca_load(struct count_array *ca, struct dm_space_map *sm)
 static int ca_extend(struct count_array *ca, dm_block_t extra_blocks)
 {
 	dm_block_t nr_blocks = ca->nr + extra_blocks;
+<<<<<<< HEAD
 	uint32_t *counts = vzalloc(sizeof(*counts) * nr_blocks);
 	if (!counts)
 		return -ENOMEM;
@@ -145,6 +158,14 @@ static int ca_extend(struct count_array *ca, dm_block_t extra_blocks)
 		memcpy(counts, ca->counts, sizeof(*counts) * ca->nr);
 		ca_destroy(ca);
 	}
+=======
+	uint32_t *counts = kzalloc(sizeof(*counts) * nr_blocks, GFP_KERNEL);
+	if (!counts)
+		return -ENOMEM;
+
+	memcpy(counts, ca->counts, sizeof(*counts) * ca->nr);
+	kfree(ca->counts);
+>>>>>>> 7175f4b... Truncated history
 	ca->nr = nr_blocks;
 	ca->nr_free += extra_blocks;
 	ca->counts = counts;
@@ -164,6 +185,14 @@ static int ca_commit(struct count_array *old, struct count_array *new)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static void ca_destroy(struct count_array *ca)
+{
+	kfree(ca->counts);
+}
+
+>>>>>>> 7175f4b... Truncated history
 /*----------------------------------------------------------------*/
 
 struct sm_checker {
@@ -351,25 +380,42 @@ struct dm_space_map *dm_sm_checker_create(struct dm_space_map *sm)
 	int r;
 	struct sm_checker *smc;
 
+<<<<<<< HEAD
 	if (IS_ERR_OR_NULL(sm))
 		return ERR_PTR(-EINVAL);
 
 	smc = kmalloc(sizeof(*smc), GFP_KERNEL);
 	if (!smc)
 		return ERR_PTR(-ENOMEM);
+=======
+	if (!sm)
+		return NULL;
+
+	smc = kmalloc(sizeof(*smc), GFP_KERNEL);
+	if (!smc)
+		return NULL;
+>>>>>>> 7175f4b... Truncated history
 
 	memcpy(&smc->sm, &ops_, sizeof(smc->sm));
 	r = ca_create(&smc->old_counts, sm);
 	if (r) {
 		kfree(smc);
+<<<<<<< HEAD
 		return ERR_PTR(r);
+=======
+		return NULL;
+>>>>>>> 7175f4b... Truncated history
 	}
 
 	r = ca_create(&smc->counts, sm);
 	if (r) {
 		ca_destroy(&smc->old_counts);
 		kfree(smc);
+<<<<<<< HEAD
 		return ERR_PTR(r);
+=======
+		return NULL;
+>>>>>>> 7175f4b... Truncated history
 	}
 
 	smc->real_sm = sm;
@@ -379,7 +425,11 @@ struct dm_space_map *dm_sm_checker_create(struct dm_space_map *sm)
 		ca_destroy(&smc->counts);
 		ca_destroy(&smc->old_counts);
 		kfree(smc);
+<<<<<<< HEAD
 		return ERR_PTR(r);
+=======
+		return NULL;
+>>>>>>> 7175f4b... Truncated history
 	}
 
 	r = ca_commit(&smc->old_counts, &smc->counts);
@@ -387,7 +437,11 @@ struct dm_space_map *dm_sm_checker_create(struct dm_space_map *sm)
 		ca_destroy(&smc->counts);
 		ca_destroy(&smc->old_counts);
 		kfree(smc);
+<<<<<<< HEAD
 		return ERR_PTR(r);
+=======
+		return NULL;
+>>>>>>> 7175f4b... Truncated history
 	}
 
 	return &smc->sm;
@@ -399,25 +453,42 @@ struct dm_space_map *dm_sm_checker_create_fresh(struct dm_space_map *sm)
 	int r;
 	struct sm_checker *smc;
 
+<<<<<<< HEAD
 	if (IS_ERR_OR_NULL(sm))
 		return ERR_PTR(-EINVAL);
 
 	smc = kmalloc(sizeof(*smc), GFP_KERNEL);
 	if (!smc)
 		return ERR_PTR(-ENOMEM);
+=======
+	if (!sm)
+		return NULL;
+
+	smc = kmalloc(sizeof(*smc), GFP_KERNEL);
+	if (!smc)
+		return NULL;
+>>>>>>> 7175f4b... Truncated history
 
 	memcpy(&smc->sm, &ops_, sizeof(smc->sm));
 	r = ca_create(&smc->old_counts, sm);
 	if (r) {
 		kfree(smc);
+<<<<<<< HEAD
 		return ERR_PTR(r);
+=======
+		return NULL;
+>>>>>>> 7175f4b... Truncated history
 	}
 
 	r = ca_create(&smc->counts, sm);
 	if (r) {
 		ca_destroy(&smc->old_counts);
 		kfree(smc);
+<<<<<<< HEAD
 		return ERR_PTR(r);
+=======
+		return NULL;
+>>>>>>> 7175f4b... Truncated history
 	}
 
 	smc->real_sm = sm;

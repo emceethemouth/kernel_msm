@@ -195,6 +195,7 @@ static int nilfs_writepage(struct page *page, struct writeback_control *wbc)
 
 static int nilfs_set_page_dirty(struct page *page)
 {
+<<<<<<< HEAD
 	int ret = __set_page_dirty_nobuffers(page);
 
 	if (page_has_buffers(page)) {
@@ -221,6 +222,15 @@ static int nilfs_set_page_dirty(struct page *page)
 
 		if (nr_dirty)
 			nilfs_set_file_dirty(inode, nr_dirty);
+=======
+	int ret = __set_page_dirty_buffers(page);
+
+	if (ret) {
+		struct inode *inode = page->mapping->host;
+		unsigned nr_dirty = 1 << (PAGE_SHIFT - inode->i_blkbits);
+
+		nilfs_set_file_dirty(inode, nr_dirty);
+>>>>>>> 7175f4b... Truncated history
 	}
 	return ret;
 }

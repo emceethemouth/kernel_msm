@@ -468,7 +468,11 @@ static int pc236_detach(struct comedi_device *dev)
 {
 	printk(KERN_DEBUG "comedi%d: %s: detach\n", dev->minor,
 	       PC236_DRIVER_NAME);
+<<<<<<< HEAD
 	if (dev->iobase)
+=======
+	if (devpriv)
+>>>>>>> 7175f4b... Truncated history
 		pc236_intr_disable(dev);
 
 	if (dev->irq)

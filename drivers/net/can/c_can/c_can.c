@@ -590,8 +590,13 @@ static void c_can_chip_config(struct net_device *dev)
 	priv->write_reg(priv, &priv->regs->control,
 			CONTROL_ENABLE_AR);
 
+<<<<<<< HEAD
 	if ((priv->can.ctrlmode & CAN_CTRLMODE_LISTENONLY) &&
 	    (priv->can.ctrlmode & CAN_CTRLMODE_LOOPBACK)) {
+=======
+	if (priv->can.ctrlmode & (CAN_CTRLMODE_LISTENONLY &
+					CAN_CTRLMODE_LOOPBACK)) {
+>>>>>>> 7175f4b... Truncated history
 		/* loopback + silent mode : useful for hot self-test */
 		priv->write_reg(priv, &priv->regs->control, CONTROL_EIE |
 				CONTROL_SIE | CONTROL_IE | CONTROL_TEST);
@@ -686,7 +691,11 @@ static int c_can_get_berr_counter(const struct net_device *dev,
  *
  * We iterate from priv->tx_echo to priv->tx_next and check if the
  * packet has been transmitted, echo it back to the CAN framework.
+<<<<<<< HEAD
  * If we discover a not yet transmitted packet, stop looking for more.
+=======
+ * If we discover a not yet transmitted package, stop looking for more.
+>>>>>>> 7175f4b... Truncated history
  */
 static void c_can_do_tx(struct net_device *dev)
 {
@@ -698,7 +707,11 @@ static void c_can_do_tx(struct net_device *dev)
 	for (/* nix */; (priv->tx_next - priv->tx_echo) > 0; priv->tx_echo++) {
 		msg_obj_no = get_tx_echo_msg_obj(priv);
 		val = c_can_read_reg32(priv, &priv->regs->txrqst1);
+<<<<<<< HEAD
 		if (!(val & (1 << (msg_obj_no - 1)))) {
+=======
+		if (!(val & (1 << msg_obj_no))) {
+>>>>>>> 7175f4b... Truncated history
 			can_get_echo_skb(dev,
 					msg_obj_no - C_CAN_MSG_OBJ_TX_FIRST);
 			stats->tx_bytes += priv->read_reg(priv,
@@ -706,8 +719,11 @@ static void c_can_do_tx(struct net_device *dev)
 					& IF_MCONT_DLC_MASK;
 			stats->tx_packets++;
 			c_can_inval_msg_object(dev, 0, msg_obj_no);
+<<<<<<< HEAD
 		} else {
 			break;
+=======
+>>>>>>> 7175f4b... Truncated history
 		}
 	}
 
@@ -760,6 +776,12 @@ static int c_can_do_rx_poll(struct net_device *dev, int quota)
 			msg_ctrl_save = priv->read_reg(priv,
 					&priv->regs->ifregs[0].msg_cntrl);
 
+<<<<<<< HEAD
+=======
+			if (msg_ctrl_save & IF_MCONT_EOB)
+				return num_rx_pkts;
+
+>>>>>>> 7175f4b... Truncated history
 			if (msg_ctrl_save & IF_MCONT_MSGLST) {
 				c_can_handle_lost_msg_obj(dev, 0, msg_obj);
 				num_rx_pkts++;
@@ -767,9 +789,12 @@ static int c_can_do_rx_poll(struct net_device *dev, int quota)
 				continue;
 			}
 
+<<<<<<< HEAD
 			if (msg_ctrl_save & IF_MCONT_EOB)
 				return num_rx_pkts;
 
+=======
+>>>>>>> 7175f4b... Truncated history
 			if (!(msg_ctrl_save & IF_MCONT_NEWDAT))
 				continue;
 
@@ -914,7 +939,11 @@ static int c_can_handle_bus_err(struct net_device *dev,
 		break;
 	case LEC_ACK_ERROR:
 		netdev_dbg(dev, "ack error\n");
+<<<<<<< HEAD
 		cf->data[3] |= (CAN_ERR_PROT_LOC_ACK |
+=======
+		cf->data[2] |= (CAN_ERR_PROT_LOC_ACK |
+>>>>>>> 7175f4b... Truncated history
 				CAN_ERR_PROT_LOC_ACK_DEL);
 		break;
 	case LEC_BIT1_ERROR:
@@ -927,7 +956,11 @@ static int c_can_handle_bus_err(struct net_device *dev,
 		break;
 	case LEC_CRC_ERROR:
 		netdev_dbg(dev, "CRC error\n");
+<<<<<<< HEAD
 		cf->data[3] |= (CAN_ERR_PROT_LOC_CRC_SEQ |
+=======
+		cf->data[2] |= (CAN_ERR_PROT_LOC_CRC_SEQ |
+>>>>>>> 7175f4b... Truncated history
 				CAN_ERR_PROT_LOC_CRC_DEL);
 		break;
 	default:
@@ -952,7 +985,11 @@ static int c_can_poll(struct napi_struct *napi, int quota)
 	struct net_device *dev = napi->dev;
 	struct c_can_priv *priv = netdev_priv(dev);
 
+<<<<<<< HEAD
 	irqstatus = priv->irqstatus;
+=======
+	irqstatus = priv->read_reg(priv, &priv->regs->interrupt);
+>>>>>>> 7175f4b... Truncated history
 	if (!irqstatus)
 		goto end;
 
@@ -1030,11 +1067,20 @@ end:
 
 static irqreturn_t c_can_isr(int irq, void *dev_id)
 {
+<<<<<<< HEAD
 	struct net_device *dev = (struct net_device *)dev_id;
 	struct c_can_priv *priv = netdev_priv(dev);
 
 	priv->irqstatus = priv->read_reg(priv, &priv->regs->interrupt);
 	if (!priv->irqstatus)
+=======
+	u16 irqstatus;
+	struct net_device *dev = (struct net_device *)dev_id;
+	struct c_can_priv *priv = netdev_priv(dev);
+
+	irqstatus = priv->read_reg(priv, &priv->regs->interrupt);
+	if (!irqstatus)
+>>>>>>> 7175f4b... Truncated history
 		return IRQ_NONE;
 
 	/* disable all interrupts and schedule the NAPI */
@@ -1064,11 +1110,18 @@ static int c_can_open(struct net_device *dev)
 		goto exit_irq_fail;
 	}
 
+<<<<<<< HEAD
 	napi_enable(&priv->napi);
 
 	/* start the c_can controller */
 	c_can_start(dev);
 
+=======
+	/* start the c_can controller */
+	c_can_start(dev);
+
+	napi_enable(&priv->napi);
+>>>>>>> 7175f4b... Truncated history
 	netif_start_queue(dev);
 
 	return 0;

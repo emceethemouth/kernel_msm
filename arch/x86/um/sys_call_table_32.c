@@ -39,9 +39,15 @@
 #undef __SYSCALL_I386
 #define __SYSCALL_I386(nr, sym, compat) [ nr ] = sym,
 
+<<<<<<< HEAD
 typedef asmlinkage void (*sys_call_ptr_t)(void);
 
 extern asmlinkage void sys_ni_syscall(void);
+=======
+typedef void (*sys_call_ptr_t)(void);
+
+extern void sys_ni_syscall(void);
+>>>>>>> 7175f4b... Truncated history
 
 const sys_call_ptr_t sys_call_table[] __cacheline_aligned = {
 	/*

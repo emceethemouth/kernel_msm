@@ -514,6 +514,7 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata,
 		ieee80211_configure_filter(local);
 		break;
 	default:
+<<<<<<< HEAD
 		mutex_lock(&local->mtx);
 		if (local->hw_roc_dev == sdata->dev &&
 		    local->hw_roc_channel) {
@@ -526,6 +527,8 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata,
 		flush_work(&local->hw_roc_start);
 		flush_work(&local->hw_roc_done);
 
+=======
+>>>>>>> 7175f4b... Truncated history
 		flush_work(&sdata->work);
 		/*
 		 * When we get here, the interface is marked down.
@@ -1257,6 +1260,7 @@ void ieee80211_remove_interfaces(struct ieee80211_local *local)
 
 	ASSERT_RTNL();
 
+<<<<<<< HEAD
 	/*
 	 * Close all AP_VLAN interfaces first, as otherwise they
 	 * might be closed while the AP interface they belong to
@@ -1266,6 +1270,8 @@ void ieee80211_remove_interfaces(struct ieee80211_local *local)
 		if (sdata->vif.type == NL80211_IFTYPE_AP_VLAN)
 			dev_close(sdata->dev);
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	mutex_lock(&local->iflist_mtx);
 	list_for_each_entry_safe(sdata, tmp, &local->interfaces, list) {
 		list_del(&sdata->list);

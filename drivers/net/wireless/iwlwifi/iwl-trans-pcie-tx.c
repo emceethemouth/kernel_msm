@@ -237,20 +237,29 @@ static void iwlagn_unmap_tfd(struct iwl_trans *trans, struct iwl_cmd_meta *meta,
 	for (i = 1; i < num_tbs; i++)
 		dma_unmap_single(trans->dev, iwl_tfd_tb_get_addr(tfd, i),
 				iwl_tfd_tb_get_len(tfd, i), dma_dir);
+<<<<<<< HEAD
 
 	tfd->num_tbs = 0;
+=======
+>>>>>>> 7175f4b... Truncated history
 }
 
 /**
  * iwlagn_txq_free_tfd - Free all chunks referenced by TFD [txq->q.read_ptr]
  * @trans - transport private data
  * @txq - tx queue
+<<<<<<< HEAD
  * @dma_dir - the direction of the DMA mapping
+=======
+ * @index - the index of the TFD to be freed
+ *@dma_dir - the direction of the DMA mapping
+>>>>>>> 7175f4b... Truncated history
  *
  * Does NOT advance any TFD circular buffer read/write indexes
  * Does NOT free the TFD itself (which is within circular buffer)
  */
 void iwlagn_txq_free_tfd(struct iwl_trans *trans, struct iwl_tx_queue *txq,
+<<<<<<< HEAD
 			 enum dma_data_direction dma_dir)
 {
 	struct iwl_tfd *tfd_tmp = txq->tfds;
@@ -263,12 +272,25 @@ void iwlagn_txq_free_tfd(struct iwl_trans *trans, struct iwl_tx_queue *txq,
 
 	/* We have only q->n_window txq->entries, but we use q->n_bd tfds */
 	iwlagn_unmap_tfd(trans, &txq->meta[idx], &tfd_tmp[rd_ptr], dma_dir);
+=======
+	int index, enum dma_data_direction dma_dir)
+{
+	struct iwl_tfd *tfd_tmp = txq->tfds;
+
+	lockdep_assert_held(&txq->lock);
+
+	iwlagn_unmap_tfd(trans, &txq->meta[index], &tfd_tmp[index], dma_dir);
+>>>>>>> 7175f4b... Truncated history
 
 	/* free SKB */
 	if (txq->skbs) {
 		struct sk_buff *skb;
 
+<<<<<<< HEAD
 		skb = txq->skbs[idx];
+=======
+		skb = txq->skbs[index];
+>>>>>>> 7175f4b... Truncated history
 
 		/* Can be called from irqs-disabled context
 		 * If skb is not NULL, it means that the whole queue is being
@@ -276,7 +298,11 @@ void iwlagn_txq_free_tfd(struct iwl_trans *trans, struct iwl_tx_queue *txq,
 		 */
 		if (skb) {
 			iwl_op_mode_free_skb(trans->op_mode, skb);
+<<<<<<< HEAD
 			txq->skbs[idx] = NULL;
+=======
+			txq->skbs[index] = NULL;
+>>>>>>> 7175f4b... Truncated history
 		}
 	}
 }
@@ -1106,7 +1132,11 @@ int iwl_tx_queue_reclaim(struct iwl_trans *trans, int txq_id, int index,
 
 		iwlagn_txq_inval_byte_cnt_tbl(trans, txq);
 
+<<<<<<< HEAD
 		iwlagn_txq_free_tfd(trans, txq, DMA_TO_DEVICE);
+=======
+		iwlagn_txq_free_tfd(trans, txq, txq->q.read_ptr, DMA_TO_DEVICE);
+>>>>>>> 7175f4b... Truncated history
 		freed++;
 	}
 	return freed;

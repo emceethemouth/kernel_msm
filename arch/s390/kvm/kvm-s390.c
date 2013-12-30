@@ -677,6 +677,7 @@ int kvm_s390_vcpu_store_status(struct kvm_vcpu *vcpu, unsigned long addr)
 	} else
 		prefix = 0;
 
+<<<<<<< HEAD
 	/*
 	 * The guest FPRS and ACRS are in the host FPRS/ACRS due to the lazy
 	 * copying in vcpu load/put. Lets update our copies before we save
@@ -685,6 +686,8 @@ int kvm_s390_vcpu_store_status(struct kvm_vcpu *vcpu, unsigned long addr)
 	save_fp_regs(&vcpu->arch.guest_fpregs);
 	save_access_regs(vcpu->run->s.regs.acrs);
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	if (__guestcopy(vcpu, addr + offsetof(struct save_area, fp_regs),
 			vcpu->arch.guest_fpregs.fprs, 128, prefix))
 		return -EFAULT;

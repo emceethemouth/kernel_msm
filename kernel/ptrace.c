@@ -254,8 +254,12 @@ ok:
 	smp_rmb();
 	if (task->mm)
 		dumpable = get_dumpable(task->mm);
+<<<<<<< HEAD
 	if (dumpable != SUID_DUMP_USER &&
 	    !ptrace_has_cap(task_user_ns(task), mode))
+=======
+	if (!dumpable  && !ptrace_has_cap(task_user_ns(task), mode))
+>>>>>>> 7175f4b... Truncated history
 		return -EPERM;
 
 	return security_ptrace_access_check(task, mode);

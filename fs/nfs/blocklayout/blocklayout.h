@@ -41,7 +41,10 @@
 
 #define PAGE_CACHE_SECTORS (PAGE_CACHE_SIZE >> SECTOR_SHIFT)
 #define PAGE_CACHE_SECTOR_SHIFT (PAGE_CACHE_SHIFT - SECTOR_SHIFT)
+<<<<<<< HEAD
 #define SECTOR_SIZE (1 << SECTOR_SHIFT)
+=======
+>>>>>>> 7175f4b... Truncated history
 
 struct block_mount_id {
 	spinlock_t			bm_lock;    /* protects list */

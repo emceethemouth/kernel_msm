@@ -1348,6 +1348,7 @@ static int pmz_verify_port(struct uart_port *port, struct serial_struct *ser)
 static int pmz_poll_get_char(struct uart_port *port)
 {
 	struct uart_pmac_port *uap = (struct uart_pmac_port *)port;
+<<<<<<< HEAD
 	int tries = 2;
 
 	while (tries) {
@@ -1358,6 +1359,12 @@ static int pmz_poll_get_char(struct uart_port *port)
 	}
 
 	return NO_POLL_CHAR;
+=======
+
+	while ((read_zsreg(uap, R0) & Rx_CH_AV) == 0)
+		udelay(5);
+	return read_zsdata(uap);
+>>>>>>> 7175f4b... Truncated history
 }
 
 static void pmz_poll_put_char(struct uart_port *port, unsigned char c)
@@ -2051,9 +2058,12 @@ static int __init pmz_console_init(void)
 	/* Probe ports */
 	pmz_probe();
 
+<<<<<<< HEAD
 	if (pmz_ports_count == 0)
 		return -ENODEV;
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	/* TODO: Autoprobe console based on OF */
 	/* pmz_console.index = i; */
 	register_console(&pmz_console);

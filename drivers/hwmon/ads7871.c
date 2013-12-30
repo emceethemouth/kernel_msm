@@ -139,12 +139,15 @@ static ssize_t show_voltage(struct device *dev,
 	}
 }
 
+<<<<<<< HEAD
 static ssize_t ads7871_show_name(struct device *dev,
 				 struct device_attribute *devattr, char *buf)
 {
 	return sprintf(buf, "%s\n", to_spi_device(dev)->modalias);
 }
 
+=======
+>>>>>>> 7175f4b... Truncated history
 static SENSOR_DEVICE_ATTR(in0_input, S_IRUGO, show_voltage, NULL, 0);
 static SENSOR_DEVICE_ATTR(in1_input, S_IRUGO, show_voltage, NULL, 1);
 static SENSOR_DEVICE_ATTR(in2_input, S_IRUGO, show_voltage, NULL, 2);
@@ -154,8 +157,11 @@ static SENSOR_DEVICE_ATTR(in5_input, S_IRUGO, show_voltage, NULL, 5);
 static SENSOR_DEVICE_ATTR(in6_input, S_IRUGO, show_voltage, NULL, 6);
 static SENSOR_DEVICE_ATTR(in7_input, S_IRUGO, show_voltage, NULL, 7);
 
+<<<<<<< HEAD
 static DEVICE_ATTR(name, S_IRUGO, ads7871_show_name, NULL);
 
+=======
+>>>>>>> 7175f4b... Truncated history
 static struct attribute *ads7871_attributes[] = {
 	&sensor_dev_attr_in0_input.dev_attr.attr,
 	&sensor_dev_attr_in1_input.dev_attr.attr,
@@ -165,7 +171,10 @@ static struct attribute *ads7871_attributes[] = {
 	&sensor_dev_attr_in5_input.dev_attr.attr,
 	&sensor_dev_attr_in6_input.dev_attr.attr,
 	&sensor_dev_attr_in7_input.dev_attr.attr,
+<<<<<<< HEAD
 	&dev_attr_name.attr,
+=======
+>>>>>>> 7175f4b... Truncated history
 	NULL
 };
 

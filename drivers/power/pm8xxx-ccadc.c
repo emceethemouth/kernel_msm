@@ -680,7 +680,11 @@ DEFINE_SIMPLE_ATTRIBUTE(reg_fops, get_reg, set_reg, "0x%02llx\n");
 
 static int get_calc(void *data, u64 * val)
 {
+<<<<<<< HEAD
 	int ibat = 0, rc;
+=======
+	int ibat, rc;
+>>>>>>> 7175f4b... Truncated history
 
 	rc = pm8xxx_ccadc_get_battery_current(&ibat);
 	*val = ibat;

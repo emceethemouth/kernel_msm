@@ -16,8 +16,12 @@ struct ceph_crypto_key {
 
 static inline void ceph_crypto_key_destroy(struct ceph_crypto_key *key)
 {
+<<<<<<< HEAD
 	if (key)
 		kfree(key->key);
+=======
+	kfree(key->key);
+>>>>>>> 7175f4b... Truncated history
 }
 
 extern int ceph_crypto_key_clone(struct ceph_crypto_key *dst,

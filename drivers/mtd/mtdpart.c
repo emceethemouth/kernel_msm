@@ -719,8 +719,11 @@ static const char *default_mtd_part_types[] = {
  * partition parsers, specified in @types. However, if @types is %NULL, then
  * the default list of parsers is used. The default list contains only the
  * "cmdlinepart" and "ofpart" parsers ATM.
+<<<<<<< HEAD
  * Note: If there are more then one parser in @types, the kernel only takes the
  * partitions parsed out by the first parser.
+=======
+>>>>>>> 7175f4b... Truncated history
  *
  * This function may return:
  * o a negative error code in case of failure
@@ -745,12 +748,20 @@ int parse_mtd_partitions(struct mtd_info *master, const char **types,
 		if (!parser)
 			continue;
 		ret = (*parser->parse_fn)(master, pparts, data);
+<<<<<<< HEAD
 		put_partition_parser(parser);
 		if (ret > 0) {
 			printk(KERN_NOTICE "%d %s partitions found on MTD device %s\n",
 			       ret, parser->name, master->name);
 			break;
 		}
+=======
+		if (ret > 0) {
+			printk(KERN_NOTICE "%d %s partitions found on MTD device %s\n",
+			       ret, parser->name, master->name);
+		}
+		put_partition_parser(parser);
+>>>>>>> 7175f4b... Truncated history
 	}
 	return ret;
 }

@@ -127,7 +127,32 @@ static int walk_hugetlb_range(struct vm_area_struct *vma,
 	return 0;
 }
 
+<<<<<<< HEAD
 #else /* CONFIG_HUGETLB_PAGE */
+=======
+static struct vm_area_struct* hugetlb_vma(unsigned long addr, struct mm_walk *walk)
+{
+	struct vm_area_struct *vma;
+
+	/* We don't need vma lookup at all. */
+	if (!walk->hugetlb_entry)
+		return NULL;
+
+	VM_BUG_ON(!rwsem_is_locked(&walk->mm->mmap_sem));
+	vma = find_vma(walk->mm, addr);
+	if (vma && vma->vm_start <= addr && is_vm_hugetlb_page(vma))
+		return vma;
+
+	return NULL;
+}
+
+#else /* CONFIG_HUGETLB_PAGE */
+static struct vm_area_struct* hugetlb_vma(unsigned long addr, struct mm_walk *walk)
+{
+	return NULL;
+}
+
+>>>>>>> 7175f4b... Truncated history
 static int walk_hugetlb_range(struct vm_area_struct *vma,
 			      unsigned long addr, unsigned long end,
 			      struct mm_walk *walk)
@@ -178,15 +203,22 @@ int walk_page_range(unsigned long addr, unsigned long end,
 	if (!walk->mm)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	VM_BUG_ON(!rwsem_is_locked(&walk->mm->mmap_sem));
 
 	pgd = pgd_offset(walk->mm, addr);
 	do {
 		struct vm_area_struct *vma = NULL;
+=======
+	pgd = pgd_offset(walk->mm, addr);
+	do {
+		struct vm_area_struct *vma;
+>>>>>>> 7175f4b... Truncated history
 
 		next = pgd_addr_end(addr, end);
 
 		/*
+<<<<<<< HEAD
 		 * This function was not intended to be vma based.
 		 * But there are vma special cases to be handled:
 		 * - hugetlb vma's
@@ -225,6 +257,25 @@ int walk_page_range(unsigned long addr, unsigned long end,
 				pgd = pgd_offset(walk->mm, next);
 				continue;
 			}
+=======
+		 * handle hugetlb vma individually because pagetable walk for
+		 * the hugetlb page is dependent on the architecture and
+		 * we can't handled it in the same manner as non-huge pages.
+		 */
+		vma = hugetlb_vma(addr, walk);
+		if (vma) {
+			if (vma->vm_end < next)
+				next = vma->vm_end;
+			/*
+			 * Hugepage is very tightly coupled with vma, so
+			 * walk through hugetlb entries within a given vma.
+			 */
+			err = walk_hugetlb_range(vma, addr, next, walk);
+			if (err)
+				break;
+			pgd = pgd_offset(walk->mm, next);
+			continue;
+>>>>>>> 7175f4b... Truncated history
 		}
 
 		if (pgd_none_or_clear_bad(pgd)) {

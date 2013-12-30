@@ -73,8 +73,11 @@ vlan_dev_get_egress_qos_mask(struct net_device *dev, struct sk_buff *skb)
 {
 	struct vlan_priority_tci_mapping *mp;
 
+<<<<<<< HEAD
 	smp_rmb(); /* coupled with smp_wmb() in vlan_dev_set_egress_priority() */
 
+=======
+>>>>>>> 7175f4b... Truncated history
 	mp = vlan_dev_priv(dev)->egress_priority_map[(skb->priority & 0xF)];
 	while (mp) {
 		if (mp->priority == skb->priority) {
@@ -237,11 +240,14 @@ int vlan_dev_set_egress_priority(const struct net_device *dev,
 	np->next = mp;
 	np->priority = skb_prio;
 	np->vlan_qos = vlan_qos;
+<<<<<<< HEAD
 	/* Before inserting this element in hash table, make sure all its fields
 	 * are committed to memory.
 	 * coupled with smp_rmb() in vlan_dev_get_egress_qos_mask()
 	 */
 	smp_wmb();
+=======
+>>>>>>> 7175f4b... Truncated history
 	vlan->egress_priority_map[skb_prio & 0xF] = np;
 	if (vlan_qos)
 		vlan->nr_egress_mappings++;
@@ -525,6 +531,7 @@ static const struct header_ops vlan_header_ops = {
 	.parse	 = eth_header_parse,
 };
 
+<<<<<<< HEAD
 static int vlan_passthru_hard_header(struct sk_buff *skb, struct net_device *dev,
 				     unsigned short type,
 				     const void *daddr, const void *saddr,
@@ -542,6 +549,8 @@ static const struct header_ops vlan_passthru_header_ops = {
 	.parse	 = eth_header_parse,
 };
 
+=======
+>>>>>>> 7175f4b... Truncated history
 static const struct net_device_ops vlan_netdev_ops;
 
 static int vlan_dev_init(struct net_device *dev)
@@ -581,7 +590,11 @@ static int vlan_dev_init(struct net_device *dev)
 
 	dev->needed_headroom = real_dev->needed_headroom;
 	if (real_dev->features & NETIF_F_HW_VLAN_TX) {
+<<<<<<< HEAD
 		dev->header_ops      = &vlan_passthru_header_ops;
+=======
+		dev->header_ops      = real_dev->header_ops;
+>>>>>>> 7175f4b... Truncated history
 		dev->hard_header_len = real_dev->hard_header_len;
 	} else {
 		dev->header_ops      = &vlan_header_ops;
@@ -622,7 +635,11 @@ static netdev_features_t vlan_dev_fix_features(struct net_device *dev,
 	netdev_features_t features)
 {
 	struct net_device *real_dev = vlan_dev_priv(dev)->real_dev;
+<<<<<<< HEAD
 	netdev_features_t old_features = features;
+=======
+	u32 old_features = features;
+>>>>>>> 7175f4b... Truncated history
 
 	features &= real_dev->vlan_features;
 	features |= NETIF_F_RXCSUM;

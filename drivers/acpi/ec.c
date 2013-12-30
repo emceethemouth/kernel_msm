@@ -71,6 +71,12 @@ enum ec_command {
 #define ACPI_EC_UDELAY_GLK	1000	/* Wait 1ms max. to get global lock */
 #define ACPI_EC_MSI_UDELAY	550	/* Wait 550us for MSI EC */
 
+<<<<<<< HEAD
+=======
+#define ACPI_EC_STORM_THRESHOLD 8	/* number of false interrupts
+					   per one transaction */
+
+>>>>>>> 7175f4b... Truncated history
 enum {
 	EC_FLAGS_QUERY_PENDING,		/* Query is pending */
 	EC_FLAGS_GPE_STORM,		/* GPE storm detected */
@@ -84,6 +90,7 @@ static unsigned int ec_delay __read_mostly = ACPI_EC_DELAY;
 module_param(ec_delay, uint, 0644);
 MODULE_PARM_DESC(ec_delay, "Timeout(ms) waited until an EC command completes");
 
+<<<<<<< HEAD
 /*
  * If the number of false interrupts per one transaction exceeds
  * this threshold, will think there is a GPE storm happened and
@@ -93,6 +100,8 @@ static unsigned int ec_storm_threshold  __read_mostly = 8;
 module_param(ec_storm_threshold, uint, 0644);
 MODULE_PARM_DESC(ec_storm_threshold, "Maxim false GPE numbers not considered as GPE storm");
 
+=======
+>>>>>>> 7175f4b... Truncated history
 /* If we find an EC via the ECDT, we need to keep a ptr to its context */
 /* External interfaces use first EC only, so remember */
 typedef int (*acpi_ec_query_func) (void *data);
@@ -217,7 +226,11 @@ static int ec_check_sci_sync(struct acpi_ec *ec, u8 state)
 static int ec_poll(struct acpi_ec *ec)
 {
 	unsigned long flags;
+<<<<<<< HEAD
 	int repeat = 5; /* number of command restarts */
+=======
+	int repeat = 2; /* number of command restarts */
+>>>>>>> 7175f4b... Truncated history
 	while (repeat--) {
 		unsigned long delay = jiffies +
 			msecs_to_jiffies(ec_delay);
@@ -235,6 +248,11 @@ static int ec_poll(struct acpi_ec *ec)
 			}
 			advance_transaction(ec, acpi_ec_read_status(ec));
 		} while (time_before(jiffies, delay));
+<<<<<<< HEAD
+=======
+		if (acpi_ec_read_status(ec) & ACPI_EC_FLAG_IBF)
+			break;
+>>>>>>> 7175f4b... Truncated history
 		pr_debug(PREFIX "controller reset, restart transaction\n");
 		spin_lock_irqsave(&ec->curr_lock, flags);
 		start_transaction(ec);
@@ -323,7 +341,11 @@ static int acpi_ec_transaction(struct acpi_ec *ec, struct transaction *t)
 		msleep(1);
 		/* It is safe to enable the GPE outside of the transaction. */
 		acpi_enable_gpe(NULL, ec->gpe);
+<<<<<<< HEAD
 	} else if (t->irq_count > ec_storm_threshold) {
+=======
+	} else if (t->irq_count > ACPI_EC_STORM_THRESHOLD) {
+>>>>>>> 7175f4b... Truncated history
 		pr_info(PREFIX "GPE storm detected, "
 			"transactions will use polling mode\n");
 		set_bit(EC_FLAGS_GPE_STORM, &ec->flags);
@@ -928,6 +950,7 @@ static int ec_flag_msi(const struct dmi_system_id *id)
 	return 0;
 }
 
+<<<<<<< HEAD
 /*
  * Clevo M720 notebook actually works ok with IRQ mode, if we lifted
  * the GPE storm threshold back to 20
@@ -939,6 +962,8 @@ static int ec_enlarge_storm_threshold(const struct dmi_system_id *id)
 	return 0;
 }
 
+=======
+>>>>>>> 7175f4b... Truncated history
 static struct dmi_system_id __initdata ec_dmi_table[] = {
 	{
 	ec_skip_dsdt_scan, "Compal JFL92", {
@@ -970,6 +995,7 @@ static struct dmi_system_id __initdata ec_dmi_table[] = {
 	{
 	ec_validate_ecdt, "ASUS hardware", {
 	DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK Computer Inc.") }, NULL},
+<<<<<<< HEAD
 	{
 	ec_enlarge_storm_threshold, "CLEVO hardware", {
 	DMI_MATCH(DMI_SYS_VENDOR, "CLEVO Co."),
@@ -985,6 +1011,12 @@ static struct dmi_system_id __initdata ec_dmi_table[] = {
 	{},
 };
 
+=======
+	{},
+};
+
+
+>>>>>>> 7175f4b... Truncated history
 int __init acpi_ec_ecdt_probe(void)
 {
 	acpi_status status;
