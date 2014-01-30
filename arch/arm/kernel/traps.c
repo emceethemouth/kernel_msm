@@ -37,6 +37,8 @@
 
 #include "signal.h"
 
+#include <trace/events/exception.h>
+
 static const char *handler[]= {
 	"prefetch abort",
 	"data abort",
