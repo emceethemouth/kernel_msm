@@ -110,10 +110,10 @@ libfdt_hdrs        := fdt.h libfdt.h libfdt_internal.h
 libfdt_objs        := $(addsuffix .o, $(basename $(libfdt)))
 
 $(addprefix $(obj)/,$(libfdt) $(libfdt_hdrs)): $(obj)/%: $(srctree)/scripts/dtc/libfdt/%
-        $(call cmd,shipped)
+	$(call cmd,shipped)
 
 $(addprefix $(obj)/,$(libfdt_objs) atags_to_fdt.o): \
-        $(addprefix $(obj)/,$(libfdt_hdrs))
+	$(addprefix $(obj)/,$(libfdt_hdrs))
 
 ifeq ($(CONFIG_ARM_ATAG_DTB_COMPAT),y)
 OBJS        += $(libfdt_objs) atags_to_fdt.o
@@ -161,14 +161,14 @@ AFLAGS_lib1funcs.o += -Wa,-mcpu=cortex-a15
 lib1funcs = $(obj)/lib1funcs.o
 
 $(obj)/lib1funcs.S: $(srctree)/arch/$(SRCARCH)/lib/lib1funcs.S
-        $(call cmd,shipped)
+	$(call cmd,shipped)
 
 # For __aeabi_llsl
 AFLAGS_ashldi3.o += -Wa,-mcpu=cortex-a15
 ashldi3 = $(obj)/ashldi3.o
 
 $(obj)/ashldi3.S: $(srctree)/arch/$(SRCARCH)/lib/ashldi3.S
-        $(call cmd,shipped)
+	$(call cmd,shipped)
 
 # We need to prevent any GOTOFF relocs being used with references
 # to symbols in the .bss section since we cannot relocate them
