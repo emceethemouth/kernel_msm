@@ -192,20 +192,20 @@ fi
 
 $(obj)/vmlinux: $(obj)/vmlinux.lds $(obj)/$(HEAD) $(obj)/$(MISC) $(obj)/$(DECOMPRESS) $(obj)/piggy.$(suffix_y).o \
                 $(addprefix $(obj)/, $(OBJS)) $(lib1funcs) $(ashldi3) FORCE
-        @$(check_for_multiple_zreladdr)
-        $(call if_changed,ld)
-        @$(check_for_bad_syms)
+	@$(check_for_multiple_zreladdr)
+	$(call if_changed,ld)
+	@$(check_for_bad_syms)
 
 AFLAGS_piggy.$(suffix_y).o += -Wa,-mcpu=cortex-a15
 $(obj)/piggy.$(suffix_y): $(obj)/../Image FORCE
-        $(call if_changed,$(suffix_y))
+	$(call if_changed,$(suffix_y))
 
 $(obj)/piggy.$(suffix_y).o:  $(obj)/piggy.$(suffix_y) FORCE
 
 CFLAGS_font.o := -Dstatic=
 
 $(obj)/font.c: $(FONTC)
-        $(call cmd,shipped)
+	$(call cmd,shipped)
 
 $(obj)/vmlinux.lds: $(obj)/vmlinux.lds.in arch/arm/boot/Makefile $(KCONFIG_CONFIG)
-        @sed "$(SEDFLAGS)" < $< > $@
+	@sed "$(SEDFLAGS)" < $< > $@

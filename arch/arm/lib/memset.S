@@ -28,7 +28,6 @@
  * memset again.
  */
 
-ENTRY(memset)
 /*
  * Preserve the contents of r0 for the return value.
  */
