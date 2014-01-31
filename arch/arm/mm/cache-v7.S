@@ -259,7 +259,6 @@ ENTRY(v7_coherent_user_range)
         mov        r12, r12, lsl #12
         add        r12, r12, #4096
         b        3b
- UNWIND(.fnend                )
 ENDPROC(v7_coherent_kern_range)
 ENDPROC(v7_coherent_user_range)
 
