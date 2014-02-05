@@ -69,10 +69,7 @@
 
 #define VIAUSB20_PACKET_HEADER          0x04
 
-<<<<<<< HEAD
 #define USB_REG4	0x604
-=======
->>>>>>> 7175f4b... Truncated history
 
 /*---------------------  Export Classes  ----------------------------*/
 

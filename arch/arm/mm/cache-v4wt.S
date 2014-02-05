@@ -125,10 +125,7 @@ ENTRY(v4wt_coherent_user_range)
 	add	r0, r0, #CACHE_DLINESIZE
 	cmp	r0, r1
 	blo	1b
-<<<<<<< HEAD
 	mov	r0, #0
-=======
->>>>>>> 7175f4b... Truncated history
 	mov	pc, lr
 
 /*
@@ -199,12 +196,9 @@ ENTRY(v4wt_dma_map_area)
 ENDPROC(v4wt_dma_unmap_area)
 ENDPROC(v4wt_dma_map_area)
 
-<<<<<<< HEAD
 	.globl  v4wt_flush_kern_cache_louis
 	.equ  v4wt_flush_kern_cache_louis, v4wt_flush_kern_cache_all
 
-=======
->>>>>>> 7175f4b... Truncated history
 	__INITDATA
 
 	@ define struct cpu_cache_fns (see <asm/cacheflush.h> and proc-macros.S)

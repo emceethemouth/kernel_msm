@@ -104,11 +104,7 @@ config SATA_FSL
 	  If unsure, say N.
 
 config SATA_INIC162X
-<<<<<<< HEAD
 	tristate "Initio 162x SATA support (Very Experimental)"
-=======
-	tristate "Initio 162x SATA support"
->>>>>>> 7175f4b... Truncated history
 	depends on PCI
 	help
 	  This option enables support for Initio 162x Serial ATA.

@@ -214,7 +214,6 @@ static int xen_hvm_console_init(void)
 	/* already configured */
 	if (info->intf != NULL)
 		return 0;
-<<<<<<< HEAD
 	/*
 	 * If the toolstack (or the hypervisor) hasn't set these values, the
 	 * default value is 0. Even though mfn = 0 and evtchn = 0 are
@@ -233,26 +232,6 @@ static int xen_hvm_console_init(void)
 	info->intf = ioremap(mfn << PAGE_SHIFT, PAGE_SIZE);
 	if (info->intf == NULL)
 		goto err;
-=======
-
-	r = hvm_get_parameter(HVM_PARAM_CONSOLE_EVTCHN, &v);
-	if (r < 0) {
-		kfree(info);
-		return -ENODEV;
-	}
-	info->evtchn = v;
-	hvm_get_parameter(HVM_PARAM_CONSOLE_PFN, &v);
-	if (r < 0) {
-		kfree(info);
-		return -ENODEV;
-	}
-	mfn = v;
-	info->intf = ioremap(mfn << PAGE_SHIFT, PAGE_SIZE);
-	if (info->intf == NULL) {
-		kfree(info);
-		return -ENODEV;
-	}
->>>>>>> 7175f4b... Truncated history
 	info->vtermno = HVC_COOKIE;
 
 	spin_lock(&xencons_lock);
@@ -260,12 +239,9 @@ static int xen_hvm_console_init(void)
 	spin_unlock(&xencons_lock);
 
 	return 0;
-<<<<<<< HEAD
 err:
 	kfree(info);
 	return -ENODEV;
-=======
->>>>>>> 7175f4b... Truncated history
 }
 
 static int xen_pv_console_init(void)
@@ -457,15 +433,9 @@ static int __devinit xencons_probe(struct xenbus_device *dev,
 	if (devid == 0)
 		return -ENODEV;
 
-<<<<<<< HEAD
 	info = kzalloc(sizeof(struct xencons_info), GFP_KERNEL);
 	if (!info)
 		return -ENOMEM;
-=======
-	info = kzalloc(sizeof(struct xencons_info), GFP_KERNEL | __GFP_ZERO);
-	if (!info)
-		goto error_nomem;
->>>>>>> 7175f4b... Truncated history
 	dev_set_drvdata(&dev->dev, info);
 	info->xbdev = dev;
 	info->vtermno = xenbus_devid_to_vtermno(devid);

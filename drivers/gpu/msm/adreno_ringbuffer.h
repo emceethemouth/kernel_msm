@@ -108,11 +108,7 @@ int adreno_ringbuffer_init(struct kgsl_device *device);
 
 int adreno_ringbuffer_warm_start(struct adreno_ringbuffer *rb);
 
-<<<<<<< HEAD
 int adreno_ringbuffer_cold_start(struct adreno_ringbuffer *rb);
-=======
-int adreno_ringbuffer_start(struct adreno_ringbuffer *rb);
->>>>>>> 7175f4b... Truncated history
 
 void adreno_ringbuffer_stop(struct adreno_ringbuffer *rb);
 

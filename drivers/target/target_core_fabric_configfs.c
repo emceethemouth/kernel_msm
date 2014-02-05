@@ -72,15 +72,12 @@ static int target_fabric_mappedlun_link(
 	struct se_portal_group *se_tpg;
 	struct config_item *nacl_ci, *tpg_ci, *tpg_ci_s, *wwn_ci, *wwn_ci_s;
 	int ret = 0, lun_access;
-<<<<<<< HEAD
 
 	if (lun->lun_link_magic != SE_LUN_LINK_MAGIC) {
 		pr_err("Bad lun->lun_link_magic, not a valid lun_ci pointer:"
 			" %p to struct lun: %p\n", lun_ci, lun);
 		return -EFAULT;
 	}
-=======
->>>>>>> 7175f4b... Truncated history
 	/*
 	 * Ensure that the source port exists
 	 */
@@ -359,7 +356,6 @@ static struct config_group *target_fabric_make_mappedlun(
 		ret = -EINVAL;
 		goto out;
 	}
-<<<<<<< HEAD
 	if (mapped_lun > (TRANSPORT_MAX_LUNS_PER_TPG-1)) {
 		pr_err("Mapped LUN: %lu exceeds TRANSPORT_MAX_LUNS_PER_TPG"
 			"-1: %u for Target Portal Group: %u\n", mapped_lun,
@@ -371,11 +367,6 @@ static struct config_group *target_fabric_make_mappedlun(
 
 	lacl = core_dev_init_initiator_node_lun_acl(se_tpg, se_nacl,
 			mapped_lun, &ret);
-=======
-
-	lacl = core_dev_init_initiator_node_lun_acl(se_tpg, mapped_lun,
-			config_item_name(acl_ci), &ret);
->>>>>>> 7175f4b... Truncated history
 	if (!lacl) {
 		ret = -EINVAL;
 		goto out;
@@ -786,14 +777,11 @@ static int target_fabric_port_link(
 		ret = -ENODEV;
 		goto out;
 	}
-<<<<<<< HEAD
 	if (dev->dev_link_magic != SE_DEV_LINK_MAGIC) {
 		pr_err("Bad dev->dev_link_magic, not a valid se_dev_ci pointer:"
 			" %p to struct se_device: %p\n", se_dev_ci, dev);
 		return -EFAULT;
 	}
-=======
->>>>>>> 7175f4b... Truncated history
 
 	lun_p = core_dev_add_lun(se_tpg, dev->se_hba, dev,
 				lun->unpacked_lun);

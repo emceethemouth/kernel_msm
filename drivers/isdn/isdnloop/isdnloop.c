@@ -16,10 +16,6 @@
 #include <linux/sched.h>
 #include "isdnloop.h"
 
-<<<<<<< HEAD
-=======
-static char *revision = "$Revision: 1.11.6.7 $";
->>>>>>> 7175f4b... Truncated history
 static char *isdnloop_id = "loop0";
 
 MODULE_DESCRIPTION("ISDN4Linux: Pseudo Driver that simulates an ISDN card");
@@ -1087,15 +1083,10 @@ isdnloop_start(isdnloop_card *card, isdnloop_sdef *sdefp)
 			spin_unlock_irqrestore(&card->isdnloop_lock, flags);
 			return -ENOMEM;
 		}
-<<<<<<< HEAD
 		for (i = 0; i < 3; i++) {
 			strlcpy(card->s0num[i], sdef.num[i],
 				sizeof(card->s0num[0]));
 		}
-=======
-		for (i = 0; i < 3; i++)
-			strcpy(card->s0num[i], sdef.num[i]);
->>>>>>> 7175f4b... Truncated history
 		break;
 	case ISDN_PTYPE_1TR6:
 		if (isdnloop_fake(card, "DRV1.04TC-1TR6-CAPI-CNS-BASIS-29.11.95",
@@ -1108,11 +1099,7 @@ isdnloop_start(isdnloop_card *card, isdnloop_sdef *sdefp)
 			spin_unlock_irqrestore(&card->isdnloop_lock, flags);
 			return -ENOMEM;
 		}
-<<<<<<< HEAD
 		strlcpy(card->s0num[0], sdef.num[0], sizeof(card->s0num[0]));
-=======
-		strcpy(card->s0num[0], sdef.num[0]);
->>>>>>> 7175f4b... Truncated history
 		card->s0num[1][0] = '\0';
 		card->s0num[2][0] = '\0';
 		break;
@@ -1508,20 +1495,6 @@ isdnloop_addcard(char *id1)
 static int __init
 isdnloop_init(void)
 {
-<<<<<<< HEAD
-=======
-	char *p;
-	char rev[10];
-
-	if ((p = strchr(revision, ':'))) {
-		strcpy(rev, p + 1);
-		p = strchr(rev, '$');
-		*p = 0;
-	} else
-		strcpy(rev, " ??? ");
-	printk(KERN_NOTICE "isdnloop-ISDN-driver Rev%s\n", rev);
-
->>>>>>> 7175f4b... Truncated history
 	if (isdnloop_id)
 		return (isdnloop_addcard(isdnloop_id));
 

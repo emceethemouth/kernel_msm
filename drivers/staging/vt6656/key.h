@@ -58,11 +58,7 @@
 typedef struct tagSKeyItem
 {
     BOOL        bKeyValid;
-<<<<<<< HEAD
 	u32 uKeyLength;
-=======
-    unsigned long       uKeyLength;
->>>>>>> 7175f4b... Truncated history
     BYTE        abyKey[MAX_KEY_LEN];
     QWORD       KeyRSC;
     DWORD       dwTSC47_16;
@@ -111,11 +107,7 @@ BOOL KeybSetKey(
     PSKeyManagement pTable,
     PBYTE           pbyBSSID,
     DWORD           dwKeyIndex,
-<<<<<<< HEAD
 	u32 uKeyLength,
-=======
-    unsigned long           uKeyLength,
->>>>>>> 7175f4b... Truncated history
     PQWORD          pKeyRSC,
     PBYTE           pbyKey,
     BYTE            byKeyDecMode
@@ -154,11 +146,7 @@ BOOL KeybSetDefaultKey(
     void *pDeviceHandler,
     PSKeyManagement pTable,
     DWORD           dwKeyIndex,
-<<<<<<< HEAD
 	u32 uKeyLength,
-=======
-    unsigned long           uKeyLength,
->>>>>>> 7175f4b... Truncated history
     PQWORD          pKeyRSC,
     PBYTE           pbyKey,
     BYTE            byKeyDecMode
@@ -168,11 +156,7 @@ BOOL KeybSetAllGroupKey(
     void *pDeviceHandler,
     PSKeyManagement pTable,
     DWORD           dwKeyIndex,
-<<<<<<< HEAD
 	u32 uKeyLength,
-=======
-    unsigned long           uKeyLength,
->>>>>>> 7175f4b... Truncated history
     PQWORD          pKeyRSC,
     PBYTE           pbyKey,
     BYTE            byKeyDecMode

@@ -152,11 +152,7 @@ static size_t vlan_get_size(const struct net_device *dev)
 	struct vlan_dev_priv *vlan = vlan_dev_priv(dev);
 
 	return nla_total_size(2) +	/* IFLA_VLAN_ID */
-<<<<<<< HEAD
 	       nla_total_size(sizeof(struct ifla_vlan_flags)) + /* IFLA_VLAN_FLAGS */
-=======
-	       sizeof(struct ifla_vlan_flags) + /* IFLA_VLAN_FLAGS */
->>>>>>> 7175f4b... Truncated history
 	       vlan_qos_map_size(vlan->nr_ingress_mappings) +
 	       vlan_qos_map_size(vlan->nr_egress_mappings);
 }

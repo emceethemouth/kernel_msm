@@ -138,7 +138,6 @@ struct blkif_request_discard {
 	uint8_t        _pad3;
 } __attribute__((__packed__));
 
-<<<<<<< HEAD
 struct blkif_request_other {
 	uint8_t      _pad1;
 	blkif_vdev_t _pad2;        /* only for read/write requests         */
@@ -148,17 +147,12 @@ struct blkif_request_other {
 	uint64_t     id;           /* private guest value, echoed in resp  */
 } __attribute__((__packed__));
 
-=======
->>>>>>> 7175f4b... Truncated history
 struct blkif_request {
 	uint8_t        operation;    /* BLKIF_OP_???                         */
 	union {
 		struct blkif_request_rw rw;
 		struct blkif_request_discard discard;
-<<<<<<< HEAD
 		struct blkif_request_other other;
-=======
->>>>>>> 7175f4b... Truncated history
 	} u;
 } __attribute__((__packed__));
 

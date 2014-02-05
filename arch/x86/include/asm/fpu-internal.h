@@ -266,7 +266,6 @@ static inline int restore_fpu_checking(struct task_struct *tsk)
 	/* AMD K7/K8 CPUs don't save/restore FDP/FIP/FOP unless an exception
 	   is pending.  Clear the x87 state here by setting it to fixed
 	   values. "m" is a random variable that should be in L1 */
-<<<<<<< HEAD
 	if (unlikely(static_cpu_has(X86_FEATURE_FXSAVE_LEAK))) {
 		asm volatile(
 			"fnclex\n\t"
@@ -274,14 +273,6 @@ static inline int restore_fpu_checking(struct task_struct *tsk)
 			"fildl %P[addr]"	/* set F?P to defined value */
 			: : [addr] "m" (tsk->thread.fpu.has_fpu));
 	}
-=======
-	alternative_input(
-		ASM_NOP8 ASM_NOP2,
-		"emms\n\t"		/* clear stack tags */
-		"fildl %P[addr]",	/* set F?P to defined value */
-		X86_FEATURE_FXSAVE_LEAK,
-		[addr] "m" (tsk->thread.fpu.has_fpu));
->>>>>>> 7175f4b... Truncated history
 
 	return fpu_restore_checking(&tsk->thread.fpu);
 }
@@ -344,7 +335,6 @@ static inline void __thread_fpu_begin(struct task_struct *tsk)
 typedef struct { int preload; } fpu_switch_t;
 
 /*
-<<<<<<< HEAD
  * Must be run with preemption disabled: this clears the fpu_owner_task,
  * on this CPU.
  *
@@ -356,16 +346,6 @@ static inline void __cpu_disable_lazy_restore(unsigned int cpu)
 	per_cpu(fpu_owner_task, cpu) = NULL;
 }
 
-=======
- * FIXME! We could do a totally lazy restore, but we need to
- * add a per-cpu "this was the task that last touched the FPU
- * on this CPU" variable, and the task needs to have a "I last
- * touched the FPU on this CPU" and check them.
- *
- * We don't do that yet, so "fpu_lazy_restore()" always returns
- * false, but some day..
- */
->>>>>>> 7175f4b... Truncated history
 static inline int fpu_lazy_restore(struct task_struct *new, unsigned int cpu)
 {
 	return new == percpu_read_stable(fpu_owner_task) &&

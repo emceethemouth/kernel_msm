@@ -47,15 +47,9 @@ void pxa27x_clear_otgph(void)
 EXPORT_SYMBOL(pxa27x_clear_otgph);
 
 static unsigned long ac97_reset_config[] = {
-<<<<<<< HEAD
 	GPIO113_AC97_nRESET_GPIO_HIGH,
 	GPIO113_AC97_nRESET,
 	GPIO95_AC97_nRESET_GPIO_HIGH,
-=======
-	GPIO113_GPIO,
-	GPIO113_AC97_nRESET,
-	GPIO95_GPIO,
->>>>>>> 7175f4b... Truncated history
 	GPIO95_AC97_nRESET,
 };
 

@@ -53,13 +53,10 @@
 #include <linux/kthread.h>
 #include "xpc.h"
 
-<<<<<<< HEAD
 #ifdef CONFIG_X86_64
 #include <asm/traps.h>
 #endif
 
-=======
->>>>>>> 7175f4b... Truncated history
 /* define two XPC debug device structures to be used with dev_dbg() et al */
 
 struct device_driver xpc_dbg_name = {
@@ -1086,12 +1083,9 @@ xpc_system_reboot(struct notifier_block *nb, unsigned long event, void *unused)
 	return NOTIFY_DONE;
 }
 
-<<<<<<< HEAD
 /* Used to only allow one cpu to complete disconnect */
 static unsigned int xpc_die_disconnecting;
 
-=======
->>>>>>> 7175f4b... Truncated history
 /*
  * Notify other partitions to deactivate from us by first disengaging from all
  * references to our memory.
@@ -1105,12 +1099,9 @@ xpc_die_deactivate(void)
 	long keep_waiting;
 	long wait_to_print;
 
-<<<<<<< HEAD
 	if (cmpxchg(&xpc_die_disconnecting, 0, 1))
 		return;
 
-=======
->>>>>>> 7175f4b... Truncated history
 	/* keep xpc_hb_checker thread from doing anything (just in case) */
 	xpc_exiting = 1;
 
@@ -1178,11 +1169,7 @@ xpc_die_deactivate(void)
  * about the lack of a heartbeat.
  */
 static int
-<<<<<<< HEAD
 xpc_system_die(struct notifier_block *nb, unsigned long event, void *_die_args)
-=======
-xpc_system_die(struct notifier_block *nb, unsigned long event, void *unused)
->>>>>>> 7175f4b... Truncated history
 {
 #ifdef CONFIG_IA64		/* !!! temporary kludge */
 	switch (event) {
@@ -1214,7 +1201,6 @@ xpc_system_die(struct notifier_block *nb, unsigned long event, void *unused)
 		break;
 	}
 #else
-<<<<<<< HEAD
 	struct die_args *die_args = _die_args;
 
 	switch (event) {
@@ -1236,9 +1222,6 @@ xpc_system_die(struct notifier_block *nb, unsigned long event, void *unused)
 	default:
 		xpc_die_deactivate();
 	}
-=======
-	xpc_die_deactivate();
->>>>>>> 7175f4b... Truncated history
 #endif
 
 	return NOTIFY_DONE;

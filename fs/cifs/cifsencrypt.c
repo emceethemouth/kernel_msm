@@ -369,11 +369,7 @@ find_domain_name(struct cifs_ses *ses, const struct nls_table *nls_cp)
 		if (blobptr + attrsize > blobend)
 			break;
 		if (type == NTLMSSP_AV_NB_DOMAIN_NAME) {
-<<<<<<< HEAD
 			if (!attrsize || attrsize >= CIFS_MAX_DOMAINNAME_LEN)
-=======
-			if (!attrsize)
->>>>>>> 7175f4b... Truncated history
 				break;
 			if (!ses->domainName) {
 				ses->domainName =
@@ -398,11 +394,7 @@ static int calc_ntlmv2_hash(struct cifs_ses *ses, char *ntlmv2_hash,
 	int rc = 0;
 	int len;
 	char nt_hash[CIFS_NTHASH_SIZE];
-<<<<<<< HEAD
 	__le16 *user;
-=======
-	wchar_t *user;
->>>>>>> 7175f4b... Truncated history
 	wchar_t *domain;
 	wchar_t *server;
 
@@ -427,11 +419,7 @@ static int calc_ntlmv2_hash(struct cifs_ses *ses, char *ntlmv2_hash,
 		return rc;
 	}
 
-<<<<<<< HEAD
 	/* convert ses->user_name to unicode */
-=======
-	/* convert ses->user_name to unicode and uppercase */
->>>>>>> 7175f4b... Truncated history
 	len = ses->user_name ? strlen(ses->user_name) : 0;
 	user = kmalloc(2 + (len * 2), GFP_KERNEL);
 	if (user == NULL) {
@@ -441,11 +429,7 @@ static int calc_ntlmv2_hash(struct cifs_ses *ses, char *ntlmv2_hash,
 	}
 
 	if (len) {
-<<<<<<< HEAD
 		len = cifs_strtoUTF16(user, ses->user_name, len, nls_cp);
-=======
-		len = cifs_strtoUTF16((__le16 *)user, ses->user_name, len, nls_cp);
->>>>>>> 7175f4b... Truncated history
 		UniStrupr(user);
 	} else {
 		memset(user, '\0', 2);

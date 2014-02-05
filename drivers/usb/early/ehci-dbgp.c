@@ -450,11 +450,7 @@ static int dbgp_ehci_startup(void)
 	writel(FLAG_CF, &ehci_regs->configured_flag);
 
 	/* Wait until the controller is no longer halted */
-<<<<<<< HEAD
 	loop = 1000;
-=======
-	loop = 10;
->>>>>>> 7175f4b... Truncated history
 	do {
 		status = readl(&ehci_regs->status);
 		if (!(status & STS_HALT))

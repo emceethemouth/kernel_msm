@@ -314,10 +314,7 @@ void machine_shutdown(void)
 void machine_halt(void)
 {
 	machine_shutdown();
-<<<<<<< HEAD
 	local_irq_disable();
-=======
->>>>>>> 7175f4b... Truncated history
 	while (1);
 }
 
@@ -343,10 +340,7 @@ void machine_restart(char *cmd)
 
 	/* Whoops - the platform was unable to reboot. Tell the user! */
 	printk("Reboot failed -- System halted\n");
-<<<<<<< HEAD
 	local_irq_disable();
-=======
->>>>>>> 7175f4b... Truncated history
 	while (1);
 }
 
@@ -633,10 +627,7 @@ EXPORT_SYMBOL(kernel_thread);
 unsigned long get_wchan(struct task_struct *p)
 {
 	struct stackframe frame;
-<<<<<<< HEAD
 	unsigned long stack_page;
-=======
->>>>>>> 7175f4b... Truncated history
 	int count = 0;
 	if (!p || p == current || p->state == TASK_RUNNING)
 		return 0;
@@ -645,17 +636,11 @@ unsigned long get_wchan(struct task_struct *p)
 	frame.sp = thread_saved_sp(p);
 	frame.lr = 0;			/* recovered from the stack */
 	frame.pc = thread_saved_pc(p);
-<<<<<<< HEAD
 	stack_page = (unsigned long)task_stack_page(p);
 	do {
 		if (frame.sp < stack_page ||
 		    frame.sp >= stack_page + THREAD_SIZE ||
 		    unwind_frame(&frame) < 0)
-=======
-	do {
-		int ret = unwind_frame(&frame);
-		if (ret < 0)
->>>>>>> 7175f4b... Truncated history
 			return 0;
 		if (!in_sched_functions(frame.pc))
 			return frame.pc;

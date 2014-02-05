@@ -40,20 +40,12 @@ long compat_keyctl_instantiate_key_iov(
 					   ARRAY_SIZE(iovstack),
 					   iovstack, &iov, 1);
 	if (ret < 0)
-<<<<<<< HEAD
 		goto err;
-=======
-		return ret;
->>>>>>> 7175f4b... Truncated history
 	if (ret == 0)
 		goto no_payload_free;
 
 	ret = keyctl_instantiate_key_common(id, iov, ioc, ret, ringid);
-<<<<<<< HEAD
 err:
-=======
-
->>>>>>> 7175f4b... Truncated history
 	if (iov != iovstack)
 		kfree(iov);
 	return ret;

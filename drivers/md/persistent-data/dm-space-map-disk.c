@@ -290,7 +290,6 @@ struct dm_space_map *dm_sm_disk_create(struct dm_transaction_manager *tm,
 				       dm_block_t nr_blocks)
 {
 	struct dm_space_map *sm = dm_sm_disk_create_real(tm, nr_blocks);
-<<<<<<< HEAD
 	struct dm_space_map *smc;
 
 	if (IS_ERR_OR_NULL(sm))
@@ -301,9 +300,6 @@ struct dm_space_map *dm_sm_disk_create(struct dm_transaction_manager *tm,
 		dm_sm_destroy(sm);
 
 	return smc;
-=======
-	return dm_sm_checker_create_fresh(sm);
->>>>>>> 7175f4b... Truncated history
 }
 EXPORT_SYMBOL_GPL(dm_sm_disk_create);
 

@@ -159,15 +159,12 @@ static int debug_arch_supported(void)
 		arch >= ARM_DEBUG_ARCH_V7_1;
 }
 
-<<<<<<< HEAD
 /* Can we determine the watchpoint access type from the fsr? */
 static int debug_exception_updates_fsr(void)
 {
 	return 0;
 }
 
-=======
->>>>>>> 7175f4b... Truncated history
 /* Determine number of WRP registers available. */
 static int get_num_wrp_resources(void)
 {
@@ -640,7 +637,6 @@ int arch_validate_hwbkpt_settings(struct perf_event *bp)
 	info->address &= ~alignment_mask;
 	info->ctrl.len <<= offset;
 
-<<<<<<< HEAD
 	if (!bp->overflow_handler) {
 		/*
 		 * Mismatch breakpoints are required for single-stepping
@@ -670,20 +666,6 @@ int arch_validate_hwbkpt_settings(struct perf_event *bp)
 			return -EINVAL;
 	}
 
-=======
-	/*
-	 * Currently we rely on an overflow handler to take
-	 * care of single-stepping the breakpoint when it fires.
-	 * In the case of userspace breakpoints on a core with V7 debug,
-	 * we can use the mismatch feature as a poor-man's hardware
-	 * single-step, but this only works for per-task breakpoints.
-	 */
-	if (!bp->overflow_handler && (arch_check_bp_in_kernelspace(bp) ||
-	    !core_has_mismatch_brps() || !bp->hw.bp_target)) {
-		pr_warning("overflow handler required but none found\n");
-		ret = -EINVAL;
-	}
->>>>>>> 7175f4b... Truncated history
 out:
 	return ret;
 }
@@ -759,19 +741,12 @@ static void watchpoint_handler(unsigned long addr, unsigned int fsr,
 				goto unlock;
 
 			/* Check that the access type matches. */
-<<<<<<< HEAD
 			if (debug_exception_updates_fsr()) {
 				access = (fsr & ARM_FSR_ACCESS_MASK) ?
 					  HW_BREAKPOINT_W : HW_BREAKPOINT_R;
 				if (!(access & hw_breakpoint_type(wp)))
 					goto unlock;
 			}
-=======
-			access = (fsr & ARM_FSR_ACCESS_MASK) ? HW_BREAKPOINT_W :
-				 HW_BREAKPOINT_R;
-			if (!(access & hw_breakpoint_type(wp)))
-				goto unlock;
->>>>>>> 7175f4b... Truncated history
 
 			/* We have a winner. */
 			info->trigger = addr;

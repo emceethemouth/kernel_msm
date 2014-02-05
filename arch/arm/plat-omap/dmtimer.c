@@ -238,11 +238,7 @@ EXPORT_SYMBOL_GPL(omap_dm_timer_enable);
 
 void omap_dm_timer_disable(struct omap_dm_timer *timer)
 {
-<<<<<<< HEAD
 	pm_runtime_put_sync(&timer->pdev->dev);
-=======
-	pm_runtime_put(&timer->pdev->dev);
->>>>>>> 7175f4b... Truncated history
 }
 EXPORT_SYMBOL_GPL(omap_dm_timer_disable);
 

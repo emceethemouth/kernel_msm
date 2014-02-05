@@ -326,11 +326,7 @@ static int bulk_immediate(struct usb_serial_port *port, u8 *buf, u8 count)
 	    usb_bulk_msg(serial->dev,
 			 usb_sndbulkpipe(serial->dev,
 					 port->bulk_out_endpointAddress), buf,
-<<<<<<< HEAD
 			 count, &actual, 1000);
-=======
-			 count, &actual, HZ * 1);
->>>>>>> 7175f4b... Truncated history
 
 	if (status != IUU_OPERATION_OK)
 		dbg("%s - error = %2x", __func__, status);
@@ -353,11 +349,7 @@ static int read_immediate(struct usb_serial_port *port, u8 *buf, u8 count)
 	    usb_bulk_msg(serial->dev,
 			 usb_rcvbulkpipe(serial->dev,
 					 port->bulk_in_endpointAddress), buf,
-<<<<<<< HEAD
 			 count, &actual, 1000);
-=======
-			 count, &actual, HZ * 1);
->>>>>>> 7175f4b... Truncated history
 
 	if (status != IUU_OPERATION_OK)
 		dbg("%s - error = %2x", __func__, status);

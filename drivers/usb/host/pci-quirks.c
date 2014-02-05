@@ -9,10 +9,7 @@
  */
 
 #include <linux/types.h>
-<<<<<<< HEAD
 #include <linux/kconfig.h>
-=======
->>>>>>> 7175f4b... Truncated history
 #include <linux/kernel.h>
 #include <linux/pci.h>
 #include <linux/init.h>
@@ -78,13 +75,9 @@
 #define	NB_PIF0_PWRDOWN_1	0x01100013
 
 #define USB_INTEL_XUSB2PR      0xD0
-<<<<<<< HEAD
 #define USB_INTEL_USB2PRM      0xD4
 #define USB_INTEL_USB3_PSSEN   0xD8
 #define USB_INTEL_USB3PRM      0xDC
-=======
-#define USB_INTEL_USB3_PSSEN   0xD8
->>>>>>> 7175f4b... Truncated history
 
 static struct amd_chipset_info {
 	struct pci_dev	*nb_dev;
@@ -552,7 +545,6 @@ static const struct dmi_system_id __devinitconst ehci_dmi_nohandoff_table[] = {
 		/*  Pegatron Lucid (Ordissimo AIRIS) */
 		.matches = {
 			DMI_MATCH(DMI_BOARD_NAME, "M11JB"),
-<<<<<<< HEAD
 			DMI_MATCH(DMI_BIOS_VERSION, "Lucid-"),
 		},
 	},
@@ -561,9 +553,6 @@ static const struct dmi_system_id __devinitconst ehci_dmi_nohandoff_table[] = {
 		.matches = {
 			DMI_MATCH(DMI_BOARD_NAME, "Ordissimo"),
 			DMI_MATCH(DMI_BIOS_VERSION, "Lucid-"),
-=======
-			DMI_MATCH(DMI_BIOS_VERSION, "Lucid-GE-133"),
->>>>>>> 7175f4b... Truncated history
 		},
 	},
 	{ }
@@ -733,20 +722,15 @@ static int handshake(void __iomem *ptr, u32 mask, u32 done,
 	return -ETIMEDOUT;
 }
 
-<<<<<<< HEAD
 #define PCI_DEVICE_ID_INTEL_LYNX_POINT_XHCI	0x8C31
 #define PCI_DEVICE_ID_INTEL_LYNX_POINT_LP_XHCI	0x9C31
 
 bool usb_is_intel_ppt_switchable_xhci(struct pci_dev *pdev)
-=======
-bool usb_is_intel_switchable_xhci(struct pci_dev *pdev)
->>>>>>> 7175f4b... Truncated history
 {
 	return pdev->class == PCI_CLASS_SERIAL_USB_XHCI &&
 		pdev->vendor == PCI_VENDOR_ID_INTEL &&
 		pdev->device == PCI_DEVICE_ID_INTEL_PANTHERPOINT_XHCI;
 }
-<<<<<<< HEAD
 
 /* The Intel Lynx Point chipset also has switchable ports. */
 bool usb_is_intel_lpt_switchable_xhci(struct pci_dev *pdev)
@@ -762,8 +746,6 @@ bool usb_is_intel_switchable_xhci(struct pci_dev *pdev)
 	return usb_is_intel_ppt_switchable_xhci(pdev) ||
 		usb_is_intel_lpt_switchable_xhci(pdev);
 }
-=======
->>>>>>> 7175f4b... Truncated history
 EXPORT_SYMBOL_GPL(usb_is_intel_switchable_xhci);
 
 /*
@@ -788,7 +770,6 @@ void usb_enable_xhci_ports(struct pci_dev *xhci_pdev)
 {
 	u32		ports_available;
 
-<<<<<<< HEAD
 	/* Don't switchover the ports if the user hasn't compiled the xHCI
 	 * driver.  Otherwise they will see "dead" USB ports that don't power
 	 * the devices.
@@ -815,12 +796,6 @@ void usb_enable_xhci_ports(struct pci_dev *xhci_pdev)
 	/* Write USB3_PSSEN, the USB 3.0 Port SuperSpeed Enable
 	 * Register, to turn on SuperSpeed terminations for the
 	 * switchable ports.
-=======
-	ports_available = 0xffffffff;
-	/* Write USB3_PSSEN, the USB 3.0 Port SuperSpeed Enable
-	 * Register, to turn on SuperSpeed terminations for all
-	 * available ports.
->>>>>>> 7175f4b... Truncated history
 	 */
 	pci_write_config_dword(xhci_pdev, USB_INTEL_USB3_PSSEN,
 			cpu_to_le32(ports_available));
@@ -830,7 +805,6 @@ void usb_enable_xhci_ports(struct pci_dev *xhci_pdev)
 	dev_dbg(&xhci_pdev->dev, "USB 3.0 ports that are now enabled "
 			"under xHCI: 0x%x\n", ports_available);
 
-<<<<<<< HEAD
 	/* Read XUSB2PRM, xHCI USB 2.0 Port Routing Mask Register
 	 * Indicate the USB 2.0 ports to be controlled by the xHCI host.
 	 */
@@ -841,9 +815,6 @@ void usb_enable_xhci_ports(struct pci_dev *xhci_pdev)
 	dev_dbg(&xhci_pdev->dev, "Configurable USB 2.0 ports to hand over to xCHI: 0x%x\n",
 			ports_available);
 
-=======
-	ports_available = 0xffffffff;
->>>>>>> 7175f4b... Truncated history
 	/* Write XUSB2PR, the xHC USB 2.0 Port Routing Register, to
 	 * switch the USB 2.0 power and data lines over to the xHCI
 	 * host.
@@ -873,20 +844,12 @@ static void __devinit quirk_usb_handoff_xhci(struct pci_dev *pdev)
 	void __iomem *op_reg_base;
 	u32 val;
 	int timeout;
-<<<<<<< HEAD
 	int len = pci_resource_len(pdev, 0);
-=======
->>>>>>> 7175f4b... Truncated history
 
 	if (!mmio_resource_enabled(pdev, 0))
 		return;
 
-<<<<<<< HEAD
 	base = ioremap_nocache(pci_resource_start(pdev, 0), len);
-=======
-	base = ioremap_nocache(pci_resource_start(pdev, 0),
-				pci_resource_len(pdev, 0));
->>>>>>> 7175f4b... Truncated history
 	if (base == NULL)
 		return;
 
@@ -896,7 +859,6 @@ static void __devinit quirk_usb_handoff_xhci(struct pci_dev *pdev)
 	 */
 	ext_cap_offset = xhci_find_next_cap_offset(base, XHCI_HCC_PARAMS_OFFSET);
 	do {
-<<<<<<< HEAD
 		if ((ext_cap_offset + sizeof(val)) > len) {
 			/* We're reading garbage from the controller */
 			dev_warn(&pdev->dev,
@@ -908,11 +870,6 @@ static void __devinit quirk_usb_handoff_xhci(struct pci_dev *pdev)
 			/* We've reached the end of the extended capabilities */
 			goto hc_init;
 
-=======
-		if (!ext_cap_offset)
-			/* We've reached the end of the extended capabilities */
-			goto hc_init;
->>>>>>> 7175f4b... Truncated history
 		val = readl(base + ext_cap_offset);
 		if (XHCI_EXT_CAPS_ID(val) == XHCI_EXT_CAPS_LEGACY)
 			break;
@@ -943,16 +900,10 @@ static void __devinit quirk_usb_handoff_xhci(struct pci_dev *pdev)
 	/* Disable any BIOS SMIs and clear all SMI events*/
 	writel(val, base + ext_cap_offset + XHCI_LEGACY_CONTROL_OFFSET);
 
-<<<<<<< HEAD
 hc_init:
 	if (usb_is_intel_switchable_xhci(pdev))
 		usb_enable_xhci_ports(pdev);
 
-=======
-	if (usb_is_intel_switchable_xhci(pdev))
-		usb_enable_xhci_ports(pdev);
-hc_init:
->>>>>>> 7175f4b... Truncated history
 	op_reg_base = base + XHCI_HC_LENGTH(readl(base));
 
 	/* Wait for the host controller to be ready before writing any

@@ -83,10 +83,6 @@ int ceph_check_fsid(struct ceph_client *client, struct ceph_fsid *fsid)
 			return -1;
 		}
 	} else {
-<<<<<<< HEAD
-=======
-		pr_info("client%lld fsid %pU\n", ceph_client_id(client), fsid);
->>>>>>> 7175f4b... Truncated history
 		memcpy(&client->fsid, fsid, sizeof(*fsid));
 	}
 	return 0;
@@ -308,10 +304,6 @@ ceph_parse_options(char *options, const char *dev_name,
 
 	/* start with defaults */
 	opt->flags = CEPH_OPT_DEFAULT;
-<<<<<<< HEAD
-=======
-	opt->osd_timeout = CEPH_OSD_TIMEOUT_DEFAULT;
->>>>>>> 7175f4b... Truncated history
 	opt->osd_keepalive_timeout = CEPH_OSD_KEEPALIVE_DEFAULT;
 	opt->mount_timeout = CEPH_MOUNT_TIMEOUT_DEFAULT; /* seconds */
 	opt->osd_idle_ttl = CEPH_OSD_IDLE_TTL_DEFAULT;   /* seconds */
@@ -397,11 +389,7 @@ ceph_parse_options(char *options, const char *dev_name,
 
 			/* misc */
 		case Opt_osdtimeout:
-<<<<<<< HEAD
 			pr_warning("ignoring deprecated osdtimeout option\n");
-=======
-			opt->osd_timeout = intval;
->>>>>>> 7175f4b... Truncated history
 			break;
 		case Opt_osdkeepalivetimeout:
 			opt->osd_keepalive_timeout = intval;
@@ -478,30 +466,15 @@ struct ceph_client *ceph_create_client(struct ceph_options *opt, void *private,
 	/* msgr */
 	if (ceph_test_opt(client, MYIP))
 		myaddr = &client->options->my_addr;
-<<<<<<< HEAD
 	ceph_messenger_init(&client->msgr, myaddr,
 		client->supported_features,
 		client->required_features,
 		ceph_test_opt(client, NOCRC));
-=======
-	client->msgr = ceph_messenger_create(myaddr,
-					     client->supported_features,
-					     client->required_features);
-	if (IS_ERR(client->msgr)) {
-		err = PTR_ERR(client->msgr);
-		goto fail;
-	}
-	client->msgr->nocrc = ceph_test_opt(client, NOCRC);
->>>>>>> 7175f4b... Truncated history
 
 	/* subsystems */
 	err = ceph_monc_init(&client->monc, client);
 	if (err < 0)
-<<<<<<< HEAD
 		goto fail;
-=======
-		goto fail_msgr;
->>>>>>> 7175f4b... Truncated history
 	err = ceph_osdc_init(&client->osdc, client);
 	if (err < 0)
 		goto fail_monc;
@@ -510,11 +483,6 @@ struct ceph_client *ceph_create_client(struct ceph_options *opt, void *private,
 
 fail_monc:
 	ceph_monc_stop(&client->monc);
-<<<<<<< HEAD
-=======
-fail_msgr:
-	ceph_messenger_destroy(client->msgr);
->>>>>>> 7175f4b... Truncated history
 fail:
 	kfree(client);
 	return ERR_PTR(err);
@@ -525,33 +493,15 @@ void ceph_destroy_client(struct ceph_client *client)
 {
 	dout("destroy_client %p\n", client);
 
-<<<<<<< HEAD
 	atomic_set(&client->msgr.stopping, 1);
 
 	/* unmount */
 	ceph_osdc_stop(&client->osdc);
 
-=======
-	/* unmount */
-	ceph_osdc_stop(&client->osdc);
-
-	/*
-	 * make sure osd connections close out before destroying the
-	 * auth module, which is needed to free those connections'
-	 * ceph_authorizers.
-	 */
-	ceph_msgr_flush();
-
->>>>>>> 7175f4b... Truncated history
 	ceph_monc_stop(&client->monc);
 
 	ceph_debugfs_client_cleanup(client);
 
-<<<<<<< HEAD
-=======
-	ceph_messenger_destroy(client->msgr);
-
->>>>>>> 7175f4b... Truncated history
 	ceph_destroy_options(client->options);
 
 	kfree(client);

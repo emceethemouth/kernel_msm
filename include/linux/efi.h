@@ -496,14 +496,11 @@ extern void efi_map_pal_code (void);
 extern void efi_memmap_walk (efi_freemem_callback_t callback, void *arg);
 extern void efi_gettimeofday (struct timespec *ts);
 extern void efi_enter_virtual_mode (void);	/* switch EFI to virtual mode, if possible */
-<<<<<<< HEAD
 #ifdef CONFIG_X86
 extern void efi_free_boot_services(void);
 #else
 static inline void efi_free_boot_services(void) {}
 #endif
-=======
->>>>>>> 7175f4b... Truncated history
 extern u64 efi_get_iobase (void);
 extern u32 efi_mem_type (unsigned long phys_addr);
 extern u64 efi_mem_attributes (unsigned long phys_addr);
@@ -542,7 +539,6 @@ extern int __init efi_setup_pcdp_console(char *);
 #endif
 
 /*
-<<<<<<< HEAD
  * We play games with efi_enabled so that the compiler will, if
  * possible, remove EFI-related code altogether.
  */
@@ -567,20 +563,6 @@ static inline int efi_enabled(int facility)
 {
 	return 0;
 }
-=======
- * We play games with efi_enabled so that the compiler will, if possible, remove
- * EFI-related code altogether.
- */
-#ifdef CONFIG_EFI
-# ifdef CONFIG_X86
-   extern int efi_enabled;
-   extern bool efi_64bit;
-# else
-#  define efi_enabled 1
-# endif
-#else
-# define efi_enabled 0
->>>>>>> 7175f4b... Truncated history
 #endif
 
 /*

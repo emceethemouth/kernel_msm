@@ -983,15 +983,10 @@ static void cpuset_change_task_nodemask(struct task_struct *tsk,
 	need_loop = task_has_mempolicy(tsk) ||
 			!nodes_intersects(*newmems, tsk->mems_allowed);
 
-<<<<<<< HEAD
 	if (need_loop) {
 		local_irq_disable();
 		write_seqcount_begin(&tsk->mems_allowed_seq);
 	}
-=======
-	if (need_loop)
-		write_seqcount_begin(&tsk->mems_allowed_seq);
->>>>>>> 7175f4b... Truncated history
 
 	nodes_or(tsk->mems_allowed, tsk->mems_allowed, *newmems);
 	mpol_rebind_task(tsk, newmems, MPOL_REBIND_STEP1);
@@ -999,15 +994,10 @@ static void cpuset_change_task_nodemask(struct task_struct *tsk,
 	mpol_rebind_task(tsk, newmems, MPOL_REBIND_STEP2);
 	tsk->mems_allowed = *newmems;
 
-<<<<<<< HEAD
 	if (need_loop) {
 		write_seqcount_end(&tsk->mems_allowed_seq);
 		local_irq_enable();
 	}
-=======
-	if (need_loop)
-		write_seqcount_end(&tsk->mems_allowed_seq);
->>>>>>> 7175f4b... Truncated history
 
 	task_unlock(tsk);
 }
@@ -2079,12 +2069,9 @@ static void scan_for_empty_cpusets(struct cpuset *root)
  * (of no affect) on systems that are actively using CPU hotplug
  * but making no active use of cpusets.
  *
-<<<<<<< HEAD
  * The only exception to this is suspend/resume, where we don't
  * modify cpusets at all.
  *
-=======
->>>>>>> 7175f4b... Truncated history
  * This routine ensures that top_cpuset.cpus_allowed tracks
  * cpu_active_mask on each CPU hotplug (cpuhp) event.
  *
@@ -2496,7 +2483,6 @@ void cpuset_print_task_mems_allowed(struct task_struct *tsk)
 
 	dentry = task_cs(tsk)->css.cgroup->dentry;
 	spin_lock(&cpuset_buffer_lock);
-<<<<<<< HEAD
 
 	if (!dentry) {
 		strcpy(cpuset_name, "/");
@@ -2507,10 +2493,6 @@ void cpuset_print_task_mems_allowed(struct task_struct *tsk)
 		spin_unlock(&dentry->d_lock);
 	}
 
-=======
-	snprintf(cpuset_name, CPUSET_NAME_LEN,
-		 dentry ? (const char *)dentry->d_name.name : "/");
->>>>>>> 7175f4b... Truncated history
 	nodelist_scnprintf(cpuset_nodelist, CPUSET_NODELIST_LEN,
 			   tsk->mems_allowed);
 	printk(KERN_INFO "%s cpuset=%s mems_allowed=%s\n",

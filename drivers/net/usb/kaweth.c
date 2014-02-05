@@ -1302,11 +1302,7 @@ static int kaweth_internal_control_msg(struct usb_device *usb_dev,
         int retv;
         int length = 0; /* shut up GCC */
 
-<<<<<<< HEAD
 	urb = usb_alloc_urb(0, GFP_ATOMIC);
-=======
-        urb = usb_alloc_urb(0, GFP_NOIO);
->>>>>>> 7175f4b... Truncated history
         if (!urb)
                 return -ENOMEM;
 

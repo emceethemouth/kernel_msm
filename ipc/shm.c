@@ -450,11 +450,7 @@ static int newseg(struct ipc_namespace *ns, struct ipc_params *params)
 	size_t size = params->u.size;
 	int error;
 	struct shmid_kernel *shp;
-<<<<<<< HEAD
 	size_t numpages = (size + PAGE_SIZE - 1) >> PAGE_SHIFT;
-=======
-	int numpages = (size + PAGE_SIZE -1) >> PAGE_SHIFT;
->>>>>>> 7175f4b... Truncated history
 	struct file * file;
 	char name[13];
 	int id;
@@ -483,19 +479,12 @@ static int newseg(struct ipc_namespace *ns, struct ipc_params *params)
 
 	sprintf (name, "SYSV%08x", key);
 	if (shmflg & SHM_HUGETLB) {
-<<<<<<< HEAD
 		size_t hugesize = ALIGN(size, huge_page_size(&default_hstate));
 
 		/* hugetlb_file_setup applies strict accounting */
 		if (shmflg & SHM_NORESERVE)
 			acctflag = VM_NORESERVE;
 		file = hugetlb_file_setup(name, hugesize, acctflag,
-=======
-		/* hugetlb_file_setup applies strict accounting */
-		if (shmflg & SHM_NORESERVE)
-			acctflag = VM_NORESERVE;
-		file = hugetlb_file_setup(name, 0, size, acctflag,
->>>>>>> 7175f4b... Truncated history
 					&shp->mlock_user, HUGETLB_SHMFS_INODE);
 	} else {
 		/*
@@ -1100,11 +1089,7 @@ out_put_dentry:
 
 SYSCALL_DEFINE3(shmat, int, shmid, char __user *, shmaddr, int, shmflg)
 {
-<<<<<<< HEAD
 	unsigned long ret = 0;
-=======
-	unsigned long ret;
->>>>>>> 7175f4b... Truncated history
 	long err;
 
 	err = do_shmat(shmid, shmaddr, shmflg, &ret);

@@ -128,11 +128,7 @@ config MTD_AFS_PARTS
 
 config MTD_OF_PARTS
 	tristate "OpenFirmware partitioning information support"
-<<<<<<< HEAD
 	default y
-=======
-	default Y
->>>>>>> 7175f4b... Truncated history
 	depends on OF
 	help
 	  This provides a partition parsing function which derives

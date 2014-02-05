@@ -485,24 +485,17 @@ EXPORT_SYMBOL_GPL(xprt_wake_pending_tasks);
  * xprt_wait_for_buffer_space - wait for transport output buffer to clear
  * @task: task to be put to sleep
  * @action: function pointer to be executed after wait
-<<<<<<< HEAD
  *
  * Note that we only set the timer for the case of RPC_IS_SOFT(), since
  * we don't in general want to force a socket disconnection due to
  * an incomplete RPC call transmission.
-=======
->>>>>>> 7175f4b... Truncated history
  */
 void xprt_wait_for_buffer_space(struct rpc_task *task, rpc_action action)
 {
 	struct rpc_rqst *req = task->tk_rqstp;
 	struct rpc_xprt *xprt = req->rq_xprt;
 
-<<<<<<< HEAD
 	task->tk_timeout = RPC_IS_SOFT(task) ? req->rq_timeout : 0;
-=======
-	task->tk_timeout = req->rq_timeout;
->>>>>>> 7175f4b... Truncated history
 	rpc_sleep_on(&xprt->pending, task, action);
 }
 EXPORT_SYMBOL_GPL(xprt_wait_for_buffer_space);
@@ -980,19 +973,11 @@ static bool xprt_dynamic_free_slot(struct rpc_xprt *xprt, struct rpc_rqst *req)
 	return false;
 }
 
-<<<<<<< HEAD
 void xprt_alloc_slot(struct rpc_xprt *xprt, struct rpc_task *task)
 {
 	struct rpc_rqst *req;
 
 	spin_lock(&xprt->reserve_lock);
-=======
-static void xprt_alloc_slot(struct rpc_task *task)
-{
-	struct rpc_xprt	*xprt = task->tk_xprt;
-	struct rpc_rqst *req;
-
->>>>>>> 7175f4b... Truncated history
 	if (!list_empty(&xprt->free)) {
 		req = list_entry(xprt->free.next, struct rpc_rqst, rq_list);
 		list_del(&req->rq_list);
@@ -1003,34 +988,22 @@ static void xprt_alloc_slot(struct rpc_task *task)
 		goto out_init_req;
 	switch (PTR_ERR(req)) {
 	case -ENOMEM:
-<<<<<<< HEAD
 		dprintk("RPC:       dynamic allocation of request slot "
 				"failed! Retrying\n");
 		task->tk_status = -ENOMEM;
-=======
-		rpc_delay(task, HZ >> 2);
-		dprintk("RPC:       dynamic allocation of request slot "
-				"failed! Retrying\n");
->>>>>>> 7175f4b... Truncated history
 		break;
 	case -EAGAIN:
 		rpc_sleep_on(&xprt->backlog, task, NULL);
 		dprintk("RPC:       waiting for request slot\n");
-<<<<<<< HEAD
 	default:
 		task->tk_status = -EAGAIN;
 	}
 	spin_unlock(&xprt->reserve_lock);
-=======
-	}
-	task->tk_status = -EAGAIN;
->>>>>>> 7175f4b... Truncated history
 	return;
 out_init_req:
 	task->tk_status = 0;
 	task->tk_rqstp = req;
 	xprt_request_init(task, xprt);
-<<<<<<< HEAD
 	spin_unlock(&xprt->reserve_lock);
 }
 EXPORT_SYMBOL_GPL(xprt_alloc_slot);
@@ -1048,9 +1021,6 @@ void xprt_lock_and_alloc_slot(struct rpc_xprt *xprt, struct rpc_task *task)
 	}
 }
 EXPORT_SYMBOL_GPL(xprt_lock_and_alloc_slot);
-=======
-}
->>>>>>> 7175f4b... Truncated history
 
 static void xprt_free_slot(struct rpc_xprt *xprt, struct rpc_rqst *req)
 {
@@ -1134,26 +1104,9 @@ void xprt_reserve(struct rpc_task *task)
 	if (task->tk_rqstp != NULL)
 		return;
 
-<<<<<<< HEAD
 	task->tk_timeout = 0;
 	task->tk_status = -EAGAIN;
 	xprt->ops->alloc_slot(xprt, task);
-=======
-	/* Note: grabbing the xprt_lock_write() here is not strictly needed,
-	 * but ensures that we throttle new slot allocation if the transport
-	 * is congested (e.g. if reconnecting or if we're out of socket
-	 * write buffer space).
-	 */
-	task->tk_timeout = 0;
-	task->tk_status = -EAGAIN;
-	if (!xprt_lock_write(xprt, task))
-		return;
-
-	spin_lock(&xprt->reserve_lock);
-	xprt_alloc_slot(task);
-	spin_unlock(&xprt->reserve_lock);
-	xprt_release_write(xprt, task);
->>>>>>> 7175f4b... Truncated history
 }
 
 static inline __be32 xprt_alloc_xid(struct rpc_xprt *xprt)
@@ -1190,7 +1143,6 @@ static void xprt_request_init(struct rpc_task *task, struct rpc_xprt *xprt)
 void xprt_release(struct rpc_task *task)
 {
 	struct rpc_xprt	*xprt;
-<<<<<<< HEAD
 	struct rpc_rqst	*req = task->tk_rqstp;
 
 	if (req == NULL) {
@@ -1203,12 +1155,6 @@ void xprt_release(struct rpc_task *task)
 		}
 		return;
 	}
-=======
-	struct rpc_rqst	*req;
-
-	if (!(req = task->tk_rqstp))
-		return;
->>>>>>> 7175f4b... Truncated history
 
 	xprt = req->rq_xprt;
 	if (task->tk_ops->rpc_count_stats != NULL)

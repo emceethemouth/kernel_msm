@@ -379,15 +379,10 @@ static int snd_rawmidi_open(struct inode *inode, struct file *file)
 	if (rmidi == NULL)
 		return -ENODEV;
 
-<<<<<<< HEAD
 	if (!try_module_get(rmidi->card->module)) {
 		snd_card_unref(rmidi->card);
 		return -ENXIO;
 	}
-=======
-	if (!try_module_get(rmidi->card->module))
-		return -ENXIO;
->>>>>>> 7175f4b... Truncated history
 
 	mutex_lock(&rmidi->open_mutex);
 	card = rmidi->card;
@@ -429,13 +424,10 @@ static int snd_rawmidi_open(struct inode *inode, struct file *file)
 		mutex_unlock(&rmidi->open_mutex);
 		schedule();
 		mutex_lock(&rmidi->open_mutex);
-<<<<<<< HEAD
 		if (rmidi->card->shutdown) {
 			err = -ENODEV;
 			break;
 		}
-=======
->>>>>>> 7175f4b... Truncated history
 		if (signal_pending(current)) {
 			err = -ERESTARTSYS;
 			break;
@@ -454,10 +446,7 @@ static int snd_rawmidi_open(struct inode *inode, struct file *file)
 #endif
 	file->private_data = rawmidi_file;
 	mutex_unlock(&rmidi->open_mutex);
-<<<<<<< HEAD
 	snd_card_unref(rmidi->card);
-=======
->>>>>>> 7175f4b... Truncated history
 	return 0;
 
  __error:
@@ -465,10 +454,7 @@ static int snd_rawmidi_open(struct inode *inode, struct file *file)
  __error_card:
 	mutex_unlock(&rmidi->open_mutex);
 	module_put(rmidi->card->module);
-<<<<<<< HEAD
 	snd_card_unref(rmidi->card);
-=======
->>>>>>> 7175f4b... Truncated history
 	return err;
 }
 
@@ -1013,11 +999,8 @@ static ssize_t snd_rawmidi_read(struct file *file, char __user *buf, size_t coun
 			spin_unlock_irq(&runtime->lock);
 			schedule();
 			remove_wait_queue(&runtime->sleep, &wait);
-<<<<<<< HEAD
 			if (rfile->rmidi->card->shutdown)
 				return -ENODEV;
-=======
->>>>>>> 7175f4b... Truncated history
 			if (signal_pending(current))
 				return result > 0 ? result : -ERESTARTSYS;
 			if (!runtime->avail)
@@ -1261,11 +1244,8 @@ static ssize_t snd_rawmidi_write(struct file *file, const char __user *buf,
 			spin_unlock_irq(&runtime->lock);
 			timeout = schedule_timeout(30 * HZ);
 			remove_wait_queue(&runtime->sleep, &wait);
-<<<<<<< HEAD
 			if (rfile->rmidi->card->shutdown)
 				return -ENODEV;
-=======
->>>>>>> 7175f4b... Truncated history
 			if (signal_pending(current))
 				return result > 0 ? result : -ERESTARTSYS;
 			if (!runtime->avail && !timeout)
@@ -1641,7 +1621,6 @@ static int snd_rawmidi_dev_register(struct snd_device *device)
 static int snd_rawmidi_dev_disconnect(struct snd_device *device)
 {
 	struct snd_rawmidi *rmidi = device->device_data;
-<<<<<<< HEAD
 	int dir;
 
 	mutex_lock(&register_mutex);
@@ -1656,11 +1635,6 @@ static int snd_rawmidi_dev_disconnect(struct snd_device *device)
 		}
 	}
 
-=======
-
-	mutex_lock(&register_mutex);
-	list_del_init(&rmidi->list);
->>>>>>> 7175f4b... Truncated history
 #ifdef CONFIG_SND_OSSEMUL
 	if (rmidi->ossreg) {
 		if ((int)rmidi->device == midi_map[rmidi->card->number]) {
@@ -1675,10 +1649,7 @@ static int snd_rawmidi_dev_disconnect(struct snd_device *device)
 	}
 #endif /* CONFIG_SND_OSSEMUL */
 	snd_unregister_device(SNDRV_DEVICE_TYPE_RAWMIDI, rmidi->card, rmidi->device);
-<<<<<<< HEAD
 	mutex_unlock(&rmidi->open_mutex);
-=======
->>>>>>> 7175f4b... Truncated history
 	mutex_unlock(&register_mutex);
 	return 0;
 }

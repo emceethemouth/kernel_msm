@@ -755,11 +755,8 @@ static int dhd_set_suspend(int value, dhd_pub_t *dhd)
 #ifndef ENABLE_FW_ROAM_SUSPEND
 	uint roamvar = 1;
 #endif /* ENABLE_FW_ROAM_SUSPEND */
-<<<<<<< HEAD
 	uint nd_ra_filter = 0;
 	int ret = 0;
-=======
->>>>>>> 7175f4b... Truncated history
 
 	if (!dhd)
 		return -ENODEV;
@@ -802,7 +799,6 @@ static int dhd_set_suspend(int value, dhd_pub_t *dhd)
 					iovbuf, sizeof(iovbuf));
 				dhd_wl_ioctl_cmd(dhd, WLC_SET_VAR, iovbuf, sizeof(iovbuf), TRUE, 0);
 #endif /* ENABLE_FW_ROAM_SUSPEND */
-<<<<<<< HEAD
 				if (FW_SUPPORTED(dhd, ndoe)) {
 					/* enable IPv6 RA filter in  firmware during suspend */
 					nd_ra_filter = 1;
@@ -811,8 +807,6 @@ static int dhd_set_suspend(int value, dhd_pub_t *dhd)
 					if ((ret = dhd_wl_ioctl_cmd(dhd, WLC_SET_VAR, iovbuf, sizeof(iovbuf), TRUE, 0)) < 0)
 						DHD_ERROR(("failed to set nd_ra_filter (%d)\n", ret));
 				}
-=======
->>>>>>> 7175f4b... Truncated history
 			} else {
 #ifdef PKT_FILTER_SUPPORT
 				dhd->early_suspended = 0;
@@ -841,7 +835,6 @@ static int dhd_set_suspend(int value, dhd_pub_t *dhd)
 					sizeof(iovbuf));
 				dhd_wl_ioctl_cmd(dhd, WLC_SET_VAR, iovbuf, sizeof(iovbuf), TRUE, 0);
 #endif /* ENABLE_FW_ROAM_SUSPEND */
-<<<<<<< HEAD
 				if (FW_SUPPORTED(dhd, ndoe)) {
 					/* disable IPv6 RA filter in  firmware during suspend */
 					nd_ra_filter = 0;
@@ -851,8 +844,6 @@ static int dhd_set_suspend(int value, dhd_pub_t *dhd)
 						DHD_ERROR(("failed to set nd_ra_filter (%d)\n", ret));
 				}
 
-=======
->>>>>>> 7175f4b... Truncated history
 			}
 	}
 	dhd_suspend_unlock(dhd);
@@ -3570,7 +3561,6 @@ dhd_bus_start(dhd_pub_t *dhdp)
 	return 0;
 }
 #ifdef WLTDLS
-<<<<<<< HEAD
 int _dhd_tdls_enable(dhd_pub_t *dhd, bool tdls_on, bool auto_on, struct ether_addr *mac)
 {
 	char iovbuf[WLC_IOCTL_SMLEN];
@@ -3585,26 +3575,11 @@ int _dhd_tdls_enable(dhd_pub_t *dhd, bool tdls_on, bool auto_on, struct ether_ad
 
 	if (dhd->tdls_enable == tdls_on)
 		goto auto_mode;
-=======
-int dhd_tdls_enable_disable(dhd_pub_t *dhd, bool flag)
-{
-	char iovbuf[WLC_IOCTL_SMLEN];
-	uint32 tdls = flag;
-	int ret;
-#ifdef WLTDLS_AUTO_ENABLE
-	uint32 tdls_auto_op = 1;
-	uint32 tdls_idle_time = CUSTOM_TDLS_IDLE_MODE_SETTING;
-#endif /* WLTDLS_AUTO_ENABLE */
-	if (!FW_SUPPORTED(dhd, tdls))
-		return BCME_ERROR;
-
->>>>>>> 7175f4b... Truncated history
 	bcm_mkiovar("tdls_enable", (char *)&tdls, sizeof(tdls), iovbuf, sizeof(iovbuf));
 	if ((ret = dhd_wl_ioctl_cmd(dhd, WLC_SET_VAR, iovbuf, sizeof(iovbuf), TRUE, 0)) < 0) {
 		DHD_ERROR(("%s: tdls %d failed %d\n", __FUNCTION__, tdls, ret));
 		goto exit;
 	}
-<<<<<<< HEAD
 	dhd->tdls_enable = tdls_on;
 auto_mode:
 	if (mac) {
@@ -3650,28 +3625,6 @@ int dhd_tdls_enable(struct net_device *dev, bool tdls_on, bool auto_on, struct e
 		ret = BCME_ERROR;
 	return ret;
 }
-=======
-	dhd->tdls_enable = flag;
-	if (!flag)
-		goto exit;
-#ifdef WLTDLS_AUTO_ENABLE
-	bcm_mkiovar("tdls_auto_op", (char *)&tdls_auto_op, sizeof(tdls_auto_op),
-		iovbuf, sizeof(iovbuf));
-	if ((ret = dhd_wl_ioctl_cmd(dhd, WLC_SET_VAR, iovbuf, sizeof(iovbuf), TRUE, 0)) < 0) {
-		DHD_ERROR(("%s: tdls_auto_op failed %d\n", __FUNCTION__, ret));
-		goto exit;
-	}
-	bcm_mkiovar("tdls_idle_time", (char *)&tdls_idle_time, sizeof(tdls_idle_time),
-		iovbuf, sizeof(iovbuf));
-	if ((ret = dhd_wl_ioctl_cmd(dhd, WLC_SET_VAR, iovbuf, sizeof(iovbuf), TRUE, 0)) < 0) {
-		DHD_ERROR(("%s: tdls_idle_time failed %d\n", __FUNCTION__, ret));
-		goto exit;
-	}
-#endif /* WLTDLS_AUTO_ENABLE */
-exit:
-	return ret;
-}
->>>>>>> 7175f4b... Truncated history
 #endif /* WLTDLS */
 
 bool dhd_is_concurrent_mode(dhd_pub_t *dhd)
@@ -3825,12 +3778,9 @@ dhd_preinit_ioctls(dhd_pub_t *dhd)
 		dhd->wlfc_enabled = FALSE;
 #endif /* PROP_TXSTATUS_VSDB */
 #endif /* PROP_TXSTATUS */
-<<<<<<< HEAD
 #ifdef WLTDLS
 	dhd->tdls_enable = FALSE;
 #endif /* WLTDLS */
-=======
->>>>>>> 7175f4b... Truncated history
 	dhd->suspend_bcn_li_dtim = CUSTOM_SUSPEND_BCN_LI_DTIM;
 	DHD_TRACE(("Enter %s\n", __FUNCTION__));
 	dhd->op_mode = 0;
@@ -4009,12 +3959,8 @@ dhd_preinit_ioctls(dhd_pub_t *dhd)
 #endif /* ROAM_ENABLE */
 
 #ifdef WLTDLS
-<<<<<<< HEAD
 	/* by default TDLS on and auto mode off */
 	_dhd_tdls_enable(dhd, true, false, NULL);
-=======
-	dhd_tdls_enable_disable(dhd, 1);
->>>>>>> 7175f4b... Truncated history
 #endif /* WLTDLS */
 
 
@@ -5928,7 +5874,6 @@ int dhd_os_wake_lock_ctrl_timeout_enable(dhd_pub_t *pub, int val)
 	return 0;
 }
 
-<<<<<<< HEAD
 int dhd_os_wake_lock_ctrl_timeout_cancel(dhd_pub_t *pub)
 {
 	dhd_info_t *dhd = (dhd_info_t *)(pub->info);
@@ -5946,8 +5891,6 @@ int dhd_os_wake_lock_ctrl_timeout_cancel(dhd_pub_t *pub)
 	return 0;
 }
 
-=======
->>>>>>> 7175f4b... Truncated history
 int net_os_wake_lock_rx_timeout_enable(struct net_device *dev, int val)
 {
 	dhd_info_t *dhd = *(dhd_info_t **)netdev_priv(dev);

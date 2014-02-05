@@ -475,10 +475,7 @@ static void devpts_kill_sb(struct super_block *sb)
 {
 	struct pts_fs_info *fsi = DEVPTS_SB(sb);
 
-<<<<<<< HEAD
 	ida_destroy(&fsi->allocated_ptys);
-=======
->>>>>>> 7175f4b... Truncated history
 	kfree(fsi);
 	kill_litter_super(sb);
 }

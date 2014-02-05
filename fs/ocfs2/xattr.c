@@ -6499,7 +6499,6 @@ static int ocfs2_reflink_xattr_inline(struct ocfs2_xattr_reflink *args)
 	}
 
 	new_oi = OCFS2_I(args->new_inode);
-<<<<<<< HEAD
 	/*
 	 * Adjust extent record count to reserve space for extended attribute.
 	 * Inline data count had been adjusted in ocfs2_duplicate_inline_data().
@@ -6510,8 +6509,6 @@ static int ocfs2_reflink_xattr_inline(struct ocfs2_xattr_reflink *args)
 		le16_add_cpu(&el->l_count, -(inline_size /
 					sizeof(struct ocfs2_extent_rec)));
 	}
-=======
->>>>>>> 7175f4b... Truncated history
 	spin_lock(&new_oi->ip_lock);
 	new_oi->ip_dyn_features |= OCFS2_HAS_XATTR_FL | OCFS2_INLINE_XATTR_FL;
 	new_di->i_dyn_features = cpu_to_le16(new_oi->ip_dyn_features);
@@ -7202,11 +7199,7 @@ int ocfs2_init_security_and_acl(struct inode *dir,
 	struct buffer_head *dir_bh = NULL;
 
 	ret = ocfs2_init_security_get(inode, dir, qstr, NULL);
-<<<<<<< HEAD
 	if (ret) {
-=======
-	if (!ret) {
->>>>>>> 7175f4b... Truncated history
 		mlog_errno(ret);
 		goto leave;
 	}

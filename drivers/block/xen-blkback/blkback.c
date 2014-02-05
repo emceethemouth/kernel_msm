@@ -337,11 +337,7 @@ static void xen_blkbk_unmap(struct pending_req *req)
 		invcount++;
 	}
 
-<<<<<<< HEAD
 	ret = gnttab_unmap_refs(unmap, NULL, pages, invcount);
-=======
-	ret = gnttab_unmap_refs(unmap, pages, invcount, false);
->>>>>>> 7175f4b... Truncated history
 	BUG_ON(ret);
 }
 
@@ -403,7 +399,6 @@ static int dispatch_discard_io(struct xen_blkif *blkif,
 	int status = BLKIF_RSP_OKAY;
 	struct block_device *bdev = blkif->vbd.bdev;
 	unsigned long secure;
-<<<<<<< HEAD
 	struct phys_req preq;
 
 	xen_blkif_get(blkif);
@@ -420,12 +415,6 @@ static int dispatch_discard_io(struct xen_blkif *blkif,
 	}
 	blkif->st_ds_req++;
 
-=======
-
-	blkif->st_ds_req++;
-
-	xen_blkif_get(blkif);
->>>>>>> 7175f4b... Truncated history
 	secure = (blkif->vbd.discard_secure &&
 		 (req->u.discard.flag & BLKIF_DISCARD_SECURE)) ?
 		 BLKDEV_DISCARD_SECURE : 0;
@@ -433,11 +422,7 @@ static int dispatch_discard_io(struct xen_blkif *blkif,
 	err = blkdev_issue_discard(bdev, req->u.discard.sector_number,
 				   req->u.discard.nr_sectors,
 				   GFP_KERNEL, secure);
-<<<<<<< HEAD
 fail_response:
-=======
-
->>>>>>> 7175f4b... Truncated history
 	if (err == -EOPNOTSUPP) {
 		pr_debug(DRV_PFX "discard op failed, not supported\n");
 		status = BLKIF_RSP_EOPNOTSUPP;
@@ -449,7 +434,6 @@ fail_response:
 	return err;
 }
 
-<<<<<<< HEAD
 static int dispatch_other_io(struct xen_blkif *blkif,
 			     struct blkif_request *req,
 			     struct pending_req *pending_req)
@@ -460,8 +444,6 @@ static int dispatch_other_io(struct xen_blkif *blkif,
 	return -EIO;
 }
 
-=======
->>>>>>> 7175f4b... Truncated history
 static void xen_blk_drain_io(struct xen_blkif *blkif)
 {
 	atomic_set(&blkif->drain, 1);
@@ -583,7 +565,6 @@ __do_block_io_op(struct xen_blkif *blkif)
 
 		/* Apply all sanity checks to /private copy/ of request. */
 		barrier();
-<<<<<<< HEAD
 
 		switch (req.operation) {
 		case BLKIF_OP_READ:
@@ -603,23 +584,11 @@ __do_block_io_op(struct xen_blkif *blkif)
 				goto done;
 			break;
 		}
-=======
-		if (unlikely(req.operation == BLKIF_OP_DISCARD)) {
-			free_req(pending_req);
-			if (dispatch_discard_io(blkif, &req))
-				break;
-		} else if (dispatch_rw_block_io(blkif, &req, pending_req))
-			break;
->>>>>>> 7175f4b... Truncated history
 
 		/* Yield point for this unbounded loop. */
 		cond_resched();
 	}
-<<<<<<< HEAD
 done:
-=======
-
->>>>>>> 7175f4b... Truncated history
 	return more_to_do;
 }
 
@@ -786,17 +755,7 @@ static int dispatch_rw_block_io(struct xen_blkif *blkif,
 		bio->bi_end_io  = end_block_io_op;
 	}
 
-<<<<<<< HEAD
 	atomic_set(&pending_req->pendcnt, nbio);
-=======
-	/*
-	 * We set it one so that the last submit_bio does not have to call
-	 * atomic_inc.
-	 */
-	atomic_set(&pending_req->pendcnt, nbio);
-
-	/* Get a reference count for the disk queue and start sending I/O */
->>>>>>> 7175f4b... Truncated history
 	blk_start_plug(&plug);
 
 	for (i = 0; i < nbio; i++)
@@ -824,10 +783,7 @@ static int dispatch_rw_block_io(struct xen_blkif *blkif,
  fail_put_bio:
 	for (i = 0; i < nbio; i++)
 		bio_put(biolist[i]);
-<<<<<<< HEAD
 	atomic_set(&pending_req->pendcnt, 1);
-=======
->>>>>>> 7175f4b... Truncated history
 	__end_block_io_op(pending_req, -EINVAL);
 	msleep(1); /* back off a bit */
 	return -EIO;

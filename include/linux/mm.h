@@ -869,12 +869,8 @@ extern void pagefault_out_of_memory(void);
  * Flags passed to show_mem() and show_free_areas() to suppress output in
  * various contexts.
  */
-<<<<<<< HEAD
 #define SHOW_MEM_FILTER_NODES		(0x0001u)	/* disallowed nodes */
 #define SHOW_MEM_FILTER_PAGE_COUNT	(0x0002u)	/* page type count */
-=======
-#define SHOW_MEM_FILTER_NODES	(0x0001u)	/* filter disallowed nodes */
->>>>>>> 7175f4b... Truncated history
 
 extern void show_free_areas(unsigned int flags);
 extern bool skip_free_areas_node(unsigned int flags, int nid);
@@ -1630,10 +1626,7 @@ void vmemmap_populate_print_last(void);
 enum mf_flags {
 	MF_COUNT_INCREASED = 1 << 0,
 	MF_ACTION_REQUIRED = 1 << 1,
-<<<<<<< HEAD
 	MF_MUST_KILL = 1 << 2,
-=======
->>>>>>> 7175f4b... Truncated history
 };
 extern int memory_failure(unsigned long pfn, int trapno, int flags);
 extern void memory_failure_queue(unsigned long pfn, int trapno, int flags);

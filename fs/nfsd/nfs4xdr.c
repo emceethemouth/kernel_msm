@@ -161,13 +161,8 @@ static __be32 *read_buf(struct nfsd4_compoundargs *argp, u32 nbytes)
 	 */
 	memcpy(p, argp->p, avail);
 	/* step to next page */
-<<<<<<< HEAD
 	argp->pagelist++;
 	argp->p = page_address(argp->pagelist[0]);
-=======
-	argp->p = page_address(argp->pagelist[0]);
-	argp->pagelist++;
->>>>>>> 7175f4b... Truncated history
 	if (argp->pagelen < PAGE_SIZE) {
 		argp->end = argp->p + (argp->pagelen>>2);
 		argp->pagelen = 0;
@@ -268,11 +263,7 @@ nfsd4_decode_fattr(struct nfsd4_compoundargs *argp, u32 *bmval,
 		iattr->ia_valid |= ATTR_SIZE;
 	}
 	if (bmval[0] & FATTR4_WORD0_ACL) {
-<<<<<<< HEAD
 		u32 nace;
-=======
-		int nace;
->>>>>>> 7175f4b... Truncated history
 		struct nfs4_ace *ace;
 
 		READ_BUF(4); len += 4;
@@ -352,14 +343,7 @@ nfsd4_decode_fattr(struct nfsd4_compoundargs *argp, u32 *bmval,
 			   all 32 bits of 'nseconds'. */
 			READ_BUF(12);
 			len += 12;
-<<<<<<< HEAD
 			READ64(iattr->ia_atime.tv_sec);
-=======
-			READ32(dummy32);
-			if (dummy32)
-				return nfserr_inval;
-			READ32(iattr->ia_atime.tv_sec);
->>>>>>> 7175f4b... Truncated history
 			READ32(iattr->ia_atime.tv_nsec);
 			if (iattr->ia_atime.tv_nsec >= (u32)1000000000)
 				return nfserr_inval;
@@ -382,14 +366,7 @@ nfsd4_decode_fattr(struct nfsd4_compoundargs *argp, u32 *bmval,
 			   all 32 bits of 'nseconds'. */
 			READ_BUF(12);
 			len += 12;
-<<<<<<< HEAD
 			READ64(iattr->ia_mtime.tv_sec);
-=======
-			READ32(dummy32);
-			if (dummy32)
-				return nfserr_inval;
-			READ32(iattr->ia_mtime.tv_sec);
->>>>>>> 7175f4b... Truncated history
 			READ32(iattr->ia_mtime.tv_nsec);
 			if (iattr->ia_mtime.tv_nsec >= (u32)1000000000)
 				return nfserr_inval;
@@ -2250,11 +2227,7 @@ out_acl:
 	if (bmval0 & FATTR4_WORD0_CASE_INSENSITIVE) {
 		if ((buflen -= 4) < 0)
 			goto out_resource;
-<<<<<<< HEAD
 		WRITE32(0);
-=======
-		WRITE32(1);
->>>>>>> 7175f4b... Truncated history
 	}
 	if (bmval0 & FATTR4_WORD0_CASE_PRESERVING) {
 		if ((buflen -= 4) < 0)
@@ -2392,12 +2365,7 @@ out_acl:
 	if (bmval1 & FATTR4_WORD1_TIME_ACCESS) {
 		if ((buflen -= 12) < 0)
 			goto out_resource;
-<<<<<<< HEAD
 		WRITE64((s64)stat.atime.tv_sec);
-=======
-		WRITE32(0);
-		WRITE32(stat.atime.tv_sec);
->>>>>>> 7175f4b... Truncated history
 		WRITE32(stat.atime.tv_nsec);
 	}
 	if (bmval1 & FATTR4_WORD1_TIME_DELTA) {
@@ -2410,23 +2378,13 @@ out_acl:
 	if (bmval1 & FATTR4_WORD1_TIME_METADATA) {
 		if ((buflen -= 12) < 0)
 			goto out_resource;
-<<<<<<< HEAD
 		WRITE64((s64)stat.ctime.tv_sec);
-=======
-		WRITE32(0);
-		WRITE32(stat.ctime.tv_sec);
->>>>>>> 7175f4b... Truncated history
 		WRITE32(stat.ctime.tv_nsec);
 	}
 	if (bmval1 & FATTR4_WORD1_TIME_MODIFY) {
 		if ((buflen -= 12) < 0)
 			goto out_resource;
-<<<<<<< HEAD
 		WRITE64((s64)stat.mtime.tv_sec);
-=======
-		WRITE32(0);
-		WRITE32(stat.mtime.tv_sec);
->>>>>>> 7175f4b... Truncated history
 		WRITE32(stat.mtime.tv_nsec);
 	}
 	if (bmval1 & FATTR4_WORD1_MOUNTED_ON_FILEID) {
@@ -2953,23 +2911,16 @@ nfsd4_encode_read(struct nfsd4_compoundres *resp, __be32 nfserr,
 	len = maxcount;
 	v = 0;
 	while (len > 0) {
-<<<<<<< HEAD
 		pn = resp->rqstp->rq_resused;
 		if (!resp->rqstp->rq_respages[pn]) { /* ran out of pages */
 			maxcount -= len;
 			break;
 		}
-=======
-		pn = resp->rqstp->rq_resused++;
->>>>>>> 7175f4b... Truncated history
 		resp->rqstp->rq_vec[v].iov_base =
 			page_address(resp->rqstp->rq_respages[pn]);
 		resp->rqstp->rq_vec[v].iov_len =
 			len < PAGE_SIZE ? len : PAGE_SIZE;
-<<<<<<< HEAD
 		resp->rqstp->rq_resused++;
-=======
->>>>>>> 7175f4b... Truncated history
 		v++;
 		len -= PAGE_SIZE;
 	}
@@ -3015,11 +2966,8 @@ nfsd4_encode_readlink(struct nfsd4_compoundres *resp, __be32 nfserr, struct nfsd
 		return nfserr;
 	if (resp->xbuf->page_len)
 		return nfserr_resource;
-<<<<<<< HEAD
 	if (!resp->rqstp->rq_respages[resp->rqstp->rq_resused])
 		return nfserr_resource;
-=======
->>>>>>> 7175f4b... Truncated history
 
 	page = page_address(resp->rqstp->rq_respages[resp->rqstp->rq_resused++]);
 
@@ -3069,11 +3017,8 @@ nfsd4_encode_readdir(struct nfsd4_compoundres *resp, __be32 nfserr, struct nfsd4
 		return nfserr;
 	if (resp->xbuf->page_len)
 		return nfserr_resource;
-<<<<<<< HEAD
 	if (!resp->rqstp->rq_respages[resp->rqstp->rq_resused])
 		return nfserr_resource;
-=======
->>>>>>> 7175f4b... Truncated history
 
 	RESERVE_SPACE(NFS4_VERIFIER_SIZE);
 	savep = p;

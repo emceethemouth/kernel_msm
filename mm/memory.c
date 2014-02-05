@@ -183,20 +183,14 @@ static int tlb_next_batch(struct mmu_gather *tlb)
 		return 1;
 	}
 
-<<<<<<< HEAD
 	if (tlb->batch_count == MAX_GATHER_BATCH_COUNT)
 		return 0;
 
-=======
->>>>>>> 7175f4b... Truncated history
 	batch = (void *)__get_free_pages(GFP_NOWAIT | __GFP_NOWARN, 0);
 	if (!batch)
 		return 0;
 
-<<<<<<< HEAD
 	tlb->batch_count++;
-=======
->>>>>>> 7175f4b... Truncated history
 	batch->next = NULL;
 	batch->nr   = 0;
 	batch->max  = MAX_GATHER_BATCH;
@@ -223,10 +217,7 @@ void tlb_gather_mmu(struct mmu_gather *tlb, struct mm_struct *mm, bool fullmm)
 	tlb->local.nr   = 0;
 	tlb->local.max  = ARRAY_SIZE(tlb->__pages);
 	tlb->active     = &tlb->local;
-<<<<<<< HEAD
 	tlb->batch_count = 0;
-=======
->>>>>>> 7175f4b... Truncated history
 
 #ifdef CONFIG_HAVE_RCU_TABLE_FREE
 	tlb->batch = NULL;
@@ -3527,10 +3518,7 @@ int handle_mm_fault(struct mm_struct *mm, struct vm_area_struct *vma,
 	if (unlikely(is_vm_hugetlb_page(vma)))
 		return hugetlb_fault(mm, vma, address, flags);
 
-<<<<<<< HEAD
 retry:
-=======
->>>>>>> 7175f4b... Truncated history
 	pgd = pgd_offset(mm, address);
 	pud = pud_alloc(mm, pgd, address);
 	if (!pud)
@@ -3544,16 +3532,12 @@ retry:
 							  pmd, flags);
 	} else {
 		pmd_t orig_pmd = *pmd;
-<<<<<<< HEAD
 		int ret;
 
-=======
->>>>>>> 7175f4b... Truncated history
 		barrier();
 		if (pmd_trans_huge(orig_pmd)) {
 			if (flags & FAULT_FLAG_WRITE &&
 			    !pmd_write(orig_pmd) &&
-<<<<<<< HEAD
 			    !pmd_trans_splitting(orig_pmd)) {
 				ret = do_huge_pmd_wp_page(mm, vma, address, pmd,
 							  orig_pmd);
@@ -3566,11 +3550,6 @@ retry:
 					goto retry;
 				return ret;
 			}
-=======
-			    !pmd_trans_splitting(orig_pmd))
-				return do_huge_pmd_wp_page(mm, vma, address,
-							   pmd, orig_pmd);
->>>>>>> 7175f4b... Truncated history
 			return 0;
 		}
 	}

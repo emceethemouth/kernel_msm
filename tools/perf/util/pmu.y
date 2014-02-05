@@ -1,8 +1,4 @@
 
-<<<<<<< HEAD
-=======
-%name-prefix "perf_pmu_"
->>>>>>> 7175f4b... Truncated history
 %parse-param {struct list_head *format}
 %parse-param {char *name}
 

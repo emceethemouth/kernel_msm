@@ -37,21 +37,10 @@ static int get_callid(const char *dptr, unsigned int dataoff,
 		if (ret > 0)
 			break;
 		if (!ret)
-<<<<<<< HEAD
 			return -EINVAL;
 		dataoff += *matchoff;
 	}
 
-=======
-			return 0;
-		dataoff += *matchoff;
-	}
-
-	/* Empty callid is useless */
-	if (!*matchlen)
-		return -EINVAL;
-
->>>>>>> 7175f4b... Truncated history
 	/* Too large is useless */
 	if (*matchlen > IP_VS_PEDATA_MAXLEN)
 		return -EINVAL;

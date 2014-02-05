@@ -10,10 +10,7 @@
 
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 
-<<<<<<< HEAD
 #include <linux/module.h>
-=======
->>>>>>> 7175f4b... Truncated history
 #include <linux/bitops.h>
 #include <linux/cdev.h>
 #include <linux/dma-mapping.h>

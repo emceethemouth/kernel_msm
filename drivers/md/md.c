@@ -1580,13 +1580,8 @@ static int super_1_load(struct md_rdev *rdev, struct md_rdev *refdev, int minor_
 					     sector, count, 1) == 0)
 				return -EINVAL;
 		}
-<<<<<<< HEAD
 	} else if (sb->bblog_offset != 0)
 		rdev->badblocks.shift = 0;
-=======
-	} else if (sb->bblog_offset == 0)
-		rdev->badblocks.shift = -1;
->>>>>>> 7175f4b... Truncated history
 
 	if (!refdev) {
 		ret = 1;
@@ -3102,11 +3097,7 @@ int md_rdev_init(struct md_rdev *rdev)
 	 * be used - I wonder if that matters
 	 */
 	rdev->badblocks.count = 0;
-<<<<<<< HEAD
 	rdev->badblocks.shift = -1; /* disabled until explicitly enabled */
-=======
-	rdev->badblocks.shift = 0;
->>>>>>> 7175f4b... Truncated history
 	rdev->badblocks.page = kmalloc(PAGE_SIZE, GFP_KERNEL);
 	seqlock_init(&rdev->badblocks.lock);
 	if (rdev->badblocks.page == NULL)
@@ -3178,12 +3169,6 @@ static struct md_rdev *md_import_device(dev_t newdev, int super_format, int supe
 			goto abort_free;
 		}
 	}
-<<<<<<< HEAD
-=======
-	if (super_format == -1)
-		/* hot-add for 0.90, or non-persistent: so no badblocks */
-		rdev->badblocks.shift = -1;
->>>>>>> 7175f4b... Truncated history
 
 	return rdev;
 
@@ -3512,10 +3497,7 @@ level_store(struct mddev *mddev, const char *buf, size_t len)
 		mddev->in_sync = 1;
 		del_timer_sync(&mddev->safemode_timer);
 	}
-<<<<<<< HEAD
 	blk_set_stacking_limits(&mddev->queue->limits);
-=======
->>>>>>> 7175f4b... Truncated history
 	pers->run(mddev);
 	mddev_resume(mddev);
 	set_bit(MD_CHANGE_DEVS, &mddev->flags);

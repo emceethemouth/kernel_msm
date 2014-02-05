@@ -1196,16 +1196,10 @@ static ssize_t bin_dn_node_address(struct file *file,
 
 		/* Convert the decnet address to binary */
 		result = -EIO;
-<<<<<<< HEAD
 		nodep = strchr(buf, '.');
 		if (!nodep)
 			goto out;
 		++nodep;
-=======
-		nodep = strchr(buf, '.') + 1;
-		if (!nodep)
-			goto out;
->>>>>>> 7175f4b... Truncated history
 
 		area = simple_strtoul(buf, NULL, 10);
 		node = simple_strtoul(nodep, NULL, 10);

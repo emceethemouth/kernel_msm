@@ -120,11 +120,7 @@ struct thermal_zone_device {
 /* Adding event notification support elements */
 #define THERMAL_GENL_FAMILY_NAME                "thermal_event"
 #define THERMAL_GENL_VERSION                    0x01
-<<<<<<< HEAD
 #define THERMAL_GENL_MCAST_GROUP_NAME           "thermal_mc_grp"
-=======
-#define THERMAL_GENL_MCAST_GROUP_NAME           "thermal_mc_group"
->>>>>>> 7175f4b... Truncated history
 
 enum events {
 	THERMAL_AUX0,

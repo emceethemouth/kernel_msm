@@ -1022,12 +1022,8 @@
 /* Macros for setting and retrieving special purpose registers */
 #ifndef __ASSEMBLY__
 #define mfmsr()		({unsigned long rval; \
-<<<<<<< HEAD
 			asm volatile("mfmsr %0" : "=r" (rval) : \
 						: "memory"); rval;})
-=======
-			asm volatile("mfmsr %0" : "=r" (rval)); rval;})
->>>>>>> 7175f4b... Truncated history
 #ifdef CONFIG_PPC_BOOK3S_64
 #define __mtmsrd(v, l)	asm volatile("mtmsrd %0," __stringify(l) \
 				     : : "r" (v) : "memory")

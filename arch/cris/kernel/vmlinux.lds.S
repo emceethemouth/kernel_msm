@@ -52,10 +52,7 @@ SECTIONS
 
 	EXCEPTION_TABLE(4)
 
-<<<<<<< HEAD
 	_sdata = .;
-=======
->>>>>>> 7175f4b... Truncated history
 	RODATA
 
 	. = ALIGN (4);

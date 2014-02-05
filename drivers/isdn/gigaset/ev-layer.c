@@ -190,10 +190,7 @@ struct reply_t gigaset_tab_nocid[] =
 								  ACT_INIT} },
 	{RSP_OK,	121, 121, -1,			  0,  0, {ACT_GOTVER,
 								  ACT_INIT} },
-<<<<<<< HEAD
 	{RSP_NONE,	121, 121, -1,			120,  0, {ACT_GETSTRING} },
-=======
->>>>>>> 7175f4b... Truncated history
 
 /* leave dle mode */
 	{RSP_INIT,	  0,   0, SEQ_DLE0,		201,  5, {0},	"^SDLE=0\r"},
@@ -1318,14 +1315,9 @@ static void do_action(int action, struct cardstate *cs,
 		s = ev->ptr;
 
 		if (!strcmp(s, "OK")) {
-<<<<<<< HEAD
 			/* OK without version string: assume old response */
 			*p_genresp = 1;
 			*p_resp_code = RSP_NONE;
-=======
-			*p_genresp = 1;
-			*p_resp_code = RSP_ERROR;
->>>>>>> 7175f4b... Truncated history
 			break;
 		}
 

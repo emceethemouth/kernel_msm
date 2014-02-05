@@ -122,10 +122,6 @@ static int filelayout_async_handle_error(struct rpc_task *task,
 		break;
 	case -NFS4ERR_DELAY:
 	case -NFS4ERR_GRACE:
-<<<<<<< HEAD
-=======
-	case -EKEYEXPIRED:
->>>>>>> 7175f4b... Truncated history
 		rpc_delay(task, FILELAYOUT_POLL_RETRY_MAX);
 		break;
 	case -NFS4ERR_RETRY_UNCACHED_REP:

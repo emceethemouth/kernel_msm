@@ -645,7 +645,6 @@ u32 ssb_pmu_get_controlclock(struct ssb_chipcommon *cc)
 		return 0;
 	}
 }
-<<<<<<< HEAD
 
 void ssb_pmu_spuravoid_pllupdate(struct ssb_chipcommon *cc, int spuravoid)
 {
@@ -675,5 +674,3 @@ void ssb_pmu_spuravoid_pllupdate(struct ssb_chipcommon *cc, int spuravoid)
 	chipco_set32(cc, SSB_CHIPCO_PMU_CTL, pmu_ctl);
 }
 EXPORT_SYMBOL_GPL(ssb_pmu_spuravoid_pllupdate);
-=======
->>>>>>> 7175f4b... Truncated history

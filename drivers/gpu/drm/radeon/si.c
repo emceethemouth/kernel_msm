@@ -411,12 +411,8 @@ static u32 dce6_line_buffer_adjust(struct radeon_device *rdev,
 				   struct drm_display_mode *mode,
 				   struct drm_display_mode *other_mode)
 {
-<<<<<<< HEAD
 	u32 tmp, buffer_alloc, i;
 	u32 pipe_offset = radeon_crtc->crtc_id * 0x20;
-=======
-	u32 tmp;
->>>>>>> 7175f4b... Truncated history
 	/*
 	 * Line Buffer Setup
 	 * There are 3 line buffers, each one shared by 2 display controllers.
@@ -431,7 +427,6 @@ static u32 dce6_line_buffer_adjust(struct radeon_device *rdev,
 	 * non-linked crtcs for maximum line buffer allocation.
 	 */
 	if (radeon_crtc->base.enabled && mode) {
-<<<<<<< HEAD
 		if (other_mode) {
 			tmp = 0; /* 1/2 */
 			buffer_alloc = 1;
@@ -443,19 +438,10 @@ static u32 dce6_line_buffer_adjust(struct radeon_device *rdev,
 		tmp = 0;
 		buffer_alloc = 0;
 	}
-=======
-		if (other_mode)
-			tmp = 0; /* 1/2 */
-		else
-			tmp = 2; /* whole */
-	} else
-		tmp = 0;
->>>>>>> 7175f4b... Truncated history
 
 	WREG32(DC_LB_MEMORY_SPLIT + radeon_crtc->crtc_offset,
 	       DC_LB_MEMORY_CONFIG(tmp));
 
-<<<<<<< HEAD
 	WREG32(PIPE0_DMIF_BUFFER_CONTROL + pipe_offset,
 	       DMIF_BUFFERS_ALLOCATED(buffer_alloc));
 	for (i = 0; i < rdev->usec_timeout; i++) {
@@ -465,8 +451,6 @@ static u32 dce6_line_buffer_adjust(struct radeon_device *rdev,
 		udelay(1);
 	}
 
-=======
->>>>>>> 7175f4b... Truncated history
 	if (radeon_crtc->base.enabled && mode) {
 		switch (tmp) {
 		case 0:
@@ -1830,10 +1814,7 @@ static void si_gpu_init(struct radeon_device *rdev)
 	rdev->config.si.backend_map = gb_backend_map;
 	WREG32(GB_ADDR_CONFIG, gb_addr_config);
 	WREG32(DMIF_ADDR_CONFIG, gb_addr_config);
-<<<<<<< HEAD
 	WREG32(DMIF_ADDR_CALC, gb_addr_config);
-=======
->>>>>>> 7175f4b... Truncated history
 	WREG32(HDP_ADDR_CONFIG, gb_addr_config);
 
 	/* primary versions */
@@ -2498,7 +2479,6 @@ static int si_mc_init(struct radeon_device *rdev)
 	rdev->mc.aper_base = pci_resource_start(rdev->pdev, 0);
 	rdev->mc.aper_size = pci_resource_len(rdev->pdev, 0);
 	/* size in MB on si */
-<<<<<<< HEAD
 	tmp = RREG32(CONFIG_MEMSIZE);
 	/* some boards may have garbage in the upper 16 bits */
 	if (tmp & 0xffff0000) {
@@ -2508,10 +2488,6 @@ static int si_mc_init(struct radeon_device *rdev)
 	}
 	rdev->mc.mc_vram_size = tmp * 1024ULL * 1024ULL;
 	rdev->mc.real_vram_size = rdev->mc.mc_vram_size;
-=======
-	rdev->mc.mc_vram_size = RREG32(CONFIG_MEMSIZE) * 1024 * 1024;
-	rdev->mc.real_vram_size = RREG32(CONFIG_MEMSIZE) * 1024 * 1024;
->>>>>>> 7175f4b... Truncated history
 	rdev->mc.visible_vram_size = rdev->mc.aper_size;
 	si_vram_gtt_location(rdev, &rdev->mc);
 	radeon_update_bandwidth_info(rdev);
@@ -2574,20 +2550,12 @@ int si_pcie_gart_enable(struct radeon_device *rdev)
 	WREG32(0x15DC, 0);
 
 	/* empty context1-15 */
-<<<<<<< HEAD
 	/* FIXME start with 4G, once using 2 level pt switch to full
-=======
-	/* FIXME start with 1G, once using 2 level pt switch to full
->>>>>>> 7175f4b... Truncated history
 	 * vm size space
 	 */
 	/* set vm size, must be a multiple of 4 */
 	WREG32(VM_CONTEXT1_PAGE_TABLE_START_ADDR, 0);
-<<<<<<< HEAD
 	WREG32(VM_CONTEXT1_PAGE_TABLE_END_ADDR, rdev->vm_manager.max_pfn);
-=======
-	WREG32(VM_CONTEXT1_PAGE_TABLE_END_ADDR, (1 << 30) / RADEON_GPU_PAGE_SIZE);
->>>>>>> 7175f4b... Truncated history
 	for (i = 1; i < 16; i++) {
 		if (i < 8)
 			WREG32(VM_CONTEXT0_PAGE_TABLE_BASE_ADDR + (i << 2),
@@ -2648,10 +2616,7 @@ static bool si_vm_reg_valid(u32 reg)
 	/* check config regs */
 	switch (reg) {
 	case GRBM_GFX_INDEX:
-<<<<<<< HEAD
 	case CP_STRMOUT_CNTL:
-=======
->>>>>>> 7175f4b... Truncated history
 	case VGT_VTX_VECT_EJECT_REG:
 	case VGT_CACHE_INVALIDATION:
 	case VGT_ESGS_RING_SIZE:
@@ -3933,15 +3898,12 @@ static int si_startup(struct radeon_device *rdev)
 	}
 
 	/* Enable IRQ */
-<<<<<<< HEAD
 	if (!rdev->irq.installed) {
 		r = radeon_irq_kms_init(rdev);
 		if (r)
 			return r;
 	}
 
-=======
->>>>>>> 7175f4b... Truncated history
 	r = si_irq_init(rdev);
 	if (r) {
 		DRM_ERROR("radeon: IH init failed (%d).\n", r);
@@ -4110,13 +4072,6 @@ int si_init(struct radeon_device *rdev)
 	if (r)
 		return r;
 
-<<<<<<< HEAD
-=======
-	r = radeon_irq_kms_init(rdev);
-	if (r)
-		return r;
-
->>>>>>> 7175f4b... Truncated history
 	ring = &rdev->ring[RADEON_RING_TYPE_GFX_INDEX];
 	ring->ring_obj = NULL;
 	r600_ring_init(rdev, ring, 1024 * 1024);

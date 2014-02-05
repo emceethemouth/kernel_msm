@@ -3598,10 +3598,6 @@ static int release_tx_packet(struct niu *np, struct tx_ring_info *rp, int idx)
 static void niu_tx_work(struct niu *np, struct tx_ring_info *rp)
 {
 	struct netdev_queue *txq;
-<<<<<<< HEAD
-=======
-	unsigned int tx_bytes;
->>>>>>> 7175f4b... Truncated history
 	u16 pkt_cnt, tmp;
 	int cons, index;
 	u64 cs;
@@ -3624,26 +3620,12 @@ static void niu_tx_work(struct niu *np, struct tx_ring_info *rp)
 	netif_printk(np, tx_done, KERN_DEBUG, np->dev,
 		     "%s() pkt_cnt[%u] cons[%d]\n", __func__, pkt_cnt, cons);
 
-<<<<<<< HEAD
 	while (pkt_cnt--)
 		cons = release_tx_packet(np, rp, cons);
-=======
-	tx_bytes = 0;
-	tmp = pkt_cnt;
-	while (tmp--) {
-		tx_bytes += rp->tx_buffs[cons].skb->len;
-		cons = release_tx_packet(np, rp, cons);
-	}
->>>>>>> 7175f4b... Truncated history
 
 	rp->cons = cons;
 	smp_mb();
 
-<<<<<<< HEAD
-=======
-	netdev_tx_completed_queue(txq, pkt_cnt, tx_bytes);
-
->>>>>>> 7175f4b... Truncated history
 out:
 	if (unlikely(netif_tx_queue_stopped(txq) &&
 		     (niu_tx_avail(rp) > NIU_TX_WAKEUP_THRESH(rp)))) {
@@ -4344,10 +4326,6 @@ static void niu_free_channels(struct niu *np)
 			struct tx_ring_info *rp = &np->tx_rings[i];
 
 			niu_free_tx_ring_info(np, rp);
-<<<<<<< HEAD
-=======
-			netdev_tx_reset_queue(netdev_get_tx_queue(np->dev, i));
->>>>>>> 7175f4b... Truncated history
 		}
 		kfree(np->tx_rings);
 		np->tx_rings = NULL;
@@ -6753,11 +6731,6 @@ static netdev_tx_t niu_start_xmit(struct sk_buff *skb,
 		prod = NEXT_TX(rp, prod);
 	}
 
-<<<<<<< HEAD
-=======
-	netdev_tx_sent_queue(txq, skb->len);
-
->>>>>>> 7175f4b... Truncated history
 	if (prod < rp->prod)
 		rp->wrap_bit ^= TX_RING_KICK_WRAP;
 	rp->prod = prod;

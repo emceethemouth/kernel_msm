@@ -53,10 +53,7 @@ struct eth_bearer {
 	struct tipc_bearer *bearer;
 	struct net_device *dev;
 	struct packet_type tipc_packet_type;
-<<<<<<< HEAD
 	struct work_struct setup;
-=======
->>>>>>> 7175f4b... Truncated history
 	struct work_struct cleanup;
 };
 
@@ -142,7 +139,6 @@ static int recv_msg(struct sk_buff *buf, struct net_device *dev,
 }
 
 /**
-<<<<<<< HEAD
  * setup_bearer - setup association between Ethernet bearer and interface
  */
 static void setup_bearer(struct work_struct *work)
@@ -154,8 +150,6 @@ static void setup_bearer(struct work_struct *work)
 }
 
 /**
-=======
->>>>>>> 7175f4b... Truncated history
  * enable_bearer - attach TIPC bearer to an Ethernet interface
  */
 
@@ -199,12 +193,8 @@ static int enable_bearer(struct tipc_bearer *tb_ptr)
 	eb_ptr->tipc_packet_type.func = recv_msg;
 	eb_ptr->tipc_packet_type.af_packet_priv = eb_ptr;
 	INIT_LIST_HEAD(&(eb_ptr->tipc_packet_type.list));
-<<<<<<< HEAD
 	INIT_WORK(&eb_ptr->setup, setup_bearer);
 	schedule_work(&eb_ptr->setup);
-=======
-	dev_add_pack(&eb_ptr->tipc_packet_type);
->>>>>>> 7175f4b... Truncated history
 
 	/* Associate TIPC bearer with Ethernet bearer */
 

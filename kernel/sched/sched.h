@@ -80,11 +80,7 @@ extern struct mutex sched_domains_mutex;
 struct cfs_rq;
 struct rt_rq;
 
-<<<<<<< HEAD
 extern struct list_head task_groups;
-=======
-static LIST_HEAD(task_groups);
->>>>>>> 7175f4b... Truncated history
 
 struct cfs_bandwidth {
 #ifdef CONFIG_CFS_BANDWIDTH
@@ -542,7 +538,6 @@ DECLARE_PER_CPU(int, sd_llc_id);
 /*
  * Return the group to which this tasks belongs.
  *
-<<<<<<< HEAD
  * We cannot use task_subsys_state() and friends because the cgroup
  * subsystem changes that value before the cgroup_subsys::attach() method
  * is called, therefore we cannot pin it and might observe the wrong value.
@@ -556,24 +551,6 @@ DECLARE_PER_CPU(int, sd_llc_id);
 static inline struct task_group *task_group(struct task_struct *p)
 {
 	return p->sched_task_group;
-=======
- * We use task_subsys_state_check() and extend the RCU verification with
- * pi->lock and rq->lock because cpu_cgroup_attach() holds those locks for each
- * task it moves into the cgroup. Therefore by holding either of those locks,
- * we pin the task to the current cgroup.
- */
-static inline struct task_group *task_group(struct task_struct *p)
-{
-	struct task_group *tg;
-	struct cgroup_subsys_state *css;
-
-	css = task_subsys_state_check(p, cpu_cgroup_subsys_id,
-			lockdep_is_held(&p->pi_lock) ||
-			lockdep_is_held(&task_rq(p)->lock));
-	tg = container_of(css, struct task_group, css);
-
-	return autogroup_task_group(p, tg);
->>>>>>> 7175f4b... Truncated history
 }
 
 static inline bool task_notify_on_migrate(struct task_struct *p)
@@ -972,11 +949,6 @@ static inline u64 sched_avg_period(void)
 	return (u64)sysctl_sched_time_avg * NSEC_PER_MSEC / 2;
 }
 
-<<<<<<< HEAD
-=======
-void calc_load_account_idle(struct rq *this_rq);
-
->>>>>>> 7175f4b... Truncated history
 #ifdef CONFIG_SCHED_HRTICK
 
 /*
@@ -1179,12 +1151,8 @@ extern void print_rt_stats(struct seq_file *m, int cpu);
 extern void init_cfs_rq(struct cfs_rq *cfs_rq);
 extern void init_rt_rq(struct rt_rq *rt_rq, struct rq *rq);
 
-<<<<<<< HEAD
 extern void cfs_bandwidth_usage_inc(void);
 extern void cfs_bandwidth_usage_dec(void);
-=======
-extern void account_cfs_bandwidth_used(int enabled, int was_enabled);
->>>>>>> 7175f4b... Truncated history
 
 #ifdef CONFIG_NO_HZ
 enum rq_nohz_flag_bits {

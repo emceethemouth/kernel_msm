@@ -67,11 +67,8 @@ static snd_pcm_uframes_t snd_usb_pcm_pointer(struct snd_pcm_substream *substream
 	unsigned int hwptr_done;
 
 	subs = (struct snd_usb_substream *)substream->runtime->private_data;
-<<<<<<< HEAD
 	if (subs->stream->chip->shutdown)
 		return SNDRV_PCM_POS_XRUN;
-=======
->>>>>>> 7175f4b... Truncated history
 	spin_lock(&subs->lock);
 	hwptr_done = subs->hwptr_done;
 	substream->runtime->delay = snd_usb_pcm_delay(subs,
@@ -378,7 +375,6 @@ static int snd_usb_hw_params(struct snd_pcm_substream *substream,
 	changed = subs->cur_audiofmt != fmt ||
 		subs->period_bytes != params_period_bytes(hw_params) ||
 		subs->cur_rate != rate;
-<<<<<<< HEAD
 
 	down_read(&subs->stream->chip->shutdown_rwsem);
 	if (subs->stream->chip->shutdown) {
@@ -387,10 +383,6 @@ static int snd_usb_hw_params(struct snd_pcm_substream *substream,
 	}
 	if ((ret = set_format(subs, fmt)) < 0)
 		goto unlock;
-=======
-	if ((ret = set_format(subs, fmt)) < 0)
-		return ret;
->>>>>>> 7175f4b... Truncated history
 
 	if (subs->cur_rate != rate) {
 		struct usb_host_interface *alts;
@@ -399,19 +391,11 @@ static int snd_usb_hw_params(struct snd_pcm_substream *substream,
 		alts = &iface->altsetting[fmt->altset_idx];
 		ret = snd_usb_init_sample_rate(subs->stream->chip, subs->interface, alts, fmt, rate);
 		if (ret < 0)
-<<<<<<< HEAD
 			goto unlock;
-=======
-			return ret;
->>>>>>> 7175f4b... Truncated history
 		subs->cur_rate = rate;
 	}
 
 	if (changed) {
-<<<<<<< HEAD
-=======
-		mutex_lock(&subs->stream->chip->shutdown_mutex);
->>>>>>> 7175f4b... Truncated history
 		/* format changed */
 		snd_usb_release_substream_urbs(subs, 0);
 		/* influenced: period_bytes, channels, rate, format, */
@@ -419,16 +403,10 @@ static int snd_usb_hw_params(struct snd_pcm_substream *substream,
 						  params_rate(hw_params),
 						  snd_pcm_format_physical_width(params_format(hw_params)) *
 							params_channels(hw_params));
-<<<<<<< HEAD
 	}
 
 unlock:
 	up_read(&subs->stream->chip->shutdown_rwsem);
-=======
-		mutex_unlock(&subs->stream->chip->shutdown_mutex);
-	}
-
->>>>>>> 7175f4b... Truncated history
 	return ret;
 }
 
@@ -444,15 +422,9 @@ static int snd_usb_hw_free(struct snd_pcm_substream *substream)
 	subs->cur_audiofmt = NULL;
 	subs->cur_rate = 0;
 	subs->period_bytes = 0;
-<<<<<<< HEAD
 	down_read(&subs->stream->chip->shutdown_rwsem);
 	snd_usb_release_substream_urbs(subs, 0);
 	up_read(&subs->stream->chip->shutdown_rwsem);
-=======
-	mutex_lock(&subs->stream->chip->shutdown_mutex);
-	snd_usb_release_substream_urbs(subs, 0);
-	mutex_unlock(&subs->stream->chip->shutdown_mutex);
->>>>>>> 7175f4b... Truncated history
 	return snd_pcm_lib_free_vmalloc_buffer(substream);
 }
 
@@ -465,24 +437,18 @@ static int snd_usb_pcm_prepare(struct snd_pcm_substream *substream)
 {
 	struct snd_pcm_runtime *runtime = substream->runtime;
 	struct snd_usb_substream *subs = runtime->private_data;
-<<<<<<< HEAD
 	int ret = 0;
-=======
->>>>>>> 7175f4b... Truncated history
 
 	if (! subs->cur_audiofmt) {
 		snd_printk(KERN_ERR "usbaudio: no format is specified!\n");
 		return -ENXIO;
 	}
 
-<<<<<<< HEAD
 	down_read(&subs->stream->chip->shutdown_rwsem);
 	if (subs->stream->chip->shutdown) {
 		ret = -ENODEV;
 		goto unlock;
 	}
-=======
->>>>>>> 7175f4b... Truncated history
 	/* some unit conversions in runtime */
 	subs->maxframesize = bytes_to_frames(runtime, subs->maxpacksize);
 	subs->curframesize = bytes_to_frames(runtime, subs->curpacksize);
@@ -495,14 +461,10 @@ static int snd_usb_pcm_prepare(struct snd_pcm_substream *substream)
 	subs->last_frame_number = 0;
 	runtime->delay = 0;
 
-<<<<<<< HEAD
 	ret = snd_usb_substream_prepare(subs, runtime);
  unlock:
 	up_read(&subs->stream->chip->shutdown_rwsem);
 	return ret;
-=======
-	return snd_usb_substream_prepare(subs, runtime);
->>>>>>> 7175f4b... Truncated history
 }
 
 static struct snd_pcm_hardware snd_usb_hardware =
@@ -555,11 +517,7 @@ static int hw_check_valid_format(struct snd_usb_substream *subs,
 		return 0;
 	}
 	/* check whether the period time is >= the data packet interval */
-<<<<<<< HEAD
 	if (subs->speed != USB_SPEED_FULL) {
-=======
-	if (snd_usb_get_speed(subs->dev) != USB_SPEED_FULL) {
->>>>>>> 7175f4b... Truncated history
 		ptime = 125 * (1 << fp->datainterval);
 		if (ptime > pt->max || (ptime == pt->max && pt->openmax)) {
 			hwc_debug("   > check: ptime %u > max %u\n", ptime, pt->max);
@@ -758,12 +716,9 @@ static int snd_usb_pcm_check_knot(struct snd_pcm_runtime *runtime,
 	int count = 0, needs_knot = 0;
 	int err;
 
-<<<<<<< HEAD
 	kfree(subs->rate_list.list);
 	subs->rate_list.list = NULL;
 
-=======
->>>>>>> 7175f4b... Truncated history
 	list_for_each_entry(fp, &subs->fmt_list, list) {
 		if (fp->rates & SNDRV_PCM_RATE_CONTINUOUS)
 			return 0;
@@ -840,11 +795,7 @@ static int setup_hw_info(struct snd_pcm_runtime *runtime, struct snd_usb_substre
 		return err;
 
 	param_period_time_if_needed = SNDRV_PCM_HW_PARAM_PERIOD_TIME;
-<<<<<<< HEAD
 	if (subs->speed == USB_SPEED_FULL)
-=======
-	if (snd_usb_get_speed(subs->dev) == USB_SPEED_FULL)
->>>>>>> 7175f4b... Truncated history
 		/* full speed devices have fixed data packet interval */
 		ptmin = 1000;
 	if (ptmin == 1000)

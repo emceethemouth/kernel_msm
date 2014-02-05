@@ -2023,10 +2023,7 @@ static int pool_ctr(struct dm_target *ti, unsigned argc, char **argv)
 		 * thin devices' discard limits consistent).
 		 */
 		ti->discards_supported = 1;
-<<<<<<< HEAD
 		ti->discard_zeroes_data_unsupported = 1;
-=======
->>>>>>> 7175f4b... Truncated history
 	}
 	ti->private = pt;
 
@@ -2324,13 +2321,8 @@ static int pool_message(struct dm_target *ti, unsigned argc, char **argv)
  *    <transaction id> <used metadata sectors>/<total metadata sectors>
  *    <used data sectors>/<total data sectors> <held metadata root>
  */
-<<<<<<< HEAD
 static void pool_status(struct dm_target *ti, status_type_t type,
 			char *result, unsigned maxlen)
-=======
-static int pool_status(struct dm_target *ti, status_type_t type,
-		       char *result, unsigned maxlen)
->>>>>>> 7175f4b... Truncated history
 {
 	int r, count;
 	unsigned sz = 0;
@@ -2347,7 +2339,6 @@ static int pool_status(struct dm_target *ti, status_type_t type,
 
 	switch (type) {
 	case STATUSTYPE_INFO:
-<<<<<<< HEAD
 		r = dm_pool_get_metadata_transaction_id(pool->pmd, &transaction_id);
 		if (r) {
 			DMERR("dm_pool_get_metadata_transaction_id returned %d", r);
@@ -2383,34 +2374,6 @@ static int pool_status(struct dm_target *ti, status_type_t type,
 			DMERR("dm_pool_get_metadata_snap returned %d", r);
 			goto err;
 		}
-=======
-		r = dm_pool_get_metadata_transaction_id(pool->pmd,
-							&transaction_id);
-		if (r)
-			return r;
-
-		r = dm_pool_get_free_metadata_block_count(pool->pmd,
-							  &nr_free_blocks_metadata);
-		if (r)
-			return r;
-
-		r = dm_pool_get_metadata_dev_size(pool->pmd, &nr_blocks_metadata);
-		if (r)
-			return r;
-
-		r = dm_pool_get_free_block_count(pool->pmd,
-						 &nr_free_blocks_data);
-		if (r)
-			return r;
-
-		r = dm_pool_get_data_dev_size(pool->pmd, &nr_blocks_data);
-		if (r)
-			return r;
-
-		r = dm_pool_get_held_metadata_root(pool->pmd, &held_root);
-		if (r)
-			return r;
->>>>>>> 7175f4b... Truncated history
 
 		DMEMIT("%llu %llu/%llu %llu/%llu ",
 		       (unsigned long long)transaction_id,
@@ -2448,15 +2411,10 @@ static int pool_status(struct dm_target *ti, status_type_t type,
 
 		break;
 	}
-<<<<<<< HEAD
 	return;
 
 err:
 	DMEMIT("Error");
-=======
-
-	return 0;
->>>>>>> 7175f4b... Truncated history
 }
 
 static int pool_iterate_devices(struct dm_target *ti,
@@ -2493,10 +2451,6 @@ static void set_discard_limits(struct pool *pool, struct queue_limits *limits)
 	 * bios that overlap 2 blocks.
 	 */
 	limits->discard_granularity = pool->sectors_per_block << SECTOR_SHIFT;
-<<<<<<< HEAD
-=======
-	limits->discard_zeroes_data = pool->pf.zero_new_blocks;
->>>>>>> 7175f4b... Truncated history
 }
 
 static void pool_io_hints(struct dm_target *ti, struct queue_limits *limits)
@@ -2711,13 +2665,8 @@ static void thin_postsuspend(struct dm_target *ti)
 /*
  * <nr mapped sectors> <highest mapped sector>
  */
-<<<<<<< HEAD
 static void thin_status(struct dm_target *ti, status_type_t type,
 			char *result, unsigned maxlen)
-=======
-static int thin_status(struct dm_target *ti, status_type_t type,
-		       char *result, unsigned maxlen)
->>>>>>> 7175f4b... Truncated history
 {
 	int r;
 	ssize_t sz = 0;
@@ -2731,7 +2680,6 @@ static int thin_status(struct dm_target *ti, status_type_t type,
 		switch (type) {
 		case STATUSTYPE_INFO:
 			r = dm_thin_get_mapped_count(tc->td, &mapped);
-<<<<<<< HEAD
 			if (r) {
 				DMERR("dm_thin_get_mapped_count returned %d", r);
 				goto err;
@@ -2742,14 +2690,6 @@ static int thin_status(struct dm_target *ti, status_type_t type,
 				DMERR("dm_thin_get_highest_mapped_block returned %d", r);
 				goto err;
 			}
-=======
-			if (r)
-				return r;
-
-			r = dm_thin_get_highest_mapped_block(tc->td, &highest);
-			if (r < 0)
-				return r;
->>>>>>> 7175f4b... Truncated history
 
 			DMEMIT("%llu ", mapped * tc->pool->sectors_per_block);
 			if (r)
@@ -2769,14 +2709,10 @@ static int thin_status(struct dm_target *ti, status_type_t type,
 		}
 	}
 
-<<<<<<< HEAD
 	return;
 
 err:
 	DMEMIT("Error");
-=======
-	return 0;
->>>>>>> 7175f4b... Truncated history
 }
 
 static int thin_iterate_devices(struct dm_target *ti,

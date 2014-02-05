@@ -6,10 +6,7 @@
  * Address space accounting code	<alan@lxorguk.ukuu.org.uk>
  */
 
-<<<<<<< HEAD
 #include <linux/kernel.h>
-=======
->>>>>>> 7175f4b... Truncated history
 #include <linux/slab.h>
 #include <linux/backing-dev.h>
 #include <linux/mm.h>
@@ -396,7 +393,6 @@ find_vma_prepare(struct mm_struct *mm, unsigned long addr,
 	return vma;
 }
 
-<<<<<<< HEAD
 static unsigned long count_vma_pages_range(struct mm_struct *mm,
 		unsigned long addr, unsigned long end)
 {
@@ -425,8 +421,6 @@ static unsigned long count_vma_pages_range(struct mm_struct *mm,
 	return nr_pages;
 }
 
-=======
->>>>>>> 7175f4b... Truncated history
 void __vma_link_rb(struct mm_struct *mm, struct vm_area_struct *vma,
 		struct rb_node **rb_link, struct rb_node *rb_parent)
 {
@@ -1171,28 +1165,19 @@ SYSCALL_DEFINE6(mmap_pgoff, unsigned long, addr, unsigned long, len,
 		file = fget(fd);
 		if (!file)
 			goto out;
-<<<<<<< HEAD
 		if (is_file_hugepages(file))
 			len = ALIGN(len, huge_page_size(hstate_file(file)));
 	} else if (flags & MAP_HUGETLB) {
 		struct user_struct *user = NULL;
 
 		len = ALIGN(len, huge_page_size(&default_hstate));
-=======
-	} else if (flags & MAP_HUGETLB) {
-		struct user_struct *user = NULL;
->>>>>>> 7175f4b... Truncated history
 		/*
 		 * VM_NORESERVE is used because the reservations will be
 		 * taken when vm_ops->mmap() is called
 		 * A dummy user value is used because we are not locking
 		 * memory so no accounting is necessary
 		 */
-<<<<<<< HEAD
 		file = hugetlb_file_setup(HUGETLB_ANON_FILE, len,
-=======
-		file = hugetlb_file_setup(HUGETLB_ANON_FILE, addr, len,
->>>>>>> 7175f4b... Truncated history
 						VM_NORESERVE, &user,
 						HUGETLB_ANONHUGE_INODE);
 		if (IS_ERR(file))
@@ -1295,7 +1280,6 @@ unsigned long mmap_region(struct file *file, unsigned long addr,
 	unsigned long charged = 0;
 	struct inode *inode =  file ? file->f_path.dentry->d_inode : NULL;
 
-<<<<<<< HEAD
 	/* Check against address space limit. */
 	if (!may_expand_vm(mm, len >> PAGE_SHIFT)) {
 		unsigned long nr_pages;
@@ -1313,8 +1297,6 @@ unsigned long mmap_region(struct file *file, unsigned long addr,
 			return -ENOMEM;
 	}
 
-=======
->>>>>>> 7175f4b... Truncated history
 	/* Clear old maps */
 	error = -ENOMEM;
 munmap_back:
@@ -1325,13 +1307,6 @@ munmap_back:
 		goto munmap_back;
 	}
 
-<<<<<<< HEAD
-=======
-	/* Check against address space limit. */
-	if (!may_expand_vm(mm, len >> PAGE_SHIFT))
-		return -ENOMEM;
-
->>>>>>> 7175f4b... Truncated history
 	/*
 	 * Set 'VM_NORESERVE' if we should not account for the
 	 * memory use of this mapping.
@@ -1697,11 +1672,7 @@ struct vm_area_struct *find_vma(struct mm_struct *mm, unsigned long addr)
 	if (mm) {
 		/* Check the cache first. */
 		/* (Cache hit rate is typically around 35%.) */
-<<<<<<< HEAD
 		vma = ACCESS_ONCE(mm->mmap_cache);
-=======
-		vma = mm->mmap_cache;
->>>>>>> 7175f4b... Truncated history
 		if (!(vma && vma->vm_end > addr && vma->vm_start <= addr)) {
 			struct rb_node * rb_node;
 
@@ -1911,7 +1882,6 @@ int expand_downwards(struct vm_area_struct *vma,
 	return error;
 }
 
-<<<<<<< HEAD
 /*
  * Note how expand_stack() refuses to expand the stack all the way to
  * abut the next virtual mapping, *unless* that mapping itself is also
@@ -1934,11 +1904,6 @@ int expand_stack(struct vm_area_struct *vma, unsigned long address)
 		if (!(next->vm_flags & VM_GROWSUP))
 			return -ENOMEM;
 	}
-=======
-#ifdef CONFIG_STACK_GROWSUP
-int expand_stack(struct vm_area_struct *vma, unsigned long address)
-{
->>>>>>> 7175f4b... Truncated history
 	return expand_upwards(vma, address);
 }
 
@@ -1961,7 +1926,6 @@ find_extend_vma(struct mm_struct *mm, unsigned long addr)
 #else
 int expand_stack(struct vm_area_struct *vma, unsigned long address)
 {
-<<<<<<< HEAD
 	struct vm_area_struct *prev;
 
 	address &= PAGE_MASK;
@@ -1970,8 +1934,6 @@ int expand_stack(struct vm_area_struct *vma, unsigned long address)
 		if (!(prev->vm_flags & VM_GROWSDOWN))
 			return -ENOMEM;
 	}
-=======
->>>>>>> 7175f4b... Truncated history
 	return expand_downwards(vma, address);
 }
 
@@ -2038,11 +2000,7 @@ static void unmap_region(struct mm_struct *mm,
 	unmap_vmas(&tlb, vma, start, end, &nr_accounted, NULL);
 	vm_unacct_memory(nr_accounted);
 	free_pgtables(&tlb, vma, prev ? prev->vm_end : FIRST_USER_ADDRESS,
-<<<<<<< HEAD
 				 next ? next->vm_start : USER_PGTABLES_CEILING);
-=======
-				 next ? next->vm_start : 0);
->>>>>>> 7175f4b... Truncated history
 	tlb_finish_mmu(&tlb, start, end);
 }
 
@@ -2430,11 +2388,7 @@ void exit_mmap(struct mm_struct *mm)
 	unmap_vmas(&tlb, vma, 0, -1, &nr_accounted, NULL);
 	vm_unacct_memory(nr_accounted);
 
-<<<<<<< HEAD
 	free_pgtables(&tlb, vma, FIRST_USER_ADDRESS, USER_PGTABLES_CEILING);
-=======
-	free_pgtables(&tlb, vma, FIRST_USER_ADDRESS, 0);
->>>>>>> 7175f4b... Truncated history
 	tlb_finish_mmu(&tlb, 0, -1);
 
 	/*

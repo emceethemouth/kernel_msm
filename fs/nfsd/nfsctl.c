@@ -651,10 +651,7 @@ static ssize_t __write_ports_addfd(char *buf)
 {
 	char *mesg = buf;
 	int fd, err;
-<<<<<<< HEAD
 	struct net *net = &init_net;
-=======
->>>>>>> 7175f4b... Truncated history
 
 	err = get_int(&mesg, &fd);
 	if (err != 0 || fd < 0)
@@ -666,11 +663,7 @@ static ssize_t __write_ports_addfd(char *buf)
 
 	err = svc_addsock(nfsd_serv, fd, buf, SIMPLE_TRANSACTION_LIMIT);
 	if (err < 0) {
-<<<<<<< HEAD
 		nfsd_destroy(net);
-=======
-		svc_destroy(nfsd_serv);
->>>>>>> 7175f4b... Truncated history
 		return err;
 	}
 
@@ -707,10 +700,7 @@ static ssize_t __write_ports_addxprt(char *buf)
 	char transport[16];
 	struct svc_xprt *xprt;
 	int port, err;
-<<<<<<< HEAD
 	struct net *net = &init_net;
-=======
->>>>>>> 7175f4b... Truncated history
 
 	if (sscanf(buf, "%15s %4u", transport, &port) != 2)
 		return -EINVAL;
@@ -722,20 +712,12 @@ static ssize_t __write_ports_addxprt(char *buf)
 	if (err != 0)
 		return err;
 
-<<<<<<< HEAD
 	err = svc_create_xprt(nfsd_serv, transport, net,
-=======
-	err = svc_create_xprt(nfsd_serv, transport, &init_net,
->>>>>>> 7175f4b... Truncated history
 				PF_INET, port, SVC_SOCK_ANONYMOUS);
 	if (err < 0)
 		goto out_err;
 
-<<<<<<< HEAD
 	err = svc_create_xprt(nfsd_serv, transport, net,
-=======
-	err = svc_create_xprt(nfsd_serv, transport, &init_net,
->>>>>>> 7175f4b... Truncated history
 				PF_INET6, port, SVC_SOCK_ANONYMOUS);
 	if (err < 0 && err != -EAFNOSUPPORT)
 		goto out_close;
@@ -744,21 +726,13 @@ static ssize_t __write_ports_addxprt(char *buf)
 	nfsd_serv->sv_nrthreads--;
 	return 0;
 out_close:
-<<<<<<< HEAD
 	xprt = svc_find_xprt(nfsd_serv, transport, net, PF_INET, port);
-=======
-	xprt = svc_find_xprt(nfsd_serv, transport, &init_net, PF_INET, port);
->>>>>>> 7175f4b... Truncated history
 	if (xprt != NULL) {
 		svc_close_xprt(xprt);
 		svc_xprt_put(xprt);
 	}
 out_err:
-<<<<<<< HEAD
 	nfsd_destroy(net);
-=======
-	svc_destroy(nfsd_serv);
->>>>>>> 7175f4b... Truncated history
 	return err;
 }
 

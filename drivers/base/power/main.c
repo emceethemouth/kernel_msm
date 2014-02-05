@@ -1022,11 +1022,7 @@ int dpm_suspend_end(pm_message_t state)
 
 	error = dpm_suspend_noirq(state);
 	if (error) {
-<<<<<<< HEAD
 		dpm_resume_early(resume_event(state));
-=======
-		dpm_resume_early(state);
->>>>>>> 7175f4b... Truncated history
 		return error;
 	}
 

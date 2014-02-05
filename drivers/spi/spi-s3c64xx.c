@@ -889,7 +889,6 @@ static irqreturn_t s3c64xx_spi_irq(int irq, void *data)
 {
 	struct s3c64xx_spi_driver_data *sdd = data;
 	struct spi_master *spi = sdd->master;
-<<<<<<< HEAD
 	unsigned int val, clr = 0;
 
 	val = readl(sdd->regs + S3C64XX_SPI_STATUS);
@@ -914,27 +913,6 @@ static irqreturn_t s3c64xx_spi_irq(int irq, void *data)
 	/* Clear the pending irq by setting and then clearing it */
 	writel(clr, sdd->regs + S3C64XX_SPI_PENDING_CLR);
 	writel(0, sdd->regs + S3C64XX_SPI_PENDING_CLR);
-=======
-	unsigned int val;
-
-	val = readl(sdd->regs + S3C64XX_SPI_PENDING_CLR);
-
-	val &= S3C64XX_SPI_PND_RX_OVERRUN_CLR |
-		S3C64XX_SPI_PND_RX_UNDERRUN_CLR |
-		S3C64XX_SPI_PND_TX_OVERRUN_CLR |
-		S3C64XX_SPI_PND_TX_UNDERRUN_CLR;
-
-	writel(val, sdd->regs + S3C64XX_SPI_PENDING_CLR);
-
-	if (val & S3C64XX_SPI_PND_RX_OVERRUN_CLR)
-		dev_err(&spi->dev, "RX overrun\n");
-	if (val & S3C64XX_SPI_PND_RX_UNDERRUN_CLR)
-		dev_err(&spi->dev, "RX underrun\n");
-	if (val & S3C64XX_SPI_PND_TX_OVERRUN_CLR)
-		dev_err(&spi->dev, "TX overrun\n");
-	if (val & S3C64XX_SPI_PND_TX_UNDERRUN_CLR)
-		dev_err(&spi->dev, "TX underrun\n");
->>>>>>> 7175f4b... Truncated history
 
 	return IRQ_HANDLED;
 }
@@ -958,7 +936,6 @@ static void s3c64xx_spi_hwinit(struct s3c64xx_spi_driver_data *sdd, int channel)
 	writel(0, regs + S3C64XX_SPI_MODE_CFG);
 	writel(0, regs + S3C64XX_SPI_PACKET_CNT);
 
-<<<<<<< HEAD
 	/* Clear any irq pending bits, should set and clear the bits */
 	val = S3C64XX_SPI_PND_RX_OVERRUN_CLR |
 		S3C64XX_SPI_PND_RX_UNDERRUN_CLR |
@@ -966,11 +943,6 @@ static void s3c64xx_spi_hwinit(struct s3c64xx_spi_driver_data *sdd, int channel)
 		S3C64XX_SPI_PND_TX_UNDERRUN_CLR;
 	writel(val, regs + S3C64XX_SPI_PENDING_CLR);
 	writel(0, regs + S3C64XX_SPI_PENDING_CLR);
-=======
-	/* Clear any irq pending bits */
-	writel(readl(regs + S3C64XX_SPI_PENDING_CLR),
-				regs + S3C64XX_SPI_PENDING_CLR);
->>>>>>> 7175f4b... Truncated history
 
 	writel(0, regs + S3C64XX_SPI_SWAP_CFG);
 

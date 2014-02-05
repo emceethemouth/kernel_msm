@@ -497,11 +497,7 @@ int nouveau_fbcon_init(struct drm_device *dev)
 	nfbdev->helper.funcs = &nouveau_fbcon_helper_funcs;
 
 	ret = drm_fb_helper_init(dev, &nfbdev->helper,
-<<<<<<< HEAD
 				 dev->mode_config.num_crtc, 4);
-=======
-				 nv_two_heads(dev) ? 2 : 1, 4);
->>>>>>> 7175f4b... Truncated history
 	if (ret) {
 		kfree(nfbdev);
 		return ret;

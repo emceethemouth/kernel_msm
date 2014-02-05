@@ -472,11 +472,7 @@ static int rfcomm_get_dev_list(void __user *arg)
 
 	size = sizeof(*dl) + dev_num * sizeof(*di);
 
-<<<<<<< HEAD
 	dl = kzalloc(size, GFP_KERNEL);
-=======
-	dl = kmalloc(size, GFP_KERNEL);
->>>>>>> 7175f4b... Truncated history
 	if (!dl)
 		return -ENOMEM;
 

@@ -87,11 +87,7 @@ int user_statfs(const char __user *pathname, struct kstatfs *st)
 
 int fd_statfs(int fd, struct kstatfs *st)
 {
-<<<<<<< HEAD
 	struct file *file = fget_raw(fd);
-=======
-	struct file *file = fget(fd);
->>>>>>> 7175f4b... Truncated history
 	int error = -EBADF;
 	if (file) {
 		error = vfs_statfs(&file->f_path, st);

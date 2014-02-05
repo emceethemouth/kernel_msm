@@ -560,10 +560,7 @@ int vkdb_printf(const char *fmt, va_list ap)
 {
 	int diag;
 	int linecount;
-<<<<<<< HEAD
 	int colcount;
-=======
->>>>>>> 7175f4b... Truncated history
 	int logging, saved_loglevel = 0;
 	int saved_trap_printk;
 	int got_printf_lock = 0;
@@ -596,13 +593,10 @@ int vkdb_printf(const char *fmt, va_list ap)
 	if (diag || linecount <= 1)
 		linecount = 24;
 
-<<<<<<< HEAD
 	diag = kdbgetintenv("COLUMNS", &colcount);
 	if (diag || colcount <= 1)
 		colcount = 80;
 
-=======
->>>>>>> 7175f4b... Truncated history
 	diag = kdbgetintenv("LOGGING", &logging);
 	if (diag)
 		logging = 0;
@@ -709,11 +703,7 @@ kdb_printit:
 		gdbstub_msg_write(kdb_buffer, retlen);
 	} else {
 		if (dbg_io_ops && !dbg_io_ops->is_console) {
-<<<<<<< HEAD
 			len = retlen;
-=======
-			len = strlen(kdb_buffer);
->>>>>>> 7175f4b... Truncated history
 			cp = kdb_buffer;
 			while (len--) {
 				dbg_io_ops->write_char(*cp);
@@ -732,7 +722,6 @@ kdb_printit:
 		printk(KERN_INFO "%s", kdb_buffer);
 	}
 
-<<<<<<< HEAD
 	if (KDB_STATE(PAGER)) {
 		/*
 		 * Check printed string to decide how to bump the
@@ -756,13 +745,6 @@ kdb_printit:
 
 	/* check for having reached the LINES number of printed lines */
 	if (kdb_nextline >= linecount) {
-=======
-	if (KDB_STATE(PAGER) && strchr(kdb_buffer, '\n'))
-		kdb_nextline++;
-
-	/* check for having reached the LINES number of printed lines */
-	if (kdb_nextline == linecount) {
->>>>>>> 7175f4b... Truncated history
 		char buf1[16] = "";
 #if defined(CONFIG_SMP)
 		char buf2[32];
@@ -825,11 +807,7 @@ kdb_printit:
 			kdb_grepping_flag = 0;
 			kdb_printf("\n");
 		} else if (buf1[0] == ' ') {
-<<<<<<< HEAD
 			kdb_printf("\r");
-=======
-			kdb_printf("\n");
->>>>>>> 7175f4b... Truncated history
 			suspend_grep = 1; /* for this recursion */
 		} else if (buf1[0] == '\n') {
 			kdb_nextline = linecount - 1;

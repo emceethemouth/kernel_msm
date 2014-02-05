@@ -776,7 +776,6 @@ static int scsi_add_lun(struct scsi_device *sdev, unsigned char *inq_result,
 	sdev->model = (char *) (sdev->inquiry + 16);
 	sdev->rev = (char *) (sdev->inquiry + 32);
 
-<<<<<<< HEAD
 	if (strncmp(sdev->vendor, "ATA     ", 8) == 0) {
 		/*
 		 * sata emulation layer device.  This is a hack to work around
@@ -787,8 +786,6 @@ static int scsi_add_lun(struct scsi_device *sdev, unsigned char *inq_result,
 		sdev->allow_restart = 1;
 	}
 
-=======
->>>>>>> 7175f4b... Truncated history
 	if (*bflags & BLIST_ISROM) {
 		sdev->type = TYPE_ROM;
 		sdev->removable = 1;
@@ -1727,12 +1724,9 @@ static void scsi_sysfs_add_devices(struct Scsi_Host *shost)
 {
 	struct scsi_device *sdev;
 	shost_for_each_device(sdev, shost) {
-<<<<<<< HEAD
 		/* target removed before the device could be added */
 		if (sdev->sdev_state == SDEV_DEL)
 			continue;
-=======
->>>>>>> 7175f4b... Truncated history
 		if (!scsi_host_scan_allowed(shost) ||
 		    scsi_sysfs_add_sdev(sdev) != 0)
 			__scsi_remove_device(sdev);

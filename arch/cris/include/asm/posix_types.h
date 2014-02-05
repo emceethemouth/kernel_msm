@@ -33,9 +33,6 @@ typedef int		__kernel_ptrdiff_t;
 typedef unsigned short	__kernel_old_dev_t;
 #define __kernel_old_dev_t __kernel_old_dev_t
 
-<<<<<<< HEAD
 #include <asm-generic/posix_types.h>
 
-=======
->>>>>>> 7175f4b... Truncated history
 #endif /* __ARCH_CRIS_POSIX_TYPES_H */

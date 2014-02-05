@@ -645,7 +645,6 @@ static int fuse_unlink(struct inode *dir, struct dentry *entry)
 
 		spin_lock(&fc->lock);
 		fi->attr_version = ++fc->attr_version;
-<<<<<<< HEAD
 		/*
 		 * If i_nlink == 0 then unlink doesn't make sense, yet this can
 		 * happen if userspace filesystem is careless.  It would be
@@ -654,9 +653,6 @@ static int fuse_unlink(struct inode *dir, struct dentry *entry)
 		 */
 		if (inode->i_nlink > 0)
 			drop_nlink(inode);
-=======
-		drop_nlink(inode);
->>>>>>> 7175f4b... Truncated history
 		spin_unlock(&fc->lock);
 		fuse_invalidate_attr(inode);
 		fuse_invalidate_attr(dir);
@@ -874,10 +870,7 @@ int fuse_update_attributes(struct inode *inode, struct kstat *stat,
 		if (stat) {
 			generic_fillattr(inode, stat);
 			stat->mode = fi->orig_i_mode;
-<<<<<<< HEAD
 			stat->ino = fi->orig_ino;
-=======
->>>>>>> 7175f4b... Truncated history
 		}
 	}
 
@@ -1510,11 +1503,8 @@ static int fuse_setxattr(struct dentry *entry, const char *name,
 		fc->no_setxattr = 1;
 		err = -EOPNOTSUPP;
 	}
-<<<<<<< HEAD
 	if (!err)
 		fuse_invalidate_attr(inode);
-=======
->>>>>>> 7175f4b... Truncated history
 	return err;
 }
 
@@ -1644,11 +1634,8 @@ static int fuse_removexattr(struct dentry *entry, const char *name)
 		fc->no_removexattr = 1;
 		err = -EOPNOTSUPP;
 	}
-<<<<<<< HEAD
 	if (!err)
 		fuse_invalidate_attr(inode);
-=======
->>>>>>> 7175f4b... Truncated history
 	return err;
 }
 

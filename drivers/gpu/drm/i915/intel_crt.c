@@ -266,7 +266,6 @@ static bool intel_crt_detect_hotplug(struct drm_connector *connector)
 	return ret;
 }
 
-<<<<<<< HEAD
 static struct edid *intel_crt_get_edid(struct drm_connector *connector,
 				struct i2c_adapter *i2c)
 {
@@ -297,8 +296,6 @@ static int intel_crt_ddc_get_modes(struct drm_connector *connector,
 	return intel_connector_update_modes(connector, edid);
 }
 
-=======
->>>>>>> 7175f4b... Truncated history
 static bool intel_crt_detect_ddc(struct drm_connector *connector)
 {
 	struct intel_crt *crt = intel_attached_crt(connector);
@@ -312,11 +309,7 @@ static bool intel_crt_detect_ddc(struct drm_connector *connector)
 		struct edid *edid;
 		bool is_digital = false;
 
-<<<<<<< HEAD
 		edid = intel_crt_get_edid(connector,
-=======
-		edid = drm_get_edid(connector,
->>>>>>> 7175f4b... Truncated history
 			&dev_priv->gmbus[dev_priv->crt_ddc_pin].adapter);
 		/*
 		 * This may be a DVI-I connector with a shared DDC
@@ -514,21 +507,13 @@ static int intel_crt_get_modes(struct drm_connector *connector)
 	struct drm_i915_private *dev_priv = dev->dev_private;
 	int ret;
 
-<<<<<<< HEAD
 	ret = intel_crt_ddc_get_modes(connector,
-=======
-	ret = intel_ddc_get_modes(connector,
->>>>>>> 7175f4b... Truncated history
 				 &dev_priv->gmbus[dev_priv->crt_ddc_pin].adapter);
 	if (ret || !IS_G4X(dev))
 		return ret;
 
 	/* Try to probe digital port for output in DVI-I -> VGA mode. */
-<<<<<<< HEAD
 	return intel_crt_ddc_get_modes(connector,
-=======
-	return intel_ddc_get_modes(connector,
->>>>>>> 7175f4b... Truncated history
 				   &dev_priv->gmbus[GMBUS_PORT_DPB].adapter);
 }
 

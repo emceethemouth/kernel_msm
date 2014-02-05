@@ -104,11 +104,8 @@ config I2C_I801
 	    DH89xxCC (PCH)
 	    Panther Point (PCH)
 	    Lynx Point (PCH)
-<<<<<<< HEAD
 	    Lynx Point-LP (PCH)
 	    Avoton (SOC)
-=======
->>>>>>> 7175f4b... Truncated history
 
 	  This driver can also be built as a module.  If so, the module
 	  will be called i2c-i801.
@@ -355,7 +352,6 @@ config I2C_DAVINCI
 	  devices such as DaVinci NIC.
 	  For details please see http://www.ti.com/davinci
 
-<<<<<<< HEAD
 config I2C_DESIGNWARE_CORE
 	tristate
 
@@ -363,11 +359,6 @@ config I2C_DESIGNWARE_PLATFORM
 	tristate "Synopsys DesignWare Platfrom"
 	depends on HAVE_CLK
 	select I2C_DESIGNWARE_CORE
-=======
-config I2C_DESIGNWARE_PLATFORM
-	tristate "Synopsys DesignWare Platfrom"
-	depends on HAVE_CLK
->>>>>>> 7175f4b... Truncated history
 	help
 	  If you say yes to this option, support will be included for the
 	  Synopsys DesignWare I2C adapter. Only master mode is supported.
@@ -378,10 +369,7 @@ config I2C_DESIGNWARE_PLATFORM
 config I2C_DESIGNWARE_PCI
 	tristate "Synopsys DesignWare PCI"
 	depends on PCI
-<<<<<<< HEAD
 	select I2C_DESIGNWARE_CORE
-=======
->>>>>>> 7175f4b... Truncated history
 	help
 	  If you say yes to this option, support will be included for the
 	  Synopsys DesignWare I2C adapter. Only master mode is supported.

@@ -2743,11 +2743,7 @@ out:
 static long do_rmdir(int dfd, const char __user *pathname)
 {
 	int error = 0;
-<<<<<<< HEAD
 	char *name = NULL;
-=======
-	char * name;
->>>>>>> 7175f4b... Truncated history
 	struct dentry *dentry;
 	struct nameidata nd;
 
@@ -2843,11 +2839,7 @@ int vfs_unlink(struct inode *dir, struct dentry *dentry)
 static long do_unlinkat(int dfd, const char __user *pathname)
 {
 	int error;
-<<<<<<< HEAD
 	char *name = NULL;
-=======
-	char *name;
->>>>>>> 7175f4b... Truncated history
 	struct dentry *dentry;
 	struct nameidata nd;
 	struct inode *inode = NULL;
@@ -2939,11 +2931,7 @@ SYSCALL_DEFINE3(symlinkat, const char __user *, oldname,
 		int, newdfd, const char __user *, newname)
 {
 	int error;
-<<<<<<< HEAD
 	char *from = NULL;
-=======
-	char *from;
->>>>>>> 7175f4b... Truncated history
 	struct dentry *dentry;
 	struct path path;
 
@@ -3251,13 +3239,8 @@ SYSCALL_DEFINE4(renameat, int, olddfd, const char __user *, oldname,
 	struct dentry *old_dentry, *new_dentry;
 	struct dentry *trap;
 	struct nameidata oldnd, newnd;
-<<<<<<< HEAD
 	char *from = NULL;
 	char *to = NULL;
-=======
-	char *from;
-	char *to;
->>>>>>> 7175f4b... Truncated history
 	int error;
 
 	error = user_path_parent(olddfd, oldname, &oldnd, &from);

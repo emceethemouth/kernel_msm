@@ -228,7 +228,6 @@ static inline int get_int(char **bpp, int *anint)
 	return 0;
 }
 
-<<<<<<< HEAD
 static inline int get_uint(char **bpp, unsigned int *anint)
 {
 	char buf[50];
@@ -245,8 +244,6 @@ static inline int get_uint(char **bpp, unsigned int *anint)
 	return 0;
 }
 
-=======
->>>>>>> 7175f4b... Truncated history
 /*
  * timestamps kept in the cache are expressed in seconds
  * since boot.  This is the best for measuring differences in

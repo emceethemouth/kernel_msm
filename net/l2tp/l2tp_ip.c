@@ -251,7 +251,6 @@ static int l2tp_ip_bind(struct sock *sk, struct sockaddr *uaddr, int addr_len)
 {
 	struct inet_sock *inet = inet_sk(sk);
 	struct sockaddr_l2tpip *addr = (struct sockaddr_l2tpip *) uaddr;
-<<<<<<< HEAD
 	int ret;
 	int chk_addr_ret;
 
@@ -262,11 +261,6 @@ static int l2tp_ip_bind(struct sock *sk, struct sockaddr *uaddr, int addr_len)
 	if (addr->l2tp_family != AF_INET)
 		return -EINVAL;
 
-=======
-	int ret = -EINVAL;
-	int chk_addr_ret;
-
->>>>>>> 7175f4b... Truncated history
 	ret = -EADDRINUSE;
 	read_lock_bh(&l2tp_ip_lock);
 	if (__l2tp_ip_bind_lookup(&init_net, addr->l2tp_addr.s_addr, sk->sk_bound_dev_if, addr->l2tp_conn_id))
@@ -297,11 +291,8 @@ static int l2tp_ip_bind(struct sock *sk, struct sockaddr *uaddr, int addr_len)
 	sk_del_node_init(sk);
 	write_unlock_bh(&l2tp_ip_lock);
 	ret = 0;
-<<<<<<< HEAD
 	sock_reset_flag(sk, SOCK_ZAPPED);
 
-=======
->>>>>>> 7175f4b... Truncated history
 out:
 	release_sock(sk);
 
@@ -322,7 +313,6 @@ static int l2tp_ip_connect(struct sock *sk, struct sockaddr *uaddr, int addr_len
 	__be32 saddr;
 	int oif, rc;
 
-<<<<<<< HEAD
 	if (sock_flag(sk, SOCK_ZAPPED)) /* Must bind first - autobinding does not work */
 		return -EINVAL;
 
@@ -331,15 +321,6 @@ static int l2tp_ip_connect(struct sock *sk, struct sockaddr *uaddr, int addr_len
 
 	if (lsa->l2tp_family != AF_INET)
 		return -EAFNOSUPPORT;
-=======
-	rc = -EINVAL;
-	if (addr_len < sizeof(*lsa))
-		goto out;
-
-	rc = -EAFNOSUPPORT;
-	if (lsa->l2tp_family != AF_INET)
-		goto out;
->>>>>>> 7175f4b... Truncated history
 
 	lock_sock(sk);
 
@@ -393,7 +374,6 @@ out:
 	return rc;
 }
 
-<<<<<<< HEAD
 static int l2tp_ip_disconnect(struct sock *sk, int flags)
 {
 	if (sock_flag(sk, SOCK_ZAPPED))
@@ -402,8 +382,6 @@ static int l2tp_ip_disconnect(struct sock *sk, int flags)
 	return udp_disconnect(sk, flags);
 }
 
-=======
->>>>>>> 7175f4b... Truncated history
 static int l2tp_ip_getname(struct socket *sock, struct sockaddr *uaddr,
 			   int *uaddr_len, int peer)
 {
@@ -538,19 +516,12 @@ static int l2tp_ip_sendmsg(struct kiocb *iocb, struct sock *sk, struct msghdr *m
 					   sk->sk_bound_dev_if);
 		if (IS_ERR(rt))
 			goto no_route;
-<<<<<<< HEAD
 		if (connected) {
 			sk_setup_caps(sk, &rt->dst);
 		} else {
 			skb_dst_set(skb, &rt->dst);
 			goto xmit;
 		}
-=======
-		if (connected)
-			sk_setup_caps(sk, &rt->dst);
-		else
-			dst_release(&rt->dst); /* safe since we hold rcu_read_lock */
->>>>>>> 7175f4b... Truncated history
 	}
 
 	/* We dont need to clone dst here, it is guaranteed to not disappear.
@@ -558,10 +529,7 @@ static int l2tp_ip_sendmsg(struct kiocb *iocb, struct sock *sk, struct msghdr *m
 	 */
 	skb_dst_set_noref(skb, &rt->dst);
 
-<<<<<<< HEAD
 xmit:
-=======
->>>>>>> 7175f4b... Truncated history
 	/* Queue the packet to IP for output */
 	rc = ip_queue_xmit(skb, &inet->cork.fl);
 	rcu_read_unlock();
@@ -601,12 +569,6 @@ static int l2tp_ip_recvmsg(struct kiocb *iocb, struct sock *sk, struct msghdr *m
 	if (flags & MSG_OOB)
 		goto out;
 
-<<<<<<< HEAD
-=======
-	if (addr_len)
-		*addr_len = sizeof(*sin);
-
->>>>>>> 7175f4b... Truncated history
 	skb = skb_recv_datagram(sk, flags, noblock, &err);
 	if (!skb)
 		goto out;
@@ -629,10 +591,7 @@ static int l2tp_ip_recvmsg(struct kiocb *iocb, struct sock *sk, struct msghdr *m
 		sin->sin_addr.s_addr = ip_hdr(skb)->saddr;
 		sin->sin_port = 0;
 		memset(&sin->sin_zero, 0, sizeof(sin->sin_zero));
-<<<<<<< HEAD
 		*addr_len = sizeof(*sin);
-=======
->>>>>>> 7175f4b... Truncated history
 	}
 	if (inet->cmsg_flags)
 		ip_cmsg_recv(msg, skb);
@@ -659,11 +618,7 @@ static struct proto l2tp_ip_prot = {
 	.close		   = l2tp_ip_close,
 	.bind		   = l2tp_ip_bind,
 	.connect	   = l2tp_ip_connect,
-<<<<<<< HEAD
 	.disconnect	   = l2tp_ip_disconnect,
-=======
-	.disconnect	   = udp_disconnect,
->>>>>>> 7175f4b... Truncated history
 	.ioctl		   = udp_ioctl,
 	.destroy	   = l2tp_ip_destroy_sock,
 	.setsockopt	   = ip_setsockopt,

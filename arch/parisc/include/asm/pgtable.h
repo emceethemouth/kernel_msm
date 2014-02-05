@@ -12,18 +12,10 @@
 
 #include <linux/bitops.h>
 #include <linux/spinlock.h>
-<<<<<<< HEAD
 #include <linux/mm_types.h>
 #include <asm/processor.h>
 #include <asm/cache.h>
 
-=======
-#include <asm/processor.h>
-#include <asm/cache.h>
-
-struct vm_area_struct;
-
->>>>>>> 7175f4b... Truncated history
 /*
  * kern_addr_valid(ADDR) tests if ADDR is pointing to valid kernel
  * memory.  For the return value to be meaningful, ADDR must be >=
@@ -47,7 +39,6 @@ struct vm_area_struct;
         do{                                                     \
                 *(pteptr) = (pteval);                           \
         } while(0)
-<<<<<<< HEAD
 
 extern void purge_tlb_entries(struct mm_struct *, unsigned long);
 
@@ -56,9 +47,6 @@ extern void purge_tlb_entries(struct mm_struct *, unsigned long);
 		set_pte(ptep, pteval);                          \
 		purge_tlb_entries(mm, addr);                    \
 	} while (0)
-=======
-#define set_pte_at(mm,addr,ptep,pteval) set_pte(ptep,pteval)
->>>>>>> 7175f4b... Truncated history
 
 #endif /* !__ASSEMBLY__ */
 
@@ -484,10 +472,7 @@ static inline void ptep_set_wrprotect(struct mm_struct *mm, unsigned long addr, 
 		old = pte_val(*ptep);
 		new = pte_val(pte_wrprotect(__pte (old)));
 	} while (cmpxchg((unsigned long *) ptep, old, new) != old);
-<<<<<<< HEAD
 	purge_tlb_entries(mm, addr);
-=======
->>>>>>> 7175f4b... Truncated history
 #else
 	pte_t old_pte = *ptep;
 	set_pte_at(mm, addr, ptep, pte_wrprotect(old_pte));

@@ -519,7 +519,6 @@ static void sb600_disable_hpet_bar(struct pci_dev *dev)
 	}
 }
 DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_ATI, 0x4385, sb600_disable_hpet_bar);
-<<<<<<< HEAD
 
 /*
  * Twinhead H12Y needs us to block out a region otherwise we map devices
@@ -537,5 +536,3 @@ static void __devinit twinhead_reserve_killing_zone(struct pci_dev *dev)
         }
 }
 DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x27B9, twinhead_reserve_killing_zone);
-=======
->>>>>>> 7175f4b... Truncated history

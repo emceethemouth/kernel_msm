@@ -375,11 +375,7 @@ static void unix_sock_destructor(struct sock *sk)
 #endif
 }
 
-<<<<<<< HEAD
 static void unix_release_sock(struct sock *sk, int embrion)
-=======
-static int unix_release_sock(struct sock *sk, int embrion)
->>>>>>> 7175f4b... Truncated history
 {
 	struct unix_sock *u = unix_sk(sk);
 	struct path path;
@@ -448,11 +444,6 @@ static int unix_release_sock(struct sock *sk, int embrion)
 
 	if (unix_tot_inflight)
 		unix_gc();		/* Garbage collect fds */
-<<<<<<< HEAD
-=======
-
-	return 0;
->>>>>>> 7175f4b... Truncated history
 }
 
 static void init_peercred(struct sock *sk)
@@ -534,7 +525,6 @@ static int unix_seqpacket_sendmsg(struct kiocb *, struct socket *,
 static int unix_seqpacket_recvmsg(struct kiocb *, struct socket *,
 				  struct msghdr *, size_t, int);
 
-<<<<<<< HEAD
 static int unix_set_peek_off(struct sock *sk, int val)
 {
 	struct unix_sock *u = unix_sk(sk);
@@ -546,15 +536,6 @@ static int unix_set_peek_off(struct sock *sk, int val)
 	mutex_unlock(&u->readlock);
 
 	return 0;
-=======
-static void unix_set_peek_off(struct sock *sk, int val)
-{
-	struct unix_sock *u = unix_sk(sk);
-
-	mutex_lock(&u->readlock);
-	sk->sk_peek_off = val;
-	mutex_unlock(&u->readlock);
->>>>>>> 7175f4b... Truncated history
 }
 
 
@@ -716,16 +697,10 @@ static int unix_release(struct socket *sock)
 	if (!sk)
 		return 0;
 
-<<<<<<< HEAD
 	unix_release_sock(sk, 0);
 	sock->sk = NULL;
 
 	return 0;
-=======
-	sock->sk = NULL;
-
-	return unix_release_sock(sk, 0);
->>>>>>> 7175f4b... Truncated history
 }
 
 static int unix_autobind(struct socket *sock)
@@ -738,13 +713,9 @@ static int unix_autobind(struct socket *sock)
 	int err;
 	unsigned int retries = 0;
 
-<<<<<<< HEAD
 	err = mutex_lock_interruptible(&u->readlock);
 	if (err)
 		return err;
-=======
-	mutex_lock(&u->readlock);
->>>>>>> 7175f4b... Truncated history
 
 	err = 0;
 	if (u->addr)
@@ -858,13 +829,8 @@ static int unix_bind(struct socket *sock, struct sockaddr *uaddr, int addr_len)
 	char *sun_path = sunaddr->sun_path;
 	struct dentry *dentry = NULL;
 	struct path path;
-<<<<<<< HEAD
 	int err = 0;
 	unsigned hash = 0;
-=======
-	int err;
-	unsigned hash;
->>>>>>> 7175f4b... Truncated history
 	struct unix_address *addr;
 	struct hlist_head *list;
 
@@ -882,13 +848,9 @@ static int unix_bind(struct socket *sock, struct sockaddr *uaddr, int addr_len)
 		goto out;
 	addr_len = err;
 
-<<<<<<< HEAD
 	err = mutex_lock_interruptible(&u->readlock);
 	if (err)
 		goto out;
-=======
-	mutex_lock(&u->readlock);
->>>>>>> 7175f4b... Truncated history
 
 	err = -EINVAL;
 	if (u->addr)
@@ -1010,13 +972,8 @@ static int unix_dgram_connect(struct socket *sock, struct sockaddr *addr,
 	struct net *net = sock_net(sk);
 	struct sockaddr_un *sunaddr = (struct sockaddr_un *)addr;
 	struct sock *other;
-<<<<<<< HEAD
 	unsigned hash = 0;
 	int err = 0;
-=======
-	unsigned hash;
-	int err;
->>>>>>> 7175f4b... Truncated history
 
 	if (addr->sa_family != AF_UNSPEC) {
 		err = unix_mkname(sunaddr, alen, &hash);
@@ -1113,17 +1070,10 @@ static int unix_stream_connect(struct socket *sock, struct sockaddr *uaddr,
 	struct sock *newsk = NULL;
 	struct sock *other = NULL;
 	struct sk_buff *skb = NULL;
-<<<<<<< HEAD
 	unsigned hash = 0;
 	int st = 0;
 	int err = 0;
 	long timeo = 0;
-=======
-	unsigned hash;
-	int st;
-	int err;
-	long timeo;
->>>>>>> 7175f4b... Truncated history
 
 	err = unix_mkname(sunaddr, addr_len, &hash);
 	if (err < 0)
@@ -1306,7 +1256,6 @@ static int unix_socketpair(struct socket *socka, struct socket *sockb)
 	return 0;
 }
 
-<<<<<<< HEAD
 static void unix_sock_inherit_flags(const struct socket *old,
 				    struct socket *new)
 {
@@ -1316,8 +1265,6 @@ static void unix_sock_inherit_flags(const struct socket *old,
 		set_bit(SOCK_PASSSEC, &new->flags);
 }
 
-=======
->>>>>>> 7175f4b... Truncated history
 static int unix_accept(struct socket *sock, struct socket *newsock, int flags)
 {
 	struct sock *sk = sock->sk;
@@ -1352,10 +1299,7 @@ static int unix_accept(struct socket *sock, struct socket *newsock, int flags)
 	/* attach accepted sock to socket */
 	unix_state_lock(tsk);
 	newsock->state = SS_CONNECTED;
-<<<<<<< HEAD
 	unix_sock_inherit_flags(sock, newsock);
-=======
->>>>>>> 7175f4b... Truncated history
 	sock_graft(tsk, newsock);
 	unix_state_unlock(tsk);
 	return 0;
@@ -1510,21 +1454,12 @@ static int unix_dgram_sendmsg(struct kiocb *kiocb, struct socket *sock,
 	struct sockaddr_un *sunaddr = msg->msg_name;
 	struct sock *other = NULL;
 	int namelen = 0; /* fake GCC */
-<<<<<<< HEAD
 	int err = 0;
 	unsigned hash = 0;
 	struct sk_buff *skb;
 	long timeo = 0;
 	struct scm_cookie tmp_scm;
 	int max_level = 0;
-=======
-	int err;
-	unsigned hash;
-	struct sk_buff *skb;
-	long timeo;
-	struct scm_cookie tmp_scm;
-	int max_level;
->>>>>>> 7175f4b... Truncated history
 
 	if (NULL == siocb->scm)
 		siocb->scm = &tmp_scm;
@@ -1829,10 +1764,6 @@ static void unix_copy_addr(struct msghdr *msg, struct sock *sk)
 {
 	struct unix_sock *u = unix_sk(sk);
 
-<<<<<<< HEAD
-=======
-	msg->msg_namelen = 0;
->>>>>>> 7175f4b... Truncated history
 	if (u->addr) {
 		msg->msg_namelen = u->addr->len;
 		memcpy(msg->msg_name, u->addr->name, u->addr->len);
@@ -1856,11 +1787,6 @@ static int unix_dgram_recvmsg(struct kiocb *iocb, struct socket *sock,
 	if (flags&MSG_OOB)
 		goto out;
 
-<<<<<<< HEAD
-=======
-	msg->msg_namelen = 0;
-
->>>>>>> 7175f4b... Truncated history
 	err = mutex_lock_interruptible(&u->readlock);
 	if (err) {
 		err = sock_intr_errno(sock_rcvtimeo(sk, noblock));
@@ -2002,11 +1928,6 @@ static int unix_stream_recvmsg(struct kiocb *iocb, struct socket *sock,
 	target = sock_rcvlowat(sk, flags&MSG_WAITALL, size);
 	timeo = sock_rcvtimeo(sk, flags&MSG_DONTWAIT);
 
-<<<<<<< HEAD
-=======
-	msg->msg_namelen = 0;
-
->>>>>>> 7175f4b... Truncated history
 	/* Lock the socket to prevent queue disordering
 	 * while sleeps in memcpy_tomsg
 	 */
@@ -2079,11 +2000,7 @@ again:
 			if ((UNIXCB(skb).pid  != siocb->scm->pid) ||
 			    (UNIXCB(skb).cred != siocb->scm->cred))
 				break;
-<<<<<<< HEAD
 		} else if (test_bit(SOCK_PASSCRED, &sock->flags)) {
-=======
-		} else {
->>>>>>> 7175f4b... Truncated history
 			/* Copy credentials */
 			scm_set_cred(siocb->scm, UNIXCB(skb).pid, UNIXCB(skb).cred);
 			check_creds = 1;

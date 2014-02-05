@@ -707,11 +707,8 @@ i915_gem_execbuffer_relocate_slow(struct drm_device *dev,
 	total = 0;
 	for (i = 0; i < count; i++) {
 		struct drm_i915_gem_relocation_entry __user *user_relocs;
-<<<<<<< HEAD
 		u64 invalid_offset = (u64)-1;
 		int j;
-=======
->>>>>>> 7175f4b... Truncated history
 
 		user_relocs = (void __user *)(uintptr_t)exec[i].relocs_ptr;
 
@@ -722,7 +719,6 @@ i915_gem_execbuffer_relocate_slow(struct drm_device *dev,
 			goto err;
 		}
 
-<<<<<<< HEAD
 		/* As we do not update the known relocation offsets after
 		 * relocating (due to the complexities in lock handling),
 		 * we need to mark them as invalid now so that we force the
@@ -742,8 +738,6 @@ i915_gem_execbuffer_relocate_slow(struct drm_device *dev,
 			}
 		}
 
-=======
->>>>>>> 7175f4b... Truncated history
 		reloc_offset[i] = total;
 		total += exec[i].relocation_count;
 	}
@@ -963,17 +957,13 @@ validate_exec_list(struct drm_i915_gem_exec_object2 *exec,
 		   int count)
 {
 	int i;
-<<<<<<< HEAD
 	int relocs_total = 0;
 	int relocs_max = INT_MAX / sizeof(struct drm_i915_gem_relocation_entry);
-=======
->>>>>>> 7175f4b... Truncated history
 
 	for (i = 0; i < count; i++) {
 		char __user *ptr = (char __user *)(uintptr_t)exec[i].relocs_ptr;
 		int length; /* limited by fault_in_pages_readable() */
 
-<<<<<<< HEAD
 		/* First check for malicious input causing overflow in
 		 * the worst case where we need to allocate the entire
 		 * relocation tree as a single array.
@@ -981,12 +971,6 @@ validate_exec_list(struct drm_i915_gem_exec_object2 *exec,
 		if (exec[i].relocation_count > relocs_max - relocs_total)
 			return -EINVAL;
 		relocs_total += exec[i].relocation_count;
-=======
-		/* First check for malicious input causing overflow */
-		if (exec[i].relocation_count >
-		    INT_MAX / sizeof(struct drm_i915_gem_relocation_entry))
-			return -EINVAL;
->>>>>>> 7175f4b... Truncated history
 
 		length = exec[i].relocation_count *
 			sizeof(struct drm_i915_gem_relocation_entry);

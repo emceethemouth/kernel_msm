@@ -976,10 +976,7 @@ BOOL BBbVT3184Init(PSDevice pDevice)
     PBYTE                   pbyAgc;
     WORD                    wLengthAgc;
     BYTE                    abyArray[256];
-<<<<<<< HEAD
 	u8 data;
-=======
->>>>>>> 7175f4b... Truncated history
 
     ntStatus = CONTROLnsRequestIn(pDevice,
                                   MESSAGE_TYPE_READ,
@@ -1148,7 +1145,6 @@ else {
     ControlvWriteByte(pDevice,MESSAGE_REQUEST_BBREG,0x0D,0x01);
 
     RFbRFTableDownload(pDevice);
-<<<<<<< HEAD
 
 	/* Fix for TX USB resets from vendors driver */
 	CONTROLnsRequestIn(pDevice, MESSAGE_TYPE_READ, USB_REG4,
@@ -1159,8 +1155,6 @@ else {
 	CONTROLnsRequestOut(pDevice, MESSAGE_TYPE_WRITE, USB_REG4,
 		MESSAGE_REQUEST_MEM, sizeof(data), &data);
 
-=======
->>>>>>> 7175f4b... Truncated history
     return TRUE;//ntStatus;
 }
 

@@ -19,12 +19,9 @@
 #include <net/sock.h>
 #include <net/net_ratelimit.h>
 
-<<<<<<< HEAD
 static int zero = 0;
 static int ushort_max = USHRT_MAX;
 
-=======
->>>>>>> 7175f4b... Truncated history
 #ifdef CONFIG_RPS
 static int rps_sock_flow_sysctl(ctl_table *table, int write,
 				void __user *buffer, size_t *lenp, loff_t *ppos)
@@ -203,13 +200,9 @@ static struct ctl_table netns_core_table[] = {
 		.data		= &init_net.core.sysctl_somaxconn,
 		.maxlen		= sizeof(int),
 		.mode		= 0644,
-<<<<<<< HEAD
 		.extra1		= &zero,
 		.extra2		= &ushort_max,
 		.proc_handler	= proc_dointvec_minmax
-=======
-		.proc_handler	= proc_dointvec
->>>>>>> 7175f4b... Truncated history
 	},
 	{ }
 };

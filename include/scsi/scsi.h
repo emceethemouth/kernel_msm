@@ -562,10 +562,6 @@ static inline __u32 scsi_to_u32(__u8 *ptr)
 	return (ptr[0]<<24) + (ptr[1]<<16) + (ptr[2]<<8) + ptr[3];
 }
 
-<<<<<<< HEAD
 //struct scsi_disk *scsi_disk_get_from_dev(struct device *dev);
-=======
-struct scsi_disk *scsi_disk_get_from_dev(struct device *dev);
->>>>>>> 7175f4b... Truncated history
 
 #endif /* _SCSI_SCSI_H */

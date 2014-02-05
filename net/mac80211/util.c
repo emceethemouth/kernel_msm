@@ -592,7 +592,6 @@ u32 ieee802_11_parse_elems_crc(u8 *start, size_t len,
 			break;
 		}
 
-<<<<<<< HEAD
 		switch (id) {
 		case WLAN_EID_SSID:
 		case WLAN_EID_SUPP_RATES:
@@ -625,15 +624,6 @@ u32 ieee802_11_parse_elems_crc(u8 *start, size_t len,
 				continue;
 			}
 			break;
-=======
-		if (id != WLAN_EID_VENDOR_SPECIFIC &&
-		    id != WLAN_EID_QUIET &&
-		    test_bit(id, seen_elems)) {
-			elems->parse_error = true;
-			left -= elen;
-			pos += elen;
-			continue;
->>>>>>> 7175f4b... Truncated history
 		}
 
 		if (calc_crc && id < 64 && (filter & (1ULL << id)))
@@ -1263,11 +1253,7 @@ int ieee80211_reconfig(struct ieee80211_local *local)
 			enum ieee80211_sta_state state;
 
 			for (state = IEEE80211_STA_NOTEXIST;
-<<<<<<< HEAD
 			     state < sta->sta_state; state++)
-=======
-			     state < sta->sta_state - 1; state++)
->>>>>>> 7175f4b... Truncated history
 				WARN_ON(drv_sta_state(local, sta->sdata, sta,
 						      state, state + 1));
 		}
@@ -1359,25 +1345,19 @@ int ieee80211_reconfig(struct ieee80211_local *local)
 		list_for_each_entry(sdata, &local->interfaces, list) {
 			if (sdata->vif.type != NL80211_IFTYPE_STATION)
 				continue;
-<<<<<<< HEAD
 			if (!sdata->u.mgd.associated)
 				continue;
-=======
->>>>>>> 7175f4b... Truncated history
 
 			ieee80211_send_nullfunc(local, sdata, 0);
 		}
 	}
 
-<<<<<<< HEAD
 	/* add back keys */
 	list_for_each_entry(sdata, &local->interfaces, list)
 		if (ieee80211_sdata_running(sdata))
 			ieee80211_enable_keys(sdata);
 
  wake_up:
-=======
->>>>>>> 7175f4b... Truncated history
 	/*
 	 * Clear the WLAN_STA_BLOCK_BA flag so new aggregation
 	 * sessions can be established after a resume.
@@ -1399,15 +1379,6 @@ int ieee80211_reconfig(struct ieee80211_local *local)
 		mutex_unlock(&local->sta_mtx);
 	}
 
-<<<<<<< HEAD
-=======
-	/* add back keys */
-	list_for_each_entry(sdata, &local->interfaces, list)
-		if (ieee80211_sdata_running(sdata))
-			ieee80211_enable_keys(sdata);
-
- wake_up:
->>>>>>> 7175f4b... Truncated history
 	ieee80211_wake_queues_by_reason(hw,
 			IEEE80211_QUEUE_STOP_REASON_SUSPEND);
 

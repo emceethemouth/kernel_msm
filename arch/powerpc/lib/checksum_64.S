@@ -272,13 +272,8 @@ _GLOBAL(csum_partial_copy_generic)
 	rldicl. r6,r3,64-1,64-2		/* r6 = (r3 & 0x3) >> 1 */
 	beq	.Lcopy_aligned
 
-<<<<<<< HEAD
 	li	r9,4
 	sub	r6,r9,r6
-=======
-	li	r7,4
-	sub	r6,r7,r6
->>>>>>> 7175f4b... Truncated history
 	mtctr	r6
 
 1:

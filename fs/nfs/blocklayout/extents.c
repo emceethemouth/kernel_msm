@@ -44,11 +44,7 @@
 static inline sector_t normalize(sector_t s, int base)
 {
 	sector_t tmp = s; /* Since do_div modifies its argument */
-<<<<<<< HEAD
 	return s - sector_div(tmp, base);
-=======
-	return s - do_div(tmp, base);
->>>>>>> 7175f4b... Truncated history
 }
 
 static inline sector_t normalize_up(sector_t s, int base)

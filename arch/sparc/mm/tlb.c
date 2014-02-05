@@ -24,7 +24,6 @@ static DEFINE_PER_CPU(struct tlb_batch, tlb_batch);
 void flush_tlb_pending(void)
 {
 	struct tlb_batch *tb = &get_cpu_var(tlb_batch);
-<<<<<<< HEAD
 	struct mm_struct *mm = tb->mm;
 
 	if (!tb->tlb_nr)
@@ -36,13 +35,6 @@ void flush_tlb_pending(void)
 		if (tb->tlb_nr == 1) {
 			global_flush_tlb_page(mm, tb->vaddrs[0]);
 		} else {
-=======
-
-	if (tb->tlb_nr) {
-		flush_tsb_user(tb);
-
-		if (CTX_VALID(tb->mm->context)) {
->>>>>>> 7175f4b... Truncated history
 #ifdef CONFIG_SMP
 			smp_flush_tlb_pending(tb->mm, tb->tlb_nr,
 					      &tb->vaddrs[0]);
@@ -51,7 +43,6 @@ void flush_tlb_pending(void)
 					    tb->tlb_nr, &tb->vaddrs[0]);
 #endif
 		}
-<<<<<<< HEAD
 	}
 
 	tb->tlb_nr = 0;
@@ -76,14 +67,6 @@ void arch_leave_lazy_mmu_mode(void)
 	tb->active = 0;
 }
 
-=======
-		tb->tlb_nr = 0;
-	}
-
-	put_cpu_var(tlb_batch);
-}
-
->>>>>>> 7175f4b... Truncated history
 void tlb_batch_add(struct mm_struct *mm, unsigned long vaddr,
 		   pte_t *ptep, pte_t orig, int fullmm)
 {
@@ -131,15 +114,12 @@ no_cache_flush:
 		nr = 0;
 	}
 
-<<<<<<< HEAD
 	if (!tb->active) {
 		flush_tsb_user_page(mm, vaddr);
 		global_flush_tlb_page(mm, vaddr);
 		goto out;
 	}
 
-=======
->>>>>>> 7175f4b... Truncated history
 	if (nr == 0)
 		tb->mm = mm;
 
@@ -148,9 +128,6 @@ no_cache_flush:
 	if (nr >= TLB_BATCH_NR)
 		flush_tlb_pending();
 
-<<<<<<< HEAD
 out:
-=======
->>>>>>> 7175f4b... Truncated history
 	put_cpu_var(tlb_batch);
 }

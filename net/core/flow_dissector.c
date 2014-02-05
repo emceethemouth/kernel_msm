@@ -35,13 +35,9 @@ again:
 		struct iphdr _iph;
 ip:
 		iph = skb_header_pointer(skb, nhoff, sizeof(_iph), &_iph);
-<<<<<<< HEAD
 
 		/* CVE-2013-4348 issue : make sure iph->ihl is not zero ... */
 		if (!iph || iph->ihl < 5)
-=======
-		if (!iph)
->>>>>>> 7175f4b... Truncated history
 			return false;
 
 		if (ip_is_fragment(iph))

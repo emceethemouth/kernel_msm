@@ -213,14 +213,10 @@ static int slave_put(struct snd_kcontrol *kcontrol,
 	}
 	if (!changed)
 		return 0;
-<<<<<<< HEAD
 	err = slave_put_val(slave, ucontrol);
 	if (err < 0)
 		return err;
 	return 1;
-=======
-	return slave_put_val(slave, ucontrol);
->>>>>>> 7175f4b... Truncated history
 }
 
 static int slave_tlv_cmd(struct snd_kcontrol *kcontrol,

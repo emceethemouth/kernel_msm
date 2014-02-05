@@ -319,13 +319,8 @@ void *btree_get_prev(struct btree_head *head, struct btree_geo *geo,
 
 	if (head->height == 0)
 		return NULL;
-<<<<<<< HEAD
 	longcpy(key, __key, geo->keylen);
 retry:
-=======
-retry:
-	longcpy(key, __key, geo->keylen);
->>>>>>> 7175f4b... Truncated history
 	dec_key(geo, key);
 
 	node = head->node;
@@ -356,11 +351,7 @@ retry:
 	}
 miss:
 	if (retry_key) {
-<<<<<<< HEAD
 		longcpy(key, retry_key, geo->keylen);
-=======
-		__key = retry_key;
->>>>>>> 7175f4b... Truncated history
 		retry_key = NULL;
 		goto retry;
 	}

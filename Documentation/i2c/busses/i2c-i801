@@ -21,11 +21,8 @@ Supported adapters:
   * Intel DH89xxCC (PCH)
   * Intel Panther Point (PCH)
   * Intel Lynx Point (PCH)
-<<<<<<< HEAD
   * Intel Lynx Point-LP (PCH)
   * Intel Avoton (SOC)
-=======
->>>>>>> 7175f4b... Truncated history
    Datasheets: Publicly available at the Intel website
 
 On Intel Patsburg and later chipsets, both the normal host SMBus controller

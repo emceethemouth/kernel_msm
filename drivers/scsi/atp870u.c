@@ -1173,7 +1173,6 @@ wait_io1:
 	outw(val, tmport);
 	outb(2, 0x80);
 TCM_SYNC:
-<<<<<<< HEAD
 	/*
 	 * The funny division into multiple delays is to accomodate
 	 * arches like ARM where udelay() multiplies its argument by
@@ -1184,9 +1183,6 @@ TCM_SYNC:
 	 */
 	mdelay(2);
 	udelay(48);
-=======
-	udelay(0x800);
->>>>>>> 7175f4b... Truncated history
 	if ((inb(tmport) & 0x80) == 0x00) {	/* bsy ? */
 		outw(0, tmport--);
 		outb(0, tmport);

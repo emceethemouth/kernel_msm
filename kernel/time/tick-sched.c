@@ -920,11 +920,7 @@ void tick_cancel_sched_timer(int cpu)
 		hrtimer_cancel(&ts->sched_timer);
 # endif
 
-<<<<<<< HEAD
 	memset(ts, 0, sizeof(*ts));
-=======
-	ts->nohz_mode = NOHZ_MODE_INACTIVE;
->>>>>>> 7175f4b... Truncated history
 }
 #endif
 

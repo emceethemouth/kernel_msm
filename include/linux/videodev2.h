@@ -1901,12 +1901,9 @@ enum v4l2_mpeg_vidc_video_preserve_text_quality {
 	V4L2_MPEG_VIDC_VIDEO_PRESERVE_TEXT_QUALITY_ENABLED = 1
 };
 
-<<<<<<< HEAD
 #define V4L2_CID_MPEG_VIDC_VIDEO_REQUEST_SEQ_HEADER \
 	(V4L2_CID_MPEG_MSM_VIDC_BASE + 36)
 
-=======
->>>>>>> 7175f4b... Truncated history
 /*  Camera class control IDs */
 #define V4L2_CID_CAMERA_CLASS_BASE 	(V4L2_CTRL_CLASS_CAMERA | 0x900)
 #define V4L2_CID_CAMERA_CLASS 		(V4L2_CTRL_CLASS_CAMERA | 1)

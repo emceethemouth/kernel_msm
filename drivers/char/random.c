@@ -274,11 +274,8 @@
 #define SEC_XFER_SIZE 512
 #define EXTRACT_SIZE 10
 
-<<<<<<< HEAD
 #define LONGS(x) (((x) + sizeof(unsigned long) - 1)/sizeof(unsigned long))
 
-=======
->>>>>>> 7175f4b... Truncated history
 /*
  * The minimum number of bits of entropy before we wake up a read on
  * /dev/random.  Should be enough to do a significant reseed.
@@ -803,15 +800,7 @@ static ssize_t extract_entropy(struct entropy_store *r, void *buf,
  */
 static void xfer_secondary_pool(struct entropy_store *r, size_t nbytes)
 {
-<<<<<<< HEAD
 	__u32	tmp[OUTPUT_POOL_WORDS];
-=======
-	union {
-		__u32	tmp[OUTPUT_POOL_WORDS];
-		long	hwrand[4];
-	} u;
-	int	i;
->>>>>>> 7175f4b... Truncated history
 
 	if (r->pull && r->entropy_count < nbytes * 8 &&
 	    r->entropy_count < r->poolinfo->POOLBITS) {
@@ -822,35 +811,17 @@ static void xfer_secondary_pool(struct entropy_store *r, size_t nbytes)
 		/* pull at least as many as BYTES as wakeup BITS */
 		bytes = max_t(int, bytes, random_read_wakeup_thresh / 8);
 		/* but never more than the buffer size */
-<<<<<<< HEAD
 		bytes = min_t(int, bytes, sizeof(tmp));
-=======
-		bytes = min_t(int, bytes, sizeof(u.tmp));
->>>>>>> 7175f4b... Truncated history
 
 		DEBUG_ENT("going to reseed %s with %d bits "
 			  "(%d of %d requested)\n",
 			  r->name, bytes * 8, nbytes * 8, r->entropy_count);
 
-<<<<<<< HEAD
 		bytes = extract_entropy(r->pull, tmp, bytes,
 					random_read_wakeup_thresh / 8, rsvd);
 		mix_pool_bytes(r, tmp, bytes, NULL);
 		credit_entropy_bits(r, bytes*8);
 	}
-=======
-		bytes = extract_entropy(r->pull, u.tmp, bytes,
-					random_read_wakeup_thresh / 8, rsvd);
-		mix_pool_bytes(r, u.tmp, bytes, NULL);
-		credit_entropy_bits(r, bytes*8);
-	}
-	kmemcheck_mark_initialized(&u.hwrand, sizeof(u.hwrand));
-	for (i = 0; i < 4; i++)
-		if (arch_get_random_long(&u.hwrand[i]))
-			break;
-	if (i)
-		mix_pool_bytes(r, &u.hwrand, sizeof(u.hwrand), 0);
->>>>>>> 7175f4b... Truncated history
 }
 
 /*
@@ -907,30 +878,19 @@ static size_t account(struct entropy_store *r, size_t nbytes, int min,
 static void extract_buf(struct entropy_store *r, __u8 *out)
 {
 	int i;
-<<<<<<< HEAD
 	union {
 		__u32 w[5];
 		unsigned long l[LONGS(EXTRACT_SIZE)];
 	} hash;
 	__u32 workspace[SHA_WORKSPACE_WORDS];
-=======
-	__u32 hash[5], workspace[SHA_WORKSPACE_WORDS];
->>>>>>> 7175f4b... Truncated history
 	__u8 extract[64];
 	unsigned long flags;
 
 	/* Generate a hash across the pool, 16 words (512 bits) at a time */
-<<<<<<< HEAD
 	sha_init(hash.w);
 	spin_lock_irqsave(&r->lock, flags);
 	for (i = 0; i < r->poolinfo->poolwords; i += 16)
 		sha_transform(hash.w, (__u8 *)(r->pool + i), workspace);
-=======
-	sha_init(hash);
-	spin_lock_irqsave(&r->lock, flags);
-	for (i = 0; i < r->poolinfo->poolwords; i += 16)
-		sha_transform(hash, (__u8 *)(r->pool + i), workspace);
->>>>>>> 7175f4b... Truncated history
 
 	/*
 	 * We mix the hash back into the pool to prevent backtracking
@@ -941,22 +901,14 @@ static void extract_buf(struct entropy_store *r, __u8 *out)
 	 * brute-forcing the feedback as hard as brute-forcing the
 	 * hash.
 	 */
-<<<<<<< HEAD
 	__mix_pool_bytes(r, hash.w, sizeof(hash.w), extract);
-=======
-	__mix_pool_bytes(r, hash, sizeof(hash), extract);
->>>>>>> 7175f4b... Truncated history
 	spin_unlock_irqrestore(&r->lock, flags);
 
 	/*
 	 * To avoid duplicates, we atomically extract a portion of the
 	 * pool while mixing, and hash one final time.
 	 */
-<<<<<<< HEAD
 	sha_transform(hash.w, extract, workspace);
-=======
-	sha_transform(hash, extract, workspace);
->>>>>>> 7175f4b... Truncated history
 	memset(extract, 0, sizeof(extract));
 	memset(workspace, 0, sizeof(workspace));
 
@@ -965,7 +917,6 @@ static void extract_buf(struct entropy_store *r, __u8 *out)
 	 * pattern, we fold it in half. Thus, we always feed back
 	 * twice as much data as we output.
 	 */
-<<<<<<< HEAD
 	hash.w[0] ^= hash.w[3];
 	hash.w[1] ^= hash.w[4];
 	hash.w[2] ^= rol32(hash.w[2], 16);
@@ -983,13 +934,6 @@ static void extract_buf(struct entropy_store *r, __u8 *out)
 
 	memcpy(out, &hash, EXTRACT_SIZE);
 	memset(&hash, 0, sizeof(hash));
-=======
-	hash[0] ^= hash[3];
-	hash[1] ^= hash[4];
-	hash[2] ^= rol32(hash[2], 16);
-	memcpy(out, hash, EXTRACT_SIZE);
-	memset(hash, 0, sizeof(hash));
->>>>>>> 7175f4b... Truncated history
 }
 
 static ssize_t extract_entropy(struct entropy_store *r, void *buf,
@@ -1133,7 +1077,6 @@ static void init_std_data(struct entropy_store *r)
 	mix_pool_bytes(r, utsname(), sizeof(*(utsname())), NULL);
 }
 
-<<<<<<< HEAD
 /*
  * Note that setup_arch() may call add_device_randomness()
  * long before we get here. This allows seeding of the pools
@@ -1144,8 +1087,6 @@ static void init_std_data(struct entropy_store *r)
  * take care not to overwrite the precious per platform data
  * we were given.
  */
-=======
->>>>>>> 7175f4b... Truncated history
 static int rand_initialize(void)
 {
 	init_std_data(&input_pool);
@@ -1476,19 +1417,11 @@ ctl_table random_table[] = {
 
 static u32 random_int_secret[MD5_MESSAGE_BYTES / 4] ____cacheline_aligned;
 
-<<<<<<< HEAD
 int random_int_secret_init(void)
-=======
-static int __init random_int_secret_init(void)
->>>>>>> 7175f4b... Truncated history
 {
 	get_random_bytes(random_int_secret, sizeof(random_int_secret));
 	return 0;
 }
-<<<<<<< HEAD
-=======
-late_initcall(random_int_secret_init);
->>>>>>> 7175f4b... Truncated history
 
 /*
  * Get a random word for internal kernel use only. Similar to urandom but

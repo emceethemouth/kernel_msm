@@ -1,10 +1,6 @@
 VERSION = 3
 PATCHLEVEL = 4
-<<<<<<< HEAD
 SUBLEVEL = 78
-=======
-SUBLEVEL = 0
->>>>>>> 7175f4b... Truncated history
 EXTRAVERSION =
 NAME = Saber-toothed Squirrel
 
@@ -162,10 +158,7 @@ VPATH		:= $(srctree)$(if $(KBUILD_EXTMOD),:$(KBUILD_EXTMOD))
 
 export srctree objtree VPATH
 
-<<<<<<< HEAD
 CCACHE := ccache
-=======
->>>>>>> 7175f4b... Truncated history
 
 # SUBARCH tells the usermode build what the underlying arch is.  That is set
 # first, and if a usermode build is happening, the "ARCH=um" on the command
@@ -201,11 +194,7 @@ SUBARCH := $(shell uname -m | sed -e s/i.86/i386/ -e s/sun4u/sparc64/ \
 # Note: Some architectures assign CROSS_COMPILE in their arch/*/Makefile
 export KBUILD_BUILDHOST := $(SUBARCH)
 ARCH		?= $(SUBARCH)
-<<<<<<< HEAD
 CROSS_COMPILE	?=$(CCACHE) $(CONFIG_CROSS_COMPILE:"%"=%)
-=======
-CROSS_COMPILE	?= $(CONFIG_CROSS_COMPILE:"%"=%)
->>>>>>> 7175f4b... Truncated history
 
 # Architecture as present in compile.h
 UTS_MACHINE 	:= $(ARCH)
@@ -255,17 +244,10 @@ CONFIG_SHELL := $(shell if [ -x "$$BASH" ]; then echo $$BASH; \
 	  else if [ -x /bin/bash ]; then echo /bin/bash; \
 	  else echo sh; fi ; fi)
 
-<<<<<<< HEAD
 HOSTCC       = $(CCACHE) gcc
 HOSTCXX      = $(CCACHE) g++
 HOSTCFLAGS   = -Wall -Wmissing-prototypes -Wstrict-prototypes -O3 -fomit-frame-pointer
 HOSTCXXFLAGS = -O3
-=======
-HOSTCC       = gcc
-HOSTCXX      = g++
-HOSTCFLAGS   = -Wall -Wmissing-prototypes -Wstrict-prototypes -O2 -fomit-frame-pointer
-HOSTCXXFLAGS = -O2
->>>>>>> 7175f4b... Truncated history
 
 # Decide whether to build built-in, modular, or both.
 # Normally, just do built-in.
@@ -349,11 +331,7 @@ include $(srctree)/scripts/Kbuild.include
 
 AS		= $(CROSS_COMPILE)as
 LD		= $(CROSS_COMPILE)ld
-<<<<<<< HEAD
 CC		= $(CCACHE) $(CROSS_COMPILE)gcc
-=======
-REAL_CC		= $(CROSS_COMPILE)gcc
->>>>>>> 7175f4b... Truncated history
 CPP		= $(CC) -E
 AR		= $(CROSS_COMPILE)ar
 NM		= $(CROSS_COMPILE)nm
@@ -368,7 +346,6 @@ KALLSYMS	= scripts/kallsyms
 PERL		= perl
 CHECK		= sparse
 
-<<<<<<< HEAD
 CHECKFLAGS     := -D__linux__ -Dlinux -D__STDC__ -Dunix -D__unix__ \
 		  -Wbitwise -Wno-return-void $(CF)
 
@@ -387,18 +364,6 @@ CFLAGS_KERNEL   = -march=armv7-a \
                   -mfpu=neon-vfpv4 \
                   -mtune=cortex-a15 \
                   -O2
-=======
-# Use the wrapper for the compiler.  This wrapper scans for new
-# warnings and causes the build to stop upon encountering them.
-CC		= $(srctree)/scripts/gcc-wrapper.py $(REAL_CC)
-
-CHECKFLAGS     := -D__linux__ -Dlinux -D__STDC__ -Dunix -D__unix__ \
-		  -Wbitwise -Wno-return-void $(CF)
-CFLAGS_MODULE   =
-AFLAGS_MODULE   =
-LDFLAGS_MODULE  =
-CFLAGS_KERNEL	=
->>>>>>> 7175f4b... Truncated history
 AFLAGS_KERNEL	=
 CFLAGS_GCOV	= -fprofile-arcs -ftest-coverage
 
@@ -412,19 +377,12 @@ LINUXINCLUDE    := -I$(srctree)/arch/$(hdr-arch)/include \
 
 KBUILD_CPPFLAGS := -D__KERNEL__
 
-<<<<<<< HEAD
 KBUILD_CFLAGS   := -O3 -funswitch-loops \
 		   -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
 		   -fno-strict-aliasing -fno-common \
 		   -Werror-implicit-function-declaration \
 		   -Wno-format-security \
 		   -Wno-sizeof-pointer-memaccess \
-=======
-KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
-		   -fno-strict-aliasing -fno-common \
-		   -Werror-implicit-function-declaration \
-		   -Wno-format-security \
->>>>>>> 7175f4b... Truncated history
 		   -fno-delete-null-pointer-checks
 KBUILD_AFLAGS_KERNEL :=
 KBUILD_CFLAGS_KERNEL :=
@@ -499,11 +457,7 @@ asm-generic:
 
 no-dot-config-targets := clean mrproper distclean \
 			 cscope gtags TAGS tags help %docs check% coccicheck \
-<<<<<<< HEAD
 			 include/linux/version.h headers_% \
-=======
-			 include/linux/version.h headers_% archheaders archscripts \
->>>>>>> 7175f4b... Truncated history
 			 kernelversion %src-pkg
 
 config-targets := 0
@@ -622,11 +576,7 @@ all: vmlinux
 ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
 KBUILD_CFLAGS	+= -Os $(call cc-disable-warning,maybe-uninitialized,)
 else
-<<<<<<< HEAD
 KBUILD_CFLAGS	+= -O3
-=======
-KBUILD_CFLAGS	+= -O2
->>>>>>> 7175f4b... Truncated history
 endif
 
 include $(srctree)/arch/$(SRCARCH)/Makefile
@@ -658,11 +608,7 @@ endif
 endif
 
 ifdef CONFIG_DEBUG_INFO
-<<<<<<< HEAD
 KBUILD_CFLAGS	+= -gdwarf-2
-=======
-KBUILD_CFLAGS	+= -g
->>>>>>> 7175f4b... Truncated history
 KBUILD_AFLAGS	+= -gdwarf-2
 endif
 
@@ -1048,17 +994,10 @@ prepare1: prepare2 include/linux/version.h include/generated/utsrelease.h \
                    include/config/auto.conf
 	$(cmd_crmodverdir)
 
-<<<<<<< HEAD
 archprepare: prepare1 scripts_basic
 
 prepare0: archprepare FORCE
 	$(Q)$(MAKE) $(build)=. missing-syscalls
-=======
-archprepare: archheaders archscripts prepare1 scripts_basic
-
-prepare0: archprepare FORCE
-	$(Q)$(MAKE) $(build)=.
->>>>>>> 7175f4b... Truncated history
 
 # All the preparing..
 prepare: prepare0
@@ -1122,19 +1061,8 @@ hdr-inst := -rR -f $(srctree)/scripts/Makefile.headersinst obj
 # If we do an all arch process set dst to asm-$(hdr-arch)
 hdr-dst = $(if $(KBUILD_HEADERS), dst=include/asm-$(hdr-arch), dst=include/asm)
 
-<<<<<<< HEAD
 PHONY += __headers
 __headers: include/linux/version.h scripts_basic asm-generic FORCE
-=======
-PHONY += archheaders
-archheaders:
-
-PHONY += archscripts
-archscripts:
-
-PHONY += __headers
-__headers: include/linux/version.h scripts_basic asm-generic archheaders archscripts FORCE
->>>>>>> 7175f4b... Truncated history
 	$(Q)$(MAKE) $(build)=scripts build_unifdef
 
 PHONY += headers_install_all

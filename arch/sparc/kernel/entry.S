@@ -1177,11 +1177,7 @@ sys_sigreturn:
 	 nop
 
 	call	syscall_trace
-<<<<<<< HEAD
 	 mov	1, %o1
-=======
-	 nop
->>>>>>> 7175f4b... Truncated history
 
 1:
 	/* We don't want to muck with user registers like a

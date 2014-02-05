@@ -777,15 +777,11 @@ static int filter_set_pred(struct event_filter *filter,
 
 static void __free_preds(struct event_filter *filter)
 {
-<<<<<<< HEAD
 	int i;
 
 	if (filter->preds) {
 		for (i = 0; i < filter->n_preds; i++)
 			kfree(filter->preds[i].ops);
-=======
-	if (filter->preds) {
->>>>>>> 7175f4b... Truncated history
 		kfree(filter->preds);
 		filter->preds = NULL;
 	}

@@ -12,10 +12,7 @@
 
 #include <linux/errno.h>
 #include <asm/cacheflush.h>
-<<<<<<< HEAD
 #include <asm/cp15.h>
-=======
->>>>>>> 7175f4b... Truncated history
 #include <mach/common.h>
 
 int platform_cpu_kill(unsigned int cpu)
@@ -23,7 +20,6 @@ int platform_cpu_kill(unsigned int cpu)
 	return 1;
 }
 
-<<<<<<< HEAD
 static inline void cpu_enter_lowpower(void)
 {
 	unsigned int v;
@@ -46,8 +42,6 @@ static inline void cpu_enter_lowpower(void)
 	  : "cc");
 }
 
-=======
->>>>>>> 7175f4b... Truncated history
 /*
  * platform-specific code to shutdown a CPU
  *
@@ -55,21 +49,12 @@ static inline void cpu_enter_lowpower(void)
  */
 void platform_cpu_die(unsigned int cpu)
 {
-<<<<<<< HEAD
 	cpu_enter_lowpower();
 	imx_enable_cpu(cpu, false);
 
 	/* spin here until hardware takes it down */
 	while (1)
 		;
-=======
-	flush_cache_all();
-	imx_enable_cpu(cpu, false);
-	cpu_do_idle();
-
-	/* We should never return from idle */
-	panic("cpu %d unexpectedly exit from shutdown\n", cpu);
->>>>>>> 7175f4b... Truncated history
 }
 
 int platform_cpu_disable(unsigned int cpu)

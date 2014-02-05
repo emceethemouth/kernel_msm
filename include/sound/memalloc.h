@@ -101,11 +101,7 @@ static inline unsigned int snd_sgbuf_aligned_pages(size_t size)
 static inline dma_addr_t snd_sgbuf_get_addr(struct snd_sg_buf *sgbuf, size_t offset)
 {
 	dma_addr_t addr = sgbuf->table[offset >> PAGE_SHIFT].addr;
-<<<<<<< HEAD
 	addr &= ~((dma_addr_t)PAGE_SIZE - 1);
-=======
-	addr &= PAGE_MASK;
->>>>>>> 7175f4b... Truncated history
 	return addr + offset % PAGE_SIZE;
 }
 

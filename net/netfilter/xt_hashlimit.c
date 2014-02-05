@@ -389,12 +389,7 @@ static void htable_put(struct xt_hashlimit_htable *hinfo)
 #define CREDITS_PER_JIFFY POW2_BELOW32(MAX_CPJ)
 
 /* Precision saver. */
-<<<<<<< HEAD
 static u32 user2credits(u32 user)
-=======
-static inline u_int32_t
-user2credits(u_int32_t user)
->>>>>>> 7175f4b... Truncated history
 {
 	/* If multiplying would overflow... */
 	if (user > 0xFFFFFFFF / (HZ*CREDITS_PER_JIFFY))
@@ -404,11 +399,7 @@ user2credits(u_int32_t user)
 	return (user * HZ * CREDITS_PER_JIFFY) / XT_HASHLIMIT_SCALE;
 }
 
-<<<<<<< HEAD
 static void rateinfo_recalc(struct dsthash_ent *dh, unsigned long now)
-=======
-static inline void rateinfo_recalc(struct dsthash_ent *dh, unsigned long now)
->>>>>>> 7175f4b... Truncated history
 {
 	dh->rateinfo.credit += (now - dh->rateinfo.prev) * CREDITS_PER_JIFFY;
 	if (dh->rateinfo.credit > dh->rateinfo.credit_cap)
@@ -543,12 +534,7 @@ hashlimit_mt(const struct sk_buff *skb, struct xt_action_param *par)
 		dh->rateinfo.prev = jiffies;
 		dh->rateinfo.credit = user2credits(hinfo->cfg.avg *
 		                      hinfo->cfg.burst);
-<<<<<<< HEAD
 		dh->rateinfo.credit_cap = dh->rateinfo.credit;
-=======
-		dh->rateinfo.credit_cap = user2credits(hinfo->cfg.avg *
-		                          hinfo->cfg.burst);
->>>>>>> 7175f4b... Truncated history
 		dh->rateinfo.cost = user2credits(hinfo->cfg.avg);
 	} else {
 		/* update expiration timeout */

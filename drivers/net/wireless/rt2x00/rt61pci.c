@@ -2243,12 +2243,7 @@ static void rt61pci_txdone(struct rt2x00_dev *rt2x00dev)
 
 static void rt61pci_wakeup(struct rt2x00_dev *rt2x00dev)
 {
-<<<<<<< HEAD
 	struct rt2x00lib_conf libconf = { .conf = &rt2x00dev->hw->conf };
-=======
-	struct ieee80211_conf conf = { .flags = 0 };
-	struct rt2x00lib_conf libconf = { .conf = &conf };
->>>>>>> 7175f4b... Truncated history
 
 	rt61pci_config(rt2x00dev, &libconf, IEEE80211_CONF_CHANGE_PS);
 }
@@ -2827,12 +2822,8 @@ static int rt61pci_probe_hw_mode(struct rt2x00_dev *rt2x00dev)
 		tx_power = rt2x00_eeprom_addr(rt2x00dev, EEPROM_TXPOWER_A_START);
 		for (i = 14; i < spec->num_channels; i++) {
 			info[i].max_power = MAX_TXPOWER;
-<<<<<<< HEAD
 			info[i].default_power1 =
 					TXPOWER_FROM_DEV(tx_power[i - 14]);
-=======
-			info[i].default_power1 = TXPOWER_FROM_DEV(tx_power[i]);
->>>>>>> 7175f4b... Truncated history
 		}
 	}
 
@@ -2842,10 +2833,7 @@ static int rt61pci_probe_hw_mode(struct rt2x00_dev *rt2x00dev)
 static int rt61pci_probe_hw(struct rt2x00_dev *rt2x00dev)
 {
 	int retval;
-<<<<<<< HEAD
 	u32 reg;
-=======
->>>>>>> 7175f4b... Truncated history
 
 	/*
 	 * Disable power saving.
@@ -2864,7 +2852,6 @@ static int rt61pci_probe_hw(struct rt2x00_dev *rt2x00dev)
 		return retval;
 
 	/*
-<<<<<<< HEAD
 	 * Enable rfkill polling by setting GPIO direction of the
 	 * rfkill switch GPIO pin correctly.
 	 */
@@ -2873,8 +2860,6 @@ static int rt61pci_probe_hw(struct rt2x00_dev *rt2x00dev)
 	rt2x00pci_register_write(rt2x00dev, MAC_CSR13, reg);
 
 	/*
-=======
->>>>>>> 7175f4b... Truncated history
 	 * Initialize hw specifications.
 	 */
 	retval = rt61pci_probe_hw_mode(rt2x00dev);

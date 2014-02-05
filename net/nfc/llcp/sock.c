@@ -514,11 +514,8 @@ static int llcp_sock_recvmsg(struct kiocb *iocb, struct socket *sock,
 
 	pr_debug("%p %zu\n", sk, len);
 
-<<<<<<< HEAD
 	msg->msg_namelen = 0;
 
-=======
->>>>>>> 7175f4b... Truncated history
 	lock_sock(sk);
 
 	if (sk->sk_state == LLCP_CLOSED &&

@@ -294,38 +294,21 @@ unsigned int ieee80211_get_hdrlen_from_skb(const struct sk_buff *skb)
 }
 EXPORT_SYMBOL(ieee80211_get_hdrlen_from_skb);
 
-<<<<<<< HEAD
 unsigned int ieee80211_get_mesh_hdrlen(struct ieee80211s_hdr *meshhdr)
 {
 	int ae = meshhdr->flags & MESH_FLAGS_AE;
 	/* 802.11-2012, 8.2.4.7.3 */
 	switch (ae) {
 	default:
-=======
-static int ieee80211_get_mesh_hdrlen(struct ieee80211s_hdr *meshhdr)
-{
-	int ae = meshhdr->flags & MESH_FLAGS_AE;
-	/* 7.1.3.5a.2 */
-	switch (ae) {
->>>>>>> 7175f4b... Truncated history
 	case 0:
 		return 6;
 	case MESH_FLAGS_AE_A4:
 		return 12;
 	case MESH_FLAGS_AE_A5_A6:
 		return 18;
-<<<<<<< HEAD
 	}
 }
 EXPORT_SYMBOL(ieee80211_get_mesh_hdrlen);
-=======
-	case (MESH_FLAGS_AE_A4 | MESH_FLAGS_AE_A5_A6):
-		return 24;
-	default:
-		return 6;
-	}
-}
->>>>>>> 7175f4b... Truncated history
 
 int ieee80211_data_to_8023(struct sk_buff *skb, const u8 *addr,
 			   enum nl80211_iftype iftype)
@@ -373,11 +356,8 @@ int ieee80211_data_to_8023(struct sk_buff *skb, const u8 *addr,
 			/* make sure meshdr->flags is on the linear part */
 			if (!pskb_may_pull(skb, hdrlen + 1))
 				return -1;
-<<<<<<< HEAD
 			if (meshdr->flags & MESH_FLAGS_AE_A4)
 				return -1;
-=======
->>>>>>> 7175f4b... Truncated history
 			if (meshdr->flags & MESH_FLAGS_AE_A5_A6) {
 				skb_copy_bits(skb, hdrlen +
 					offsetof(struct ieee80211s_hdr, eaddr1),
@@ -402,11 +382,8 @@ int ieee80211_data_to_8023(struct sk_buff *skb, const u8 *addr,
 			/* make sure meshdr->flags is on the linear part */
 			if (!pskb_may_pull(skb, hdrlen + 1))
 				return -1;
-<<<<<<< HEAD
 			if (meshdr->flags & MESH_FLAGS_AE_A5_A6)
 				return -1;
-=======
->>>>>>> 7175f4b... Truncated history
 			if (meshdr->flags & MESH_FLAGS_AE_A4)
 				skb_copy_bits(skb, hdrlen +
 					offsetof(struct ieee80211s_hdr, eaddr1),
@@ -746,11 +723,7 @@ void cfg80211_upload_connect_keys(struct wireless_dev *wdev)
 	wdev->connect_keys = NULL;
 }
 
-<<<<<<< HEAD
 void cfg80211_process_wdev_events(struct wireless_dev *wdev)
-=======
-static void cfg80211_process_wdev_events(struct wireless_dev *wdev)
->>>>>>> 7175f4b... Truncated history
 {
 	struct cfg80211_event *ev;
 	unsigned long flags;
@@ -838,11 +811,7 @@ int cfg80211_change_iface(struct cfg80211_registered_device *rdev,
 	     ntype == NL80211_IFTYPE_P2P_CLIENT))
 		return -EBUSY;
 
-<<<<<<< HEAD
 	if (ntype != otype && netif_running(dev)) {
-=======
-	if (ntype != otype) {
->>>>>>> 7175f4b... Truncated history
 		err = cfg80211_can_change_interface(rdev, dev->ieee80211_ptr,
 						    ntype);
 		if (err)
@@ -1046,10 +1015,7 @@ int cfg80211_can_change_interface(struct cfg80211_registered_device *rdev,
 				  enum nl80211_iftype iftype)
 {
 	struct wireless_dev *wdev_iter;
-<<<<<<< HEAD
 	u32 used_iftypes = BIT(iftype);
-=======
->>>>>>> 7175f4b... Truncated history
 	int num[NUM_NL80211_IFTYPES];
 	int total = 1;
 	int i, j;
@@ -1083,7 +1049,6 @@ int cfg80211_can_change_interface(struct cfg80211_registered_device *rdev,
 
 		num[wdev_iter->iftype]++;
 		total++;
-<<<<<<< HEAD
 		used_iftypes |= BIT(wdev_iter->iftype);
 	}
 	mutex_unlock(&rdev->devlist_mtx);
@@ -1095,14 +1060,6 @@ int cfg80211_can_change_interface(struct cfg80211_registered_device *rdev,
 		const struct ieee80211_iface_combination *c;
 		struct ieee80211_iface_limit *limits;
 		u32 all_iftypes = 0;
-=======
-	}
-	mutex_unlock(&rdev->devlist_mtx);
-
-	for (i = 0; i < rdev->wiphy.n_iface_combinations; i++) {
-		const struct ieee80211_iface_combination *c;
-		struct ieee80211_iface_limit *limits;
->>>>>>> 7175f4b... Truncated history
 
 		c = &rdev->wiphy.iface_combinations[i];
 
@@ -1117,10 +1074,7 @@ int cfg80211_can_change_interface(struct cfg80211_registered_device *rdev,
 			if (rdev->wiphy.software_iftypes & BIT(iftype))
 				continue;
 			for (j = 0; j < c->n_limits; j++) {
-<<<<<<< HEAD
 				all_iftypes |= limits[j].types;
-=======
->>>>>>> 7175f4b... Truncated history
 				if (!(limits[j].types & BIT(iftype)))
 					continue;
 				if (limits[j].max < num[iftype])
@@ -1128,7 +1082,6 @@ int cfg80211_can_change_interface(struct cfg80211_registered_device *rdev,
 				limits[j].max -= num[iftype];
 			}
 		}
-<<<<<<< HEAD
 
 		/*
 		 * Finally check that all iftypes that we're currently
@@ -1143,9 +1096,6 @@ int cfg80211_can_change_interface(struct cfg80211_registered_device *rdev,
 		 * This combination covered all interface types and
 		 * supported the requested numbers, so we're good.
 		 */
-=======
-		/* yay, it fits */
->>>>>>> 7175f4b... Truncated history
 		kfree(limits);
 		return 0;
  cont:

@@ -436,10 +436,7 @@ acpi_get_table_with_size(char *signature,
 
 	return (AE_NOT_FOUND);
 }
-<<<<<<< HEAD
 ACPI_EXPORT_SYMBOL(acpi_get_table_with_size)
-=======
->>>>>>> 7175f4b... Truncated history
 
 acpi_status
 acpi_get_table(char *signature,

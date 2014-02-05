@@ -26,10 +26,7 @@
 #include <linux/module.h>
 #include <linux/moduleparam.h>
 #include <linux/slab.h>
-<<<<<<< HEAD
 #include <linux/dmi.h>
-=======
->>>>>>> 7175f4b... Truncated history
 
 #include "xhci.h"
 
@@ -55,11 +52,7 @@ MODULE_PARM_DESC(link_quirk, "Don't clear the chain bit on a link TRB");
  * handshake done).  There are two failure modes:  "usec" have passed (major
  * hardware flakeout), or the register reads as all-ones (hardware removed).
  */
-<<<<<<< HEAD
 int handshake(struct xhci_hcd *xhci, void __iomem *ptr,
-=======
-static int handshake(struct xhci_hcd *xhci, void __iomem *ptr,
->>>>>>> 7175f4b... Truncated history
 		      u32 mask, u32 done, int usec)
 {
 	u32	result;
@@ -112,16 +105,10 @@ int xhci_halt(struct xhci_hcd *xhci)
 
 	ret = handshake(xhci, &xhci->op_regs->status,
 			STS_HALT, STS_HALT, XHCI_MAX_HALT_USEC);
-<<<<<<< HEAD
 	if (!ret) {
 		xhci->xhc_state |= XHCI_STATE_HALTED;
 		xhci->cmd_ring_state = CMD_RING_STATE_STOPPED;
 	} else
-=======
-	if (!ret)
-		xhci->xhc_state |= XHCI_STATE_HALTED;
-	else
->>>>>>> 7175f4b... Truncated history
 		xhci_warn(xhci, "Host not halted after %u microseconds.\n",
 				XHCI_MAX_HALT_USEC);
 	return ret;
@@ -167,11 +154,7 @@ int xhci_reset(struct xhci_hcd *xhci)
 {
 	u32 command;
 	u32 state;
-<<<<<<< HEAD
 	int ret, i;
-=======
-	int ret;
->>>>>>> 7175f4b... Truncated history
 
 	state = xhci_readl(xhci, &xhci->op_regs->status);
 	if ((state & STS_HALT) == 0) {
@@ -185,11 +168,7 @@ int xhci_reset(struct xhci_hcd *xhci)
 	xhci_writel(xhci, command, &xhci->op_regs->command);
 
 	ret = handshake(xhci, &xhci->op_regs->command,
-<<<<<<< HEAD
 			CMD_RESET, 0, 10 * 1000 * 1000);
-=======
-			CMD_RESET, 0, 250 * 1000);
->>>>>>> 7175f4b... Truncated history
 	if (ret)
 		return ret;
 
@@ -198,7 +177,6 @@ int xhci_reset(struct xhci_hcd *xhci)
 	 * xHCI cannot write to any doorbells or operational registers other
 	 * than status until the "Controller Not Ready" flag is cleared.
 	 */
-<<<<<<< HEAD
 	ret = handshake(xhci, &xhci->op_regs->status,
 			STS_CNR, 0, 10 * 1000 * 1000);
 
@@ -209,9 +187,6 @@ int xhci_reset(struct xhci_hcd *xhci)
 	}
 
 	return ret;
-=======
-	return handshake(xhci, &xhci->op_regs->status, STS_CNR, 0, 250 * 1000);
->>>>>>> 7175f4b... Truncated history
 }
 
 #ifdef CONFIG_PCI
@@ -357,7 +332,6 @@ static void xhci_cleanup_msix(struct xhci_hcd *xhci)
 static int xhci_try_enable_msi(struct usb_hcd *hcd)
 {
 	struct xhci_hcd *xhci = hcd_to_xhci(hcd);
-<<<<<<< HEAD
 	struct pci_dev  *pdev;
 	int ret;
 
@@ -366,21 +340,12 @@ static int xhci_try_enable_msi(struct usb_hcd *hcd)
 		return 0;
 
 	pdev = to_pci_dev(xhci_to_hcd(xhci)->self.controller);
-=======
-	struct pci_dev  *pdev = to_pci_dev(xhci_to_hcd(xhci)->self.controller);
-	int ret;
-
->>>>>>> 7175f4b... Truncated history
 	/*
 	 * Some Fresco Logic host controllers advertise MSI, but fail to
 	 * generate interrupts.  Don't even try to enable MSI.
 	 */
 	if (xhci->quirks & XHCI_BROKEN_MSI)
-<<<<<<< HEAD
 		goto legacy_irq;
-=======
-		return 0;
->>>>>>> 7175f4b... Truncated history
 
 	/* unregister the legacy interrupt */
 	if (hcd->irq)
@@ -401,10 +366,7 @@ static int xhci_try_enable_msi(struct usb_hcd *hcd)
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
  legacy_irq:
-=======
->>>>>>> 7175f4b... Truncated history
 	/* fall back to legacy interrupt*/
 	ret = request_irq(pdev->irq, &usb_hcd_irq, IRQF_SHARED,
 			hcd->irq_descr, hcd);
@@ -430,7 +392,6 @@ static void xhci_cleanup_msix(struct xhci_hcd *xhci)
 
 #endif /* CONFIG_PCI */
 
-<<<<<<< HEAD
 static void compliance_mode_recovery(unsigned long arg)
 {
 	struct xhci_hcd *xhci;
@@ -523,8 +484,6 @@ static int xhci_all_ports_seen_u0(struct xhci_hcd *xhci)
 }
 
 
-=======
->>>>>>> 7175f4b... Truncated history
 /*
  * Initialize memory for HCD and xHC (one-time init).
  *
@@ -548,15 +507,12 @@ int xhci_init(struct usb_hcd *hcd)
 	retval = xhci_mem_init(xhci, GFP_KERNEL);
 	xhci_dbg(xhci, "Finished xhci_init\n");
 
-<<<<<<< HEAD
 	/* Initializing Compliance Mode Recovery Data If Needed */
 	if (compliance_mode_recovery_timer_quirk_check()) {
 		xhci->quirks |= XHCI_COMP_MODE_QUIRK;
 		compliance_mode_recovery_timer_init(xhci);
 	}
 
-=======
->>>>>>> 7175f4b... Truncated history
 	return retval;
 }
 
@@ -621,10 +577,7 @@ static int xhci_run_finished(struct xhci_hcd *xhci)
 		return -ENODEV;
 	}
 	xhci->shared_hcd->state = HC_STATE_RUNNING;
-<<<<<<< HEAD
 	xhci->cmd_ring_state = CMD_RING_STATE_RUNNING;
-=======
->>>>>>> 7175f4b... Truncated history
 
 	if (xhci->quirks & XHCI_NEC_HOST)
 		xhci_ring_cmd_db(xhci);
@@ -776,14 +729,11 @@ void xhci_stop(struct usb_hcd *hcd)
 	del_timer_sync(&xhci->event_ring_timer);
 #endif
 
-<<<<<<< HEAD
 	/* Deleting Compliance Mode Recovery Timer */
 	if ((xhci->quirks & XHCI_COMP_MODE_QUIRK) &&
 			(!(xhci_all_ports_seen_u0(xhci))))
 		del_timer_sync(&xhci->comp_mode_recovery_timer);
 
-=======
->>>>>>> 7175f4b... Truncated history
 	if (xhci->quirks & XHCI_AMD_PLL_FIX)
 		usb_amd_dev_put();
 
@@ -814,12 +764,9 @@ void xhci_shutdown(struct usb_hcd *hcd)
 {
 	struct xhci_hcd *xhci = hcd_to_xhci(hcd);
 
-<<<<<<< HEAD
 	if (xhci->quirks & XHCI_SPURIOUS_REBOOT)
 		usb_disable_xhci_ports(to_pci_dev(hcd->self.controller));
 
-=======
->>>>>>> 7175f4b... Truncated history
 	spin_lock_irq(&xhci->lock);
 	xhci_halt(xhci);
 	spin_unlock_irq(&xhci->lock);
@@ -949,14 +896,11 @@ int xhci_suspend(struct xhci_hcd *xhci)
 	struct usb_hcd		*hcd = xhci_to_hcd(xhci);
 	u32			command;
 
-<<<<<<< HEAD
 	/* Don't poll the roothubs on bus suspend. */
 	xhci_dbg(xhci, "%s: stopping port polling.\n", __func__);
 	clear_bit(HCD_FLAG_POLL_RH, &hcd->flags);
 	del_timer_sync(&hcd->rh_timer);
 
-=======
->>>>>>> 7175f4b... Truncated history
 	spin_lock_irq(&xhci->lock);
 	clear_bit(HCD_FLAG_HW_ACCESSIBLE, &hcd->flags);
 	clear_bit(HCD_FLAG_HW_ACCESSIBLE, &xhci->shared_hcd->flags);
@@ -968,11 +912,7 @@ int xhci_suspend(struct xhci_hcd *xhci)
 	command &= ~CMD_RUN;
 	xhci_writel(xhci, command, &xhci->op_regs->command);
 	if (handshake(xhci, &xhci->op_regs->status,
-<<<<<<< HEAD
 		      STS_HALT, STS_HALT, XHCI_MAX_HALT_USEC)) {
-=======
-		      STS_HALT, STS_HALT, 100*100)) {
->>>>>>> 7175f4b... Truncated history
 		xhci_warn(xhci, "WARN: xHC CMD_RUN timeout\n");
 		spin_unlock_irq(&xhci->lock);
 		return -ETIMEDOUT;
@@ -986,19 +926,13 @@ int xhci_suspend(struct xhci_hcd *xhci)
 	command = xhci_readl(xhci, &xhci->op_regs->command);
 	command |= CMD_CSS;
 	xhci_writel(xhci, command, &xhci->op_regs->command);
-<<<<<<< HEAD
 	if (handshake(xhci, &xhci->op_regs->status, STS_SAVE, 0, 10 * 1000)) {
 		xhci_warn(xhci, "WARN: xHC save state timeout\n");
-=======
-	if (handshake(xhci, &xhci->op_regs->status, STS_SAVE, 0, 10*100)) {
-		xhci_warn(xhci, "WARN: xHC CMD_CSS timeout\n");
->>>>>>> 7175f4b... Truncated history
 		spin_unlock_irq(&xhci->lock);
 		return -ETIMEDOUT;
 	}
 	spin_unlock_irq(&xhci->lock);
 
-<<<<<<< HEAD
 	/*
 	 * Deleting Compliance Mode Recovery Timer because the xHCI Host
 	 * is about to be suspended.
@@ -1009,8 +943,6 @@ int xhci_suspend(struct xhci_hcd *xhci)
 		xhci_dbg(xhci, "Compliance Mode Recovery Timer Deleted!\n");
 	}
 
-=======
->>>>>>> 7175f4b... Truncated history
 	/* step 5: remove core well power */
 	/* synchronize irq when using MSI-X */
 	xhci_msix_sync_irqs(xhci);
@@ -1030,10 +962,7 @@ int xhci_resume(struct xhci_hcd *xhci, bool hibernated)
 	struct usb_hcd		*hcd = xhci_to_hcd(xhci);
 	struct usb_hcd		*secondary_hcd;
 	int			retval = 0;
-<<<<<<< HEAD
 	bool			comp_timer_running = false;
-=======
->>>>>>> 7175f4b... Truncated history
 
 	/* Wait a bit if either of the roothubs need to settle from the
 	 * transition into bus suspend.
@@ -1061,13 +990,8 @@ int xhci_resume(struct xhci_hcd *xhci, bool hibernated)
 		command |= CMD_CRS;
 		xhci_writel(xhci, command, &xhci->op_regs->command);
 		if (handshake(xhci, &xhci->op_regs->status,
-<<<<<<< HEAD
 			      STS_RESTORE, 0, 10 * 1000)) {
 			xhci_warn(xhci, "WARN: xHC restore state timeout\n");
-=======
-			      STS_RESTORE, 0, 10*100)) {
-			xhci_dbg(xhci, "WARN: xHC CMD_CSS timeout\n");
->>>>>>> 7175f4b... Truncated history
 			spin_unlock_irq(&xhci->lock);
 			return -ETIMEDOUT;
 		}
@@ -1076,7 +1000,6 @@ int xhci_resume(struct xhci_hcd *xhci, bool hibernated)
 
 	/* If restore operation fails, re-initialize the HC during resume */
 	if ((temp & STS_SRE) || hibernated) {
-<<<<<<< HEAD
 
 		if ((xhci->quirks & XHCI_COMP_MODE_QUIRK) &&
 				!(xhci_all_ports_seen_u0(xhci))) {
@@ -1084,8 +1007,6 @@ int xhci_resume(struct xhci_hcd *xhci, bool hibernated)
 			xhci_dbg(xhci, "Compliance Mode Recovery Timer deleted!\n");
 		}
 
-=======
->>>>>>> 7175f4b... Truncated history
 		/* Let the USB core know _both_ roothubs lost power. */
 		usb_root_hub_lost_power(xhci->main_hcd->self.root_hub);
 		usb_root_hub_lost_power(xhci->shared_hcd->self.root_hub);
@@ -1128,11 +1049,8 @@ int xhci_resume(struct xhci_hcd *xhci, bool hibernated)
 		retval = xhci_init(hcd->primary_hcd);
 		if (retval)
 			return retval;
-<<<<<<< HEAD
 		comp_timer_running = true;
 
-=======
->>>>>>> 7175f4b... Truncated history
 		xhci_dbg(xhci, "Start the primary HCD\n");
 		retval = xhci_run(hcd->primary_hcd);
 		if (!retval) {
@@ -1167,7 +1085,6 @@ int xhci_resume(struct xhci_hcd *xhci, bool hibernated)
 		usb_hcd_resume_root_hub(hcd);
 		usb_hcd_resume_root_hub(xhci->shared_hcd);
 	}
-<<<<<<< HEAD
 
 	/*
 	 * If system is subject to the Quirk, Compliance Mode Timer needs to
@@ -1183,8 +1100,6 @@ int xhci_resume(struct xhci_hcd *xhci, bool hibernated)
 	set_bit(HCD_FLAG_POLL_RH, &hcd->flags);
 	usb_hcd_poll_rh_status(hcd);
 
-=======
->>>>>>> 7175f4b... Truncated history
 	return retval;
 }
 #endif	/* CONFIG_PM */
@@ -1262,12 +1177,6 @@ static int xhci_check_args(struct usb_hcd *hcd, struct usb_device *udev,
 	}
 
 	xhci = hcd_to_xhci(hcd);
-<<<<<<< HEAD
-=======
-	if (xhci->xhc_state & XHCI_STATE_HALTED)
-		return -ENODEV;
-
->>>>>>> 7175f4b... Truncated history
 	if (check_virt_dev) {
 		if (!udev->slot_id || !xhci->devs[udev->slot_id]) {
 			printk(KERN_DEBUG "xHCI %s called with unaddressed "
@@ -1283,12 +1192,9 @@ static int xhci_check_args(struct usb_hcd *hcd, struct usb_device *udev,
 		}
 	}
 
-<<<<<<< HEAD
 	if (xhci->xhc_state & XHCI_STATE_HALTED)
 		return -ENODEV;
 
-=======
->>>>>>> 7175f4b... Truncated history
 	return 1;
 }
 
@@ -2383,11 +2289,7 @@ static bool xhci_is_async_ep(unsigned int ep_type)
 
 static bool xhci_is_sync_in_ep(unsigned int ep_type)
 {
-<<<<<<< HEAD
 	return (ep_type == ISOC_IN_EP || ep_type == INT_IN_EP);
-=======
-	return (ep_type == ISOC_IN_EP || ep_type != INT_IN_EP);
->>>>>>> 7175f4b... Truncated history
 }
 
 static unsigned int xhci_get_ss_bw_consumed(struct xhci_bw_info *ep_bw)
@@ -2660,10 +2562,7 @@ static int xhci_configure_endpoint(struct xhci_hcd *xhci,
 	struct completion *cmd_completion;
 	u32 *cmd_status;
 	struct xhci_virt_device *virt_dev;
-<<<<<<< HEAD
 	union xhci_trb *cmd_trb;
-=======
->>>>>>> 7175f4b... Truncated history
 
 	spin_lock_irqsave(&xhci->lock, flags);
 	virt_dev = xhci->devs[udev->slot_id];
@@ -2693,19 +2592,7 @@ static int xhci_configure_endpoint(struct xhci_hcd *xhci,
 	if (command) {
 		cmd_completion = command->completion;
 		cmd_status = &command->status;
-<<<<<<< HEAD
 		command->command_trb = xhci_find_next_enqueue(xhci->cmd_ring);
-=======
-		command->command_trb = xhci->cmd_ring->enqueue;
-
-		/* Enqueue pointer can be left pointing to the link TRB,
-		 * we must handle that
-		 */
-		if (TRB_TYPE_LINK_LE32(command->command_trb->link.control))
-			command->command_trb =
-				xhci->cmd_ring->enq_seg->next->trbs;
-
->>>>>>> 7175f4b... Truncated history
 		list_add_tail(&command->cmd_list, &virt_dev->cmd_list);
 	} else {
 		cmd_completion = &virt_dev->cmd_completion;
@@ -2713,10 +2600,7 @@ static int xhci_configure_endpoint(struct xhci_hcd *xhci,
 	}
 	init_completion(cmd_completion);
 
-<<<<<<< HEAD
 	cmd_trb = xhci_find_next_enqueue(xhci->cmd_ring);
-=======
->>>>>>> 7175f4b... Truncated history
 	if (!ctx_change)
 		ret = xhci_queue_configure_endpoint(xhci, in_ctx->dma,
 				udev->slot_id, must_succeed);
@@ -2745,14 +2629,10 @@ static int xhci_configure_endpoint(struct xhci_hcd *xhci,
 				ctx_change == 0 ?
 					"configure endpoint" :
 					"evaluate context");
-<<<<<<< HEAD
 		/* cancel the configure endpoint command */
 		ret = xhci_cancel_cmd(xhci, command, cmd_trb);
 		if (ret < 0)
 			return ret;
-=======
-		/* FIXME cancel the configure endpoint command */
->>>>>>> 7175f4b... Truncated history
 		return -ETIME;
 	}
 
@@ -3505,18 +3385,7 @@ int xhci_discover_or_reset_device(struct usb_hcd *hcd, struct usb_device *udev)
 
 	/* Attempt to submit the Reset Device command to the command ring */
 	spin_lock_irqsave(&xhci->lock, flags);
-<<<<<<< HEAD
 	reset_device_cmd->command_trb = xhci_find_next_enqueue(xhci->cmd_ring);
-=======
-	reset_device_cmd->command_trb = xhci->cmd_ring->enqueue;
-
-	/* Enqueue pointer can be left pointing to the link TRB,
-	 * we must handle that
-	 */
-	if (TRB_TYPE_LINK_LE32(reset_device_cmd->command_trb->link.control))
-		reset_device_cmd->command_trb =
-			xhci->cmd_ring->enq_seg->next->trbs;
->>>>>>> 7175f4b... Truncated history
 
 	list_add_tail(&reset_device_cmd->cmd_list, &virt_dev->cmd_list);
 	ret = xhci_queue_reset_device(xhci, slot_id);
@@ -3627,15 +3496,11 @@ void xhci_free_dev(struct usb_hcd *hcd, struct usb_device *udev)
 {
 	struct xhci_hcd *xhci = hcd_to_xhci(hcd);
 	struct xhci_virt_device *virt_dev;
-<<<<<<< HEAD
 	struct device *dev = hcd->self.controller;
-=======
->>>>>>> 7175f4b... Truncated history
 	unsigned long flags;
 	u32 state;
 	int i, ret;
 
-<<<<<<< HEAD
 #ifndef CONFIG_USB_DEFAULT_PERSIST
 	/*
 	 * We called pm_runtime_get_noresume when the device was attached.
@@ -3646,8 +3511,6 @@ void xhci_free_dev(struct usb_hcd *hcd, struct usb_device *udev)
 		pm_runtime_put_noidle(dev);
 #endif
 
-=======
->>>>>>> 7175f4b... Truncated history
 	ret = xhci_check_args(hcd, udev, NULL, 0, true, __func__);
 	/* If the host is halted due to driver unload, we still need to free the
 	 * device.
@@ -3719,7 +3582,6 @@ static int xhci_reserve_host_control_ep_resources(struct xhci_hcd *xhci)
 int xhci_alloc_dev(struct usb_hcd *hcd, struct usb_device *udev)
 {
 	struct xhci_hcd *xhci = hcd_to_xhci(hcd);
-<<<<<<< HEAD
 	struct device *dev = hcd->self.controller;
 	unsigned long flags;
 	int timeleft;
@@ -3728,13 +3590,6 @@ int xhci_alloc_dev(struct usb_hcd *hcd, struct usb_device *udev)
 
 	spin_lock_irqsave(&xhci->lock, flags);
 	cmd_trb = xhci_find_next_enqueue(xhci->cmd_ring);
-=======
-	unsigned long flags;
-	int timeleft;
-	int ret;
-
-	spin_lock_irqsave(&xhci->lock, flags);
->>>>>>> 7175f4b... Truncated history
 	ret = xhci_queue_slot_control(xhci, TRB_ENABLE_SLOT, 0);
 	if (ret) {
 		spin_unlock_irqrestore(&xhci->lock, flags);
@@ -3750,13 +3605,8 @@ int xhci_alloc_dev(struct usb_hcd *hcd, struct usb_device *udev)
 	if (timeleft <= 0) {
 		xhci_warn(xhci, "%s while waiting for a slot\n",
 				timeleft == 0 ? "Timeout" : "Signal");
-<<<<<<< HEAD
 		/* cancel the enable slot request */
 		return xhci_cancel_cmd(xhci, NULL, cmd_trb);
-=======
-		/* FIXME cancel the enable slot request */
-		return 0;
->>>>>>> 7175f4b... Truncated history
 	}
 
 	if (!xhci->slot_id) {
@@ -3785,7 +3635,6 @@ int xhci_alloc_dev(struct usb_hcd *hcd, struct usb_device *udev)
 		goto disable_slot;
 	}
 	udev->slot_id = xhci->slot_id;
-<<<<<<< HEAD
 
 #ifndef CONFIG_USB_DEFAULT_PERSIST
 	/*
@@ -3796,8 +3645,6 @@ int xhci_alloc_dev(struct usb_hcd *hcd, struct usb_device *udev)
 		pm_runtime_get_noresume(dev);
 #endif
 
-=======
->>>>>>> 7175f4b... Truncated history
 	/* Is this a LS or FS device under a HS hub? */
 	/* Hub or peripherial? */
 	return 1;
@@ -3830,10 +3677,7 @@ int xhci_address_device(struct usb_hcd *hcd, struct usb_device *udev)
 	struct xhci_slot_ctx *slot_ctx;
 	struct xhci_input_control_ctx *ctrl_ctx;
 	u64 temp_64;
-<<<<<<< HEAD
 	union xhci_trb *cmd_trb;
-=======
->>>>>>> 7175f4b... Truncated history
 
 	if (!udev->slot_id) {
 		xhci_dbg(xhci, "Bad Slot ID %d\n", udev->slot_id);
@@ -3872,10 +3716,7 @@ int xhci_address_device(struct usb_hcd *hcd, struct usb_device *udev)
 	xhci_dbg_ctx(xhci, virt_dev->in_ctx, 2);
 
 	spin_lock_irqsave(&xhci->lock, flags);
-<<<<<<< HEAD
 	cmd_trb = xhci_find_next_enqueue(xhci->cmd_ring);
-=======
->>>>>>> 7175f4b... Truncated history
 	ret = xhci_queue_address_device(xhci, virt_dev->in_ctx->dma,
 					udev->slot_id);
 	if (ret) {
@@ -3896,14 +3737,10 @@ int xhci_address_device(struct usb_hcd *hcd, struct usb_device *udev)
 	if (timeleft <= 0) {
 		xhci_warn(xhci, "%s while waiting for address device command\n",
 				timeleft == 0 ? "Timeout" : "Signal");
-<<<<<<< HEAD
 		/* cancel the address device command */
 		ret = xhci_cancel_cmd(xhci, NULL, cmd_trb);
 		if (ret < 0)
 			return ret;
-=======
-		/* FIXME cancel the address device command */
->>>>>>> 7175f4b... Truncated history
 		return -ETIME;
 	}
 
@@ -4391,7 +4228,6 @@ int xhci_gen_setup(struct usb_hcd *hcd, xhci_get_quirks_t get_quirks)
 
 	get_quirks(dev, xhci);
 
-<<<<<<< HEAD
 	/* In xhci controllers which follow xhci 1.0 spec gives a spurious
 	 * success event after a short transfer. This quirk will ignore such
 	 * spurious event.
@@ -4399,8 +4235,6 @@ int xhci_gen_setup(struct usb_hcd *hcd, xhci_get_quirks_t get_quirks)
 	if (xhci->hci_version > 0x96)
 		xhci->quirks |= XHCI_SPURIOUS_SUCCESS;
 
-=======
->>>>>>> 7175f4b... Truncated history
 	/* Make sure the HC is halted. */
 	retval = xhci_halt(xhci);
 	if (retval)

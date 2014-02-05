@@ -1698,11 +1698,7 @@ static ssize_t abx500_chargalg_sysfs_charger(struct kobject *kobj,
 static struct attribute abx500_chargalg_en_charger = \
 {
 	.name = "chargalg",
-<<<<<<< HEAD
 	.mode = S_IWUSR,
-=======
-	.mode = S_IWUGO,
->>>>>>> 7175f4b... Truncated history
 };
 
 static struct attribute *abx500_chargalg_chg[] = {

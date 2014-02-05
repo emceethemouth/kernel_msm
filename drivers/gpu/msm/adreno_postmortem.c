@@ -630,11 +630,7 @@ error_vfree:
 end:
 	/* Restart the dispatcher after a manually triggered dump */
 	if (manual)
-<<<<<<< HEAD
 		adreno_dispatcher_start(device);
-=======
-		adreno_dispatcher_start(adreno_dev);
->>>>>>> 7175f4b... Truncated history
 
 	return result;
 }

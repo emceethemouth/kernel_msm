@@ -34,10 +34,6 @@
 #include "device.h"
 
 /*---------------------  Export Definitions -------------------------*/
-<<<<<<< HEAD
-=======
-#pragma pack(1)
->>>>>>> 7175f4b... Truncated history
 typedef struct tagSINTData {
     BYTE    byTSR0;
     BYTE    byPkt0;

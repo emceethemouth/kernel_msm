@@ -1295,10 +1295,6 @@ static void __init enable_timeouts(void)
 		 */
 		mmr_image |= (1L << SOFTACK_MSHIFT);
 		if (is_uv2_hub()) {
-<<<<<<< HEAD
-=======
-			mmr_image &= ~(1L << UV2_LEG_SHFT);
->>>>>>> 7175f4b... Truncated history
 			mmr_image |= (1L << UV2_EXT_SHFT);
 		}
 		write_mmr_misc_control(pnode, mmr_image);

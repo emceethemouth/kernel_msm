@@ -960,7 +960,6 @@ void ath_hw_pll_work(struct work_struct *work)
 					    hw_pll_work.work);
 	u32 pll_sqsum;
 
-<<<<<<< HEAD
 	/*
 	 * ensure that the PLL WAR is executed only
 	 * after the STA is associated (or) if the
@@ -970,8 +969,6 @@ void ath_hw_pll_work(struct work_struct *work)
 	if (!(sc->sc_flags & SC_OP_BEACONS))
 		return;
 
-=======
->>>>>>> 7175f4b... Truncated history
 	if (AR_SREV_9485(sc->sc_ah)) {
 
 		ath9k_ps_wakeup(sc);
@@ -1150,11 +1147,7 @@ static void ath9k_tx(struct ieee80211_hw *hw, struct sk_buff *skb)
 
 	return;
 exit:
-<<<<<<< HEAD
 	ieee80211_free_txskb(hw, skb);
-=======
-	dev_kfree_skb_any(skb);
->>>>>>> 7175f4b... Truncated history
 }
 
 static void ath9k_stop(struct ieee80211_hw *hw)
@@ -1297,14 +1290,9 @@ void ath9k_calculate_iter_data(struct ieee80211_hw *hw,
 	struct ath_common *common = ath9k_hw_common(ah);
 
 	/*
-<<<<<<< HEAD
 	 * Pick the MAC address of the first interface as the new hardware
 	 * MAC address. The hardware will use it together with the BSSID mask
 	 * when matching addresses.
-=======
-	 * Use the hardware MAC address as reference, the hardware uses it
-	 * together with the BSSID mask when matching addresses.
->>>>>>> 7175f4b... Truncated history
 	 */
 	memset(iter_data, 0, sizeof(*iter_data));
 	iter_data->hw_macaddr = common->macaddr;
@@ -1441,18 +1429,6 @@ static int ath9k_add_interface(struct ieee80211_hw *hw,
 		}
 	}
 
-<<<<<<< HEAD
-=======
-	if ((ah->opmode == NL80211_IFTYPE_ADHOC) ||
-	    ((vif->type == NL80211_IFTYPE_ADHOC) &&
-	     sc->nvifs > 0)) {
-		ath_err(common, "Cannot create ADHOC interface when other"
-			" interfaces already exist.\n");
-		ret = -EINVAL;
-		goto out;
-	}
-
->>>>>>> 7175f4b... Truncated history
 	ath_dbg(common, CONFIG, "Attach a VIF of type: %d\n", vif->type);
 
 	sc->nvifs++;
@@ -1736,10 +1712,7 @@ static int ath9k_sta_add(struct ieee80211_hw *hw,
 	struct ath_common *common = ath9k_hw_common(sc->sc_ah);
 	struct ath_node *an = (struct ath_node *) sta->drv_priv;
 	struct ieee80211_key_conf ps_key = { };
-<<<<<<< HEAD
 	int key;
-=======
->>>>>>> 7175f4b... Truncated history
 
 	ath_node_attach(sc, sta, vif);
 
@@ -1747,13 +1720,9 @@ static int ath9k_sta_add(struct ieee80211_hw *hw,
 	    vif->type != NL80211_IFTYPE_AP_VLAN)
 		return 0;
 
-<<<<<<< HEAD
 	key = ath_key_config(common, vif, sta, &ps_key);
 	if (key > 0)
 		an->ps_key = key;
-=======
-	an->ps_key = ath_key_config(common, vif, sta, &ps_key);
->>>>>>> 7175f4b... Truncated history
 
 	return 0;
 }
@@ -1770,10 +1739,7 @@ static void ath9k_del_ps_key(struct ath_softc *sc,
 	    return;
 
 	ath_key_delete(common, &ps_key);
-<<<<<<< HEAD
 	an->ps_key = 0;
-=======
->>>>>>> 7175f4b... Truncated history
 }
 
 static int ath9k_sta_remove(struct ieee80211_hw *hw,

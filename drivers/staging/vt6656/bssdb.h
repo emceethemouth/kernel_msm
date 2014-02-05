@@ -92,10 +92,6 @@ typedef struct tagSRSNCapObject {
 } SRSNCapObject, *PSRSNCapObject;
 
 // BSS info(AP)
-<<<<<<< HEAD
-=======
-#pragma pack(1)
->>>>>>> 7175f4b... Truncated history
 typedef struct tagKnownBSS {
     // BSS info
     BOOL            bActive;

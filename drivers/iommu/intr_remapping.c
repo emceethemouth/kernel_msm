@@ -752,10 +752,7 @@ int __init parse_ioapics_under_ir(void)
 {
 	struct dmar_drhd_unit *drhd;
 	int ir_supported = 0;
-<<<<<<< HEAD
 	int ioapic_idx;
-=======
->>>>>>> 7175f4b... Truncated history
 
 	for_each_drhd_unit(drhd) {
 		struct intel_iommu *iommu = drhd->iommu;
@@ -768,7 +765,6 @@ int __init parse_ioapics_under_ir(void)
 		}
 	}
 
-<<<<<<< HEAD
 	if (!ir_supported)
 		return 0;
 
@@ -783,15 +779,6 @@ int __init parse_ioapics_under_ir(void)
 	}
 
 	return 1;
-=======
-	if (ir_supported && ir_ioapic_num != nr_ioapics) {
-		printk(KERN_WARNING
-		       "Not all IO-APIC's listed under remapping hardware\n");
-		return -1;
-	}
-
-	return ir_supported;
->>>>>>> 7175f4b... Truncated history
 }
 
 int __init ir_dev_scope_init(void)

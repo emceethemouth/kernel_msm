@@ -88,19 +88,11 @@ ENTRY(xen_iret)
 	 */
 #ifdef CONFIG_SMP
 	GET_THREAD_INFO(%eax)
-<<<<<<< HEAD
 	movl %ss:TI_cpu(%eax), %eax
 	movl %ss:__per_cpu_offset(,%eax,4), %eax
 	mov %ss:xen_vcpu(%eax), %eax
 #else
 	movl %ss:xen_vcpu, %eax
-=======
-	movl TI_cpu(%eax), %eax
-	movl __per_cpu_offset(,%eax,4), %eax
-	mov xen_vcpu(%eax), %eax
-#else
-	movl xen_vcpu, %eax
->>>>>>> 7175f4b... Truncated history
 #endif
 
 	/* check IF state we're restoring */
@@ -113,19 +105,11 @@ ENTRY(xen_iret)
 	 * resuming the code, so we don't have to be worried about
 	 * being preempted to another CPU.
 	 */
-<<<<<<< HEAD
 	setz %ss:XEN_vcpu_info_mask(%eax)
 xen_iret_start_crit:
 
 	/* check for unmasked and pending */
 	cmpw $0x0001, %ss:XEN_vcpu_info_pending(%eax)
-=======
-	setz XEN_vcpu_info_mask(%eax)
-xen_iret_start_crit:
-
-	/* check for unmasked and pending */
-	cmpw $0x0001, XEN_vcpu_info_pending(%eax)
->>>>>>> 7175f4b... Truncated history
 
 	/*
 	 * If there's something pending, mask events again so we can
@@ -133,11 +117,7 @@ xen_iret_start_crit:
 	 * touch XEN_vcpu_info_mask.
 	 */
 	jne 1f
-<<<<<<< HEAD
 	movb $1, %ss:XEN_vcpu_info_mask(%eax)
-=======
-	movb $1, XEN_vcpu_info_mask(%eax)
->>>>>>> 7175f4b... Truncated history
 
 1:	popl %eax
 

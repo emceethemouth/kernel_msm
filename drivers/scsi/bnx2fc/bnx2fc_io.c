@@ -1786,11 +1786,7 @@ static void bnx2fc_parse_fcp_rsp(struct bnx2fc_cmd *io_req,
 			fcp_sns_len = SCSI_SENSE_BUFFERSIZE;
 		}
 
-<<<<<<< HEAD
 		memset(sc_cmd->sense_buffer, 0, SCSI_SENSE_BUFFERSIZE);
-=======
-		memset(sc_cmd->sense_buffer, 0, sizeof(sc_cmd->sense_buffer));
->>>>>>> 7175f4b... Truncated history
 		if (fcp_sns_len)
 			memcpy(sc_cmd->sense_buffer, rq_data, fcp_sns_len);
 

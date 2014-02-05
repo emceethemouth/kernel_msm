@@ -64,11 +64,7 @@
 		status = "disable";
 	};
 
-<<<<<<< HEAD
 	sdhci@78000600 {
-=======
-	sdhci@78000400 {
->>>>>>> 7175f4b... Truncated history
 		support-8bit;
 	};
 };

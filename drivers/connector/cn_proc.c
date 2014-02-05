@@ -31,7 +31,6 @@
 #include <linux/ptrace.h>
 #include <linux/atomic.h>
 
-<<<<<<< HEAD
 #include <linux/cn_proc.h>
 
 /*
@@ -49,13 +48,6 @@ static inline struct cn_msg *buffer_to_cn_msg(__u8 *buffer)
 	BUILD_BUG_ON(sizeof(struct cn_msg) != 20);
 	return (struct cn_msg *)(buffer + 4);
 }
-=======
-#include <asm/unaligned.h>
-
-#include <linux/cn_proc.h>
-
-#define CN_PROC_MSG_SIZE (sizeof(struct cn_msg) + sizeof(struct proc_event))
->>>>>>> 7175f4b... Truncated history
 
 static atomic_t proc_event_num_listeners = ATOMIC_INIT(0);
 static struct cb_id cn_proc_event_id = { CN_IDX_PROC, CN_VAL_PROC };
@@ -75,31 +67,19 @@ void proc_fork_connector(struct task_struct *task)
 {
 	struct cn_msg *msg;
 	struct proc_event *ev;
-<<<<<<< HEAD
 	__u8 buffer[CN_PROC_MSG_SIZE] __aligned(8);
-=======
-	__u8 buffer[CN_PROC_MSG_SIZE];
->>>>>>> 7175f4b... Truncated history
 	struct timespec ts;
 	struct task_struct *parent;
 
 	if (atomic_read(&proc_event_num_listeners) < 1)
 		return;
 
-<<<<<<< HEAD
 	msg = buffer_to_cn_msg(buffer);
 	ev = (struct proc_event*)msg->data;
 	memset(&ev->event_data, 0, sizeof(ev->event_data));
 	get_seq(&msg->seq, &ev->cpu);
 	ktime_get_ts(&ts); /* get high res monotonic timestamp */
 	ev->timestamp_ns = timespec_to_ns(&ts);
-=======
-	msg = (struct cn_msg*)buffer;
-	ev = (struct proc_event*)msg->data;
-	get_seq(&msg->seq, &ev->cpu);
-	ktime_get_ts(&ts); /* get high res monotonic timestamp */
-	put_unaligned(timespec_to_ns(&ts), (__u64 *)&ev->timestamp_ns);
->>>>>>> 7175f4b... Truncated history
 	ev->what = PROC_EVENT_FORK;
 	rcu_read_lock();
 	parent = rcu_dereference(task->real_parent);
@@ -112,10 +92,7 @@ void proc_fork_connector(struct task_struct *task)
 	memcpy(&msg->id, &cn_proc_event_id, sizeof(msg->id));
 	msg->ack = 0; /* not used */
 	msg->len = sizeof(*ev);
-<<<<<<< HEAD
 	msg->flags = 0; /* not used */
-=======
->>>>>>> 7175f4b... Truncated history
 	/*  If cn_netlink_send() failed, the data is not sent */
 	cn_netlink_send(msg, CN_IDX_PROC, GFP_KERNEL);
 }
@@ -125,29 +102,17 @@ void proc_exec_connector(struct task_struct *task)
 	struct cn_msg *msg;
 	struct proc_event *ev;
 	struct timespec ts;
-<<<<<<< HEAD
 	__u8 buffer[CN_PROC_MSG_SIZE] __aligned(8);
-=======
-	__u8 buffer[CN_PROC_MSG_SIZE];
->>>>>>> 7175f4b... Truncated history
 
 	if (atomic_read(&proc_event_num_listeners) < 1)
 		return;
 
-<<<<<<< HEAD
 	msg = buffer_to_cn_msg(buffer);
 	ev = (struct proc_event*)msg->data;
 	memset(&ev->event_data, 0, sizeof(ev->event_data));
 	get_seq(&msg->seq, &ev->cpu);
 	ktime_get_ts(&ts); /* get high res monotonic timestamp */
 	ev->timestamp_ns = timespec_to_ns(&ts);
-=======
-	msg = (struct cn_msg*)buffer;
-	ev = (struct proc_event*)msg->data;
-	get_seq(&msg->seq, &ev->cpu);
-	ktime_get_ts(&ts); /* get high res monotonic timestamp */
-	put_unaligned(timespec_to_ns(&ts), (__u64 *)&ev->timestamp_ns);
->>>>>>> 7175f4b... Truncated history
 	ev->what = PROC_EVENT_EXEC;
 	ev->event_data.exec.process_pid = task->pid;
 	ev->event_data.exec.process_tgid = task->tgid;
@@ -155,10 +120,7 @@ void proc_exec_connector(struct task_struct *task)
 	memcpy(&msg->id, &cn_proc_event_id, sizeof(msg->id));
 	msg->ack = 0; /* not used */
 	msg->len = sizeof(*ev);
-<<<<<<< HEAD
 	msg->flags = 0; /* not used */
-=======
->>>>>>> 7175f4b... Truncated history
 	cn_netlink_send(msg, CN_IDX_PROC, GFP_KERNEL);
 }
 
@@ -166,25 +128,16 @@ void proc_id_connector(struct task_struct *task, int which_id)
 {
 	struct cn_msg *msg;
 	struct proc_event *ev;
-<<<<<<< HEAD
 	__u8 buffer[CN_PROC_MSG_SIZE] __aligned(8);
-=======
-	__u8 buffer[CN_PROC_MSG_SIZE];
->>>>>>> 7175f4b... Truncated history
 	struct timespec ts;
 	const struct cred *cred;
 
 	if (atomic_read(&proc_event_num_listeners) < 1)
 		return;
 
-<<<<<<< HEAD
 	msg = buffer_to_cn_msg(buffer);
 	ev = (struct proc_event*)msg->data;
 	memset(&ev->event_data, 0, sizeof(ev->event_data));
-=======
-	msg = (struct cn_msg*)buffer;
-	ev = (struct proc_event*)msg->data;
->>>>>>> 7175f4b... Truncated history
 	ev->what = which_id;
 	ev->event_data.id.process_pid = task->pid;
 	ev->event_data.id.process_tgid = task->tgid;
@@ -203,19 +156,12 @@ void proc_id_connector(struct task_struct *task, int which_id)
 	rcu_read_unlock();
 	get_seq(&msg->seq, &ev->cpu);
 	ktime_get_ts(&ts); /* get high res monotonic timestamp */
-<<<<<<< HEAD
 	ev->timestamp_ns = timespec_to_ns(&ts);
-=======
-	put_unaligned(timespec_to_ns(&ts), (__u64 *)&ev->timestamp_ns);
->>>>>>> 7175f4b... Truncated history
 
 	memcpy(&msg->id, &cn_proc_event_id, sizeof(msg->id));
 	msg->ack = 0; /* not used */
 	msg->len = sizeof(*ev);
-<<<<<<< HEAD
 	msg->flags = 0; /* not used */
-=======
->>>>>>> 7175f4b... Truncated history
 	cn_netlink_send(msg, CN_IDX_PROC, GFP_KERNEL);
 }
 
@@ -224,29 +170,17 @@ void proc_sid_connector(struct task_struct *task)
 	struct cn_msg *msg;
 	struct proc_event *ev;
 	struct timespec ts;
-<<<<<<< HEAD
 	__u8 buffer[CN_PROC_MSG_SIZE] __aligned(8);
-=======
-	__u8 buffer[CN_PROC_MSG_SIZE];
->>>>>>> 7175f4b... Truncated history
 
 	if (atomic_read(&proc_event_num_listeners) < 1)
 		return;
 
-<<<<<<< HEAD
 	msg = buffer_to_cn_msg(buffer);
 	ev = (struct proc_event *)msg->data;
 	memset(&ev->event_data, 0, sizeof(ev->event_data));
 	get_seq(&msg->seq, &ev->cpu);
 	ktime_get_ts(&ts); /* get high res monotonic timestamp */
 	ev->timestamp_ns = timespec_to_ns(&ts);
-=======
-	msg = (struct cn_msg *)buffer;
-	ev = (struct proc_event *)msg->data;
-	get_seq(&msg->seq, &ev->cpu);
-	ktime_get_ts(&ts); /* get high res monotonic timestamp */
-	put_unaligned(timespec_to_ns(&ts), (__u64 *)&ev->timestamp_ns);
->>>>>>> 7175f4b... Truncated history
 	ev->what = PROC_EVENT_SID;
 	ev->event_data.sid.process_pid = task->pid;
 	ev->event_data.sid.process_tgid = task->tgid;
@@ -254,10 +188,7 @@ void proc_sid_connector(struct task_struct *task)
 	memcpy(&msg->id, &cn_proc_event_id, sizeof(msg->id));
 	msg->ack = 0; /* not used */
 	msg->len = sizeof(*ev);
-<<<<<<< HEAD
 	msg->flags = 0; /* not used */
-=======
->>>>>>> 7175f4b... Truncated history
 	cn_netlink_send(msg, CN_IDX_PROC, GFP_KERNEL);
 }
 
@@ -266,29 +197,17 @@ void proc_ptrace_connector(struct task_struct *task, int ptrace_id)
 	struct cn_msg *msg;
 	struct proc_event *ev;
 	struct timespec ts;
-<<<<<<< HEAD
 	__u8 buffer[CN_PROC_MSG_SIZE] __aligned(8);
-=======
-	__u8 buffer[CN_PROC_MSG_SIZE];
->>>>>>> 7175f4b... Truncated history
 
 	if (atomic_read(&proc_event_num_listeners) < 1)
 		return;
 
-<<<<<<< HEAD
 	msg = buffer_to_cn_msg(buffer);
 	ev = (struct proc_event *)msg->data;
 	memset(&ev->event_data, 0, sizeof(ev->event_data));
 	get_seq(&msg->seq, &ev->cpu);
 	ktime_get_ts(&ts); /* get high res monotonic timestamp */
 	ev->timestamp_ns = timespec_to_ns(&ts);
-=======
-	msg = (struct cn_msg *)buffer;
-	ev = (struct proc_event *)msg->data;
-	get_seq(&msg->seq, &ev->cpu);
-	ktime_get_ts(&ts); /* get high res monotonic timestamp */
-	put_unaligned(timespec_to_ns(&ts), (__u64 *)&ev->timestamp_ns);
->>>>>>> 7175f4b... Truncated history
 	ev->what = PROC_EVENT_PTRACE;
 	ev->event_data.ptrace.process_pid  = task->pid;
 	ev->event_data.ptrace.process_tgid = task->tgid;
@@ -304,10 +223,7 @@ void proc_ptrace_connector(struct task_struct *task, int ptrace_id)
 	memcpy(&msg->id, &cn_proc_event_id, sizeof(msg->id));
 	msg->ack = 0; /* not used */
 	msg->len = sizeof(*ev);
-<<<<<<< HEAD
 	msg->flags = 0; /* not used */
-=======
->>>>>>> 7175f4b... Truncated history
 	cn_netlink_send(msg, CN_IDX_PROC, GFP_KERNEL);
 }
 
@@ -316,29 +232,17 @@ void proc_comm_connector(struct task_struct *task)
 	struct cn_msg *msg;
 	struct proc_event *ev;
 	struct timespec ts;
-<<<<<<< HEAD
 	__u8 buffer[CN_PROC_MSG_SIZE] __aligned(8);
-=======
-	__u8 buffer[CN_PROC_MSG_SIZE];
->>>>>>> 7175f4b... Truncated history
 
 	if (atomic_read(&proc_event_num_listeners) < 1)
 		return;
 
-<<<<<<< HEAD
 	msg = buffer_to_cn_msg(buffer);
 	ev = (struct proc_event *)msg->data;
 	memset(&ev->event_data, 0, sizeof(ev->event_data));
 	get_seq(&msg->seq, &ev->cpu);
 	ktime_get_ts(&ts); /* get high res monotonic timestamp */
 	ev->timestamp_ns = timespec_to_ns(&ts);
-=======
-	msg = (struct cn_msg *)buffer;
-	ev = (struct proc_event *)msg->data;
-	get_seq(&msg->seq, &ev->cpu);
-	ktime_get_ts(&ts); /* get high res monotonic timestamp */
-	put_unaligned(timespec_to_ns(&ts), (__u64 *)&ev->timestamp_ns);
->>>>>>> 7175f4b... Truncated history
 	ev->what = PROC_EVENT_COMM;
 	ev->event_data.comm.process_pid  = task->pid;
 	ev->event_data.comm.process_tgid = task->tgid;
@@ -347,10 +251,7 @@ void proc_comm_connector(struct task_struct *task)
 	memcpy(&msg->id, &cn_proc_event_id, sizeof(msg->id));
 	msg->ack = 0; /* not used */
 	msg->len = sizeof(*ev);
-<<<<<<< HEAD
 	msg->flags = 0; /* not used */
-=======
->>>>>>> 7175f4b... Truncated history
 	cn_netlink_send(msg, CN_IDX_PROC, GFP_KERNEL);
 }
 
@@ -358,30 +259,18 @@ void proc_exit_connector(struct task_struct *task)
 {
 	struct cn_msg *msg;
 	struct proc_event *ev;
-<<<<<<< HEAD
 	__u8 buffer[CN_PROC_MSG_SIZE] __aligned(8);
-=======
-	__u8 buffer[CN_PROC_MSG_SIZE];
->>>>>>> 7175f4b... Truncated history
 	struct timespec ts;
 
 	if (atomic_read(&proc_event_num_listeners) < 1)
 		return;
 
-<<<<<<< HEAD
 	msg = buffer_to_cn_msg(buffer);
 	ev = (struct proc_event*)msg->data;
 	memset(&ev->event_data, 0, sizeof(ev->event_data));
 	get_seq(&msg->seq, &ev->cpu);
 	ktime_get_ts(&ts); /* get high res monotonic timestamp */
 	ev->timestamp_ns = timespec_to_ns(&ts);
-=======
-	msg = (struct cn_msg*)buffer;
-	ev = (struct proc_event*)msg->data;
-	get_seq(&msg->seq, &ev->cpu);
-	ktime_get_ts(&ts); /* get high res monotonic timestamp */
-	put_unaligned(timespec_to_ns(&ts), (__u64 *)&ev->timestamp_ns);
->>>>>>> 7175f4b... Truncated history
 	ev->what = PROC_EVENT_EXIT;
 	ev->event_data.exit.process_pid = task->pid;
 	ev->event_data.exit.process_tgid = task->tgid;
@@ -391,10 +280,7 @@ void proc_exit_connector(struct task_struct *task)
 	memcpy(&msg->id, &cn_proc_event_id, sizeof(msg->id));
 	msg->ack = 0; /* not used */
 	msg->len = sizeof(*ev);
-<<<<<<< HEAD
 	msg->flags = 0; /* not used */
-=======
->>>>>>> 7175f4b... Truncated history
 	cn_netlink_send(msg, CN_IDX_PROC, GFP_KERNEL);
 }
 
@@ -410,40 +296,25 @@ static void cn_proc_ack(int err, int rcvd_seq, int rcvd_ack)
 {
 	struct cn_msg *msg;
 	struct proc_event *ev;
-<<<<<<< HEAD
 	__u8 buffer[CN_PROC_MSG_SIZE] __aligned(8);
-=======
-	__u8 buffer[CN_PROC_MSG_SIZE];
->>>>>>> 7175f4b... Truncated history
 	struct timespec ts;
 
 	if (atomic_read(&proc_event_num_listeners) < 1)
 		return;
 
-<<<<<<< HEAD
 	msg = buffer_to_cn_msg(buffer);
 	ev = (struct proc_event*)msg->data;
 	memset(&ev->event_data, 0, sizeof(ev->event_data));
 	msg->seq = rcvd_seq;
 	ktime_get_ts(&ts); /* get high res monotonic timestamp */
 	ev->timestamp_ns = timespec_to_ns(&ts);
-=======
-	msg = (struct cn_msg*)buffer;
-	ev = (struct proc_event*)msg->data;
-	msg->seq = rcvd_seq;
-	ktime_get_ts(&ts); /* get high res monotonic timestamp */
-	put_unaligned(timespec_to_ns(&ts), (__u64 *)&ev->timestamp_ns);
->>>>>>> 7175f4b... Truncated history
 	ev->cpu = -1;
 	ev->what = PROC_EVENT_NONE;
 	ev->event_data.ack.err = err;
 	memcpy(&msg->id, &cn_proc_event_id, sizeof(msg->id));
 	msg->ack = rcvd_ack + 1;
 	msg->len = sizeof(*ev);
-<<<<<<< HEAD
 	msg->flags = 0; /* not used */
-=======
->>>>>>> 7175f4b... Truncated history
 	cn_netlink_send(msg, CN_IDX_PROC, GFP_KERNEL);
 }
 

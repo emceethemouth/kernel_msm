@@ -245,7 +245,6 @@ static void netlbl_domhsh_audit_add(struct netlbl_dom_map *entry,
 	}
 }
 
-<<<<<<< HEAD
 /**
  * netlbl_domhsh_validate - Validate a new domain mapping entry
  * @entry: the entry to validate
@@ -311,8 +310,6 @@ static int netlbl_domhsh_validate(const struct netlbl_dom_map *entry)
 	return 0;
 }
 
-=======
->>>>>>> 7175f4b... Truncated history
 /*
  * Domain Hash Table Functions
  */
@@ -379,13 +376,10 @@ int netlbl_domhsh_add(struct netlbl_dom_map *entry,
 	struct netlbl_af6list *tmp6;
 #endif /* IPv6 */
 
-<<<<<<< HEAD
 	ret_val = netlbl_domhsh_validate(entry);
 	if (ret_val != 0)
 		return ret_val;
 
-=======
->>>>>>> 7175f4b... Truncated history
 	/* XXX - we can remove this RCU read lock as the spinlock protects the
 	 *       entire function, but before we do we need to fixup the
 	 *       netlbl_af[4,6]list RCU functions to do "the right thing" with

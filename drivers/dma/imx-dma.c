@@ -373,29 +373,18 @@ static void dma_irq_handle_channel(struct imxdma_channel *imxdmac)
 	struct imxdma_engine *imxdma = imxdmac->imxdma;
 	int chno = imxdmac->channel;
 	struct imxdma_desc *desc;
-<<<<<<< HEAD
 	unsigned long flags;
 
 	spin_lock_irqsave(&imxdma->lock, flags);
 	if (list_empty(&imxdmac->ld_active)) {
 		spin_unlock_irqrestore(&imxdma->lock, flags);
-=======
-
-	spin_lock(&imxdma->lock);
-	if (list_empty(&imxdmac->ld_active)) {
-		spin_unlock(&imxdma->lock);
->>>>>>> 7175f4b... Truncated history
 		goto out;
 	}
 
 	desc = list_first_entry(&imxdmac->ld_active,
 				struct imxdma_desc,
 				node);
-<<<<<<< HEAD
 	spin_unlock_irqrestore(&imxdma->lock, flags);
-=======
-	spin_unlock(&imxdma->lock);
->>>>>>> 7175f4b... Truncated history
 
 	if (desc->sg) {
 		u32 tmp;
@@ -467,10 +456,6 @@ static int imxdma_xfer_desc(struct imxdma_desc *d)
 {
 	struct imxdma_channel *imxdmac = to_imxdma_chan(d->desc.chan);
 	struct imxdma_engine *imxdma = imxdmac->imxdma;
-<<<<<<< HEAD
-=======
-	unsigned long flags;
->>>>>>> 7175f4b... Truncated history
 	int slot = -1;
 	int i;
 
@@ -478,10 +463,6 @@ static int imxdma_xfer_desc(struct imxdma_desc *d)
 	switch (d->type) {
 	case IMXDMA_DESC_INTERLEAVED:
 		/* Try to get a free 2D slot */
-<<<<<<< HEAD
-=======
-		spin_lock_irqsave(&imxdma->lock, flags);
->>>>>>> 7175f4b... Truncated history
 		for (i = 0; i < IMX_DMA_2D_SLOTS; i++) {
 			if ((imxdma->slots_2d[i].count > 0) &&
 			((imxdma->slots_2d[i].xsr != d->x) ||
@@ -501,10 +482,6 @@ static int imxdma_xfer_desc(struct imxdma_desc *d)
 
 		imxdmac->slot_2d = slot;
 		imxdmac->enabled_2d = true;
-<<<<<<< HEAD
-=======
-		spin_unlock_irqrestore(&imxdma->lock, flags);
->>>>>>> 7175f4b... Truncated history
 
 		if (slot == IMX_DMA_2D_SLOT_A) {
 			d->config_mem &= ~CCR_MSEL_B;
@@ -580,7 +557,6 @@ static void imxdma_tasklet(unsigned long data)
 	struct imxdma_channel *imxdmac = (void *)data;
 	struct imxdma_engine *imxdma = imxdmac->imxdma;
 	struct imxdma_desc *desc;
-<<<<<<< HEAD
 	unsigned long flags;
 
 	spin_lock_irqsave(&imxdma->lock, flags);
@@ -592,20 +568,6 @@ static void imxdma_tasklet(unsigned long data)
 	}
 	desc = list_first_entry(&imxdmac->ld_active, struct imxdma_desc, node);
 
-=======
-
-	spin_lock(&imxdma->lock);
-
-	if (list_empty(&imxdmac->ld_active)) {
-		/* Someone might have called terminate all */
-		goto out;
-	}
-	desc = list_first_entry(&imxdmac->ld_active, struct imxdma_desc, node);
-
-	if (desc->desc.callback)
-		desc->desc.callback(desc->desc.callback_param);
-
->>>>>>> 7175f4b... Truncated history
 	/* If we are dealing with a cyclic descriptor keep it on ld_active
 	 * and dont mark the descripor as complete.
 	 * Only in non-cyclic cases it would be marked as complete
@@ -632,15 +594,11 @@ static void imxdma_tasklet(unsigned long data)
 				 __func__, imxdmac->channel);
 	}
 out:
-<<<<<<< HEAD
 	spin_unlock_irqrestore(&imxdma->lock, flags);
 
 	if (desc->desc.callback)
 		desc->desc.callback(desc->desc.callback_param);
 
-=======
-	spin_unlock(&imxdma->lock);
->>>>>>> 7175f4b... Truncated history
 }
 
 static int imxdma_control(struct dma_chan *chan, enum dma_ctrl_cmd cmd,
@@ -864,11 +822,7 @@ static struct dma_async_tx_descriptor *imxdma_prep_dma_cyclic(
 		kfree(imxdmac->sg_list);
 
 	imxdmac->sg_list = kcalloc(periods + 1,
-<<<<<<< HEAD
 			sizeof(struct scatterlist), GFP_ATOMIC);
-=======
-			sizeof(struct scatterlist), GFP_KERNEL);
->>>>>>> 7175f4b... Truncated history
 	if (!imxdmac->sg_list)
 		return NULL;
 

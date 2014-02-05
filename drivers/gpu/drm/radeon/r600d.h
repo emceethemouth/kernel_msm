@@ -483,10 +483,7 @@
 #define		TC_L2_SIZE(x)					((x)<<5)
 #define		L2_DISABLE_LATE_HIT				(1<<9)
 
-<<<<<<< HEAD
 #define	VC_ENHANCE					0x9714
-=======
->>>>>>> 7175f4b... Truncated history
 
 #define	VGT_CACHE_INVALIDATION				0x88C4
 #define		CACHE_INVALIDATION(x)				((x)<<0)

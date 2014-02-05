@@ -27,13 +27,10 @@
 #endif
 #include <ram_console.h>
 
-<<<<<<< HEAD
 #ifdef CONFIG_KEXEC_HARDBOOT
 #include <linux/memblock.h>
 #endif
 
-=======
->>>>>>> 7175f4b... Truncated history
 #ifdef CONFIG_ANDROID_RAM_CONSOLE
 #define LGE_RAM_CONSOLE_SIZE (128 * SZ_1K * 2)
 static char bootreason[128] = {0,};
@@ -120,7 +117,6 @@ static void __init lge_add_persist_ram_devices(void)
 
 void __init lge_reserve(void)
 {
-<<<<<<< HEAD
 #ifdef CONFIG_KEXEC_HARDBOOT
 	// Reserve space for hardboot page - just after ram_console,
 	// at the start of second memory bank
@@ -142,8 +138,6 @@ void __init lge_reserve(void)
 		pr_err("Failed to reserve space for hardboot page at 0x%X!\n", start);
 #endif
 
-=======
->>>>>>> 7175f4b... Truncated history
 #if defined(CONFIG_ANDROID_PERSISTENT_RAM)
 	lge_add_persist_ram_devices();
 #endif

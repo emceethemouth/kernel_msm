@@ -1287,23 +1287,14 @@ void ata_eh_qc_complete(struct ata_queued_cmd *qc)
  *	should be retried.  To be used from EH.
  *
  *	SCSI midlayer limits the number of retries to scmd->allowed.
-<<<<<<< HEAD
  *	scmd->allowed is incremented for commands which get retried
-=======
- *	scmd->retries is decremented for commands which get retried
->>>>>>> 7175f4b... Truncated history
  *	due to unrelated failures (qc->err_mask is zero).
  */
 void ata_eh_qc_retry(struct ata_queued_cmd *qc)
 {
 	struct scsi_cmnd *scmd = qc->scsicmd;
-<<<<<<< HEAD
 	if (!qc->err_mask)
 		scmd->allowed++;
-=======
-	if (!qc->err_mask && scmd->retries)
-		scmd->retries--;
->>>>>>> 7175f4b... Truncated history
 	__ata_eh_qc_complete(qc);
 }
 
@@ -2609,10 +2600,7 @@ int ata_eh_reset(struct ata_link *link, int classify,
 		 * bus as we may be talking too fast.
 		 */
 		dev->pio_mode = XFER_PIO_0;
-<<<<<<< HEAD
 		dev->dma_mode = 0xff;
-=======
->>>>>>> 7175f4b... Truncated history
 
 		/* If the controller has a pio mode setup function
 		 * then use it to set the chipset to rights. Don't

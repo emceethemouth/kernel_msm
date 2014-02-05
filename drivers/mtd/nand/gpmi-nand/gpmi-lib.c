@@ -135,7 +135,6 @@ int gpmi_init(struct gpmi_nand_data *this)
 	if (ret)
 		goto err_out;
 
-<<<<<<< HEAD
 	/*
 	 * Reset BCH here, too. We got failures otherwise :(
 	 * See later BCH reset for explanation of MX23 handling
@@ -145,8 +144,6 @@ int gpmi_init(struct gpmi_nand_data *this)
 		goto err_out;
 
 
-=======
->>>>>>> 7175f4b... Truncated history
 	/* Choose NAND mode. */
 	writel(BM_GPMI_CTRL1_GPMI_MODE, r->gpmi_regs + HW_GPMI_CTRL1_CLR);
 

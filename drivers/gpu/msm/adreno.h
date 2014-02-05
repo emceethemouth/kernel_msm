@@ -125,11 +125,7 @@ enum coresight_debug_reg {
  */
 struct adreno_dispatcher {
 	struct mutex mutex;
-<<<<<<< HEAD
 	unsigned long priv;
-=======
-	unsigned int state;
->>>>>>> 7175f4b... Truncated history
 	struct timer_list timer;
 	struct timer_list fault_timer;
 	unsigned int inflight;
@@ -143,13 +139,10 @@ struct adreno_dispatcher {
 	struct kobject kobj;
 };
 
-<<<<<<< HEAD
 enum adreno_dispatcher_flags {
 	ADRENO_DISPATCHER_POWER = 0,
 };
 
-=======
->>>>>>> 7175f4b... Truncated history
 struct adreno_gpudev;
 
 struct adreno_device {
@@ -174,16 +167,11 @@ struct adreno_device {
 	unsigned int wait_timeout;
 	unsigned int pm4_jt_idx;
 	unsigned int pm4_jt_addr;
-<<<<<<< HEAD
 	unsigned int pm4_bstrp_size;
 	unsigned int pfp_jt_idx;
 	unsigned int pfp_jt_addr;
 	unsigned int pfp_bstrp_size;
 	unsigned int pfp_bstrp_ver;
-=======
-	unsigned int pfp_jt_idx;
-	unsigned int pfp_jt_addr;
->>>>>>> 7175f4b... Truncated history
 	unsigned int istore_size;
 	unsigned int pix_shader_start;
 	unsigned int instruction_size;
@@ -491,11 +479,7 @@ struct kgsl_memdesc *adreno_find_ctxtmem(struct kgsl_device *device,
 void *adreno_snapshot(struct kgsl_device *device, void *snapshot, int *remain,
 		int hang);
 
-<<<<<<< HEAD
 void adreno_dispatcher_start(struct kgsl_device *device);
-=======
-void adreno_dispatcher_start(struct adreno_device *adreno_dev);
->>>>>>> 7175f4b... Truncated history
 int adreno_dispatcher_init(struct adreno_device *adreno_dev);
 void adreno_dispatcher_close(struct adreno_device *adreno_dev);
 int adreno_dispatcher_idle(struct adreno_device *adreno_dev,
@@ -509,10 +493,6 @@ int adreno_dispatcher_queue_cmd(struct adreno_device *adreno_dev,
 
 void adreno_dispatcher_schedule(struct kgsl_device *device);
 void adreno_dispatcher_pause(struct adreno_device *adreno_dev);
-<<<<<<< HEAD
-=======
-void adreno_dispatcher_resume(struct adreno_device *adreno_dev);
->>>>>>> 7175f4b... Truncated history
 void adreno_dispatcher_queue_context(struct kgsl_device *device,
 	struct adreno_context *drawctxt);
 int adreno_reset(struct kgsl_device *device);
@@ -912,7 +892,6 @@ void adreno_debugfs_init(struct kgsl_device *device);
 static inline void adreno_debugfs_init(struct kgsl_device *device) { }
 #endif
 
-<<<<<<< HEAD
 /*
  * adreno_bootstrap_ucode() - Checks if Ucode bootstrapping is supported
  * @adreno_dev:		Pointer to the the adreno device
@@ -926,6 +905,4 @@ static inline int adreno_bootstrap_ucode(struct adreno_device *adreno_dev)
 		return 0;
 }
 
-=======
->>>>>>> 7175f4b... Truncated history
 #endif /*__ADRENO_H */

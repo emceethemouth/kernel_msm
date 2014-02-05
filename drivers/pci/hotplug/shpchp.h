@@ -47,10 +47,6 @@ extern bool shpchp_poll_mode;
 extern int shpchp_poll_time;
 extern bool shpchp_debug;
 extern struct workqueue_struct *shpchp_wq;
-<<<<<<< HEAD
-=======
-extern struct workqueue_struct *shpchp_ordered_wq;
->>>>>>> 7175f4b... Truncated history
 
 #define dbg(format, arg...)						\
 do {									\

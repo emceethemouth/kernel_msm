@@ -787,7 +787,6 @@ static int __bio_copy_iov(struct bio *bio, struct bio_vec *iovecs,
 int bio_uncopy_user(struct bio *bio)
 {
 	struct bio_map_data *bmd = bio->bi_private;
-<<<<<<< HEAD
 	struct bio_vec *bvec;
 	int ret = 0, i;
 
@@ -804,14 +803,6 @@ int bio_uncopy_user(struct bio *bio)
 			__bio_for_each_segment(bvec, bio, i, 0)
 				__free_page(bvec->bv_page);
 	}
-=======
-	int ret = 0;
-
-	if (!bio_flagged(bio, BIO_NULL_MAPPED))
-		ret = __bio_copy_iov(bio, bmd->iovecs, bmd->sgvecs,
-				     bmd->nr_sgvecs, bio_data_dir(bio) == READ,
-				     0, bmd->is_our_pages);
->>>>>>> 7175f4b... Truncated history
 	bio_free_map_data(bmd);
 	bio_put(bio);
 	return ret;

@@ -46,7 +46,6 @@
 #define WM8994_NUM_DRC 3
 #define WM8994_NUM_EQ  3
 
-<<<<<<< HEAD
 static struct {
 	unsigned int reg;
 	unsigned int mask;
@@ -80,8 +79,6 @@ static struct {
 	{ WM8994_DAC2_RIGHT_VOLUME, WM8994_DAC2_VU },
 };
 
-=======
->>>>>>> 7175f4b... Truncated history
 static int wm8994_drc_base[] = {
 	WM8994_AIF1_DRC1_1,
 	WM8994_AIF1_DRC2_1,
@@ -1042,10 +1039,7 @@ static int aif1clk_ev(struct snd_soc_dapm_widget *w,
 	struct snd_soc_codec *codec = w->codec;
 	struct wm8994 *control = codec->control_data;
 	int mask = WM8994_AIF1DAC1L_ENA | WM8994_AIF1DAC1R_ENA;
-<<<<<<< HEAD
 	int i;
-=======
->>>>>>> 7175f4b... Truncated history
 	int dac;
 	int adc;
 	int val;
@@ -1104,7 +1098,6 @@ static int aif1clk_ev(struct snd_soc_dapm_widget *w,
 				    WM8994_AIF1DAC2L_ENA);
 		break;
 
-<<<<<<< HEAD
 	case SND_SOC_DAPM_POST_PMU:
 		for (i = 0; i < ARRAY_SIZE(wm8994_vu_bits); i++)
 			snd_soc_write(codec, wm8994_vu_bits[i].reg,
@@ -1112,8 +1105,6 @@ static int aif1clk_ev(struct snd_soc_dapm_widget *w,
 						   wm8994_vu_bits[i].reg));
 		break;
 
-=======
->>>>>>> 7175f4b... Truncated history
 	case SND_SOC_DAPM_PRE_PMD:
 	case SND_SOC_DAPM_POST_PMD:
 		snd_soc_update_bits(codec, WM8994_POWER_MANAGEMENT_5,
@@ -1139,10 +1130,7 @@ static int aif2clk_ev(struct snd_soc_dapm_widget *w,
 		      struct snd_kcontrol *kcontrol, int event)
 {
 	struct snd_soc_codec *codec = w->codec;
-<<<<<<< HEAD
 	int i;
-=======
->>>>>>> 7175f4b... Truncated history
 	int dac;
 	int adc;
 	int val;
@@ -1193,7 +1181,6 @@ static int aif2clk_ev(struct snd_soc_dapm_widget *w,
 				    WM8994_AIF2DACR_ENA);
 		break;
 
-<<<<<<< HEAD
 	case SND_SOC_DAPM_POST_PMU:
 		for (i = 0; i < ARRAY_SIZE(wm8994_vu_bits); i++)
 			snd_soc_write(codec, wm8994_vu_bits[i].reg,
@@ -1201,8 +1188,6 @@ static int aif2clk_ev(struct snd_soc_dapm_widget *w,
 						   wm8994_vu_bits[i].reg));
 		break;
 
-=======
->>>>>>> 7175f4b... Truncated history
 	case SND_SOC_DAPM_PRE_PMD:
 	case SND_SOC_DAPM_POST_PMD:
 		snd_soc_update_bits(codec, WM8994_POWER_MANAGEMENT_5,
@@ -1271,7 +1256,6 @@ static int late_enable_ev(struct snd_soc_dapm_widget *w,
 	switch (event) {
 	case SND_SOC_DAPM_PRE_PMU:
 		if (wm8994->aif1clk_enable) {
-<<<<<<< HEAD
 			aif1clk_ev(w, kcontrol, SND_SOC_DAPM_PRE_PMU);
 			snd_soc_update_bits(codec, WM8994_AIF1_CLOCKING_1,
 					    WM8994_AIF1CLK_ENA_MASK,
@@ -1285,19 +1269,6 @@ static int late_enable_ev(struct snd_soc_dapm_widget *w,
 					    WM8994_AIF2CLK_ENA_MASK,
 					    WM8994_AIF2CLK_ENA);
 			aif2clk_ev(w, kcontrol, SND_SOC_DAPM_POST_PMU);
-=======
-			aif1clk_ev(w, kcontrol, event);
-			snd_soc_update_bits(codec, WM8994_AIF1_CLOCKING_1,
-					    WM8994_AIF1CLK_ENA_MASK,
-					    WM8994_AIF1CLK_ENA);
-			wm8994->aif1clk_enable = 0;
-		}
-		if (wm8994->aif2clk_enable) {
-			aif2clk_ev(w, kcontrol, event);
-			snd_soc_update_bits(codec, WM8994_AIF2_CLOCKING_1,
-					    WM8994_AIF2CLK_ENA_MASK,
-					    WM8994_AIF2CLK_ENA);
->>>>>>> 7175f4b... Truncated history
 			wm8994->aif2clk_enable = 0;
 		}
 		break;
@@ -1318,7 +1289,6 @@ static int late_disable_ev(struct snd_soc_dapm_widget *w,
 	switch (event) {
 	case SND_SOC_DAPM_POST_PMD:
 		if (wm8994->aif1clk_disable) {
-<<<<<<< HEAD
 			aif1clk_ev(w, kcontrol, SND_SOC_DAPM_PRE_PMD);
 			snd_soc_update_bits(codec, WM8994_AIF1_CLOCKING_1,
 					    WM8994_AIF1CLK_ENA_MASK, 0);
@@ -1330,17 +1300,6 @@ static int late_disable_ev(struct snd_soc_dapm_widget *w,
 			snd_soc_update_bits(codec, WM8994_AIF2_CLOCKING_1,
 					    WM8994_AIF2CLK_ENA_MASK, 0);
 			aif2clk_ev(w, kcontrol, SND_SOC_DAPM_POST_PMD);
-=======
-			snd_soc_update_bits(codec, WM8994_AIF1_CLOCKING_1,
-					    WM8994_AIF1CLK_ENA_MASK, 0);
-			aif1clk_ev(w, kcontrol, event);
-			wm8994->aif1clk_disable = 0;
-		}
-		if (wm8994->aif2clk_disable) {
-			snd_soc_update_bits(codec, WM8994_AIF2_CLOCKING_1,
-					    WM8994_AIF2CLK_ENA_MASK, 0);
-			aif2clk_ev(w, kcontrol, event);
->>>>>>> 7175f4b... Truncated history
 			wm8994->aif2clk_disable = 0;
 		}
 		break;
@@ -1677,17 +1636,11 @@ SND_SOC_DAPM_POST("Late Disable PGA", late_disable_ev)
 
 static const struct snd_soc_dapm_widget wm8994_lateclk_widgets[] = {
 SND_SOC_DAPM_SUPPLY("AIF1CLK", WM8994_AIF1_CLOCKING_1, 0, 0, aif1clk_ev,
-<<<<<<< HEAD
 		    SND_SOC_DAPM_PRE_PMU | SND_SOC_DAPM_POST_PMU |
 		    SND_SOC_DAPM_PRE_PMD),
 SND_SOC_DAPM_SUPPLY("AIF2CLK", WM8994_AIF2_CLOCKING_1, 0, 0, aif2clk_ev,
 		    SND_SOC_DAPM_PRE_PMU | SND_SOC_DAPM_POST_PMU |
 		    SND_SOC_DAPM_PRE_PMD),
-=======
-		    SND_SOC_DAPM_PRE_PMU | SND_SOC_DAPM_PRE_PMD),
-SND_SOC_DAPM_SUPPLY("AIF2CLK", WM8994_AIF2_CLOCKING_1, 0, 0, aif2clk_ev,
-		    SND_SOC_DAPM_PRE_PMU | SND_SOC_DAPM_PRE_PMD),
->>>>>>> 7175f4b... Truncated history
 SND_SOC_DAPM_PGA("Direct Voice", SND_SOC_NOPM, 0, 0, NULL, 0),
 SND_SOC_DAPM_MIXER("SPKL", WM8994_POWER_MANAGEMENT_3, 8, 0,
 		   left_speaker_mixer, ARRAY_SIZE(left_speaker_mixer)),
@@ -2742,11 +2695,7 @@ static int wm8994_hw_params(struct snd_pcm_substream *substream,
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
 	bclk_rate = params_rate(params) * 4;
-=======
-	bclk_rate = params_rate(params) * 2;
->>>>>>> 7175f4b... Truncated history
 	switch (params_format(params)) {
 	case SNDRV_PCM_FORMAT_S16_LE:
 		bclk_rate *= 16;
@@ -2875,10 +2824,7 @@ static int wm8994_aif3_hw_params(struct snd_pcm_substream *substream,
 		default:
 			return 0;
 		}
-<<<<<<< HEAD
 		break;
-=======
->>>>>>> 7175f4b... Truncated history
 	default:
 		return 0;
 	}
@@ -4049,47 +3995,11 @@ static int wm8994_codec_probe(struct snd_soc_codec *codec)
 
 	pm_runtime_put(codec->dev);
 
-<<<<<<< HEAD
 	/* Latch volume update bits */
 	for (i = 0; i < ARRAY_SIZE(wm8994_vu_bits); i++)
 		snd_soc_update_bits(codec, wm8994_vu_bits[i].reg,
 				    wm8994_vu_bits[i].mask,
 				    wm8994_vu_bits[i].mask);
-=======
-	/* Latch volume updates (right only; we always do left then right). */
-	snd_soc_update_bits(codec, WM8994_AIF1_DAC1_LEFT_VOLUME,
-			    WM8994_AIF1DAC1_VU, WM8994_AIF1DAC1_VU);
-	snd_soc_update_bits(codec, WM8994_AIF1_DAC1_RIGHT_VOLUME,
-			    WM8994_AIF1DAC1_VU, WM8994_AIF1DAC1_VU);
-	snd_soc_update_bits(codec, WM8994_AIF1_DAC2_LEFT_VOLUME,
-			    WM8994_AIF1DAC2_VU, WM8994_AIF1DAC2_VU);
-	snd_soc_update_bits(codec, WM8994_AIF1_DAC2_RIGHT_VOLUME,
-			    WM8994_AIF1DAC2_VU, WM8994_AIF1DAC2_VU);
-	snd_soc_update_bits(codec, WM8994_AIF2_DAC_LEFT_VOLUME,
-			    WM8994_AIF2DAC_VU, WM8994_AIF2DAC_VU);
-	snd_soc_update_bits(codec, WM8994_AIF2_DAC_RIGHT_VOLUME,
-			    WM8994_AIF2DAC_VU, WM8994_AIF2DAC_VU);
-	snd_soc_update_bits(codec, WM8994_AIF1_ADC1_LEFT_VOLUME,
-			    WM8994_AIF1ADC1_VU, WM8994_AIF1ADC1_VU);
-	snd_soc_update_bits(codec, WM8994_AIF1_ADC1_RIGHT_VOLUME,
-			    WM8994_AIF1ADC1_VU, WM8994_AIF1ADC1_VU);
-	snd_soc_update_bits(codec, WM8994_AIF1_ADC2_LEFT_VOLUME,
-			    WM8994_AIF1ADC2_VU, WM8994_AIF1ADC2_VU);
-	snd_soc_update_bits(codec, WM8994_AIF1_ADC2_RIGHT_VOLUME,
-			    WM8994_AIF1ADC2_VU, WM8994_AIF1ADC2_VU);
-	snd_soc_update_bits(codec, WM8994_AIF2_ADC_LEFT_VOLUME,
-			    WM8994_AIF2ADC_VU, WM8994_AIF1ADC2_VU);
-	snd_soc_update_bits(codec, WM8994_AIF2_ADC_RIGHT_VOLUME,
-			    WM8994_AIF2ADC_VU, WM8994_AIF1ADC2_VU);
-	snd_soc_update_bits(codec, WM8994_DAC1_LEFT_VOLUME,
-			    WM8994_DAC1_VU, WM8994_DAC1_VU);
-	snd_soc_update_bits(codec, WM8994_DAC1_RIGHT_VOLUME,
-			    WM8994_DAC1_VU, WM8994_DAC1_VU);
-	snd_soc_update_bits(codec, WM8994_DAC2_LEFT_VOLUME,
-			    WM8994_DAC2_VU, WM8994_DAC2_VU);
-	snd_soc_update_bits(codec, WM8994_DAC2_RIGHT_VOLUME,
-			    WM8994_DAC2_VU, WM8994_DAC2_VU);
->>>>>>> 7175f4b... Truncated history
 
 	/* Set the low bit of the 3D stereo depth so TLV matches */
 	snd_soc_update_bits(codec, WM8994_AIF1_DAC1_FILTERS_2,

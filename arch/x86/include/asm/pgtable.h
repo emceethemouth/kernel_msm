@@ -142,24 +142,16 @@ static inline unsigned long pmd_pfn(pmd_t pmd)
 	return (pmd_val(pmd) & PTE_PFN_MASK) >> PAGE_SHIFT;
 }
 
-<<<<<<< HEAD
 static inline unsigned long pud_pfn(pud_t pud)
 {
 	return (pud_val(pud) & PTE_PFN_MASK) >> PAGE_SHIFT;
 }
 
-=======
->>>>>>> 7175f4b... Truncated history
 #define pte_page(pte)	pfn_to_page(pte_pfn(pte))
 
 static inline int pmd_large(pmd_t pte)
 {
-<<<<<<< HEAD
 	return pmd_flags(pte) & _PAGE_PSE;
-=======
-	return (pmd_flags(pte) & (_PAGE_PSE | _PAGE_PRESENT)) ==
-		(_PAGE_PSE | _PAGE_PRESENT);
->>>>>>> 7175f4b... Truncated history
 }
 
 #ifdef CONFIG_TRANSPARENT_HUGEPAGE
@@ -427,7 +419,6 @@ static inline int pte_hidden(pte_t pte)
 
 static inline int pmd_present(pmd_t pmd)
 {
-<<<<<<< HEAD
 	/*
 	 * Checking for _PAGE_PSE is needed too because
 	 * split_huge_page will temporarily clear the present bit (but
@@ -435,9 +426,6 @@ static inline int pmd_present(pmd_t pmd)
 	 * _PAGE_PRESENT bit is clear).
 	 */
 	return pmd_flags(pmd) & (_PAGE_PRESENT | _PAGE_PROTNONE | _PAGE_PSE);
-=======
-	return pmd_flags(pmd) & _PAGE_PRESENT;
->>>>>>> 7175f4b... Truncated history
 }
 
 static inline int pmd_none(pmd_t pmd)

@@ -290,12 +290,9 @@ static const struct hid_device_id hid_battery_quirks[] = {
 	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_APPLE,
 			       USB_DEVICE_ID_APPLE_ALU_WIRELESS_2011_ANSI),
 	  HID_BATTERY_QUIRK_PERCENT | HID_BATTERY_QUIRK_FEATURE },
-<<<<<<< HEAD
 	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_APPLE,
 		USB_DEVICE_ID_APPLE_ALU_WIRELESS_ANSI),
 	  HID_BATTERY_QUIRK_PERCENT | HID_BATTERY_QUIRK_FEATURE },
-=======
->>>>>>> 7175f4b... Truncated history
 	{}
 };
 
@@ -317,11 +314,7 @@ static int hidinput_get_battery_property(struct power_supply *psy,
 {
 	struct hid_device *dev = container_of(psy, struct hid_device, battery);
 	int ret = 0;
-<<<<<<< HEAD
 	__u8 *buf;
-=======
-	__u8 buf[2] = {};
->>>>>>> 7175f4b... Truncated history
 
 	switch (prop) {
 	case POWER_SUPPLY_PROP_PRESENT:
@@ -330,7 +323,6 @@ static int hidinput_get_battery_property(struct power_supply *psy,
 		break;
 
 	case POWER_SUPPLY_PROP_CAPACITY:
-<<<<<<< HEAD
 
 		buf = kmalloc(2 * sizeof(__u8), GFP_KERNEL);
 		if (!buf) {
@@ -339,19 +331,12 @@ static int hidinput_get_battery_property(struct power_supply *psy,
 		}
 		ret = dev->hid_get_raw_report(dev, dev->battery_report_id,
 					      buf, 2,
-=======
-		ret = dev->hid_get_raw_report(dev, dev->battery_report_id,
-					      buf, sizeof(buf),
->>>>>>> 7175f4b... Truncated history
 					      dev->battery_report_type);
 
 		if (ret != 2) {
 			if (ret >= 0)
 				ret = -EINVAL;
-<<<<<<< HEAD
 			kfree(buf);
-=======
->>>>>>> 7175f4b... Truncated history
 			break;
 		}
 
@@ -360,10 +345,7 @@ static int hidinput_get_battery_property(struct power_supply *psy,
 		    buf[1] <= dev->battery_max)
 			val->intval = (100 * (buf[1] - dev->battery_min)) /
 				(dev->battery_max - dev->battery_min);
-<<<<<<< HEAD
 		kfree(buf);
-=======
->>>>>>> 7175f4b... Truncated history
 		break;
 
 	case POWER_SUPPLY_PROP_MODEL_NAME:

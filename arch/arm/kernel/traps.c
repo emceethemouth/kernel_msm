@@ -39,7 +39,6 @@
 
 #include <trace/events/exception.h>
 
-<<<<<<< HEAD
 static const char *handler[]= {
 	"prefetch abort",
 	"data abort",
@@ -47,9 +46,6 @@ static const char *handler[]= {
 	"interrupt",
 	"undefined instruction",
 };
-=======
-static const char *handler[]= { "prefetch abort", "data abort", "address exception", "interrupt" };
->>>>>>> 7175f4b... Truncated history
 
 void *vectors_page;
 
@@ -382,24 +378,10 @@ static int call_undef_hook(struct pt_regs *regs, unsigned int instr)
 
 asmlinkage void __exception do_undefinstr(struct pt_regs *regs)
 {
-<<<<<<< HEAD
-=======
-	unsigned int correction = thumb_mode(regs) ? 2 : 4;
->>>>>>> 7175f4b... Truncated history
 	unsigned int instr;
 	siginfo_t info;
 	void __user *pc;
 
-<<<<<<< HEAD
-=======
-	/*
-	 * According to the ARM ARM, PC is 2 or 4 bytes ahead,
-	 * depending whether we're in Thumb mode or not.
-	 * Correct this offset.
-	 */
-	regs->ARM_pc -= correction;
-
->>>>>>> 7175f4b... Truncated history
 	pc = (void __user *)instruction_pointer(regs);
 
 	if (processor_mode(regs) == SVC_MODE) {
@@ -414,7 +396,6 @@ asmlinkage void __exception do_undefinstr(struct pt_regs *regs)
 #endif
 			instr = *(u32 *) pc;
 	} else if (thumb_mode(regs)) {
-<<<<<<< HEAD
 		if (get_user(instr, (u16 __user *)pc))
 			goto die_sig;
 		if (is_wide_instruction(instr)) {
@@ -426,26 +407,12 @@ asmlinkage void __exception do_undefinstr(struct pt_regs *regs)
 		}
 	} else if (get_user(instr, (u32 __user *)pc)) {
 		goto die_sig;
-=======
-		get_user(instr, (u16 __user *)pc);
-		if (is_wide_instruction(instr)) {
-			unsigned int instr2;
-			get_user(instr2, (u16 __user *)pc+1);
-			instr <<= 16;
-			instr |= instr2;
-		}
-	} else {
-		get_user(instr, (u32 __user *)pc);
->>>>>>> 7175f4b... Truncated history
 	}
 
 	if (call_undef_hook(regs, instr) == 0)
 		return;
 
-<<<<<<< HEAD
 die_sig:
-=======
->>>>>>> 7175f4b... Truncated history
 	trace_undef_instr(regs, (void *)pc);
 
 #ifdef CONFIG_DEBUG_USER

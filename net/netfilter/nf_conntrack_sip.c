@@ -1468,11 +1468,7 @@ static int sip_help_tcp(struct sk_buff *skb, unsigned int protoff,
 
 		msglen = origlen = end - dptr;
 		if (msglen > datalen)
-<<<<<<< HEAD
 			return NF_ACCEPT;
-=======
-			return NF_DROP;
->>>>>>> 7175f4b... Truncated history
 
 		ret = process_sip_msg(skb, ct, dataoff, &dptr, &msglen);
 		if (ret != NF_ACCEPT)

@@ -345,11 +345,7 @@ int hwspin_lock_register(struct hwspinlock_device *bank, struct device *dev,
 		spin_lock_init(&hwlock->lock);
 		hwlock->bank = bank;
 
-<<<<<<< HEAD
 		ret = hwspin_lock_register_single(hwlock, base_id + i);
-=======
-		ret = hwspin_lock_register_single(hwlock, i);
->>>>>>> 7175f4b... Truncated history
 		if (ret)
 			goto reg_failed;
 	}
@@ -358,11 +354,7 @@ int hwspin_lock_register(struct hwspinlock_device *bank, struct device *dev,
 
 reg_failed:
 	while (--i >= 0)
-<<<<<<< HEAD
 		hwspin_lock_unregister_single(base_id + i);
-=======
-		hwspin_lock_unregister_single(i);
->>>>>>> 7175f4b... Truncated history
 	return ret;
 }
 EXPORT_SYMBOL_GPL(hwspin_lock_register);
@@ -424,11 +416,8 @@ static int __hwspin_lock_request(struct hwspinlock *hwlock)
 	ret = pm_runtime_get_sync(dev);
 	if (ret < 0) {
 		dev_err(dev, "%s: can't power on device\n", __func__);
-<<<<<<< HEAD
 		pm_runtime_put_noidle(dev);
 		module_put(dev->driver->owner);
-=======
->>>>>>> 7175f4b... Truncated history
 		return ret;
 	}
 

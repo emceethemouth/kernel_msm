@@ -175,7 +175,6 @@ typedef struct { unsigned long pgprot; } pgprot_t;
 
 #ifdef CONFIG_FLATMEM
 
-<<<<<<< HEAD
 #ifndef __ASSEMBLY__
 static inline int pfn_valid(unsigned long pfn)
 {
@@ -185,16 +184,6 @@ static inline int pfn_valid(unsigned long pfn)
 	return pfn >= ARCH_PFN_OFFSET && pfn < max_mapnr;
 }
 #endif
-=======
-#define pfn_valid(pfn)							\
-({									\
-	unsigned long __pfn = (pfn);					\
-	/* avoid <linux/bootmem.h> include hell */			\
-	extern unsigned long min_low_pfn;				\
-									\
-	__pfn >= min_low_pfn && __pfn < max_mapnr;			\
-})
->>>>>>> 7175f4b... Truncated history
 
 #elif defined(CONFIG_SPARSEMEM)
 

@@ -876,10 +876,6 @@ static int hdmi_pcm_open(struct hda_pcm_stream *hinfo,
 	struct hdmi_spec_per_pin *per_pin;
 	struct hdmi_eld *eld;
 	struct hdmi_spec_per_cvt *per_cvt = NULL;
-<<<<<<< HEAD
-=======
-	int pinctl;
->>>>>>> 7175f4b... Truncated history
 
 	/* Validate hinfo */
 	pin_idx = hinfo_to_pin_index(spec, hinfo);
@@ -915,14 +911,6 @@ static int hdmi_pcm_open(struct hda_pcm_stream *hinfo,
 	snd_hda_codec_write(codec, per_pin->pin_nid, 0,
 			    AC_VERB_SET_CONNECT_SEL,
 			    mux_idx);
-<<<<<<< HEAD
-=======
-	pinctl = snd_hda_codec_read(codec, per_pin->pin_nid, 0,
-				    AC_VERB_GET_PIN_WIDGET_CONTROL, 0);
-	snd_hda_codec_write(codec, per_pin->pin_nid, 0,
-			    AC_VERB_SET_PIN_WIDGET_CONTROL,
-			    pinctl | PIN_OUT);
->>>>>>> 7175f4b... Truncated history
 	snd_hda_spdif_ctls_assign(codec, pin_idx, per_cvt->cvt_nid);
 
 	/* Initially set the converter's capabilities */
@@ -936,17 +924,12 @@ static int hdmi_pcm_open(struct hda_pcm_stream *hinfo,
 	if (!static_hdmi_pcm && eld->eld_valid) {
 		snd_hdmi_eld_update_pcm_info(eld, hinfo);
 		if (hinfo->channels_min > hinfo->channels_max ||
-<<<<<<< HEAD
 		    !hinfo->rates || !hinfo->formats) {
 			per_cvt->assigned = 0;
 			hinfo->nid = 0;
 			snd_hda_spdif_ctls_unassign(codec, pin_idx);
 			return -ENODEV;
 		}
-=======
-		    !hinfo->rates || !hinfo->formats)
-			return -ENODEV;
->>>>>>> 7175f4b... Truncated history
 	}
 
 	/* Store the updated parameters */
@@ -1010,10 +993,7 @@ static void hdmi_present_sense(struct hdmi_spec_per_pin *per_pin, int repoll)
 		"HDMI status: Codec=%d Pin=%d Presence_Detect=%d ELD_Valid=%d\n",
 		codec->addr, pin_nid, eld->monitor_present, eld_valid);
 
-<<<<<<< HEAD
 	eld->eld_valid = false;
-=======
->>>>>>> 7175f4b... Truncated history
 	if (eld_valid) {
 		if (!snd_hdmi_get_eld(eld, codec, pin_nid))
 			snd_hdmi_show_eld(eld);
@@ -1172,23 +1152,17 @@ static int generic_hdmi_playback_pcm_prepare(struct hda_pcm_stream *hinfo,
 	struct hdmi_spec *spec = codec->spec;
 	int pin_idx = hinfo_to_pin_index(spec, hinfo);
 	hda_nid_t pin_nid = spec->pins[pin_idx].pin_nid;
-<<<<<<< HEAD
 	int pinctl;
-=======
->>>>>>> 7175f4b... Truncated history
 
 	hdmi_set_channel_count(codec, cvt_nid, substream->runtime->channels);
 
 	hdmi_setup_audio_infoframe(codec, pin_idx, substream);
 
-<<<<<<< HEAD
 	pinctl = snd_hda_codec_read(codec, pin_nid, 0,
 				    AC_VERB_GET_PIN_WIDGET_CONTROL, 0);
 	snd_hda_codec_write(codec, pin_nid, 0,
 			    AC_VERB_SET_PIN_WIDGET_CONTROL, pinctl | PIN_OUT);
 
-=======
->>>>>>> 7175f4b... Truncated history
 	return hdmi_setup_stream(codec, cvt_nid, pin_nid, stream_tag, format);
 }
 
@@ -1308,7 +1282,6 @@ static int generic_hdmi_build_controls(struct hda_codec *codec)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int generic_hdmi_init_per_pins(struct hda_codec *codec)
 {
 	struct hdmi_spec *spec = codec->spec;
@@ -1325,8 +1298,6 @@ static int generic_hdmi_init_per_pins(struct hda_codec *codec)
 	return 0;
 }
 
-=======
->>>>>>> 7175f4b... Truncated history
 static int generic_hdmi_init(struct hda_codec *codec)
 {
 	struct hdmi_spec *spec = codec->spec;
@@ -1335,20 +1306,9 @@ static int generic_hdmi_init(struct hda_codec *codec)
 	for (pin_idx = 0; pin_idx < spec->num_pins; pin_idx++) {
 		struct hdmi_spec_per_pin *per_pin = &spec->pins[pin_idx];
 		hda_nid_t pin_nid = per_pin->pin_nid;
-<<<<<<< HEAD
 
 		hdmi_init_pin(codec, pin_nid);
 		snd_hda_jack_detect_enable(codec, pin_nid, pin_nid);
-=======
-		struct hdmi_eld *eld = &per_pin->sink_eld;
-
-		hdmi_init_pin(codec, pin_nid);
-		snd_hda_jack_detect_enable(codec, pin_nid, pin_nid);
-
-		per_pin->codec = codec;
-		INIT_DELAYED_WORK(&per_pin->work, hdmi_repoll_eld);
-		snd_hda_eld_proc_new(codec, eld, pin_idx);
->>>>>>> 7175f4b... Truncated history
 	}
 	snd_hda_jack_report_sync(codec);
 	return 0;
@@ -1394,10 +1354,7 @@ static int patch_generic_hdmi(struct hda_codec *codec)
 		return -EINVAL;
 	}
 	codec->patch_ops = generic_hdmi_patch_ops;
-<<<<<<< HEAD
 	generic_hdmi_init_per_pins(codec);
-=======
->>>>>>> 7175f4b... Truncated history
 
 	init_channel_allocations();
 

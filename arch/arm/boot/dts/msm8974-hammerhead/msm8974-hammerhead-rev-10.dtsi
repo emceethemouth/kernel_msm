@@ -24,10 +24,6 @@
 	vibrator {
 		vdd-supply = <&pm8941_l19>;
 		use-vdd-supply;
-<<<<<<< HEAD
-=======
-		vibe-warmup-delay = <25>;
->>>>>>> 7175f4b... Truncated history
 	};
 
 	qcom,mdss_dsi_jdi_command_ors {

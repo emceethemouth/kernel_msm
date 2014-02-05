@@ -1568,7 +1568,6 @@ static int pl330_submit_req(void *ch_id, struct pl330_req *r)
 		goto xfer_exit;
 	}
 
-<<<<<<< HEAD
 
 	/* Use last settings, if not provided */
 	if (r->cfg) {
@@ -1582,19 +1581,6 @@ static int pl330_submit_req(void *ch_id, struct pl330_req *r)
 	} else {
 		ccr = readl(regs + CC(thrd->id));
 	}
-=======
-	/* Prefer Secure Channel */
-	if (!_manager_ns(thrd))
-		r->cfg->nonsecure = 0;
-	else
-		r->cfg->nonsecure = 1;
-
-	/* Use last settings, if not provided */
-	if (r->cfg)
-		ccr = _prepare_ccr(r->cfg);
-	else
-		ccr = readl(regs + CC(thrd->id));
->>>>>>> 7175f4b... Truncated history
 
 	/* If this req doesn't have valid xfer settings */
 	if (!_is_valid(ccr)) {
@@ -2338,11 +2324,7 @@ static void pl330_tasklet(unsigned long data)
 	/* Pick up ripe tomatoes */
 	list_for_each_entry_safe(desc, _dt, &pch->work_list, node)
 		if (desc->status == DONE) {
-<<<<<<< HEAD
 			if (!pch->cyclic)
-=======
-			if (pch->cyclic)
->>>>>>> 7175f4b... Truncated history
 				dma_cookie_complete(&desc->txd);
 			list_move_tail(&desc->node, &list);
 		}
@@ -2487,17 +2469,10 @@ static void pl330_free_chan_resources(struct dma_chan *chan)
 	struct dma_pl330_chan *pch = to_pchan(chan);
 	unsigned long flags;
 
-<<<<<<< HEAD
 	tasklet_kill(&pch->task);
 
 	spin_lock_irqsave(&pch->lock, flags);
 
-=======
-	spin_lock_irqsave(&pch->lock, flags);
-
-	tasklet_kill(&pch->task);
-
->>>>>>> 7175f4b... Truncated history
 	pl330_release_channel(pch->pl330_chid);
 	pch->pl330_chid = NULL;
 
@@ -2962,14 +2937,11 @@ pl330_probe(struct amba_device *adev, const struct amba_id *id)
 		num_chan = max_t(int, pi->pcfg.num_peri, pi->pcfg.num_chan);
 
 	pdmac->peripherals = kzalloc(num_chan * sizeof(*pch), GFP_KERNEL);
-<<<<<<< HEAD
 	if (!pdmac->peripherals) {
 		ret = -ENOMEM;
 		dev_err(&adev->dev, "unable to allocate pdmac->peripherals\n");
 		goto probe_err5;
 	}
-=======
->>>>>>> 7175f4b... Truncated history
 
 	for (i = 0; i < num_chan; i++) {
 		pch = &pdmac->peripherals[i];

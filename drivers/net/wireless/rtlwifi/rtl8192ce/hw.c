@@ -995,7 +995,6 @@ static enum version_8192c _rtl92ce_read_chip_version(struct ieee80211_hw *hw)
 		version = (value32 & TYPE_ID) ? VERSION_A_CHIP_92C :
 			   VERSION_A_CHIP_88C;
 	} else {
-<<<<<<< HEAD
 		version = (enum version_8192c) (CHIP_VER_B |
 				((value32 & TYPE_ID) ? CHIP_92C_BITMASK : 0) |
 				((value32 & VENDOR_ID) ? CHIP_VENDOR_UMC : 0));
@@ -1006,10 +1005,6 @@ static enum version_8192c _rtl92ce_read_chip_version(struct ieee80211_hw *hw)
 				   ? CHIP_VENDOR_UMC_B_CUT : CHIP_UNKNOWN) |
 				   CHIP_VENDOR_UMC));
 		}
-=======
-		version = (value32 & TYPE_ID) ? VERSION_B_CHIP_92C :
-			   VERSION_B_CHIP_88C;
->>>>>>> 7175f4b... Truncated history
 	}
 
 	switch (version) {

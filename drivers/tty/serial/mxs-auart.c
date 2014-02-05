@@ -369,16 +369,12 @@ static void mxs_auart_settermios(struct uart_port *u,
 
 	writel(ctrl, u->membase + AUART_LINECTRL);
 	writel(ctrl2, u->membase + AUART_CTRL2);
-<<<<<<< HEAD
 
 	uart_update_timeout(u, termios->c_cflag, baud);
-=======
->>>>>>> 7175f4b... Truncated history
 }
 
 static irqreturn_t mxs_auart_irq_handle(int irq, void *context)
 {
-<<<<<<< HEAD
 	u32 istat;
 	struct mxs_auart_port *s = context;
 	u32 stat = readl(s->port.membase + AUART_STAT);
@@ -391,13 +387,6 @@ static irqreturn_t mxs_auart_irq_handle(int irq, void *context)
 		| AUART_INTR_RXIS
 		| AUART_INTR_CTSMIS),
 			s->port.membase + AUART_INTR_CLR);
-=======
-	u32 istatus, istat;
-	struct mxs_auart_port *s = context;
-	u32 stat = readl(s->port.membase + AUART_STAT);
-
-	istatus = istat = readl(s->port.membase + AUART_INTR);
->>>>>>> 7175f4b... Truncated history
 
 	if (istat & AUART_INTR_CTSMIS) {
 		uart_handle_cts_change(&s->port, stat & AUART_STAT_CTS);
@@ -416,15 +405,6 @@ static irqreturn_t mxs_auart_irq_handle(int irq, void *context)
 		istat &= ~AUART_INTR_TXIS;
 	}
 
-<<<<<<< HEAD
-=======
-	writel(istatus & (AUART_INTR_RTIS
-		| AUART_INTR_TXIS
-		| AUART_INTR_RXIS
-		| AUART_INTR_CTSMIS),
-			s->port.membase + AUART_INTR_CLR);
-
->>>>>>> 7175f4b... Truncated history
 	return IRQ_HANDLED;
 }
 
@@ -564,11 +544,7 @@ auart_console_write(struct console *co, const char *str, unsigned int count)
 	struct mxs_auart_port *s;
 	struct uart_port *port;
 	unsigned int old_ctrl0, old_ctrl2;
-<<<<<<< HEAD
 	unsigned int to = 20000;
-=======
-	unsigned int to = 1000;
->>>>>>> 7175f4b... Truncated history
 
 	if (co->index >	MXS_AUART_PORTS || co->index < 0)
 		return;
@@ -589,7 +565,6 @@ auart_console_write(struct console *co, const char *str, unsigned int count)
 
 	uart_console_write(port, str, count, mxs_auart_console_putchar);
 
-<<<<<<< HEAD
 	/* Finally, wait for transmitter to become empty ... */
 	while (readl(port->membase + AUART_STAT) & AUART_STAT_BUSY) {
 		udelay(1);
@@ -607,20 +582,6 @@ auart_console_write(struct console *co, const char *str, unsigned int count)
 		writel(old_ctrl0, port->membase + AUART_CTRL0);
 		writel(old_ctrl2, port->membase + AUART_CTRL2);
 	}
-=======
-	/*
-	 * Finally, wait for transmitter to become empty
-	 * and restore the TCR
-	 */
-	while (readl(port->membase + AUART_STAT) & AUART_STAT_BUSY) {
-		if (!to--)
-			break;
-		udelay(1);
-	}
-
-	writel(old_ctrl0, port->membase + AUART_CTRL0);
-	writel(old_ctrl2, port->membase + AUART_CTRL2);
->>>>>>> 7175f4b... Truncated history
 
 	clk_disable(s->clk);
 }

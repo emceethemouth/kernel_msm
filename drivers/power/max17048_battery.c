@@ -79,10 +79,6 @@ struct max17048_chip {
 	int batt_tech;
 	int fcc_mah;
 	int voltage;
-<<<<<<< HEAD
-=======
-	int lasttime_voltage;
->>>>>>> 7175f4b... Truncated history
 	int lasttime_capacity_level;
 	int chg_state;
 	int batt_temp;
@@ -91,17 +87,11 @@ struct max17048_chip {
 };
 
 static struct max17048_chip *ref;
-<<<<<<< HEAD
 struct completion monitor_work_done;
 static int max17048_get_prop_current(struct max17048_chip *chip);
 static int max17048_get_prop_temp(struct max17048_chip *chip);
 static int max17048_clear_interrupt(struct max17048_chip *chip);
 static int max17048_get_prop_status(struct max17048_chip *chip);
-=======
-static int max17048_get_prop_current(struct max17048_chip *chip);
-static int max17048_get_prop_temp(struct max17048_chip *chip);
-static int max17048_clear_interrupt(struct max17048_chip *chip);
->>>>>>> 7175f4b... Truncated history
 
 struct debug_reg {
 	char  *name;
@@ -256,7 +246,6 @@ static int max17048_get_vcell(struct max17048_chip *chip)
 	return 0;
 }
 
-<<<<<<< HEAD
 static int max17048_check_recharge(struct max17048_chip *chip)
 {
 	union power_supply_propval ret = {true,};
@@ -275,17 +264,6 @@ static int max17048_check_recharge(struct max17048_chip *chip)
 	}
 
 	return false;
-=======
-static void max17048_check_recharge(struct max17048_chip *chip)
-{
-	union power_supply_propval ret = {true,};
-
-	if (chip->capacity_level == 99 &&
-			chip->lasttime_capacity_level == 100)
-		chip->ac_psy->set_property(chip->ac_psy,
-				POWER_SUPPLY_PROP_CHARGING_ENABLED,
-				&ret);
->>>>>>> 7175f4b... Truncated history
 }
 
 static int max17048_get_soc(struct max17048_chip *chip)
@@ -329,11 +307,7 @@ static int max17048_set_rcomp(struct max17048_chip *chip)
 	rcomp = chip->rcomp * 1000 - (temp-20) * scale_coeff;
 	rcomp = bound_check(255, 0, rcomp / 1000);
 
-<<<<<<< HEAD
 	pr_debug("%s: new RCOMP = 0x%02X\n", __func__, rcomp);
-=======
-	pr_info("%s: new RCOMP = 0x%02X\n", __func__, rcomp);
->>>>>>> 7175f4b... Truncated history
 
 	rcomp = rcomp << CFG_RCOMP_SHIFT;
 
@@ -350,10 +324,7 @@ static void max17048_work(struct work_struct *work)
 	struct max17048_chip *chip =
 		container_of(work, struct max17048_chip, monitor_work.work);
 	int ret = 0;
-<<<<<<< HEAD
 	int rechg_now;
-=======
->>>>>>> 7175f4b... Truncated history
 
 	wake_lock(&chip->alert_lock);
 
@@ -368,7 +339,6 @@ static void max17048_work(struct work_struct *work)
 
 	max17048_get_vcell(chip);
 	max17048_get_soc(chip);
-<<<<<<< HEAD
 	complete_all(&monitor_work_done);
 
 	if (chip->capacity_level != chip->lasttime_capacity_level ||
@@ -377,35 +347,16 @@ static void max17048_work(struct work_struct *work)
 		chip->lasttime_capacity_level = chip->capacity_level;
 		if (!rechg_now)
 			power_supply_changed(&chip->batt_psy);
-=======
-
-	if (chip->voltage != chip->lasttime_voltage ||
-		chip->capacity_level != chip->lasttime_capacity_level) {
-		chip->lasttime_voltage = chip->voltage;
-		max17048_check_recharge(chip);
-		chip->lasttime_capacity_level = chip->capacity_level;
-
-		power_supply_changed(&chip->batt_psy);
->>>>>>> 7175f4b... Truncated history
 	}
 
 	ret = max17048_clear_interrupt(chip);
 	if (ret < 0)
 		pr_err("%s : error clear alert irq register.\n", __func__);
 
-<<<<<<< HEAD
 	pr_info("%s: rsoc=0x%04X rvcell=0x%04X soc=%d v_mv=%d i_ua=%d t=%d\n",
 				__func__, chip->soc, chip->vcell,
 				chip->capacity_level, chip->voltage,
 				chip->batt_current, chip->batt_temp);
-=======
-	pr_info("%s: raw soc = 0x%04X raw vcell = 0x%04X\n",
-			__func__, chip->soc, chip->vcell);
-	pr_info("%s: SOC = %d vbatt_mv = %d\n",
-			__func__, chip->capacity_level, chip->voltage);
-	pr_info("%s: ibatt_ua = %d batt_temp = %d\n",
-			__func__, chip->batt_current, chip->batt_temp);
->>>>>>> 7175f4b... Truncated history
 
 	wake_unlock(&chip->alert_lock);
 }
@@ -708,7 +659,6 @@ static int max17048_get_prop_current(struct max17048_chip *chip)
 	return chip->batt_current;
 }
 
-<<<<<<< HEAD
 static int max17048_get_prop_capacity(struct max17048_chip *chip)
 {
 	int ret;
@@ -724,8 +674,6 @@ static int max17048_get_prop_capacity(struct max17048_chip *chip)
 	return chip->capacity_level;
 }
 
-=======
->>>>>>> 7175f4b... Truncated history
 static enum power_supply_property max17048_battery_props[] = {
 	POWER_SUPPLY_PROP_STATUS,
 	POWER_SUPPLY_PROP_HEALTH,
@@ -773,11 +721,7 @@ static int max17048_get_property(struct power_supply *psy,
 		val->intval = max17048_get_prop_temp(chip);
 		break;
 	case POWER_SUPPLY_PROP_CAPACITY:
-<<<<<<< HEAD
 		val->intval = max17048_get_prop_capacity(chip);
-=======
-		val->intval = chip->capacity_level;
->>>>>>> 7175f4b... Truncated history
 		break;
 	case POWER_SUPPLY_PROP_CURRENT_NOW:
 		val->intval = max17048_get_prop_current(chip);
@@ -876,10 +820,7 @@ static int max17048_pm_notifier(struct notifier_block *notifier,
 		cancel_delayed_work_sync(&chip->monitor_work);
 		break;
 	case PM_POST_SUSPEND:
-<<<<<<< HEAD
 		INIT_COMPLETION(monitor_work_done);
-=======
->>>>>>> 7175f4b... Truncated history
 		schedule_delayed_work(&chip->monitor_work,
 					msecs_to_jiffies(200));
 		max17048_set_alsc_alert(chip, true);
@@ -940,11 +881,8 @@ static int max17048_probe(struct i2c_client *client,
 		goto error;
 	}
 
-<<<<<<< HEAD
 	init_completion(&monitor_work_done);
 	chip->capacity_level = -EINVAL;
-=======
->>>>>>> 7175f4b... Truncated history
 	ref = chip;
 	chip->batt_psy.name = "battery";
 	chip->batt_psy.type = POWER_SUPPLY_TYPE_BATTERY;

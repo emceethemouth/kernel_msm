@@ -298,10 +298,7 @@ static int ceph_x_build_authorizer(struct ceph_auth_client *ac,
 			return -ENOMEM;
 	}
 	au->service = th->service;
-<<<<<<< HEAD
 	au->secret_id = th->secret_id;
-=======
->>>>>>> 7175f4b... Truncated history
 
 	msg_a = au->buf->vec.iov_base;
 	msg_a->struct_v = 1;
@@ -530,13 +527,7 @@ static int ceph_x_handle_reply(struct ceph_auth_client *ac, int result,
 
 static int ceph_x_create_authorizer(
 	struct ceph_auth_client *ac, int peer_type,
-<<<<<<< HEAD
 	struct ceph_auth_handshake *auth)
-=======
-	struct ceph_authorizer **a,
-	void **buf, size_t *len,
-	void **reply_buf, size_t *reply_len)
->>>>>>> 7175f4b... Truncated history
 {
 	struct ceph_x_authorizer *au;
 	struct ceph_x_ticket_handler *th;
@@ -556,7 +547,6 @@ static int ceph_x_create_authorizer(
 		return ret;
 	}
 
-<<<<<<< HEAD
 	auth->authorizer = (struct ceph_authorizer *) au;
 	auth->authorizer_buf = au->buf->vec.iov_base;
 	auth->authorizer_buf_len = au->buf->vec.iov_len;
@@ -583,13 +573,6 @@ static int ceph_x_update_authorizer(
 		     au->service, au->secret_id, th->secret_id);
 		return ceph_x_build_authorizer(ac, th, au);
 	}
-=======
-	*a = (struct ceph_authorizer *)au;
-	*buf = au->buf->vec.iov_base;
-	*len = au->buf->vec.iov_len;
-	*reply_buf = au->reply_buf;
-	*reply_len = sizeof(au->reply_buf);
->>>>>>> 7175f4b... Truncated history
 	return 0;
 }
 
@@ -668,11 +651,7 @@ static void ceph_x_invalidate_authorizer(struct ceph_auth_client *ac,
 
 	th = get_ticket_handler(ac, peer_type);
 	if (!IS_ERR(th))
-<<<<<<< HEAD
 		memset(&th->validity, 0, sizeof(th->validity));
-=======
-		remove_ticket_handler(ac, th);
->>>>>>> 7175f4b... Truncated history
 }
 
 
@@ -683,10 +662,7 @@ static const struct ceph_auth_client_ops ceph_x_ops = {
 	.build_request = ceph_x_build_request,
 	.handle_reply = ceph_x_handle_reply,
 	.create_authorizer = ceph_x_create_authorizer,
-<<<<<<< HEAD
 	.update_authorizer = ceph_x_update_authorizer,
-=======
->>>>>>> 7175f4b... Truncated history
 	.verify_authorizer_reply = ceph_x_verify_authorizer_reply,
 	.destroy_authorizer = ceph_x_destroy_authorizer,
 	.invalidate_authorizer = ceph_x_invalidate_authorizer,

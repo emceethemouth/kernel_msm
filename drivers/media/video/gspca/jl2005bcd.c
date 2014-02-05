@@ -510,11 +510,7 @@ static const struct sd_desc sd_desc = {
 };
 
 /* -- module initialisation -- */
-<<<<<<< HEAD
 static const struct usb_device_id device_table[] = {
-=======
-static const __devinitdata struct usb_device_id device_table[] = {
->>>>>>> 7175f4b... Truncated history
 	{USB_DEVICE(0x0979, 0x0227)},
 	{}
 };

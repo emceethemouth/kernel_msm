@@ -144,13 +144,8 @@ static int ip6_finish_output2(struct sk_buff *skb)
 		return res;
 	}
 	rcu_read_unlock();
-<<<<<<< HEAD
 	IP6_INC_STATS(dev_net(dst->dev),
 		      ip6_dst_idev(dst), IPSTATS_MIB_OUTNOROUTES);
-=======
-	IP6_INC_STATS_BH(dev_net(dst->dev),
-			 ip6_dst_idev(dst), IPSTATS_MIB_OUTNOROUTES);
->>>>>>> 7175f4b... Truncated history
 	kfree_skb(skb);
 	return -EINVAL;
 }
@@ -918,24 +913,17 @@ static struct dst_entry *ip6_sk_dst_check(struct sock *sk,
 					  const struct flowi6 *fl6)
 {
 	struct ipv6_pinfo *np = inet6_sk(sk);
-<<<<<<< HEAD
 	struct rt6_info *rt;
-=======
-	struct rt6_info *rt = (struct rt6_info *)dst;
->>>>>>> 7175f4b... Truncated history
 
 	if (!dst)
 		goto out;
 
-<<<<<<< HEAD
 	if (dst->ops->family != AF_INET6) {
 		dst_release(dst);
 		return NULL;
 	}
 
 	rt = (struct rt6_info *)dst;
-=======
->>>>>>> 7175f4b... Truncated history
 	/* Yes, checking route validity in not connected
 	 * case is not very simple. Take into account,
 	 * that we do not support routing by source, TOS,
@@ -1141,11 +1129,8 @@ static inline int ip6_ufo_append_data(struct sock *sk,
 	 * udp datagram
 	 */
 	if ((skb = skb_peek_tail(&sk->sk_write_queue)) == NULL) {
-<<<<<<< HEAD
 		struct frag_hdr fhdr;
 
-=======
->>>>>>> 7175f4b... Truncated history
 		skb = sock_alloc_send_skb(sk,
 			hh_len + fragheaderlen + transhdrlen + 20,
 			(flags & MSG_DONTWAIT), &err);
@@ -1166,15 +1151,6 @@ static inline int ip6_ufo_append_data(struct sock *sk,
 
 		skb->ip_summed = CHECKSUM_PARTIAL;
 		skb->csum = 0;
-<<<<<<< HEAD
-=======
-	}
-
-	err = skb_append_datato_frags(sk,skb, getfrag, from,
-				      (length - transhdrlen));
-	if (!err) {
-		struct frag_hdr fhdr;
->>>>>>> 7175f4b... Truncated history
 
 		/* Specify the length of each IPv6 datagram fragment.
 		 * It has to be a multiple of 8.
@@ -1185,22 +1161,10 @@ static inline int ip6_ufo_append_data(struct sock *sk,
 		ipv6_select_ident(&fhdr, rt);
 		skb_shinfo(skb)->ip6_frag_id = fhdr.identification;
 		__skb_queue_tail(&sk->sk_write_queue, skb);
-<<<<<<< HEAD
 	}
 
 	return skb_append_datato_frags(sk, skb, getfrag, from,
 				       (length - transhdrlen));
-=======
-
-		return 0;
-	}
-	/* There is not enough support do UPD LSO,
-	 * so follow normal path
-	 */
-	kfree_skb(skb);
-
-	return err;
->>>>>>> 7175f4b... Truncated history
 }
 
 static inline struct ipv6_opt_hdr *ip6_opt_dup(struct ipv6_opt_hdr *src,
@@ -1215,7 +1179,6 @@ static inline struct ipv6_rt_hdr *ip6_rthdr_dup(struct ipv6_rt_hdr *src,
 	return src ? kmemdup(src, (src->hdrlen + 1) * 8, gfp) : NULL;
 }
 
-<<<<<<< HEAD
 static void ip6_append_data_mtu(unsigned int *mtu,
 				int *maxfraglen,
 				unsigned int fragheaderlen,
@@ -1242,8 +1205,6 @@ static void ip6_append_data_mtu(unsigned int *mtu,
 	}
 }
 
-=======
->>>>>>> 7175f4b... Truncated history
 int ip6_append_data(struct sock *sk, int getfrag(void *from, char *to,
 	int offset, int len, int odd, struct sk_buff *skb),
 	void *from, int length, int transhdrlen,
@@ -1253,20 +1214,11 @@ int ip6_append_data(struct sock *sk, int getfrag(void *from, char *to,
 	struct inet_sock *inet = inet_sk(sk);
 	struct ipv6_pinfo *np = inet6_sk(sk);
 	struct inet_cork *cork;
-<<<<<<< HEAD
 	struct sk_buff *skb, *skb_prev = NULL;
 	unsigned int maxfraglen, fragheaderlen, mtu;
 	int exthdrlen;
 	int dst_exthdrlen;
 	int hh_len;
-=======
-	struct sk_buff *skb;
-	unsigned int maxfraglen, fragheaderlen;
-	int exthdrlen;
-	int dst_exthdrlen;
-	int hh_len;
-	int mtu;
->>>>>>> 7175f4b... Truncated history
 	int copy;
 	int err;
 	int offset = 0;
@@ -1284,11 +1236,7 @@ int ip6_append_data(struct sock *sk, int getfrag(void *from, char *to,
 			if (WARN_ON(np->cork.opt))
 				return -EINVAL;
 
-<<<<<<< HEAD
 			np->cork.opt = kzalloc(opt->tot_len, sk->sk_allocation);
-=======
-			np->cork.opt = kmalloc(opt->tot_len, sk->sk_allocation);
->>>>>>> 7175f4b... Truncated history
 			if (unlikely(np->cork.opt == NULL))
 				return -ENOBUFS;
 
@@ -1323,17 +1271,12 @@ int ip6_append_data(struct sock *sk, int getfrag(void *from, char *to,
 		inet->cork.fl.u.ip6 = *fl6;
 		np->cork.hop_limit = hlimit;
 		np->cork.tclass = tclass;
-<<<<<<< HEAD
 		if (rt->dst.flags & DST_XFRM_TUNNEL)
 			mtu = np->pmtudisc == IPV6_PMTUDISC_PROBE ?
 			      rt->dst.dev->mtu : dst_mtu(&rt->dst);
 		else
 			mtu = np->pmtudisc == IPV6_PMTUDISC_PROBE ?
 			      rt->dst.dev->mtu : dst_mtu(rt->dst.path);
-=======
-		mtu = np->pmtudisc == IPV6_PMTUDISC_PROBE ?
-		      rt->dst.dev->mtu : dst_mtu(&rt->dst);
->>>>>>> 7175f4b... Truncated history
 		if (np->frag_size < mtu) {
 			if (np->frag_size)
 				mtu = np->frag_size;
@@ -1344,17 +1287,10 @@ int ip6_append_data(struct sock *sk, int getfrag(void *from, char *to,
 		cork->length = 0;
 		sk->sk_sndmsg_page = NULL;
 		sk->sk_sndmsg_off = 0;
-<<<<<<< HEAD
 		exthdrlen = (opt ? opt->opt_flen : 0);
 		length += exthdrlen;
 		transhdrlen += exthdrlen;
 		dst_exthdrlen = rt->dst.header_len - rt->rt6i_nfheader_len;
-=======
-		exthdrlen = (opt ? opt->opt_flen : 0) - rt->rt6i_nfheader_len;
-		length += exthdrlen;
-		transhdrlen += exthdrlen;
-		dst_exthdrlen = rt->dst.header_len;
->>>>>>> 7175f4b... Truncated history
 	} else {
 		rt = (struct rt6_info *)cork->dst;
 		fl6 = &inet->cork.fl.u.ip6;
@@ -1401,7 +1337,6 @@ int ip6_append_data(struct sock *sk, int getfrag(void *from, char *to,
 	 * --yoshfuji
 	 */
 
-<<<<<<< HEAD
 	if ((length > mtu) && dontfrag && (sk->sk_protocol == IPPROTO_UDP ||
 					   sk->sk_protocol == IPPROTO_RAW)) {
 		ipv6_local_rxpmtu(sk, fl6, mtu-exthdrlen);
@@ -1423,29 +1358,6 @@ int ip6_append_data(struct sock *sk, int getfrag(void *from, char *to,
 	}
 
 	if (!skb)
-=======
-	cork->length += length;
-	if (length > mtu) {
-		int proto = sk->sk_protocol;
-		if (dontfrag && (proto == IPPROTO_UDP || proto == IPPROTO_RAW)){
-			ipv6_local_rxpmtu(sk, fl6, mtu-exthdrlen);
-			return -EMSGSIZE;
-		}
-
-		if (proto == IPPROTO_UDP &&
-		    (rt->dst.dev->features & NETIF_F_UFO)) {
-
-			err = ip6_ufo_append_data(sk, getfrag, from, length,
-						  hh_len, fragheaderlen,
-						  transhdrlen, mtu, flags, rt);
-			if (err)
-				goto error;
-			return 0;
-		}
-	}
-
-	if ((skb = skb_peek_tail(&sk->sk_write_queue)) == NULL)
->>>>>>> 7175f4b... Truncated history
 		goto alloc_new_skb;
 
 	while (length > 0) {
@@ -1460,7 +1372,6 @@ int ip6_append_data(struct sock *sk, int getfrag(void *from, char *to,
 			unsigned int fraglen;
 			unsigned int fraggap;
 			unsigned int alloclen;
-<<<<<<< HEAD
 alloc_new_skb:
 			/* There's no room in the current skb */
 			if (skb)
@@ -1475,33 +1386,15 @@ alloc_new_skb:
 						    IPV6_PMTUDISC_PROBE);
 
 			skb_prev = skb;
-=======
-			struct sk_buff *skb_prev;
-alloc_new_skb:
-			skb_prev = skb;
-
-			/* There's no room in the current skb */
-			if (skb_prev)
-				fraggap = skb_prev->len - maxfraglen;
-			else
-				fraggap = 0;
->>>>>>> 7175f4b... Truncated history
 
 			/*
 			 * If remaining data exceeds the mtu,
 			 * we know we need more fragment(s).
 			 */
 			datalen = length + fraggap;
-<<<<<<< HEAD
 
 			if (datalen > (cork->length <= mtu && !(cork->flags & IPCORK_ALLFRAG) ? mtu : maxfraglen) - fragheaderlen)
 				datalen = maxfraglen - fragheaderlen - rt->dst.trailer_len;
-=======
-			if (datalen > (cork->length <= mtu && !(cork->flags & IPCORK_ALLFRAG) ? mtu : maxfraglen) - fragheaderlen)
-				datalen = maxfraglen - fragheaderlen;
-
-			fraglen = datalen + fragheaderlen;
->>>>>>> 7175f4b... Truncated history
 			if ((flags & MSG_MORE) &&
 			    !(rt->dst.dev->features&NETIF_F_SG))
 				alloclen = mtu;
@@ -1510,7 +1403,6 @@ alloc_new_skb:
 
 			alloclen += dst_exthdrlen;
 
-<<<<<<< HEAD
 			if (datalen != length + fraggap) {
 				/*
 				 * this is not the last fragment, the trailer
@@ -1521,15 +1413,6 @@ alloc_new_skb:
 
 			alloclen += rt->dst.trailer_len;
 			fraglen = datalen + fragheaderlen;
-=======
-			/*
-			 * The last fragment gets additional space at tail.
-			 * Note: we overallocate on fragments with MSG_MODE
-			 * because we have no idea if we're the last one.
-			 */
-			if (datalen == length + fraggap)
-				alloclen += rt->dst.trailer_len;
->>>>>>> 7175f4b... Truncated history
 
 			/*
 			 * We just reserve space for fragment header.

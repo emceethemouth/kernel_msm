@@ -463,11 +463,8 @@ while(<CIN>) {
 	if (defined($configs{$1})) {
 	    if ($localyesconfig) {
 	        $setconfigs{$1} = 'y';
-<<<<<<< HEAD
 		print "$1=y\n";
 		next;
-=======
->>>>>>> 7175f4b... Truncated history
 	    } else {
 	        $setconfigs{$1} = $2;
 	    }

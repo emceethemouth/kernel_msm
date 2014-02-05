@@ -19,11 +19,7 @@
 #include <linux/compiler.h>
 #include <linux/mutex.h>
 
-<<<<<<< HEAD
 #define MIN_MEMORY_BLOCK_SIZE     (1UL << SECTION_SIZE_BITS)
-=======
-#define MIN_MEMORY_BLOCK_SIZE     (1 << SECTION_SIZE_BITS)
->>>>>>> 7175f4b... Truncated history
 
 struct memory_block {
 	unsigned long start_section_nr;

@@ -139,11 +139,6 @@ static int esp_output(struct xfrm_state *x, struct sk_buff *skb)
 
 	/* skb is pure payload to encrypt */
 
-<<<<<<< HEAD
-=======
-	err = -ENOMEM;
-
->>>>>>> 7175f4b... Truncated history
 	esp = x->data;
 	aead = esp->aead;
 	alen = crypto_aead_authsize(aead);
@@ -179,15 +174,10 @@ static int esp_output(struct xfrm_state *x, struct sk_buff *skb)
 	}
 
 	tmp = esp_alloc_tmp(aead, nfrags + sglists, seqhilen);
-<<<<<<< HEAD
 	if (!tmp) {
 		err = -ENOMEM;
 		goto error;
 	}
-=======
-	if (!tmp)
-		goto error;
->>>>>>> 7175f4b... Truncated history
 
 	seqhi = esp_tmp_seqhi(tmp);
 	iv = esp_tmp_iv(aead, tmp, seqhilen);
@@ -469,7 +459,6 @@ static u32 esp4_get_mtu(struct xfrm_state *x, int mtu)
 	struct esp_data *esp = x->data;
 	u32 blksize = ALIGN(crypto_aead_blocksize(esp->aead), 4);
 	u32 align = max_t(u32, blksize, esp->padlen);
-<<<<<<< HEAD
 	unsigned int net_adj;
 
 	switch (x->props.mode) {
@@ -486,30 +475,6 @@ static u32 esp4_get_mtu(struct xfrm_state *x, int mtu)
 
 	return ((mtu - x->props.header_len - crypto_aead_authsize(esp->aead) -
 		 net_adj) & ~(align - 1)) + (net_adj - 2);
-=======
-	u32 rem;
-
-	mtu -= x->props.header_len + crypto_aead_authsize(esp->aead);
-	rem = mtu & (align - 1);
-	mtu &= ~(align - 1);
-
-	switch (x->props.mode) {
-	case XFRM_MODE_TUNNEL:
-		break;
-	default:
-	case XFRM_MODE_TRANSPORT:
-		/* The worst case */
-		mtu -= blksize - 4;
-		mtu += min_t(u32, blksize - 4, rem);
-		break;
-	case XFRM_MODE_BEET:
-		/* The worst case. */
-		mtu += min_t(u32, IPV4_BEET_PHMAXLEN, rem);
-		break;
-	}
-
-	return mtu - 2;
->>>>>>> 7175f4b... Truncated history
 }
 
 static void esp4_err(struct sk_buff *skb, u32 info)

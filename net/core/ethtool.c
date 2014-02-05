@@ -1286,11 +1286,7 @@ int dev_ethtool(struct net *net, struct ifreq *ifr)
 	void __user *useraddr = ifr->ifr_data;
 	u32 ethcmd;
 	int rc;
-<<<<<<< HEAD
 	netdev_features_t old_features;
-=======
-	u32 old_features;
->>>>>>> 7175f4b... Truncated history
 
 	if (!dev || !netif_device_present(dev))
 		return -ENODEV;

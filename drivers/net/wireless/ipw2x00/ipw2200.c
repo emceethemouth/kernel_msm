@@ -34,10 +34,7 @@
 #include <linux/slab.h>
 #include <net/cfg80211-wext.h>
 #include "ipw2200.h"
-<<<<<<< HEAD
 #include "ipw.h"
-=======
->>>>>>> 7175f4b... Truncated history
 
 
 #ifndef KBUILD_EXTMOD
@@ -10474,11 +10471,7 @@ static void ipw_handle_promiscuous_tx(struct ipw_priv *priv,
 		} else
 			len = src->len;
 
-<<<<<<< HEAD
 		dst = alloc_skb(len + sizeof(*rt_hdr) + sizeof(u16)*2, GFP_ATOMIC);
-=======
-		dst = alloc_skb(len + sizeof(*rt_hdr), GFP_ATOMIC);
->>>>>>> 7175f4b... Truncated history
 		if (!dst)
 			continue;
 
@@ -11552,12 +11545,9 @@ static int ipw_wdev_init(struct net_device *dev)
 		wdev->wiphy->bands[IEEE80211_BAND_5GHZ] = a_band;
 	}
 
-<<<<<<< HEAD
 	wdev->wiphy->cipher_suites = ipw_cipher_suites;
 	wdev->wiphy->n_cipher_suites = ARRAY_SIZE(ipw_cipher_suites);
 
-=======
->>>>>>> 7175f4b... Truncated history
 	set_wiphy_dev(wdev->wiphy, &priv->pci_dev->dev);
 
 	/* With that information in place, we can now register the wiphy... */

@@ -150,11 +150,8 @@ enum piix_controller_ids {
 	tolapai_sata,
 	piix_pata_vmw,			/* PIIX4 for VMware, spurious DMA_ERR */
 	ich8_sata_snb,
-<<<<<<< HEAD
 	ich8_2port_sata_snb,
 	ich8_2port_sata_byt,
-=======
->>>>>>> 7175f4b... Truncated history
 };
 
 struct piix_map_db {
@@ -331,16 +328,11 @@ static const struct pci_device_id piix_pci_tbl[] = {
 	/* SATA Controller IDE (Lynx Point) */
 	{ 0x8086, 0x8c01, PCI_ANY_ID, PCI_ANY_ID, 0, 0, ich8_sata_snb },
 	/* SATA Controller IDE (Lynx Point) */
-<<<<<<< HEAD
 	{ 0x8086, 0x8c08, PCI_ANY_ID, PCI_ANY_ID, 0, 0, ich8_2port_sata_snb },
-=======
-	{ 0x8086, 0x8c08, PCI_ANY_ID, PCI_ANY_ID, 0, 0, ich8_2port_sata },
->>>>>>> 7175f4b... Truncated history
 	/* SATA Controller IDE (Lynx Point) */
 	{ 0x8086, 0x8c09, PCI_ANY_ID, PCI_ANY_ID, 0, 0, ich8_2port_sata },
 	/* SATA Controller IDE (DH89xxCC) */
 	{ 0x8086, 0x2326, PCI_ANY_ID, PCI_ANY_ID, 0, 0, ich8_2port_sata },
-<<<<<<< HEAD
 	/* SATA Controller IDE (Avoton) */
 	{ 0x8086, 0x1f20, PCI_ANY_ID, PCI_ANY_ID, 0, 0, ich8_sata_snb },
 	/* SATA Controller IDE (Avoton) */
@@ -363,8 +355,6 @@ static const struct pci_device_id piix_pci_tbl[] = {
 	/* SATA Controller IDE (Coleto Creek) */
 	{ 0x8086, 0x23a6, PCI_ANY_ID, PCI_ANY_ID, 0, 0, ich8_2port_sata },
 
-=======
->>>>>>> 7175f4b... Truncated history
 	{ }	/* terminate list */
 };
 
@@ -528,11 +518,8 @@ static const struct piix_map_db *piix_map_db_table[] = {
 	[ich8m_apple_sata]	= &ich8m_apple_map_db,
 	[tolapai_sata]		= &tolapai_map_db,
 	[ich8_sata_snb]		= &ich8_map_db,
-<<<<<<< HEAD
 	[ich8_2port_sata_snb]	= &ich8_2port_map_db,
 	[ich8_2port_sata_byt]	= &ich8_2port_map_db,
-=======
->>>>>>> 7175f4b... Truncated history
 };
 
 static struct ata_port_info piix_port_info[] = {
@@ -674,7 +661,6 @@ static struct ata_port_info piix_port_info[] = {
 		.port_ops	= &piix_sata_ops,
 	},
 
-<<<<<<< HEAD
 	[ich8_2port_sata_snb] =
 	{
 		.flags		= PIIX_SATA_FLAGS | PIIX_FLAG_SIDPR
@@ -694,8 +680,6 @@ static struct ata_port_info piix_port_info[] = {
 		.port_ops       = &piix_sata_ops,
 	},
 
-=======
->>>>>>> 7175f4b... Truncated history
 };
 
 static struct pci_bits piix_enable_bits[] = {
@@ -1615,7 +1599,6 @@ static bool piix_broken_system_poweroff(struct pci_dev *pdev)
 	return false;
 }
 
-<<<<<<< HEAD
 static int prefer_ms_hyperv = 1;
 module_param(prefer_ms_hyperv, int, 0);
 
@@ -1668,8 +1651,6 @@ static void piix_ignore_devices_quirk(struct ata_host *host)
 #endif
 }
 
-=======
->>>>>>> 7175f4b... Truncated history
 /**
  *	piix_init_one - Register PIIX ATA PCI device with kernel services
  *	@pdev: PCI device to register
@@ -1785,12 +1766,9 @@ static int __devinit piix_init_one(struct pci_dev *pdev,
 	}
 	host->flags |= ATA_HOST_PARALLEL_SCAN;
 
-<<<<<<< HEAD
 	/* Allow hosts to specify device types to ignore when scanning. */
 	piix_ignore_devices_quirk(host);
 
-=======
->>>>>>> 7175f4b... Truncated history
 	pci_set_master(pdev);
 	return ata_pci_sff_activate_host(host, ata_bmdma_interrupt, sht);
 }

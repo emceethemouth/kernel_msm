@@ -709,7 +709,6 @@ static int rs_toggle_antenna(u32 valid_ant, u32 *rate_n_flags,
  */
 static bool rs_use_green(struct ieee80211_sta *sta)
 {
-<<<<<<< HEAD
 	/*
 	 * There's a bug somewhere in this code that causes the
 	 * scaling to get stuck because GF+SGI can't be combined
@@ -718,13 +717,6 @@ static bool rs_use_green(struct ieee80211_sta *sta)
 	 * GF APs since we can always receive GF transmissions.
 	 */
 	return false;
-=======
-	struct iwl_station_priv *sta_priv = (void *)sta->drv_priv;
-	struct iwl_rxon_context *ctx = sta_priv->ctx;
-
-	return (sta->ht_cap.cap & IEEE80211_HT_CAP_GRN_FLD) &&
-		!(ctx->ht.non_gf_sta_present);
->>>>>>> 7175f4b... Truncated history
 }
 
 /**
@@ -895,10 +887,7 @@ static void rs_bt_update_lq(struct iwl_priv *priv, struct iwl_rxon_context *ctx,
 	if ((priv->bt_traffic_load != priv->last_bt_traffic_load) ||
 	    (priv->bt_full_concurrent != full_concurrent)) {
 		priv->bt_full_concurrent = full_concurrent;
-<<<<<<< HEAD
 		priv->last_bt_traffic_load = priv->bt_traffic_load;
-=======
->>>>>>> 7175f4b... Truncated history
 
 		/* Update uCode's rate table. */
 		tbl = &(lq_sta->lq_info[lq_sta->active_tbl]);

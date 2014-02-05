@@ -10,14 +10,11 @@
  */
 #include <linux/linkage.h>
 
-<<<<<<< HEAD
 #ifdef CONFIG_KEXEC_HARDBOOT
   #include <asm/kexec.h>
   #include <asm/memory.h>
 #endif
 
-=======
->>>>>>> 7175f4b... Truncated history
 /*
  * Debugging stuff
  *
@@ -143,7 +140,6 @@ start:
 1:		mov	r7, r1			@ save architecture ID
 		mov	r8, r2			@ save atags pointer
 
-<<<<<<< HEAD
 #ifdef CONFIG_KEXEC_HARDBOOT
 		/* Check hardboot page for a kexec kernel. */
 		ldr	r3, =KEXEC_HB_PAGE_ADDR
@@ -202,8 +198,6 @@ kernel_cpy:
 not_booting_other:
 #endif
 
-=======
->>>>>>> 7175f4b... Truncated history
 #ifndef __ARM_ARCH_2__
 		/*
 		 * Booting from Angel - need to enter SVC mode and disable
@@ -579,10 +573,7 @@ cache_on:	mov	r3, #8			@ cache_on function
  * to cover all 32bit address and cacheable and bufferable.
  */
 __armv4_mpu_cache_on:
-<<<<<<< HEAD
 		.arch armv4
-=======
->>>>>>> 7175f4b... Truncated history
 		mov	r0, #0x3f		@ 4G, the whole
 		mcr	p15, 0, r0, c6, c7, 0	@ PR7 Area Setting
 		mcr 	p15, 0, r0, c6, c7, 1
@@ -689,19 +680,13 @@ ENDPROC(__setup_mmu)
 
 __arm926ejs_mmu_cache_on:
 #ifdef CONFIG_CPU_DCACHE_WRITETHROUGH
-<<<<<<< HEAD
 		.arch armv5
-=======
->>>>>>> 7175f4b... Truncated history
 		mov	r0, #4			@ put dcache in WT mode
 		mcr	p15, 7, r0, c15, c0, 0
 #endif
 
 __armv4_mmu_cache_on:
-<<<<<<< HEAD
 		.arch armv4
-=======
->>>>>>> 7175f4b... Truncated history
 		mov	r12, lr
 #ifdef CONFIG_MMU
 		mov	r6, #CB_BITS | 0x12	@ U
@@ -722,10 +707,7 @@ __armv4_mmu_cache_on:
 		mov	pc, r12
 
 __armv7_mmu_cache_on:
-<<<<<<< HEAD
 		.arch armv7-a
-=======
->>>>>>> 7175f4b... Truncated history
 		mov	r12, lr
 #ifdef CONFIG_MMU
 		mrc	p15, 0, r11, c0, c1, 4	@ read ID_MMFR0
@@ -738,10 +720,7 @@ __armv7_mmu_cache_on:
 		mcrne	p15, 0, r0, c8, c7, 0	@ flush I,D TLBs
 #endif
 		mrc	p15, 0, r0, c1, c0, 0	@ read control reg
-<<<<<<< HEAD
 		bic	r0, r0, #1 << 28	@ clear SCTLR.TRE
-=======
->>>>>>> 7175f4b... Truncated history
 		orr	r0, r0, #0x5000		@ I-cache enable, RR cache replacement
 		orr	r0, r0, #0x003c		@ write buffer
 #ifdef CONFIG_MMU
@@ -776,10 +755,7 @@ __fa526_cache_on:
 		mov	pc, r12
 
 __arm6_mmu_cache_on:
-<<<<<<< HEAD
 		.arch armv6
-=======
->>>>>>> 7175f4b... Truncated history
 		mov	r12, lr
 		mov	r6, #CB_BITS | 0x12	@ U
 		bl	__setup_mmu
@@ -1108,10 +1084,7 @@ cache_clean_flush:
 		mov	r3, #16
 		b	call_cache_fn
 
-<<<<<<< HEAD
 		.arch armv4
-=======
->>>>>>> 7175f4b... Truncated history
 __armv4_mpu_cache_flush:
 		mov	r2, #1
 		mov	r3, #0
@@ -1137,10 +1110,7 @@ __fa526_cache_flush:
 		mov	pc, lr
 
 __armv6_mmu_cache_flush:
-<<<<<<< HEAD
 		.arch armv6
-=======
->>>>>>> 7175f4b... Truncated history
 		mov	r1, #0
 		mcr	p15, 0, r1, c7, c14, 0	@ clean+invalidate D
 		mcr	p15, 0, r1, c7, c5, 0	@ invalidate I+BTB
@@ -1148,10 +1118,7 @@ __armv6_mmu_cache_flush:
 		mcr	p15, 0, r1, c7, c10, 4	@ drain WB
 		mov	pc, lr
 
-<<<<<<< HEAD
 		.arch armv7-a
-=======
->>>>>>> 7175f4b... Truncated history
 __armv7_mmu_cache_flush:
 		mrc	p15, 0, r10, c0, c1, 5	@ read ID_MMFR1
 		tst	r10, #0xf << 16		@ hierarchical cache (ARMv7)
@@ -1212,10 +1179,7 @@ iflush:
 		mcr	p15, 0, r10, c7, c5, 4	@ ISB
 		mov	pc, lr
 
-<<<<<<< HEAD
 		.arch armv5
-=======
->>>>>>> 7175f4b... Truncated history
 __armv5tej_mmu_cache_flush:
 1:		mrc	p15, 0, r15, c7, c14, 3	@ test,clean,invalidate D cache
 		bne	1b
@@ -1223,10 +1187,7 @@ __armv5tej_mmu_cache_flush:
 		mcr	p15, 0, r0, c7, c10, 4	@ drain WB
 		mov	pc, lr
 
-<<<<<<< HEAD
 		.arch armv4
-=======
->>>>>>> 7175f4b... Truncated history
 __armv4_mmu_cache_flush:
 		mov	r2, #64*1024		@ default: 32K dcache size (*2)
 		mov	r11, #32		@ default: 32 byte line size
@@ -1265,11 +1226,8 @@ __armv3_mpu_cache_flush:
 		mcr	p15, 0, r1, c7, c0, 0	@ invalidate whole cache v3
 		mov	pc, lr
 
-<<<<<<< HEAD
 		.arch armv4
 
-=======
->>>>>>> 7175f4b... Truncated history
 /*
  * Various debugging routines for printing hex characters and
  * memory, which again must be relocatable.
@@ -1354,7 +1312,4 @@ reloc_code_end:
 		.section ".stack", "aw", %nobits
 .L_user_stack:	.space	4096
 .L_user_stack_end:
-<<<<<<< HEAD
 
-=======
->>>>>>> 7175f4b... Truncated history

@@ -67,10 +67,7 @@ struct scsi_disk {
 	u8		protection_type;/* Data Integrity Field */
 	u8		provisioning_mode;
 	unsigned	ATO : 1;	/* state of disk ATO bit */
-<<<<<<< HEAD
 	unsigned	cache_override : 1; /* temp override of WCE,RCD */
-=======
->>>>>>> 7175f4b... Truncated history
 	unsigned	WCE : 1;	/* state of disk WCE bit */
 	unsigned	RCD : 1;	/* state of disk RCD bit, unused */
 	unsigned	DPOFUA : 1;	/* state of disk DPOFUA bit */

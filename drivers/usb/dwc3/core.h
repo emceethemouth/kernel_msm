@@ -781,13 +781,8 @@ struct dwc3 {
 
 struct dwc3_event_type {
 	u32	is_devspec:1;
-<<<<<<< HEAD
 	u32	type:7;
 	u32	reserved8_31:24;
-=======
-	u32	type:6;
-	u32	reserved8_31:25;
->>>>>>> 7175f4b... Truncated history
 } __packed;
 
 #define DWC3_DEPEVT_XFERCOMPLETE	0x01

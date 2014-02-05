@@ -769,12 +769,9 @@ BYTE    byPwr = pDevice->byCCKPwr;
         return TRUE;
     }
 
-<<<<<<< HEAD
 	if (uCH == 0)
 		return -EINVAL;
 
-=======
->>>>>>> 7175f4b... Truncated history
     switch (uRATE) {
     case RATE_1M:
     case RATE_2M:

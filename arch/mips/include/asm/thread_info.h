@@ -60,11 +60,8 @@ struct thread_info {
 register struct thread_info *__current_thread_info __asm__("$28");
 #define current_thread_info()  __current_thread_info
 
-<<<<<<< HEAD
 #endif /* !__ASSEMBLY__ */
 
-=======
->>>>>>> 7175f4b... Truncated history
 /* thread information allocation */
 #if defined(CONFIG_PAGE_SIZE_4KB) && defined(CONFIG_32BIT)
 #define THREAD_SIZE_ORDER (1)
@@ -102,11 +99,6 @@ register struct thread_info *__current_thread_info __asm__("$28");
 
 #define free_thread_info(info) kfree(info)
 
-<<<<<<< HEAD
-=======
-#endif /* !__ASSEMBLY__ */
-
->>>>>>> 7175f4b... Truncated history
 #define PREEMPT_ACTIVE		0x10000000
 
 /*

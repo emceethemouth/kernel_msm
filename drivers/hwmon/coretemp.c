@@ -53,11 +53,7 @@ MODULE_PARM_DESC(tjmax, "TjMax value in degrees Celsius");
 
 #define BASE_SYSFS_ATTR_NO	2	/* Sysfs Base attr no for coretemp */
 #define NUM_REAL_CORES		32	/* Number of Real cores per cpu */
-<<<<<<< HEAD
 #define CORETEMP_NAME_LENGTH	19	/* String Length of attrs */
-=======
-#define CORETEMP_NAME_LENGTH	17	/* String Length of attrs */
->>>>>>> 7175f4b... Truncated history
 #define MAX_CORE_ATTRS		4	/* Maximum no of basic attrs */
 #define TOTAL_ATTRS		(MAX_CORE_ATTRS + 1)
 #define MAX_CORE_DATA		(NUM_REAL_CORES + BASE_SYSFS_ATTR_NO)
@@ -668,11 +664,7 @@ static void __cpuinit get_core_online(unsigned int cpu)
 	 * sensors. We check this bit only, all the early CPUs
 	 * without thermal sensors will be filtered out.
 	 */
-<<<<<<< HEAD
 	if (!cpu_has(c, X86_FEATURE_DTHERM))
-=======
-	if (!cpu_has(c, X86_FEATURE_DTS))
->>>>>>> 7175f4b... Truncated history
 		return;
 
 	if (!pdev) {
@@ -773,11 +765,7 @@ static struct notifier_block coretemp_cpu_notifier __refdata = {
 };
 
 static const struct x86_cpu_id coretemp_ids[] = {
-<<<<<<< HEAD
 	{ X86_VENDOR_INTEL, X86_FAMILY_ANY, X86_MODEL_ANY, X86_FEATURE_DTHERM },
-=======
-	{ X86_VENDOR_INTEL, X86_FAMILY_ANY, X86_MODEL_ANY, X86_FEATURE_DTS },
->>>>>>> 7175f4b... Truncated history
 	{}
 };
 MODULE_DEVICE_TABLE(x86cpu, coretemp_ids);

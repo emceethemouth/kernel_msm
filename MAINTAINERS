@@ -2627,11 +2627,7 @@ S:	Maintained
 F:	drivers/net/ethernet/i825xx/eexpress.*
 
 ETHERNET BRIDGE
-<<<<<<< HEAD
 M:	Stephen Hemminger <stephen@networkplumber.org>
-=======
-M:	Stephen Hemminger <shemminger@vyatta.com>
->>>>>>> 7175f4b... Truncated history
 L:	bridge@lists.linux-foundation.org
 L:	netdev@vger.kernel.org
 W:	http://www.linuxfoundation.org/en/Net:Bridge
@@ -4316,11 +4312,7 @@ S:	Maintained
 
 MARVELL GIGABIT ETHERNET DRIVERS (skge/sky2)
 M:	Mirko Lindner <mlindner@marvell.com>
-<<<<<<< HEAD
 M:	Stephen Hemminger <stephen@networkplumber.org>
-=======
-M:	Stephen Hemminger <shemminger@vyatta.com>
->>>>>>> 7175f4b... Truncated history
 L:	netdev@vger.kernel.org
 S:	Maintained
 F:	drivers/net/ethernet/marvell/sk*
@@ -4571,11 +4563,7 @@ S:	Supported
 F:	drivers/infiniband/hw/nes/
 
 NETEM NETWORK EMULATOR
-<<<<<<< HEAD
 M:	Stephen Hemminger <stephen@networkplumber.org>
-=======
-M:	Stephen Hemminger <shemminger@vyatta.com>
->>>>>>> 7175f4b... Truncated history
 L:	netem@lists.linux-foundation.org
 S:	Maintained
 F:	net/sched/sch_netem.c
@@ -5578,11 +5566,7 @@ F:	Documentation/blockdev/ramdisk.txt
 F:	drivers/block/brd.c
 
 RANDOM NUMBER DRIVER
-<<<<<<< HEAD
 M:	Theodore Ts'o" <tytso@mit.edu>
-=======
-M:	Matt Mackall <mpm@selenic.com>
->>>>>>> 7175f4b... Truncated history
 S:	Maintained
 F:	drivers/char/random.c
 
@@ -6406,10 +6390,7 @@ STABLE BRANCH
 M:	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 L:	stable@vger.kernel.org
 S:	Supported
-<<<<<<< HEAD
 F:	Documentation/stable_kernel_rules.txt
-=======
->>>>>>> 7175f4b... Truncated history
 
 STAGING SUBSYSTEM
 M:	Greg Kroah-Hartman <gregkh@linuxfoundation.org>

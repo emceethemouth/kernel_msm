@@ -287,11 +287,7 @@ static int xhci_stop_device(struct xhci_hcd *xhci, int slot_id, int suspend)
 		if (virt_dev->eps[i].ring && virt_dev->eps[i].ring->dequeue)
 			xhci_queue_stop_endpoint(xhci, slot_id, i, suspend);
 	}
-<<<<<<< HEAD
 	cmd->command_trb = xhci_find_next_enqueue(xhci->cmd_ring);
-=======
-	cmd->command_trb = xhci->cmd_ring->enqueue;
->>>>>>> 7175f4b... Truncated history
 	list_add_tail(&cmd->cmd_list, &virt_dev->cmd_list);
 	xhci_queue_stop_endpoint(xhci, slot_id, 0, suspend);
 	xhci_ring_cmd_db(xhci);
@@ -476,7 +472,6 @@ void xhci_test_and_clear_bit(struct xhci_hcd *xhci, __le32 __iomem **port_array,
 	}
 }
 
-<<<<<<< HEAD
 /* Updates Link Status for super Speed port */
 static void xhci_hub_report_link_state(u32 *status, u32 status_reg)
 {
@@ -550,8 +545,6 @@ void xhci_del_comp_mod_timer(struct xhci_hcd *xhci, u32 status, u16 wIndex)
 	}
 }
 
-=======
->>>>>>> 7175f4b... Truncated history
 int xhci_hub_control(struct usb_hcd *hcd, u16 typeReq, u16 wValue,
 		u16 wIndex, char *buf, u16 wLength)
 {
@@ -649,10 +642,7 @@ int xhci_hub_control(struct usb_hcd *hcd, u16 typeReq, u16 wValue,
 				xhci_dbg(xhci, "Resume USB2 port %d\n",
 					wIndex + 1);
 				bus_state->resume_done[wIndex] = 0;
-<<<<<<< HEAD
 				clear_bit(wIndex, &bus_state->resuming_ports);
-=======
->>>>>>> 7175f4b... Truncated history
 				xhci_set_link_state(xhci, port_array, wIndex,
 							XDEV_U0);
 				xhci_dbg(xhci, "set port %d resume\n",
@@ -699,7 +689,6 @@ int xhci_hub_control(struct usb_hcd *hcd, u16 typeReq, u16 wValue,
 			else
 				status |= USB_PORT_STAT_POWER;
 		}
-<<<<<<< HEAD
 		/* Update Port Link State for super speed ports*/
 		if (hcd->speed == HCD_USB3) {
 			xhci_hub_report_link_state(&status, temp);
@@ -708,15 +697,6 @@ int xhci_hub_control(struct usb_hcd *hcd, u16 typeReq, u16 wValue,
 			 * Delete Compliance Mode Timer if so.
 			 */
 			xhci_del_comp_mod_timer(xhci, temp, wIndex);
-=======
-		/* Port Link State */
-		if (hcd->speed == HCD_USB3) {
-			/* resume state is a xHCI internal state.
-			 * Do not report it to usb core.
-			 */
-			if ((temp & PORT_PLS_MASK) != XDEV_RESUME)
-				status |= (temp & PORT_PLS_MASK);
->>>>>>> 7175f4b... Truncated history
 		}
 		if (bus_state->port_c_suspend & (1 << wIndex))
 			status |= 1 << USB_PORT_FEAT_C_SUSPEND;
@@ -786,7 +766,6 @@ int xhci_hub_control(struct usb_hcd *hcd, u16 typeReq, u16 wValue,
 			break;
 		case USB_PORT_FEAT_LINK_STATE:
 			temp = xhci_readl(xhci, port_array[wIndex]);
-<<<<<<< HEAD
 
 			/* Disable port */
 			if (link_state == USB_SS_PORT_LS_SS_DISABLED) {
@@ -820,14 +799,6 @@ int xhci_hub_control(struct usb_hcd *hcd, u16 typeReq, u16 wValue,
 			 */
 			if ((temp & PORT_PE) == 0 ||
 				(link_state > USB_SS_PORT_LS_U3)) {
-=======
-			/* Software should not attempt to set
-			 * port link state above '5' (Rx.Detect) and the port
-			 * must be enabled.
-			 */
-			if ((temp & PORT_PE) == 0 ||
-				(link_state > USB_SS_PORT_LS_RX_DETECT)) {
->>>>>>> 7175f4b... Truncated history
 				xhci_warn(xhci, "Cannot set link state.\n");
 				goto error;
 			}
@@ -1005,10 +976,7 @@ int xhci_hub_status_data(struct usb_hcd *hcd, char *buf)
 	int max_ports;
 	__le32 __iomem **port_array;
 	struct xhci_bus_state *bus_state;
-<<<<<<< HEAD
 	bool reset_change = false;
-=======
->>>>>>> 7175f4b... Truncated history
 
 	max_ports = xhci_get_ports(hcd, &port_array);
 	bus_state = &xhci->bus_state[hcd_index(hcd)];
@@ -1016,16 +984,12 @@ int xhci_hub_status_data(struct usb_hcd *hcd, char *buf)
 	/* Initial status is no changes */
 	retval = (max_ports + 8) / 8;
 	memset(buf, 0, retval);
-<<<<<<< HEAD
 
 	/*
 	 * Inform the usbcore about resume-in-progress by returning
 	 * a non-zero value even if there are no status changes.
 	 */
 	status = bus_state->resuming_ports;
-=======
-	status = 0;
->>>>>>> 7175f4b... Truncated history
 
 	mask = PORT_CSC | PORT_PEC | PORT_OCC | PORT_PLC | PORT_WRC;
 
@@ -1044,15 +1008,12 @@ int xhci_hub_status_data(struct usb_hcd *hcd, char *buf)
 			buf[(i + 1) / 8] |= 1 << (i + 1) % 8;
 			status = 1;
 		}
-<<<<<<< HEAD
 		if ((temp & PORT_RC))
 			reset_change = true;
 	}
 	if (!status && !reset_change) {
 		xhci_dbg(xhci, "%s: stopping port polling.\n", __func__);
 		clear_bit(HCD_FLAG_POLL_RH, &hcd->flags);
-=======
->>>>>>> 7175f4b... Truncated history
 	}
 	spin_unlock_irqrestore(&xhci->lock, flags);
 	return status ? retval : 0;
@@ -1074,23 +1035,11 @@ int xhci_bus_suspend(struct usb_hcd *hcd)
 	spin_lock_irqsave(&xhci->lock, flags);
 
 	if (hcd->self.root_hub->do_remote_wakeup) {
-<<<<<<< HEAD
 		if (bus_state->resuming_ports) {
 			spin_unlock_irqrestore(&xhci->lock, flags);
 			xhci_dbg(xhci, "suspend failed because "
 						"a port is resuming\n");
 			return -EBUSY;
-=======
-		port_index = max_ports;
-		while (port_index--) {
-			if (bus_state->resume_done[port_index] != 0) {
-				spin_unlock_irqrestore(&xhci->lock, flags);
-				xhci_dbg(xhci, "suspend failed because "
-						"port %d is resuming\n",
-						port_index + 1);
-				return -EBUSY;
-			}
->>>>>>> 7175f4b... Truncated history
 		}
 	}
 

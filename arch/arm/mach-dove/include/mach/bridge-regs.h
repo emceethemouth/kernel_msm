@@ -50,9 +50,6 @@
 #define POWER_MANAGEMENT	(BRIDGE_VIRT_BASE | 0x011c)
 
 #define TIMER_VIRT_BASE		(BRIDGE_VIRT_BASE | 0x0300)
-<<<<<<< HEAD
 #define TIMER_PHYS_BASE         (BRIDGE_PHYS_BASE | 0x0300)
-=======
->>>>>>> 7175f4b... Truncated history
 
 #endif

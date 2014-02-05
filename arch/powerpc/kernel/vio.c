@@ -1341,7 +1341,6 @@ static ssize_t modalias_show(struct device *dev, struct device_attribute *attr,
 	const char *cp;
 
 	dn = dev->of_node;
-<<<<<<< HEAD
 	if (!dn) {
 		strcpy(buf, "\n");
 		return strlen(buf);
@@ -1351,13 +1350,6 @@ static ssize_t modalias_show(struct device *dev, struct device_attribute *attr,
 		strcpy(buf, "\n");
 		return strlen(buf);
 	}
-=======
-	if (!dn)
-		return -ENODEV;
-	cp = of_get_property(dn, "compatible", NULL);
-	if (!cp)
-		return -ENODEV;
->>>>>>> 7175f4b... Truncated history
 
 	return sprintf(buf, "vio:T%sS%s\n", vio_dev->type, cp);
 }

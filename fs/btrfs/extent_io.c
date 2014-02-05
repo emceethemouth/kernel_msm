@@ -1238,7 +1238,6 @@ int unlock_extent(struct extent_io_tree *tree, u64 start, u64 end)
 				GFP_NOFS);
 }
 
-<<<<<<< HEAD
 int extent_range_clear_dirty_for_io(struct inode *inode, u64 start, u64 end)
 {
 	unsigned long index = start >> PAGE_CACHE_SHIFT;
@@ -1272,8 +1271,6 @@ int extent_range_redirty_for_io(struct inode *inode, u64 start, u64 end)
 	return 0;
 }
 
-=======
->>>>>>> 7175f4b... Truncated history
 /*
  * helper function to set both pages and extents in the tree writeback
  */

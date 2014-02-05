@@ -966,11 +966,7 @@ int nfc_llcp_register_device(struct nfc_dev *ndev)
 	local->remote_lto = LLCP_DEFAULT_LTO;
 	local->remote_rw = LLCP_DEFAULT_RW;
 
-<<<<<<< HEAD
 	list_add(&local->list, &llcp_devices);
-=======
-	list_add(&llcp_devices, &local->list);
->>>>>>> 7175f4b... Truncated history
 
 	return 0;
 

@@ -416,10 +416,7 @@ int radeon_crtc_do_set_base(struct drm_crtc *crtc,
 	/* Pin framebuffer & get tilling informations */
 	obj = radeon_fb->obj;
 	rbo = gem_to_radeon_bo(obj);
-<<<<<<< HEAD
 retry:
-=======
->>>>>>> 7175f4b... Truncated history
 	r = radeon_bo_reserve(rbo, false);
 	if (unlikely(r != 0))
 		return r;
@@ -428,7 +425,6 @@ retry:
 				     &base);
 	if (unlikely(r != 0)) {
 		radeon_bo_unreserve(rbo);
-<<<<<<< HEAD
 
 		/* On old GPU like RN50 with little vram pining can fails because
 		 * current fb is taking all space needed. So instead of unpining
@@ -456,8 +452,6 @@ retry:
 				goto retry;
 			}
 		}
-=======
->>>>>>> 7175f4b... Truncated history
 		return -EINVAL;
 	}
 	radeon_bo_get_tiling_flags(rbo, &tiling_flags, NULL);
@@ -1059,17 +1053,11 @@ static int radeon_crtc_mode_set(struct drm_crtc *crtc,
 
 static void radeon_crtc_prepare(struct drm_crtc *crtc)
 {
-<<<<<<< HEAD
 	struct radeon_crtc *radeon_crtc = to_radeon_crtc(crtc);
 	struct drm_device *dev = crtc->dev;
 	struct drm_crtc *crtci;
 
 	radeon_crtc->in_mode_set = true;
-=======
-	struct drm_device *dev = crtc->dev;
-	struct drm_crtc *crtci;
-
->>>>>>> 7175f4b... Truncated history
 	/*
 	* The hardware wedges sometimes if you reconfigure one CRTC
 	* whilst another is running (see fdo bug #24611).
@@ -1080,10 +1068,7 @@ static void radeon_crtc_prepare(struct drm_crtc *crtc)
 
 static void radeon_crtc_commit(struct drm_crtc *crtc)
 {
-<<<<<<< HEAD
 	struct radeon_crtc *radeon_crtc = to_radeon_crtc(crtc);
-=======
->>>>>>> 7175f4b... Truncated history
 	struct drm_device *dev = crtc->dev;
 	struct drm_crtc *crtci;
 
@@ -1094,10 +1079,7 @@ static void radeon_crtc_commit(struct drm_crtc *crtc)
 		if (crtci->enabled)
 			radeon_crtc_dpms(crtci, DRM_MODE_DPMS_ON);
 	}
-<<<<<<< HEAD
 	radeon_crtc->in_mode_set = false;
-=======
->>>>>>> 7175f4b... Truncated history
 }
 
 static const struct drm_crtc_helper_funcs legacy_helper_funcs = {

@@ -599,11 +599,7 @@ static int get_dimm_config(const struct mem_ctl_info *mci)
 		pvt->is_close_pg = false;
 	}
 
-<<<<<<< HEAD
 	pci_read_config_dword(pvt->pci_ddrio, RANK_CFG_A, &reg);
-=======
-	pci_read_config_dword(pvt->pci_ta, RANK_CFG_A, &reg);
->>>>>>> 7175f4b... Truncated history
 	if (IS_RDIMM_ENABLED(reg)) {
 		/* FIXME: Can also be LRDIMM */
 		debugf0("Memory is registered\n");
@@ -1673,11 +1669,6 @@ static void sbridge_unregister_mci(struct sbridge_dev *sbridge_dev)
 	debugf0("MC: " __FILE__ ": %s(): mci = %p, dev = %p\n",
 		__func__, mci, &sbridge_dev->pdev[0]->dev);
 
-<<<<<<< HEAD
-=======
-	mce_unregister_decode_chain(&sbridge_mce_dec);
-
->>>>>>> 7175f4b... Truncated history
 	/* Remove MC sysfs nodes */
 	edac_mc_del_mc(mci->dev);
 
@@ -1745,10 +1736,6 @@ static int sbridge_register_mci(struct sbridge_dev *sbridge_dev)
 		goto fail0;
 	}
 
-<<<<<<< HEAD
-=======
-	mce_register_decode_chain(&sbridge_mce_dec);
->>>>>>> 7175f4b... Truncated history
 	return 0;
 
 fail0:
@@ -1877,15 +1864,10 @@ static int __init sbridge_init(void)
 
 	pci_rc = pci_register_driver(&sbridge_driver);
 
-<<<<<<< HEAD
 	if (pci_rc >= 0) {
 		mce_register_decode_chain(&sbridge_mce_dec);
 		return 0;
 	}
-=======
-	if (pci_rc >= 0)
-		return 0;
->>>>>>> 7175f4b... Truncated history
 
 	sbridge_printk(KERN_ERR, "Failed to register device with error %d.\n",
 		      pci_rc);
@@ -1901,10 +1883,7 @@ static void __exit sbridge_exit(void)
 {
 	debugf2("MC: " __FILE__ ": %s()\n", __func__);
 	pci_unregister_driver(&sbridge_driver);
-<<<<<<< HEAD
 	mce_unregister_decode_chain(&sbridge_mce_dec);
-=======
->>>>>>> 7175f4b... Truncated history
 }
 
 module_init(sbridge_init);

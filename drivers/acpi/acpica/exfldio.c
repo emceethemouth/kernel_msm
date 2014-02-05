@@ -722,7 +722,6 @@ acpi_ex_extract_from_field(union acpi_operand_object *obj_desc,
 
 	if ((obj_desc->common_field.start_field_bit_offset == 0) &&
 	    (obj_desc->common_field.bit_length == access_bit_width)) {
-<<<<<<< HEAD
 		if (buffer_length >= sizeof(u64)) {
 			status =
 			    acpi_ex_field_datum_io(obj_desc, 0, buffer,
@@ -736,9 +735,6 @@ acpi_ex_extract_from_field(union acpi_operand_object *obj_desc,
 			ACPI_MEMCPY(buffer, &raw_datum, buffer_length);
 		}
 
-=======
-		status = acpi_ex_field_datum_io(obj_desc, 0, buffer, ACPI_READ);
->>>>>>> 7175f4b... Truncated history
 		return_ACPI_STATUS(status);
 	}
 

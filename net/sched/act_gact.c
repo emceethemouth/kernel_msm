@@ -67,12 +67,9 @@ static int tcf_gact_init(struct nlattr *nla, struct nlattr *est,
 	struct tcf_common *pc;
 	int ret = 0;
 	int err;
-<<<<<<< HEAD
 #ifdef CONFIG_GACT_PROB
 	struct tc_gact_p *p_parm = NULL;
 #endif
-=======
->>>>>>> 7175f4b... Truncated history
 
 	if (nla == NULL)
 		return -EINVAL;
@@ -88,15 +85,12 @@ static int tcf_gact_init(struct nlattr *nla, struct nlattr *est,
 #ifndef CONFIG_GACT_PROB
 	if (tb[TCA_GACT_PROB] != NULL)
 		return -EOPNOTSUPP;
-<<<<<<< HEAD
 #else
 	if (tb[TCA_GACT_PROB]) {
 		p_parm = nla_data(tb[TCA_GACT_PROB]);
 		if (p_parm->ptype >= MAX_RAND)
 			return -EINVAL;
 	}
-=======
->>>>>>> 7175f4b... Truncated history
 #endif
 
 	pc = tcf_hash_check(parm->index, a, bind, &gact_hash_info);
@@ -118,12 +112,7 @@ static int tcf_gact_init(struct nlattr *nla, struct nlattr *est,
 	spin_lock_bh(&gact->tcf_lock);
 	gact->tcf_action = parm->action;
 #ifdef CONFIG_GACT_PROB
-<<<<<<< HEAD
 	if (p_parm) {
-=======
-	if (tb[TCA_GACT_PROB] != NULL) {
-		struct tc_gact_p *p_parm = nla_data(tb[TCA_GACT_PROB]);
->>>>>>> 7175f4b... Truncated history
 		gact->tcfg_paction = p_parm->paction;
 		gact->tcfg_pval    = p_parm->pval;
 		gact->tcfg_ptype   = p_parm->ptype;
@@ -152,11 +141,7 @@ static int tcf_gact(struct sk_buff *skb, const struct tc_action *a,
 
 	spin_lock(&gact->tcf_lock);
 #ifdef CONFIG_GACT_PROB
-<<<<<<< HEAD
 	if (gact->tcfg_ptype)
-=======
-	if (gact->tcfg_ptype && gact_rand[gact->tcfg_ptype] != NULL)
->>>>>>> 7175f4b... Truncated history
 		action = gact_rand[gact->tcfg_ptype](gact);
 	else
 		action = gact->tcf_action;

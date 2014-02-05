@@ -86,10 +86,7 @@ static int snd_ctl_open(struct inode *inode, struct file *file)
 	write_lock_irqsave(&card->ctl_files_rwlock, flags);
 	list_add_tail(&ctl->list, &card->ctl_files);
 	write_unlock_irqrestore(&card->ctl_files_rwlock, flags);
-<<<<<<< HEAD
 	snd_card_unref(card);
-=======
->>>>>>> 7175f4b... Truncated history
 	return 0;
 
       __error:
@@ -97,11 +94,8 @@ static int snd_ctl_open(struct inode *inode, struct file *file)
       __error2:
 	snd_card_file_remove(card, file);
       __error1:
-<<<<<<< HEAD
 	if (card)
 		snd_card_unref(card);
-=======
->>>>>>> 7175f4b... Truncated history
       	return err;
 }
 
@@ -1442,11 +1436,8 @@ static ssize_t snd_ctl_read(struct file *file, char __user *buffer,
 			spin_unlock_irq(&ctl->read_lock);
 			schedule();
 			remove_wait_queue(&ctl->change_sleep, &wait);
-<<<<<<< HEAD
 			if (ctl->card->shutdown)
 				return -ENODEV;
-=======
->>>>>>> 7175f4b... Truncated history
 			if (signal_pending(current))
 				return -ERESTARTSYS;
 			spin_lock_irq(&ctl->read_lock);

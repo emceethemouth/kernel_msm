@@ -297,11 +297,7 @@ static void *start_thread_helper(void *arg)
 
 		ret = t->in(t, t->buf, t->buf_size);
 		if (ret > 0) {
-<<<<<<< HEAD
 			ret = t->out(t, t->buf, ret);
-=======
-			ret = t->out(t, t->buf, t->buf_size);
->>>>>>> 7175f4b... Truncated history
 			name = out_name;
 			op = "write";
 		} else {

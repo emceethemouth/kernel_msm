@@ -420,7 +420,6 @@ void kunmap_parisc(void *addr)
 EXPORT_SYMBOL(kunmap_parisc);
 #endif
 
-<<<<<<< HEAD
 void purge_tlb_entries(struct mm_struct *mm, unsigned long addr)
 {
 	unsigned long flags;
@@ -439,8 +438,6 @@ void purge_tlb_entries(struct mm_struct *mm, unsigned long addr)
 }
 EXPORT_SYMBOL(purge_tlb_entries);
 
-=======
->>>>>>> 7175f4b... Truncated history
 void __flush_tlb_range(unsigned long sid, unsigned long start,
 		       unsigned long end)
 {

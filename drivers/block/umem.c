@@ -513,7 +513,6 @@ static void process_page(unsigned long data)
 	}
 }
 
-<<<<<<< HEAD
 struct mm_plug_cb {
 	struct blk_plug_cb cb;
 	struct cardinfo *card;
@@ -552,8 +551,6 @@ static int mm_check_plugged(struct cardinfo *card)
 	return 1;
 }
 
-=======
->>>>>>> 7175f4b... Truncated history
 static void mm_make_request(struct request_queue *q, struct bio *bio)
 {
 	struct cardinfo *card = q->queuedata;
@@ -564,11 +561,8 @@ static void mm_make_request(struct request_queue *q, struct bio *bio)
 	*card->biotail = bio;
 	bio->bi_next = NULL;
 	card->biotail = &bio->bi_next;
-<<<<<<< HEAD
 	if (bio->bi_rw & REQ_SYNC || !mm_check_plugged(card))
 		activate(card);
-=======
->>>>>>> 7175f4b... Truncated history
 	spin_unlock_irq(&card->lock);
 
 	return;

@@ -367,10 +367,7 @@ static int xen_blkbk_remove(struct xenbus_device *dev)
 		be->blkif = NULL;
 	}
 
-<<<<<<< HEAD
 	kfree(be->mode);
-=======
->>>>>>> 7175f4b... Truncated history
 	kfree(be);
 	dev_set_drvdata(&dev->dev, NULL);
 	return 0;
@@ -506,10 +503,7 @@ static void backend_changed(struct xenbus_watch *watch,
 		= container_of(watch, struct backend_info, backend_watch);
 	struct xenbus_device *dev = be->dev;
 	int cdrom = 0;
-<<<<<<< HEAD
 	unsigned long handle;
-=======
->>>>>>> 7175f4b... Truncated history
 	char *device_type;
 
 	DPRINTK("");
@@ -529,17 +523,10 @@ static void backend_changed(struct xenbus_watch *watch,
 		return;
 	}
 
-<<<<<<< HEAD
 	if (be->major | be->minor) {
 		if (be->major != major || be->minor != minor)
 			pr_warn(DRV_PFX "changing physical device (from %x:%x to %x:%x) not supported.\n",
 				be->major, be->minor, major, minor);
-=======
-	if ((be->major || be->minor) &&
-	    ((be->major != major) || (be->minor != minor))) {
-		pr_warn(DRV_PFX "changing physical device (from %x:%x to %x:%x) not supported.\n",
-			be->major, be->minor, major, minor);
->>>>>>> 7175f4b... Truncated history
 		return;
 	}
 
@@ -557,7 +544,6 @@ static void backend_changed(struct xenbus_watch *watch,
 		kfree(device_type);
 	}
 
-<<<<<<< HEAD
 	/* Front end dir is a number, which is used as the handle. */
 	err = strict_strtoul(strrchr(dev->otherend, '/') + 1, 0, &handle);
 	if (err)
@@ -585,38 +571,6 @@ static void backend_changed(struct xenbus_watch *watch,
 		be->major = 0;
 		be->minor = 0;
 	} else {
-=======
-	if (be->major == 0 && be->minor == 0) {
-		/* Front end dir is a number, which is used as the handle. */
-
-		char *p = strrchr(dev->otherend, '/') + 1;
-		long handle;
-		err = strict_strtoul(p, 0, &handle);
-		if (err)
-			return;
-
-		be->major = major;
-		be->minor = minor;
-
-		err = xen_vbd_create(be->blkif, handle, major, minor,
-				 (NULL == strchr(be->mode, 'w')), cdrom);
-		if (err) {
-			be->major = 0;
-			be->minor = 0;
-			xenbus_dev_fatal(dev, err, "creating vbd structure");
-			return;
-		}
-
-		err = xenvbd_sysfs_addif(dev);
-		if (err) {
-			xen_vbd_free(&be->blkif->vbd);
-			be->major = 0;
-			be->minor = 0;
-			xenbus_dev_fatal(dev, err, "creating sysfs entries");
-			return;
-		}
-
->>>>>>> 7175f4b... Truncated history
 		/* We're potentially connected now */
 		xen_update_blkif_status(be->blkif);
 	}

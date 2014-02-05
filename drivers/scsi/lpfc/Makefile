@@ -22,13 +22,9 @@
 ccflags-$(GCOV) := -fprofile-arcs -ftest-coverage
 ccflags-$(GCOV) += -O0
 
-<<<<<<< HEAD
 ifdef WARNINGS_BECOME_ERRORS
 ccflags-y += -Werror
 endif
-=======
-ccflags-y += -Werror
->>>>>>> 7175f4b... Truncated history
 
 obj-$(CONFIG_SCSI_LPFC) := lpfc.o
 

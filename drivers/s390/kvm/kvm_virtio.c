@@ -418,7 +418,6 @@ static void kvm_extint_handler(struct ext_code ext_code,
 }
 
 /*
-<<<<<<< HEAD
  * For s390-virtio, we expect a page above main storage containing
  * the virtio configuration. Try to actually load from this area
  * in order to figure out if the host provides this page.
@@ -439,8 +438,6 @@ static int __init test_devices_support(unsigned long addr)
 	return ret;
 }
 /*
-=======
->>>>>>> 7175f4b... Truncated history
  * Init function for virtio
  * devices are in a single page above top of "normal" mem
  */
@@ -451,7 +448,6 @@ static int __init kvm_devices_init(void)
 	if (!MACHINE_IS_KVM)
 		return -ENODEV;
 
-<<<<<<< HEAD
 	if (test_devices_support(real_memory_size) < 0)
 		return -ENODEV;
 
@@ -461,30 +457,14 @@ static int __init kvm_devices_init(void)
 
 	kvm_devices = (void *) real_memory_size;
 
-=======
->>>>>>> 7175f4b... Truncated history
 	kvm_root = root_device_register("kvm_s390");
 	if (IS_ERR(kvm_root)) {
 		rc = PTR_ERR(kvm_root);
 		printk(KERN_ERR "Could not register kvm_s390 root device");
-<<<<<<< HEAD
 		vmem_remove_mapping(real_memory_size, PAGE_SIZE);
 		return rc;
 	}
 
-=======
-		return rc;
-	}
-
-	rc = vmem_add_mapping(real_memory_size, PAGE_SIZE);
-	if (rc) {
-		root_device_unregister(kvm_root);
-		return rc;
-	}
-
-	kvm_devices = (void *) real_memory_size;
-
->>>>>>> 7175f4b... Truncated history
 	INIT_WORK(&hotplug_work, hotplug_devices);
 
 	service_subclass_irq_register();

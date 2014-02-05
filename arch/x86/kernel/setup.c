@@ -621,7 +621,6 @@ static __init void reserve_ibft_region(void)
 
 static unsigned reserve_low = CONFIG_X86_RESERVE_LOW << 10;
 
-<<<<<<< HEAD
 static bool __init snb_gfx_workaround_needed(void)
 {
 #ifdef CONFIG_PCI
@@ -699,8 +698,6 @@ static void __init trim_platform_memory_ranges(void)
 	trim_snb_memory();
 }
 
-=======
->>>>>>> 7175f4b... Truncated history
 static void __init trim_bios_range(void)
 {
 	/*
@@ -721,10 +718,7 @@ static void __init trim_bios_range(void)
 	 * take them out.
 	 */
 	e820_remove_range(BIOS_BEGIN, BIOS_END - BIOS_BEGIN, E820_RAM, 1);
-<<<<<<< HEAD
 
-=======
->>>>>>> 7175f4b... Truncated history
 	sanitize_e820_map(e820.map, ARRAY_SIZE(e820.map), &e820.nr_map);
 }
 
@@ -825,7 +819,6 @@ void __init setup_arch(char **cmdline_p)
 #ifdef CONFIG_EFI
 	if (!strncmp((char *)&boot_params.efi_info.efi_loader_signature,
 		     "EL32", 4)) {
-<<<<<<< HEAD
 		set_bit(EFI_BOOT, &x86_efi_facility);
 	} else if (!strncmp((char *)&boot_params.efi_info.efi_loader_signature,
 		     "EL64", 4)) {
@@ -835,17 +828,6 @@ void __init setup_arch(char **cmdline_p)
 
 	if (efi_enabled(EFI_BOOT))
 		efi_memblock_x86_reserve_range();
-=======
-		efi_enabled = 1;
-		efi_64bit = false;
-	} else if (!strncmp((char *)&boot_params.efi_info.efi_loader_signature,
-		     "EL64", 4)) {
-		efi_enabled = 1;
-		efi_64bit = true;
-	}
-	if (efi_enabled && efi_memblock_x86_reserve_range())
-		efi_enabled = 0;
->>>>>>> 7175f4b... Truncated history
 #endif
 
 	x86_init.oem.arch_setup();
@@ -918,11 +900,7 @@ void __init setup_arch(char **cmdline_p)
 
 	finish_e820_parsing();
 
-<<<<<<< HEAD
 	if (efi_enabled(EFI_BOOT))
-=======
-	if (efi_enabled)
->>>>>>> 7175f4b... Truncated history
 		efi_init();
 
 	dmi_scan_machine();
@@ -1005,11 +983,7 @@ void __init setup_arch(char **cmdline_p)
 	 * The EFI specification says that boot service code won't be called
 	 * after ExitBootServices(). This is, in fact, a lie.
 	 */
-<<<<<<< HEAD
 	if (efi_enabled(EFI_MEMMAP))
-=======
-	if (efi_enabled)
->>>>>>> 7175f4b... Truncated history
 		efi_reserve_boot_services();
 
 	/* preallocate 4k for mptable mpc */
@@ -1024,11 +998,8 @@ void __init setup_arch(char **cmdline_p)
 
 	setup_trampolines();
 
-<<<<<<< HEAD
 	trim_platform_memory_ranges();
 
-=======
->>>>>>> 7175f4b... Truncated history
 	init_gbpages();
 
 	/* max_pfn_mapped is updated here */
@@ -1037,7 +1008,6 @@ void __init setup_arch(char **cmdline_p)
 
 #ifdef CONFIG_X86_64
 	if (max_pfn > max_low_pfn) {
-<<<<<<< HEAD
 		int i;
 		unsigned long start, end;
 		unsigned long start_pfn, end_pfn;
@@ -1054,10 +1024,6 @@ void __init setup_arch(char **cmdline_p)
 						max((1UL<<32), start), end);
 		}
 
-=======
-		max_pfn_mapped = init_memory_mapping(1UL<<32,
-						     max_pfn<<PAGE_SHIFT);
->>>>>>> 7175f4b... Truncated history
 		/* can we preseve max_low_pfn ?*/
 		max_low_pfn = max_pfn;
 	}
@@ -1155,11 +1121,7 @@ void __init setup_arch(char **cmdline_p)
 
 #ifdef CONFIG_VT
 #if defined(CONFIG_VGA_CONSOLE)
-<<<<<<< HEAD
 	if (!efi_enabled(EFI_BOOT) || (efi_mem_type(0xa0000) != EFI_CONVENTIONAL_MEMORY))
-=======
-	if (!efi_enabled || (efi_mem_type(0xa0000) != EFI_CONVENTIONAL_MEMORY))
->>>>>>> 7175f4b... Truncated history
 		conswitchp = &vga_con;
 #elif defined(CONFIG_DUMMY_CONSOLE)
 	conswitchp = &dummy_con;
@@ -1174,7 +1136,6 @@ void __init setup_arch(char **cmdline_p)
 	mcheck_init();
 
 	arch_init_ideal_nops();
-<<<<<<< HEAD
 
 #ifdef CONFIG_EFI
 	/* Once setup is done above, unmap the EFI memory map on
@@ -1187,8 +1148,6 @@ void __init setup_arch(char **cmdline_p)
 		efi_unmap_memmap();
 	}
 #endif
-=======
->>>>>>> 7175f4b... Truncated history
 }
 
 #ifdef CONFIG_X86_32

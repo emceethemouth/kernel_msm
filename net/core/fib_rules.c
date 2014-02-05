@@ -443,12 +443,8 @@ static int fib_nl_delrule(struct sk_buff *skb, struct nlmsghdr* nlh, void *arg)
 		if (frh->action && (frh->action != rule->action))
 			continue;
 
-<<<<<<< HEAD
 		if (frh_get_table(frh, tb) &&
 		    (frh_get_table(frh, tb) != rule->table))
-=======
-		if (frh->table && (frh_get_table(frh, tb) != rule->table))
->>>>>>> 7175f4b... Truncated history
 			continue;
 
 		if (tb[FRA_PRIORITY] &&

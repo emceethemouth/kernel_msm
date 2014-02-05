@@ -79,10 +79,7 @@ static int rionet_capable = 1;
  * on system trade-offs.
  */
 static struct rio_dev **rionet_active;
-<<<<<<< HEAD
 static int nact;	/* total number of active rionet peers */
-=======
->>>>>>> 7175f4b... Truncated history
 
 #define is_rionet_capable(src_ops, dst_ops)			\
 			((src_ops & RIO_SRC_OPS_DATA_MSG) &&	\
@@ -179,10 +176,7 @@ static int rionet_start_xmit(struct sk_buff *skb, struct net_device *ndev)
 	struct ethhdr *eth = (struct ethhdr *)skb->data;
 	u16 destid;
 	unsigned long flags;
-<<<<<<< HEAD
 	int add_num = 1;
-=======
->>>>>>> 7175f4b... Truncated history
 
 	local_irq_save(flags);
 	if (!spin_trylock(&rnet->tx_lock)) {
@@ -190,14 +184,10 @@ static int rionet_start_xmit(struct sk_buff *skb, struct net_device *ndev)
 		return NETDEV_TX_LOCKED;
 	}
 
-<<<<<<< HEAD
 	if (is_multicast_ether_addr(eth->h_dest))
 		add_num = nact;
 
 	if ((rnet->tx_cnt + add_num) > RIONET_TX_RING_SIZE) {
-=======
-	if ((rnet->tx_cnt + 1) > RIONET_TX_RING_SIZE) {
->>>>>>> 7175f4b... Truncated history
 		netif_stop_queue(ndev);
 		spin_unlock_irqrestore(&rnet->tx_lock, flags);
 		printk(KERN_ERR "%s: BUG! Tx Ring full when queue awake!\n",
@@ -206,7 +196,6 @@ static int rionet_start_xmit(struct sk_buff *skb, struct net_device *ndev)
 	}
 
 	if (is_multicast_ether_addr(eth->h_dest)) {
-<<<<<<< HEAD
 		int count = 0;
 		for (i = 0; i < RIO_MAX_ROUTE_ENTRIES(rnet->mport->sys_size);
 				i++)
@@ -217,13 +206,6 @@ static int rionet_start_xmit(struct sk_buff *skb, struct net_device *ndev)
 					atomic_inc(&skb->users);
 				count++;
 			}
-=======
-		for (i = 0; i < RIO_MAX_ROUTE_ENTRIES(rnet->mport->sys_size);
-				i++)
-			if (rionet_active[i])
-				rionet_queue_tx_msg(skb, ndev,
-						    rionet_active[i]);
->>>>>>> 7175f4b... Truncated history
 	} else if (RIONET_MAC_MATCH(eth->h_dest)) {
 		destid = RIONET_GET_DESTID(eth->h_dest);
 		if (rionet_active[destid])
@@ -248,25 +230,17 @@ static void rionet_dbell_event(struct rio_mport *mport, void *dev_id, u16 sid, u
 	if (info == RIONET_DOORBELL_JOIN) {
 		if (!rionet_active[sid]) {
 			list_for_each_entry(peer, &rionet_peers, node) {
-<<<<<<< HEAD
 				if (peer->rdev->destid == sid) {
 					rionet_active[sid] = peer->rdev;
 					nact++;
 				}
-=======
-				if (peer->rdev->destid == sid)
-					rionet_active[sid] = peer->rdev;
->>>>>>> 7175f4b... Truncated history
 			}
 			rio_mport_send_doorbell(mport, sid,
 						RIONET_DOORBELL_JOIN);
 		}
 	} else if (info == RIONET_DOORBELL_LEAVE) {
 		rionet_active[sid] = NULL;
-<<<<<<< HEAD
 		nact--;
-=======
->>>>>>> 7175f4b... Truncated history
 	} else {
 		if (netif_msg_intr(rnet))
 			printk(KERN_WARNING "%s: unhandled doorbell\n",
@@ -562,10 +536,7 @@ static int rionet_probe(struct rio_dev *rdev, const struct rio_device_id *id)
 
 		rc = rionet_setup_netdev(rdev->net->hport, ndev);
 		rionet_check = 1;
-<<<<<<< HEAD
 		nact = 0;
-=======
->>>>>>> 7175f4b... Truncated history
 	}
 
 	/*

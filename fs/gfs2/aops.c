@@ -1012,10 +1012,7 @@ static ssize_t gfs2_direct_IO(int rw, struct kiocb *iocb,
 {
 	struct file *file = iocb->ki_filp;
 	struct inode *inode = file->f_mapping->host;
-<<<<<<< HEAD
 	struct address_space *mapping = inode->i_mapping;
-=======
->>>>>>> 7175f4b... Truncated history
 	struct gfs2_inode *ip = GFS2_I(inode);
 	struct gfs2_holder gh;
 	int rv;
@@ -1036,7 +1033,6 @@ static ssize_t gfs2_direct_IO(int rw, struct kiocb *iocb,
 	if (rv != 1)
 		goto out; /* dio not valid, fall back to buffered i/o */
 
-<<<<<<< HEAD
 	/*
 	 * Now since we are holding a deferred (CW) lock at this point, you
 	 * might be wondering why this is ever needed. There is a case however
@@ -1066,8 +1062,6 @@ static ssize_t gfs2_direct_IO(int rw, struct kiocb *iocb,
 		truncate_inode_pages_range(mapping, lstart, end);
 	}
 
-=======
->>>>>>> 7175f4b... Truncated history
 	rv = __blockdev_direct_IO(rw, iocb, inode, inode->i_sb->s_bdev, iov,
 				  offset, nr_segs, gfs2_get_block_direct,
 				  NULL, NULL, 0);

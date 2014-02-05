@@ -34,7 +34,6 @@ static int atmel_trng_read(struct hwrng *rng, void *buf, size_t max,
 	u32 *data = buf;
 
 	/* data ready? */
-<<<<<<< HEAD
 	if (readl(trng->base + TRNG_ISR) & 1) {
 		*data = readl(trng->base + TRNG_ODATA);
 		/*
@@ -44,10 +43,6 @@ static int atmel_trng_read(struct hwrng *rng, void *buf, size_t max,
 		  same word
 		*/
 		readl(trng->base + TRNG_ISR);
-=======
-	if (readl(trng->base + TRNG_ODATA) & 1) {
-		*data = readl(trng->base + TRNG_ODATA);
->>>>>>> 7175f4b... Truncated history
 		return 4;
 	} else
 		return 0;

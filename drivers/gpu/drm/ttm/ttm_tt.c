@@ -170,11 +170,7 @@ void ttm_tt_destroy(struct ttm_tt *ttm)
 		ttm_tt_unbind(ttm);
 	}
 
-<<<<<<< HEAD
 	if (ttm->state == tt_unbound) {
-=======
-	if (likely(ttm->pages != NULL)) {
->>>>>>> 7175f4b... Truncated history
 		ttm->bdev->driver->ttm_tt_unpopulate(ttm);
 	}
 

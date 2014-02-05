@@ -66,13 +66,10 @@
 #define EDID_QUIRK_FIRST_DETAILED_PREFERRED	(1 << 5)
 /* use +hsync +vsync for detailed mode */
 #define EDID_QUIRK_DETAILED_SYNC_PP		(1 << 6)
-<<<<<<< HEAD
 /* Force reduced-blanking timings for detailed modes */
 #define EDID_QUIRK_FORCE_REDUCED_BLANKING	(1 << 7)
 /* Force 8bpc */
 #define EDID_QUIRK_FORCE_8BPC			(1 << 8)
-=======
->>>>>>> 7175f4b... Truncated history
 
 struct detailed_mode_closure {
 	struct drm_connector *connector;
@@ -127,7 +124,6 @@ static struct edid_quirk {
 	/* Samsung SyncMaster 22[5-6]BW */
 	{ "SAM", 596, EDID_QUIRK_PREFER_LARGE_60 },
 	{ "SAM", 638, EDID_QUIRK_PREFER_LARGE_60 },
-<<<<<<< HEAD
 
 	/* ViewSonic VA2026w */
 	{ "VSC", 5020, EDID_QUIRK_FORCE_REDUCED_BLANKING },
@@ -137,8 +133,6 @@ static struct edid_quirk {
 
 	/* Panel in Samsung NP700G7A-S01PL notebook reports 6bpc */
 	{ "SEC", 0xd033, EDID_QUIRK_FORCE_8BPC },
-=======
->>>>>>> 7175f4b... Truncated history
 };
 
 /*** DDC fetch and block validation ***/
@@ -593,11 +587,7 @@ static bool
 drm_monitor_supports_rb(struct edid *edid)
 {
 	if (edid->revision >= 4) {
-<<<<<<< HEAD
 		bool ret = false;
-=======
-		bool ret;
->>>>>>> 7175f4b... Truncated history
 		drm_for_each_detailed_block((u8 *)edid, is_rb, &ret);
 		return ret;
 	}
@@ -854,11 +844,7 @@ static struct drm_display_mode *drm_mode_detailed(struct drm_device *dev,
 	unsigned vblank = (pt->vactive_vblank_hi & 0xf) << 8 | pt->vblank_lo;
 	unsigned hsync_offset = (pt->hsync_vsync_offset_pulse_width_hi & 0xc0) << 2 | pt->hsync_offset_lo;
 	unsigned hsync_pulse_width = (pt->hsync_vsync_offset_pulse_width_hi & 0x30) << 4 | pt->hsync_pulse_width_lo;
-<<<<<<< HEAD
 	unsigned vsync_offset = (pt->hsync_vsync_offset_pulse_width_hi & 0xc) << 2 | pt->vsync_offset_pulse_width_lo >> 4;
-=======
-	unsigned vsync_offset = (pt->hsync_vsync_offset_pulse_width_hi & 0xc) >> 2 | pt->vsync_offset_pulse_width_lo >> 4;
->>>>>>> 7175f4b... Truncated history
 	unsigned vsync_pulse_width = (pt->hsync_vsync_offset_pulse_width_hi & 0x3) << 4 | (pt->vsync_offset_pulse_width_lo & 0xf);
 
 	/* ignore tiny modes */
@@ -879,7 +865,6 @@ static struct drm_display_mode *drm_mode_detailed(struct drm_device *dev,
 				"Wrong Hsync/Vsync pulse width\n");
 		return NULL;
 	}
-<<<<<<< HEAD
 
 	if (quirks & EDID_QUIRK_FORCE_REDUCED_BLANKING) {
 		mode = drm_cvt_mode(dev, hactive, vactive, 60, true, false, false);
@@ -889,17 +874,10 @@ static struct drm_display_mode *drm_mode_detailed(struct drm_device *dev,
 		goto set_size;
 	}
 
-=======
->>>>>>> 7175f4b... Truncated history
 	mode = drm_mode_create(dev);
 	if (!mode)
 		return NULL;
 
-<<<<<<< HEAD
-=======
-	mode->type = DRM_MODE_TYPE_DRIVER;
-
->>>>>>> 7175f4b... Truncated history
 	if (quirks & EDID_QUIRK_135_CLOCK_TOO_HIGH)
 		timing->pixel_clock = cpu_to_le16(1088);
 
@@ -923,11 +901,6 @@ static struct drm_display_mode *drm_mode_detailed(struct drm_device *dev,
 
 	drm_mode_do_interlace_quirk(mode, pt);
 
-<<<<<<< HEAD
-=======
-	drm_mode_set_name(mode);
-
->>>>>>> 7175f4b... Truncated history
 	if (quirks & EDID_QUIRK_DETAILED_SYNC_PP) {
 		pt->misc |= DRM_EDID_PT_HSYNC_POSITIVE | DRM_EDID_PT_VSYNC_POSITIVE;
 	}
@@ -937,10 +910,7 @@ static struct drm_display_mode *drm_mode_detailed(struct drm_device *dev,
 	mode->flags |= (pt->misc & DRM_EDID_PT_VSYNC_POSITIVE) ?
 		DRM_MODE_FLAG_PVSYNC : DRM_MODE_FLAG_NVSYNC;
 
-<<<<<<< HEAD
 set_size:
-=======
->>>>>>> 7175f4b... Truncated history
 	mode->width_mm = pt->width_mm_lo | (pt->width_height_mm_hi & 0xf0) << 4;
 	mode->height_mm = pt->height_mm_lo | (pt->width_height_mm_hi & 0xf) << 8;
 
@@ -954,13 +924,10 @@ set_size:
 		mode->height_mm = edid->height_cm * 10;
 	}
 
-<<<<<<< HEAD
 	mode->type = DRM_MODE_TYPE_DRIVER;
 	mode->vrefresh = drm_mode_vrefresh(mode);
 	drm_mode_set_name(mode);
 
-=======
->>>>>>> 7175f4b... Truncated history
 	return mode;
 }
 
@@ -1811,12 +1778,8 @@ int drm_add_edid_modes(struct drm_connector *connector, struct edid *edid)
 	num_modes += add_cvt_modes(connector, edid);
 	num_modes += add_standard_modes(connector, edid);
 	num_modes += add_established_modes(connector, edid);
-<<<<<<< HEAD
 	if (edid->features & DRM_EDID_FEATURE_DEFAULT_GTF)
 		num_modes += add_inferred_modes(connector, edid);
-=======
-	num_modes += add_inferred_modes(connector, edid);
->>>>>>> 7175f4b... Truncated history
 	num_modes += add_cea_modes(connector, edid);
 
 	if (quirks & (EDID_QUIRK_PREFER_LARGE_60 | EDID_QUIRK_PREFER_LARGE_75))
@@ -1824,12 +1787,9 @@ int drm_add_edid_modes(struct drm_connector *connector, struct edid *edid)
 
 	drm_add_display_info(edid, &connector->display_info);
 
-<<<<<<< HEAD
 	if (quirks & EDID_QUIRK_FORCE_8BPC)
 		connector->display_info.bpc = 8;
 
-=======
->>>>>>> 7175f4b... Truncated history
 	return num_modes;
 }
 EXPORT_SYMBOL(drm_add_edid_modes);

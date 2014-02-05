@@ -25,18 +25,12 @@
 #include "io.h"
 #include "phy.h"
 #include "workarounds.h"
-<<<<<<< HEAD
 #include "selftest.h"
 
 /* Hardware control for SFC4000 (aka Falcon). */
 
 static int falcon_reset_hw(struct efx_nic *efx, enum reset_type method);
 
-=======
-
-/* Hardware control for SFC4000 (aka Falcon). */
-
->>>>>>> 7175f4b... Truncated history
 static const unsigned int
 /* "Large" EEPROM device: Atmel AT25640 or similar
  * 8 KB, 16-bit address, 32 B write block */
@@ -1043,7 +1037,6 @@ static const struct efx_nic_register_test falcon_b0_register_tests[] = {
 	  EFX_OWORD32(0x0003FF0F, 0x00000000, 0x00000000, 0x00000000) },
 };
 
-<<<<<<< HEAD
 static int
 falcon_b0_test_chip(struct efx_nic *efx, struct efx_self_tests *tests)
 {
@@ -1072,12 +1065,6 @@ falcon_b0_test_chip(struct efx_nic *efx, struct efx_self_tests *tests)
 	rc = falcon_reset_hw(efx, reset_method);
 	rc2 = efx_reset_up(efx, reset_method, rc == 0);
 	return rc ? rc : rc2;
-=======
-static int falcon_b0_test_registers(struct efx_nic *efx)
-{
-	return efx_nic_test_registers(efx, falcon_b0_register_tests,
-				      ARRAY_SIZE(falcon_b0_register_tests));
->>>>>>> 7175f4b... Truncated history
 }
 
 /**************************************************************************
@@ -1805,10 +1792,7 @@ const struct efx_nic_type falcon_a1_nic_type = {
 	.remove_port = falcon_remove_port,
 	.handle_global_event = falcon_handle_global_event,
 	.prepare_flush = falcon_prepare_flush,
-<<<<<<< HEAD
 	.finish_flush = efx_port_dummy_op_void,
-=======
->>>>>>> 7175f4b... Truncated history
 	.update_stats = falcon_update_nic_stats,
 	.start_stats = falcon_start_nic_stats,
 	.stop_stats = falcon_stop_nic_stats,
@@ -1851,10 +1835,7 @@ const struct efx_nic_type falcon_b0_nic_type = {
 	.remove_port = falcon_remove_port,
 	.handle_global_event = falcon_handle_global_event,
 	.prepare_flush = falcon_prepare_flush,
-<<<<<<< HEAD
 	.finish_flush = efx_port_dummy_op_void,
-=======
->>>>>>> 7175f4b... Truncated history
 	.update_stats = falcon_update_nic_stats,
 	.start_stats = falcon_start_nic_stats,
 	.stop_stats = falcon_stop_nic_stats,
@@ -1866,11 +1847,7 @@ const struct efx_nic_type falcon_b0_nic_type = {
 	.get_wol = falcon_get_wol,
 	.set_wol = falcon_set_wol,
 	.resume_wol = efx_port_dummy_op_void,
-<<<<<<< HEAD
 	.test_chip = falcon_b0_test_chip,
-=======
-	.test_registers = falcon_b0_test_registers,
->>>>>>> 7175f4b... Truncated history
 	.test_nvram = falcon_test_nvram,
 
 	.revision = EFX_REV_FALCON_B0,

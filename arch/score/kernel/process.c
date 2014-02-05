@@ -27,10 +27,7 @@
 #include <linux/reboot.h>
 #include <linux/elfcore.h>
 #include <linux/pm.h>
-<<<<<<< HEAD
 #include <linux/rcupdate.h>
-=======
->>>>>>> 7175f4b... Truncated history
 
 void (*pm_power_off)(void);
 EXPORT_SYMBOL(pm_power_off);
@@ -54,16 +51,10 @@ void __noreturn cpu_idle(void)
 {
 	/* endless idle loop with no priority at all */
 	while (1) {
-<<<<<<< HEAD
 		rcu_idle_enter();
 		while (!need_resched())
 			barrier();
 		rcu_idle_exit();
-=======
-		while (!need_resched())
-			barrier();
-
->>>>>>> 7175f4b... Truncated history
 		schedule_preempt_disabled();
 	}
 }

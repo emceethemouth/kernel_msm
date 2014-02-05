@@ -574,10 +574,7 @@ static sector_t inode_getblk(struct inode *inode, sector_t block,
 	struct udf_inode_info *iinfo = UDF_I(inode);
 	int goal = 0, pgoal = iinfo->i_location.logicalBlockNum;
 	int lastblock = 0;
-<<<<<<< HEAD
 	bool isBeyondEOF;
-=======
->>>>>>> 7175f4b... Truncated history
 
 	*err = 0;
 	*new = 0;
@@ -657,11 +654,7 @@ static sector_t inode_getblk(struct inode *inode, sector_t block,
 	/* Are we beyond EOF? */
 	if (etype == -1) {
 		int ret;
-<<<<<<< HEAD
 		isBeyondEOF = 1;
-=======
-
->>>>>>> 7175f4b... Truncated history
 		if (count) {
 			if (c)
 				laarr[0] = laarr[1];
@@ -704,10 +697,7 @@ static sector_t inode_getblk(struct inode *inode, sector_t block,
 		endnum = c + 1;
 		lastblock = 1;
 	} else {
-<<<<<<< HEAD
 		isBeyondEOF = 0;
-=======
->>>>>>> 7175f4b... Truncated history
 		endnum = startnum = ((count > 2) ? 2 : count);
 
 		/* if the current extent is in position 0,
@@ -750,7 +740,6 @@ static sector_t inode_getblk(struct inode *inode, sector_t block,
 				goal, err);
 		if (!newblocknum) {
 			brelse(prev_epos.bh);
-<<<<<<< HEAD
 			brelse(cur_epos.bh);
 			brelse(next_epos.bh);
 			*err = -ENOSPC;
@@ -758,12 +747,6 @@ static sector_t inode_getblk(struct inode *inode, sector_t block,
 		}
 		if (isBeyondEOF)
 			iinfo->i_lenExtents += inode->i_sb->s_blocksize;
-=======
-			*err = -ENOSPC;
-			return 0;
-		}
-		iinfo->i_lenExtents += inode->i_sb->s_blocksize;
->>>>>>> 7175f4b... Truncated history
 	}
 
 	/* if the extent the requsted block is located in contains multiple
@@ -790,11 +773,8 @@ static sector_t inode_getblk(struct inode *inode, sector_t block,
 	udf_update_extents(inode, laarr, startnum, endnum, &prev_epos);
 
 	brelse(prev_epos.bh);
-<<<<<<< HEAD
 	brelse(cur_epos.bh);
 	brelse(next_epos.bh);
-=======
->>>>>>> 7175f4b... Truncated history
 
 	newblock = udf_get_pblock(inode->i_sb, newblocknum,
 				iinfo->i_location.partitionReferenceNum, 0);

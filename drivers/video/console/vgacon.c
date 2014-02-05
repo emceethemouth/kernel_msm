@@ -1064,11 +1064,7 @@ static int vgacon_do_font_op(struct vgastate *state,char *arg,int set,int ch512)
 	unsigned short video_port_status = vga_video_port_reg + 6;
 	int font_select = 0x00, beg, i;
 	char *charmap;
-<<<<<<< HEAD
 	bool clear_attribs = false;
-=======
-	
->>>>>>> 7175f4b... Truncated history
 	if (vga_video_type != VIDEO_TYPE_EGAM) {
 		charmap = (char *) VGA_MAP_MEM(colourmap, 0);
 		beg = 0x0e;
@@ -1173,15 +1169,6 @@ static int vgacon_do_font_op(struct vgastate *state,char *arg,int set,int ch512)
 
 	/* if 512 char mode is already enabled don't re-enable it. */
 	if ((set) && (ch512 != vga_512_chars)) {
-<<<<<<< HEAD
-=======
-		/* attribute controller */
-		for (i = 0; i < MAX_NR_CONSOLES; i++) {
-			struct vc_data *c = vc_cons[i].d;
-			if (c && c->vc_sw == &vga_con)
-				c->vc_hi_font_mask = ch512 ? 0x0800 : 0;
-		}
->>>>>>> 7175f4b... Truncated history
 		vga_512_chars = ch512;
 		/* 256-char: enable intensity bit
 		   512-char: disable intensity bit */
@@ -1192,7 +1179,6 @@ static int vgacon_do_font_op(struct vgastate *state,char *arg,int set,int ch512)
 		   it means, but it works, and it appears necessary */
 		inb_p(video_port_status);
 		vga_wattr(state->vgabase, VGA_AR_ENABLE_DISPLAY, 0);	
-<<<<<<< HEAD
 		clear_attribs = true;
 	}
 	raw_spin_unlock_irq(&vga_lock);
@@ -1209,10 +1195,6 @@ static int vgacon_do_font_op(struct vgastate *state,char *arg,int set,int ch512)
 			}
 		}
 	}
-=======
-	}
-	raw_spin_unlock_irq(&vga_lock);
->>>>>>> 7175f4b... Truncated history
 	return 0;
 }
 

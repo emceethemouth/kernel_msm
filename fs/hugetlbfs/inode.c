@@ -927,7 +927,6 @@ static int can_do_hugetlb_shm(void)
 	return capable(CAP_IPC_LOCK) || in_group_p(sysctl_hugetlb_shm_group);
 }
 
-<<<<<<< HEAD
 /*
  * Note that size should be aligned to proper hugepage size in caller side,
  * otherwise hugetlb_reserve_pages reserves one less hugepages than intended.
@@ -935,11 +934,6 @@ static int can_do_hugetlb_shm(void)
 struct file *hugetlb_file_setup(const char *name, size_t size,
 				vm_flags_t acctflag, struct user_struct **user,
 				int creat_flags)
-=======
-struct file *hugetlb_file_setup(const char *name, unsigned long addr,
-				size_t size, vm_flags_t acctflag,
-				struct user_struct **user, int creat_flags)
->>>>>>> 7175f4b... Truncated history
 {
 	int error = -ENOMEM;
 	struct file *file;
@@ -947,11 +941,6 @@ struct file *hugetlb_file_setup(const char *name, unsigned long addr,
 	struct path path;
 	struct dentry *root;
 	struct qstr quick_string;
-<<<<<<< HEAD
-=======
-	struct hstate *hstate;
-	unsigned long num_pages;
->>>>>>> 7175f4b... Truncated history
 
 	*user = NULL;
 	if (!hugetlbfs_vfsmount)
@@ -985,19 +974,10 @@ struct file *hugetlb_file_setup(const char *name, unsigned long addr,
 	if (!inode)
 		goto out_dentry;
 
-<<<<<<< HEAD
 	error = -ENOMEM;
 	if (hugetlb_reserve_pages(inode, 0,
 			size >> huge_page_shift(hstate_inode(inode)), NULL,
 			acctflag))
-=======
-	hstate = hstate_inode(inode);
-	size += addr & ~huge_page_mask(hstate);
-	num_pages = ALIGN(size, huge_page_size(hstate)) >>
-			huge_page_shift(hstate);
-	error = -ENOMEM;
-	if (hugetlb_reserve_pages(inode, 0, num_pages, NULL, acctflag))
->>>>>>> 7175f4b... Truncated history
 		goto out_inode;
 
 	d_instantiate(path.dentry, inode);

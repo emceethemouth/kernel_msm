@@ -650,7 +650,6 @@ static int uio_mmap_physical(struct vm_area_struct *vma)
 {
 	struct uio_device *idev = vma->vm_private_data;
 	int mi = uio_find_mem_index(vma);
-<<<<<<< HEAD
 	struct uio_mem *mem;
 	if (mi < 0)
 		return -EINVAL;
@@ -658,16 +657,11 @@ static int uio_mmap_physical(struct vm_area_struct *vma)
 
 	if (vma->vm_end - vma->vm_start > mem->size)
 		return -EINVAL;
-=======
-	if (mi < 0)
-		return -EINVAL;
->>>>>>> 7175f4b... Truncated history
 
 	vma->vm_flags |= VM_IO | VM_RESERVED;
 
 	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
 
-<<<<<<< HEAD
 	/*
 	 * We cannot use the vm_iomap_memory() helper here,
 	 * because vma->vm_pgoff is the map index we looked
@@ -680,11 +674,6 @@ static int uio_mmap_physical(struct vm_area_struct *vma)
 	return remap_pfn_range(vma,
 			       vma->vm_start,
 			       mem->addr >> PAGE_SHIFT,
-=======
-	return remap_pfn_range(vma,
-			       vma->vm_start,
-			       idev->info->mem[mi].addr >> PAGE_SHIFT,
->>>>>>> 7175f4b... Truncated history
 			       vma->vm_end - vma->vm_start,
 			       vma->vm_page_prot);
 }

@@ -1688,29 +1688,19 @@ int vmw_du_page_flip(struct drm_crtc *crtc,
 	struct vmw_private *dev_priv = vmw_priv(crtc->dev);
 	struct drm_framebuffer *old_fb = crtc->fb;
 	struct vmw_framebuffer *vfb = vmw_framebuffer_to_vfb(fb);
-<<<<<<< HEAD
 	struct drm_file *file_priv ;
-=======
-	struct drm_file *file_priv = event->base.file_priv;
->>>>>>> 7175f4b... Truncated history
 	struct vmw_fence_obj *fence = NULL;
 	struct drm_clip_rect clips;
 	int ret;
 
-<<<<<<< HEAD
 	if (event == NULL)
 		return -EINVAL;
 
-=======
->>>>>>> 7175f4b... Truncated history
 	/* require ScreenObject support for page flipping */
 	if (!dev_priv->sou_priv)
 		return -ENOSYS;
 
-<<<<<<< HEAD
 	file_priv = event->base.file_priv;
-=======
->>>>>>> 7175f4b... Truncated history
 	if (!vmw_kms_screen_object_flippable(dev_priv, crtc))
 		return -EINVAL;
 

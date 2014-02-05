@@ -218,10 +218,7 @@ ENTRY(arm1026_coherent_user_range)
 	cmp	r0, r1
 	blo	1b
 	mcr	p15, 0, ip, c7, c10, 4		@ drain WB
-<<<<<<< HEAD
 	mov	r0, #0
-=======
->>>>>>> 7175f4b... Truncated history
 	mov	pc, lr
 
 /*
@@ -340,12 +337,9 @@ ENTRY(arm1026_dma_unmap_area)
 	mov	pc, lr
 ENDPROC(arm1026_dma_unmap_area)
 
-<<<<<<< HEAD
 	.globl  arm1026_flush_kern_cache_louis
 	.equ  arm1026_flush_kern_cache_louis, arm1026_flush_kern_cache_all
 
-=======
->>>>>>> 7175f4b... Truncated history
 	@ define struct cpu_cache_fns (see <asm/cacheflush.h> and proc-macros.S)
 	define_cache_functions arm1026
 

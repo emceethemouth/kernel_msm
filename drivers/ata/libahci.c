@@ -1249,17 +1249,11 @@ int ahci_do_softreset(struct ata_link *link, unsigned int *class,
 {
 	struct ata_port *ap = link->ap;
 	struct ahci_host_priv *hpriv = ap->host->private_data;
-<<<<<<< HEAD
 	struct ahci_port_priv *pp = ap->private_data;
 	const char *reason = NULL;
 	unsigned long now, msecs;
 	struct ata_taskfile tf;
 	bool fbs_disabled = false;
-=======
-	const char *reason = NULL;
-	unsigned long now, msecs;
-	struct ata_taskfile tf;
->>>>>>> 7175f4b... Truncated history
 	int rc;
 
 	DPRINTK("ENTER\n");
@@ -1269,7 +1263,6 @@ int ahci_do_softreset(struct ata_link *link, unsigned int *class,
 	if (rc && rc != -EOPNOTSUPP)
 		ata_link_warn(link, "failed to reset engine (errno=%d)\n", rc);
 
-<<<<<<< HEAD
 	/*
 	 * According to AHCI-1.2 9.3.9: if FBS is enable, software shall
 	 * clear PxFBS.EN to '0' prior to issuing software reset to devices
@@ -1280,8 +1273,6 @@ int ahci_do_softreset(struct ata_link *link, unsigned int *class,
 		fbs_disabled = true;
 	}
 
-=======
->>>>>>> 7175f4b... Truncated history
 	ata_tf_init(link->device, &tf);
 
 	/* issue the first D2H Register FIS */
@@ -1322,13 +1313,10 @@ int ahci_do_softreset(struct ata_link *link, unsigned int *class,
 	} else
 		*class = ahci_dev_classify(ap);
 
-<<<<<<< HEAD
 	/* re-enable FBS if disabled before */
 	if (fbs_disabled)
 		ahci_enable_fbs(ap);
 
-=======
->>>>>>> 7175f4b... Truncated history
 	DPRINTK("EXIT, class=%u\n", *class);
 	return 0;
 
@@ -1571,12 +1559,7 @@ static void ahci_error_intr(struct ata_port *ap, u32 irq_stat)
 		u32 fbs = readl(port_mmio + PORT_FBS);
 		int pmp = fbs >> PORT_FBS_DWE_OFFSET;
 
-<<<<<<< HEAD
 		if ((fbs & PORT_FBS_SDE) && (pmp < ap->nr_pmp_links)) {
-=======
-		if ((fbs & PORT_FBS_SDE) && (pmp < ap->nr_pmp_links) &&
-		    ata_link_online(&ap->pmp_link[pmp])) {
->>>>>>> 7175f4b... Truncated history
 			link = &ap->pmp_link[pmp];
 			fbs_need_dec = true;
 		}

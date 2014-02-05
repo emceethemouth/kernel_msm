@@ -27,10 +27,7 @@
 
 #include <linux/mmc/mmc.h>
 #include <linux/mmc/host.h>
-<<<<<<< HEAD
 #include <linux/mmc/card.h>
-=======
->>>>>>> 7175f4b... Truncated history
 
 #include "sdhci.h"
 
@@ -1419,10 +1416,7 @@ static void sdhci_request(struct mmc_host *mmc, struct mmc_request *mrq)
 	struct sdhci_host *host;
 	bool present;
 	unsigned long flags;
-<<<<<<< HEAD
 	u32 tuning_opcode;
-=======
->>>>>>> 7175f4b... Truncated history
 
 	host = mmc_priv(mmc);
 
@@ -1479,7 +1473,6 @@ static void sdhci_request(struct mmc_host *mmc, struct mmc_request *mrq)
 		 */
 		if ((host->flags & SDHCI_NEEDS_RETUNING) &&
 		    !(present_state & (SDHCI_DOING_WRITE | SDHCI_DOING_READ))) {
-<<<<<<< HEAD
 			if (mmc->card) {
 				/* eMMC uses cmd21 but sd and sdio use cmd19 */
 				tuning_opcode =
@@ -1493,14 +1486,6 @@ static void sdhci_request(struct mmc_host *mmc, struct mmc_request *mrq)
 				/* Restore original mmc_request structure */
 				host->mrq = mrq;
 			}
-=======
-			spin_unlock_irqrestore(&host->lock, flags);
-			sdhci_execute_tuning(mmc, mrq->cmd->opcode);
-			spin_lock_irqsave(&host->lock, flags);
-
-			/* Restore original mmc_request structure */
-			host->mrq = mrq;
->>>>>>> 7175f4b... Truncated history
 		}
 
 		if (mrq->sbc && !(host->flags & SDHCI_AUTO_CMD23))

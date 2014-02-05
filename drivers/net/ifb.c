@@ -290,7 +290,6 @@ static int __init ifb_init_module(void)
 
 	rtnl_lock();
 	err = __rtnl_link_register(&ifb_link_ops);
-<<<<<<< HEAD
 	if (err < 0)
 		goto out;
 
@@ -302,13 +301,6 @@ static int __init ifb_init_module(void)
 		__rtnl_link_unregister(&ifb_link_ops);
 
 out:
-=======
-
-	for (i = 0; i < numifbs && !err; i++)
-		err = ifb_init_one(i);
-	if (err)
-		__rtnl_link_unregister(&ifb_link_ops);
->>>>>>> 7175f4b... Truncated history
 	rtnl_unlock();
 
 	return err;

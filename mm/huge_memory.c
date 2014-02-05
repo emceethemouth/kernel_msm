@@ -950,11 +950,8 @@ int do_huge_pmd_wp_page(struct mm_struct *mm, struct vm_area_struct *vma,
 		count_vm_event(THP_FAULT_FALLBACK);
 		ret = do_huge_pmd_wp_page_fallback(mm, vma, address,
 						   pmd, orig_pmd, page, haddr);
-<<<<<<< HEAD
 		if (ret & VM_FAULT_OOM)
 			split_huge_page(page);
-=======
->>>>>>> 7175f4b... Truncated history
 		put_page(page);
 		goto out;
 	}
@@ -962,10 +959,7 @@ int do_huge_pmd_wp_page(struct mm_struct *mm, struct vm_area_struct *vma,
 
 	if (unlikely(mem_cgroup_newpage_charge(new_page, mm, GFP_KERNEL))) {
 		put_page(new_page);
-<<<<<<< HEAD
 		split_huge_page(page);
-=======
->>>>>>> 7175f4b... Truncated history
 		put_page(page);
 		ret |= VM_FAULT_OOM;
 		goto out;
@@ -1900,11 +1894,8 @@ static void collapse_huge_page(struct mm_struct *mm,
 		goto out;
 
 	vma = find_vma(mm, address);
-<<<<<<< HEAD
 	if (!vma)
 		goto out;
-=======
->>>>>>> 7175f4b... Truncated history
 	hstart = (vma->vm_start + ~HPAGE_PMD_MASK) & HPAGE_PMD_MASK;
 	hend = vma->vm_end & HPAGE_PMD_MASK;
 	if (address < hstart || address + HPAGE_PMD_SIZE > hend)
@@ -1960,16 +1951,12 @@ static void collapse_huge_page(struct mm_struct *mm,
 		pte_unmap(pte);
 		spin_lock(&mm->page_table_lock);
 		BUG_ON(!pmd_none(*pmd));
-<<<<<<< HEAD
 		/*
 		 * We can only use set_pmd_at when establishing
 		 * hugepmds and never for establishing regular pmds that
 		 * points to regular pagetables. Use pmd_populate for that
 		 */
 		pmd_populate(mm, pmd, pmd_pgtable(_pmd));
-=======
-		set_pmd_at(mm, address, pmd, _pmd);
->>>>>>> 7175f4b... Truncated history
 		spin_unlock(&mm->page_table_lock);
 		anon_vma_unlock(vma->anon_vma);
 		goto out;

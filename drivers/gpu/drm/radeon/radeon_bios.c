@@ -32,10 +32,7 @@
 
 #include <linux/vga_switcheroo.h>
 #include <linux/slab.h>
-<<<<<<< HEAD
 #include <linux/acpi.h>
-=======
->>>>>>> 7175f4b... Truncated history
 /*
  * BIOS.
  */
@@ -102,7 +99,6 @@ static bool radeon_read_bios(struct radeon_device *rdev)
 	return true;
 }
 
-<<<<<<< HEAD
 #ifdef CONFIG_ACPI
 /* ATRM is used to get the BIOS on the discrete cards in
  * dual-gpu systems.
@@ -151,17 +147,11 @@ static int radeon_atrm_call(acpi_handle atrm_handle, uint8_t *bios,
 	return len;
 }
 
-=======
-/* ATRM is used to get the BIOS on the discrete cards in
- * dual-gpu systems.
- */
->>>>>>> 7175f4b... Truncated history
 static bool radeon_atrm_get_bios(struct radeon_device *rdev)
 {
 	int ret;
 	int size = 256 * 1024;
 	int i;
-<<<<<<< HEAD
 	struct pci_dev *pdev = NULL;
 	acpi_handle dhandle, atrm_handle;
 	acpi_status status;
@@ -184,10 +174,6 @@ static bool radeon_atrm_get_bios(struct radeon_device *rdev)
 	}
 
 	if (!found)
-=======
-
-	if (!radeon_atrm_supported(rdev->pdev))
->>>>>>> 7175f4b... Truncated history
 		return false;
 
 	rdev->bios = kmalloc(size, GFP_KERNEL);
@@ -197,16 +183,10 @@ static bool radeon_atrm_get_bios(struct radeon_device *rdev)
 	}
 
 	for (i = 0; i < size / ATRM_BIOS_PAGE; i++) {
-<<<<<<< HEAD
 		ret = radeon_atrm_call(atrm_handle,
 				       rdev->bios,
 				       (i * ATRM_BIOS_PAGE),
 				       ATRM_BIOS_PAGE);
-=======
-		ret = radeon_atrm_get_bios_chunk(rdev->bios,
-						 (i * ATRM_BIOS_PAGE),
-						 ATRM_BIOS_PAGE);
->>>>>>> 7175f4b... Truncated history
 		if (ret < ATRM_BIOS_PAGE)
 			break;
 	}
@@ -217,15 +197,12 @@ static bool radeon_atrm_get_bios(struct radeon_device *rdev)
 	}
 	return true;
 }
-<<<<<<< HEAD
 #else
 static inline bool radeon_atrm_get_bios(struct radeon_device *rdev)
 {
 	return false;
 }
 #endif
-=======
->>>>>>> 7175f4b... Truncated history
 
 static bool ni_read_disabled_bios(struct radeon_device *rdev)
 {
@@ -572,7 +549,6 @@ static bool radeon_read_disabled_bios(struct radeon_device *rdev)
 		return legacy_read_disabled_bios(rdev);
 }
 
-<<<<<<< HEAD
 #ifdef CONFIG_ACPI
 static bool radeon_acpi_vfct_bios(struct radeon_device *rdev)
 {
@@ -628,8 +604,6 @@ static inline bool radeon_acpi_vfct_bios(struct radeon_device *rdev)
 	return false;
 }
 #endif
-=======
->>>>>>> 7175f4b... Truncated history
 
 bool radeon_get_bios(struct radeon_device *rdev)
 {
@@ -638,11 +612,8 @@ bool radeon_get_bios(struct radeon_device *rdev)
 
 	r = radeon_atrm_get_bios(rdev);
 	if (r == false)
-<<<<<<< HEAD
 		r = radeon_acpi_vfct_bios(rdev);
 	if (r == false)
-=======
->>>>>>> 7175f4b... Truncated history
 		r = igp_read_bios_from_vram(rdev);
 	if (r == false)
 		r = radeon_read_bios(rdev);

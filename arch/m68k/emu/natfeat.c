@@ -18,17 +18,11 @@
 #include <asm/machdep.h>
 #include <asm/natfeat.h>
 
-<<<<<<< HEAD
 extern long nf_get_id2(const char *feature_name);
 
 asm("\n"
 "	.global nf_get_id2,nf_call\n"
 "nf_get_id2:\n"
-=======
-asm("\n"
-"	.global nf_get_id,nf_call\n"
-"nf_get_id:\n"
->>>>>>> 7175f4b... Truncated history
 "	.short	0x7300\n"
 "	rts\n"
 "nf_call:\n"
@@ -37,7 +31,6 @@ asm("\n"
 "1:	moveq.l	#0,%d0\n"
 "	rts\n"
 "	.section __ex_table,\"a\"\n"
-<<<<<<< HEAD
 "	.long	nf_get_id2,1b\n"
 "	.long	nf_call,1b\n"
 "	.previous");
@@ -56,13 +49,6 @@ long nf_get_id(const char *feature_name)
 	return nf_get_id2(name_copy);
 }
 EXPORT_SYMBOL_GPL(nf_get_id);
-=======
-"	.long	nf_get_id,1b\n"
-"	.long	nf_call,1b\n"
-"	.previous");
-EXPORT_SYMBOL_GPL(nf_get_id);
-EXPORT_SYMBOL_GPL(nf_call);
->>>>>>> 7175f4b... Truncated history
 
 void nfprint(const char *fmt, ...)
 {

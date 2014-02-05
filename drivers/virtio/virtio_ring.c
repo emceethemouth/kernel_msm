@@ -132,7 +132,6 @@ static int vring_add_indirect(struct vring_virtqueue *vq,
 	unsigned head;
 	int i;
 
-<<<<<<< HEAD
 	/*
 	 * We require lowmem mappings for the descriptors because
 	 * otherwise virt_to_phys will give us bogus addresses in the
@@ -140,8 +139,6 @@ static int vring_add_indirect(struct vring_virtqueue *vq,
 	 */
 	gfp &= ~(__GFP_HIGHMEM | __GFP_HIGH);
 
-=======
->>>>>>> 7175f4b... Truncated history
 	desc = kmalloc((out + in) * sizeof(struct vring_desc), gfp);
 	if (!desc)
 		return -ENOMEM;

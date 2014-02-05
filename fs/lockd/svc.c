@@ -251,22 +251,12 @@ out_err:
 	return err;
 }
 
-<<<<<<< HEAD
 static int lockd_up_net(struct svc_serv *serv, struct net *net)
 {
 	struct lockd_net *ln = net_generic(net, lockd_net_id);
 	int error;
 
 	if (ln->nlmsvc_users++)
-=======
-static int lockd_up_net(struct net *net)
-{
-	struct lockd_net *ln = net_generic(net, lockd_net_id);
-	struct svc_serv *serv = nlmsvc_rqst->rq_server;
-	int error;
-
-	if (ln->nlmsvc_users)
->>>>>>> 7175f4b... Truncated history
 		return 0;
 
 	error = svc_rpcb_setup(serv, net);
@@ -281,7 +271,6 @@ static int lockd_up_net(struct net *net)
 err_socks:
 	svc_rpcb_cleanup(serv, net);
 err_rpcb:
-<<<<<<< HEAD
 	ln->nlmsvc_users--;
 	return error;
 }
@@ -289,15 +278,6 @@ err_rpcb:
 static void lockd_down_net(struct svc_serv *serv, struct net *net)
 {
 	struct lockd_net *ln = net_generic(net, lockd_net_id);
-=======
-	return error;
-}
-
-static void lockd_down_net(struct net *net)
-{
-	struct lockd_net *ln = net_generic(net, lockd_net_id);
-	struct svc_serv *serv = nlmsvc_rqst->rq_server;
->>>>>>> 7175f4b... Truncated history
 
 	if (ln->nlmsvc_users) {
 		if (--ln->nlmsvc_users == 0) {
@@ -314,30 +294,18 @@ static void lockd_down_net(struct net *net)
 /*
  * Bring up the lockd process if it's not already up.
  */
-<<<<<<< HEAD
 int lockd_up(struct net *net)
 {
 	struct svc_serv *serv;
 	int		error = 0;
 	struct lockd_net *ln = net_generic(net, lockd_net_id);
-=======
-int lockd_up(void)
-{
-	struct svc_serv *serv;
-	int		error = 0;
-	struct net *net = current->nsproxy->net_ns;
->>>>>>> 7175f4b... Truncated history
 
 	mutex_lock(&nlmsvc_mutex);
 	/*
 	 * Check whether we're already up and running.
 	 */
 	if (nlmsvc_rqst) {
-<<<<<<< HEAD
 		error = lockd_up_net(nlmsvc_rqst->rq_server, net);
-=======
-		error = lockd_up_net(net);
->>>>>>> 7175f4b... Truncated history
 		goto out;
 	}
 
@@ -356,7 +324,6 @@ int lockd_up(void)
 		goto out;
 	}
 
-<<<<<<< HEAD
 	error = svc_bind(serv, net);
 	if (error < 0) {
 		printk(KERN_WARNING "lockd_up: bind service failed\n");
@@ -368,11 +335,6 @@ int lockd_up(void)
 	error = make_socks(serv, net);
 	if (error < 0)
 		goto err_start;
-=======
-	error = make_socks(serv, net);
-	if (error < 0)
-		goto destroy_and_out;
->>>>>>> 7175f4b... Truncated history
 
 	/*
 	 * Create the kernel thread and wait for it to start.
@@ -384,11 +346,7 @@ int lockd_up(void)
 		printk(KERN_WARNING
 			"lockd_up: svc_rqst allocation failed, error=%d\n",
 			error);
-<<<<<<< HEAD
 		goto err_start;
-=======
-		goto destroy_and_out;
->>>>>>> 7175f4b... Truncated history
 	}
 
 	svc_sock_update_bufs(serv);
@@ -402,11 +360,7 @@ int lockd_up(void)
 		nlmsvc_rqst = NULL;
 		printk(KERN_WARNING
 			"lockd_up: kthread_run failed, error=%d\n", error);
-<<<<<<< HEAD
 		goto err_start;
-=======
-		goto destroy_and_out;
->>>>>>> 7175f4b... Truncated history
 	}
 
 	/*
@@ -416,7 +370,6 @@ int lockd_up(void)
 destroy_and_out:
 	svc_destroy(serv);
 out:
-<<<<<<< HEAD
 	if (!error)
 		nlmsvc_users++;
 	mutex_unlock(&nlmsvc_mutex);
@@ -425,16 +378,6 @@ out:
 err_start:
 	lockd_down_net(serv, net);
 	goto destroy_and_out;
-=======
-	if (!error) {
-		struct lockd_net *ln = net_generic(net, lockd_net_id);
-
-		ln->nlmsvc_users++;
-		nlmsvc_users++;
-	}
-	mutex_unlock(&nlmsvc_mutex);
-	return error;
->>>>>>> 7175f4b... Truncated history
 }
 EXPORT_SYMBOL_GPL(lockd_up);
 
@@ -442,7 +385,6 @@ EXPORT_SYMBOL_GPL(lockd_up);
  * Decrement the user count and bring down lockd if we're the last.
  */
 void
-<<<<<<< HEAD
 lockd_down(struct net *net)
 {
 	mutex_lock(&nlmsvc_mutex);
@@ -450,16 +392,6 @@ lockd_down(struct net *net)
 	if (nlmsvc_users) {
 		if (--nlmsvc_users)
 			goto out;
-=======
-lockd_down(void)
-{
-	mutex_lock(&nlmsvc_mutex);
-	if (nlmsvc_users) {
-		if (--nlmsvc_users) {
-			lockd_down_net(current->nsproxy->net_ns);
-			goto out;
-		}
->>>>>>> 7175f4b... Truncated history
 	} else {
 		printk(KERN_ERR "lockd_down: no users! task=%p\n",
 			nlmsvc_task);

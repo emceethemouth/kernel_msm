@@ -421,10 +421,7 @@ static int acpi_memory_device_add(struct acpi_device *device)
 	/* Get the range from the _CRS */
 	result = acpi_memory_get_device_resources(mem_device);
 	if (result) {
-<<<<<<< HEAD
 		device->driver_data = NULL;
-=======
->>>>>>> 7175f4b... Truncated history
 		kfree(mem_device);
 		return result;
 	}

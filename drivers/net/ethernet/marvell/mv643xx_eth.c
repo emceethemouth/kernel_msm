@@ -1274,23 +1274,13 @@ static void mib_counters_update(struct mv643xx_eth_private *mp)
 	p->rx_discard += rdlp(mp, RX_DISCARD_FRAME_CNT);
 	p->rx_overrun += rdlp(mp, RX_OVERRUN_FRAME_CNT);
 	spin_unlock_bh(&mp->mib_counters_lock);
-<<<<<<< HEAD
-=======
-
-	mod_timer(&mp->mib_counters_timer, jiffies + 30 * HZ);
->>>>>>> 7175f4b... Truncated history
 }
 
 static void mib_counters_timer_wrapper(unsigned long _mp)
 {
 	struct mv643xx_eth_private *mp = (void *)_mp;
-<<<<<<< HEAD
 	mib_counters_update(mp);
 	mod_timer(&mp->mib_counters_timer, jiffies + 30 * HZ);
-=======
-
-	mib_counters_update(mp);
->>>>>>> 7175f4b... Truncated history
 }
 
 
@@ -2378,10 +2368,7 @@ static int mv643xx_eth_open(struct net_device *dev)
 		mp->int_mask |= INT_TX_END_0 << i;
 	}
 
-<<<<<<< HEAD
 	add_timer(&mp->mib_counters_timer);
-=======
->>>>>>> 7175f4b... Truncated history
 	port_start(mp);
 
 	wrlp(mp, INT_MASK_EXT, INT_EXT_LINK_PHY | INT_EXT_TX);
@@ -2923,10 +2910,6 @@ static int mv643xx_eth_probe(struct platform_device *pdev)
 	mp->mib_counters_timer.data = (unsigned long)mp;
 	mp->mib_counters_timer.function = mib_counters_timer_wrapper;
 	mp->mib_counters_timer.expires = jiffies + 30 * HZ;
-<<<<<<< HEAD
-=======
-	add_timer(&mp->mib_counters_timer);
->>>>>>> 7175f4b... Truncated history
 
 	spin_lock_init(&mp->mib_counters_lock);
 

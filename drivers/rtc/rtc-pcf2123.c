@@ -264,10 +264,7 @@ static int __devinit pcf2123_probe(struct spi_device *spi)
 
 	if (!(rxbuf[0] & 0x20)) {
 		dev_err(&spi->dev, "chip not found\n");
-<<<<<<< HEAD
 		ret = -ENODEV;
-=======
->>>>>>> 7175f4b... Truncated history
 		goto kfree_exit;
 	}
 

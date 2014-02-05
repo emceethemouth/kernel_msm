@@ -48,10 +48,7 @@
 #include <linux/unistd.h>
 #include <linux/kallsyms.h>
 #include <linux/uaccess.h>
-<<<<<<< HEAD
 #include <linux/rcupdate.h>
-=======
->>>>>>> 7175f4b... Truncated history
 
 #include <asm/io.h>
 #include <asm/asm-offsets.h>
@@ -73,15 +70,10 @@ void cpu_idle(void)
 
 	/* endless idle loop with no priority at all */
 	while (1) {
-<<<<<<< HEAD
 		rcu_idle_enter();
 		while (!need_resched())
 			barrier();
 		rcu_idle_exit();
-=======
-		while (!need_resched())
-			barrier();
->>>>>>> 7175f4b... Truncated history
 		schedule_preempt_disabled();
 		check_pgt_cache();
 	}

@@ -313,7 +313,6 @@ static void tcp_illinois_info(struct sock *sk, u32 ext,
 			.tcpv_rttcnt = ca->cnt_rtt,
 			.tcpv_minrtt = ca->base_rtt,
 		};
-<<<<<<< HEAD
 
 		if (info.tcpv_rttcnt > 0) {
 			u64 t = ca->sum_rtt;
@@ -321,13 +320,6 @@ static void tcp_illinois_info(struct sock *sk, u32 ext,
 			do_div(t, info.tcpv_rttcnt);
 			info.tcpv_rtt = t;
 		}
-=======
-		u64 t = ca->sum_rtt;
-
-		do_div(t, ca->cnt_rtt);
-		info.tcpv_rtt = t;
-
->>>>>>> 7175f4b... Truncated history
 		nla_put(skb, INET_DIAG_VEGASINFO, sizeof(info), &info);
 	}
 }

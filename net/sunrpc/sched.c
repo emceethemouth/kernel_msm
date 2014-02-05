@@ -143,11 +143,8 @@ static void __rpc_add_wait_queue(struct rpc_wait_queue *queue,
 		list_add_tail(&task->u.tk_wait.list, &queue->tasks[0]);
 	task->tk_waitqueue = queue;
 	queue->qlen++;
-<<<<<<< HEAD
 	/* barrier matches the read in rpc_wake_up_task_queue_locked() */
 	smp_wmb();
-=======
->>>>>>> 7175f4b... Truncated history
 	rpc_set_queued(task);
 
 	dprintk("RPC: %5u added to queue %p \"%s\"\n",
@@ -404,16 +401,11 @@ static void __rpc_do_wake_up_task(struct rpc_wait_queue *queue, struct rpc_task 
  */
 static void rpc_wake_up_task_queue_locked(struct rpc_wait_queue *queue, struct rpc_task *task)
 {
-<<<<<<< HEAD
 	if (RPC_IS_QUEUED(task)) {
 		smp_rmb();
 		if (task->tk_waitqueue == queue)
 			__rpc_do_wake_up_task(queue, task);
 	}
-=======
-	if (RPC_IS_QUEUED(task) && task->tk_waitqueue == queue)
-		__rpc_do_wake_up_task(queue, task);
->>>>>>> 7175f4b... Truncated history
 }
 
 /*
@@ -803,13 +795,9 @@ void rpc_execute(struct rpc_task *task)
 
 static void rpc_async_schedule(struct work_struct *work)
 {
-<<<<<<< HEAD
 	current->flags |= PF_FSTRANS;
 	__rpc_execute(container_of(work, struct rpc_task, u.tk_work));
 	current->flags &= ~PF_FSTRANS;
-=======
-	__rpc_execute(container_of(work, struct rpc_task, u.tk_work));
->>>>>>> 7175f4b... Truncated history
 }
 
 /**
@@ -932,7 +920,6 @@ struct rpc_task *rpc_new_task(const struct rpc_task_setup *setup_data)
 	return task;
 }
 
-<<<<<<< HEAD
 /*
  * rpc_free_task - release rpc task and perform cleanups
  *
@@ -962,18 +949,6 @@ static void rpc_free_task(struct rpc_task *task)
 		dprintk("RPC: %5u freeing task\n", task->tk_pid);
 		mempool_free(task, rpc_task_mempool);
 	}
-=======
-static void rpc_free_task(struct rpc_task *task)
-{
-	const struct rpc_call_ops *tk_ops = task->tk_ops;
-	void *calldata = task->tk_calldata;
-
-	if (task->tk_flags & RPC_TASK_DYNAMIC) {
-		dprintk("RPC: %5u freeing task\n", task->tk_pid);
-		mempool_free(task, rpc_task_mempool);
-	}
-	rpc_release_calldata(tk_ops, calldata);
->>>>>>> 7175f4b... Truncated history
 }
 
 static void rpc_async_release(struct work_struct *work)
@@ -983,12 +958,7 @@ static void rpc_async_release(struct work_struct *work)
 
 static void rpc_release_resources_task(struct rpc_task *task)
 {
-<<<<<<< HEAD
 	xprt_release(task);
-=======
-	if (task->tk_rqstp)
-		xprt_release(task);
->>>>>>> 7175f4b... Truncated history
 	if (task->tk_msg.rpc_cred) {
 		put_rpccred(task->tk_msg.rpc_cred);
 		task->tk_msg.rpc_cred = NULL;

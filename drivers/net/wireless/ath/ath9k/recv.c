@@ -78,11 +78,6 @@ static void ath_rx_buf_link(struct ath_softc *sc, struct ath_buf *bf)
 	struct ath_desc *ds;
 	struct sk_buff *skb;
 
-<<<<<<< HEAD
-=======
-	ATH_RXBUF_RESET(bf);
-
->>>>>>> 7175f4b... Truncated history
 	ds = bf->bf_desc;
 	ds->ds_link = 0; /* link to null */
 	ds->ds_data = bf->bf_buf_addr;
@@ -109,7 +104,6 @@ static void ath_rx_buf_link(struct ath_softc *sc, struct ath_buf *bf)
 	sc->rx.rxlink = &ds->ds_link;
 }
 
-<<<<<<< HEAD
 static void ath_rx_buf_relink(struct ath_softc *sc, struct ath_buf *bf)
 {
 	if (sc->rx.buf_hold)
@@ -118,8 +112,6 @@ static void ath_rx_buf_relink(struct ath_softc *sc, struct ath_buf *bf)
 	sc->rx.buf_hold = bf;
 }
 
-=======
->>>>>>> 7175f4b... Truncated history
 static void ath_setdefantenna(struct ath_softc *sc, u32 antenna)
 {
 	/* XXX block beacon interrupts */
@@ -167,10 +159,6 @@ static bool ath_rx_edma_buf_link(struct ath_softc *sc,
 
 	skb = bf->bf_mpdu;
 
-<<<<<<< HEAD
-=======
-	ATH_RXBUF_RESET(bf);
->>>>>>> 7175f4b... Truncated history
 	memset(skb->data, 0, ah->caps.rx_status_len);
 	dma_sync_single_for_device(sc->dev, bf->bf_buf_addr,
 				ah->caps.rx_status_len, DMA_TO_DEVICE);
@@ -502,10 +490,7 @@ int ath_startrecv(struct ath_softc *sc)
 	if (list_empty(&sc->rx.rxbuf))
 		goto start_recv;
 
-<<<<<<< HEAD
 	sc->rx.buf_hold = NULL;
-=======
->>>>>>> 7175f4b... Truncated history
 	sc->rx.rxlink = NULL;
 	list_for_each_entry_safe(bf, tbf, &sc->rx.rxbuf, list) {
 		ath_rx_buf_link(sc, bf);
@@ -716,15 +701,9 @@ static bool ath_edma_get_buffers(struct ath_softc *sc,
 			__skb_unlink(skb, &rx_edma->rx_fifo);
 			list_add_tail(&bf->list, &sc->rx.rxbuf);
 			ath_rx_edma_buf_link(sc, qtype);
-<<<<<<< HEAD
 		}
 
 		bf = NULL;
-=======
-		} else {
-			bf = NULL;
-		}
->>>>>>> 7175f4b... Truncated history
 	}
 
 	*dest = bf;
@@ -761,12 +740,9 @@ static struct ath_buf *ath_get_next_rx_buf(struct ath_softc *sc,
 	}
 
 	bf = list_first_entry(&sc->rx.rxbuf, struct ath_buf, list);
-<<<<<<< HEAD
 	if (bf == sc->rx.buf_hold)
 		return NULL;
 
-=======
->>>>>>> 7175f4b... Truncated history
 	ds = bf->bf_desc;
 
 	/*
@@ -811,10 +787,7 @@ static struct ath_buf *ath_get_next_rx_buf(struct ath_softc *sc,
 			return NULL;
 	}
 
-<<<<<<< HEAD
 	list_del(&bf->list);
-=======
->>>>>>> 7175f4b... Truncated history
 	if (!bf->bf_mpdu)
 		return bf;
 
@@ -858,12 +831,8 @@ static bool ath9k_rx_accept(struct ath_common *common,
 	 * descriptor does contain a valid key index. This has been observed
 	 * mostly with CCMP encryption.
 	 */
-<<<<<<< HEAD
 	if (rx_stats->rs_keyix == ATH9K_RXKEYIX_INVALID ||
 	    !test_bit(rx_stats->rs_keyix, common->ccmp_keymap))
-=======
-	if (rx_stats->rs_keyix == ATH9K_RXKEYIX_INVALID)
->>>>>>> 7175f4b... Truncated history
 		rx_stats->rs_status &= ~ATH9K_RXERR_KEYMISS;
 
 	if (!rx_stats->rs_datalen)
@@ -1815,10 +1784,6 @@ int ath_rx_tasklet(struct ath_softc *sc, int flush, bool hp)
 	struct ieee80211_hw *hw = sc->hw;
 	struct ieee80211_hdr *hdr;
 	int retval;
-<<<<<<< HEAD
-=======
-	bool decrypt_error = false;
->>>>>>> 7175f4b... Truncated history
 	struct ath_rx_status rs;
 	enum ath9k_rx_qtype qtype;
 	bool edma = !!(ah->caps.hw_caps & ATH9K_HW_CAP_EDMA);
@@ -1840,10 +1805,7 @@ int ath_rx_tasklet(struct ath_softc *sc, int flush, bool hp)
 	tsf_lower = tsf & 0xffffffff;
 
 	do {
-<<<<<<< HEAD
 		bool decrypt_error = false;
-=======
->>>>>>> 7175f4b... Truncated history
 		/* If handling rx interrupt and flush is in progress => exit */
 		if ((sc->sc_flags & SC_OP_RXFLUSH) && (flush == 0))
 			break;
@@ -2014,7 +1976,6 @@ requeue_drop_frag:
 			sc->rx.frag = NULL;
 		}
 requeue:
-<<<<<<< HEAD
 		list_add_tail(&bf->list, &sc->rx.rxbuf);
 		if (flush)
 			continue;
@@ -2024,16 +1985,6 @@ requeue:
 		} else {
 			ath_rx_buf_relink(sc, bf);
 			ath9k_hw_rxena(ah);
-=======
-		if (edma) {
-			list_add_tail(&bf->list, &sc->rx.rxbuf);
-			ath_rx_edma_buf_link(sc, qtype);
-		} else {
-			list_move_tail(&bf->list, &sc->rx.rxbuf);
-			ath_rx_buf_link(sc, bf);
-			if (!flush)
-				ath9k_hw_rxena(ah);
->>>>>>> 7175f4b... Truncated history
 		}
 	} while (1);
 

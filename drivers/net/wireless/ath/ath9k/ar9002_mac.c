@@ -76,7 +76,6 @@ static bool ar9002_hw_get_isr(struct ath_hw *ah, enum ath9k_int *masked)
 				mask2 |= ATH9K_INT_CST;
 			if (isr2 & AR_ISR_S2_TSFOOR)
 				mask2 |= ATH9K_INT_TSFOOR;
-<<<<<<< HEAD
 
 			if (!(pCap->hw_caps & ATH9K_HW_CAP_RAC_SUPPORTED)) {
 				REG_WRITE(ah, AR_ISR_S2, isr2);
@@ -87,11 +86,6 @@ static bool ar9002_hw_get_isr(struct ath_hw *ah, enum ath9k_int *masked)
 		if (pCap->hw_caps & ATH9K_HW_CAP_RAC_SUPPORTED)
 			isr = REG_READ(ah, AR_ISR_RAC);
 
-=======
-		}
-
-		isr = REG_READ(ah, AR_ISR_RAC);
->>>>>>> 7175f4b... Truncated history
 		if (isr == 0xffffffff) {
 			*masked = 0;
 			return false;
@@ -110,7 +104,6 @@ static bool ar9002_hw_get_isr(struct ath_hw *ah, enum ath9k_int *masked)
 
 			*masked |= ATH9K_INT_TX;
 
-<<<<<<< HEAD
 			if (pCap->hw_caps & ATH9K_HW_CAP_RAC_SUPPORTED) {
 				s0_s = REG_READ(ah, AR_ISR_S0_S);
 				s1_s = REG_READ(ah, AR_ISR_S1_S);
@@ -128,13 +121,6 @@ static bool ar9002_hw_get_isr(struct ath_hw *ah, enum ath9k_int *masked)
 
 			ah->intr_txqs |= MS(s0_s, AR_ISR_S0_QCU_TXOK);
 			ah->intr_txqs |= MS(s0_s, AR_ISR_S0_QCU_TXDESC);
-=======
-			s0_s = REG_READ(ah, AR_ISR_S0_S);
-			ah->intr_txqs |= MS(s0_s, AR_ISR_S0_QCU_TXOK);
-			ah->intr_txqs |= MS(s0_s, AR_ISR_S0_QCU_TXDESC);
-
-			s1_s = REG_READ(ah, AR_ISR_S1_S);
->>>>>>> 7175f4b... Truncated history
 			ah->intr_txqs |= MS(s1_s, AR_ISR_S1_QCU_TXERR);
 			ah->intr_txqs |= MS(s1_s, AR_ISR_S1_QCU_TXEOL);
 		}
@@ -147,7 +133,6 @@ static bool ar9002_hw_get_isr(struct ath_hw *ah, enum ath9k_int *masked)
 		*masked |= mask2;
 	}
 
-<<<<<<< HEAD
 	if (!AR_SREV_9100(ah) && (isr & AR_ISR_GENTMR)) {
 		u32 s5_s;
 
@@ -157,15 +142,6 @@ static bool ar9002_hw_get_isr(struct ath_hw *ah, enum ath9k_int *masked)
 			s5_s = REG_READ(ah, AR_ISR_S5);
 		}
 
-=======
-	if (AR_SREV_9100(ah))
-		return true;
-
-	if (isr & AR_ISR_GENTMR) {
-		u32 s5_s;
-
-		s5_s = REG_READ(ah, AR_ISR_S5_S);
->>>>>>> 7175f4b... Truncated history
 		ah->intr_gen_timer_trigger =
 				MS(s5_s, AR_ISR_S5_GENTIMER_TRIG);
 
@@ -178,7 +154,6 @@ static bool ar9002_hw_get_isr(struct ath_hw *ah, enum ath9k_int *masked)
 		if ((s5_s & AR_ISR_S5_TIM_TIMER) &&
 		    !(pCap->hw_caps & ATH9K_HW_CAP_AUTOSLEEP))
 			*masked |= ATH9K_INT_TIM_TIMER;
-<<<<<<< HEAD
 
 		if (!(pCap->hw_caps & ATH9K_HW_CAP_RAC_SUPPORTED)) {
 			REG_WRITE(ah, AR_ISR_S5, s5_s);
@@ -194,10 +169,6 @@ static bool ar9002_hw_get_isr(struct ath_hw *ah, enum ath9k_int *masked)
 	if (AR_SREV_9100(ah))
 		return true;
 
-=======
-	}
-
->>>>>>> 7175f4b... Truncated history
 	if (sync_cause) {
 		fatal_int =
 			(sync_cause &

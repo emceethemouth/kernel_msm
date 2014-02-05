@@ -429,15 +429,6 @@ compat_process_vm_rw(compat_pid_t pid,
 	if (flags != 0)
 		return -EINVAL;
 
-<<<<<<< HEAD
-=======
-	if (!access_ok(VERIFY_READ, lvec, liovcnt * sizeof(*lvec)))
-		goto out;
-
-	if (!access_ok(VERIFY_READ, rvec, riovcnt * sizeof(*rvec)))
-		goto out;
-
->>>>>>> 7175f4b... Truncated history
 	if (vm_write)
 		rc = compat_rw_copy_check_uvector(WRITE, lvec, liovcnt,
 						  UIO_FASTIOV, iovstack_l,
@@ -462,11 +453,6 @@ free_iovecs:
 		kfree(iov_r);
 	if (iov_l != iovstack_l)
 		kfree(iov_l);
-<<<<<<< HEAD
-=======
-
-out:
->>>>>>> 7175f4b... Truncated history
 	return rc;
 }
 

@@ -26,11 +26,7 @@ static int perf_trace_event_perm(struct ftrace_event_call *tp_event,
 {
 	/* The ftrace function trace is allowed only for root. */
 	if (ftrace_event_is_function(tp_event) &&
-<<<<<<< HEAD
 	    perf_paranoid_tracepoint_raw() && !capable(CAP_SYS_ADMIN))
-=======
-	    perf_paranoid_kernel() && !capable(CAP_SYS_ADMIN))
->>>>>>> 7175f4b... Truncated history
 		return -EPERM;
 
 	/* No tracing, just counting, so no obvious leak */

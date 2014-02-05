@@ -2157,11 +2157,7 @@ static void __devinit it87_init_device(struct platform_device *pdev)
 
 	/* Start monitoring */
 	it87_write_value(data, IT87_REG_CONFIG,
-<<<<<<< HEAD
 			 (it87_read_value(data, IT87_REG_CONFIG) & 0x3e)
-=======
-			 (it87_read_value(data, IT87_REG_CONFIG) & 0x36)
->>>>>>> 7175f4b... Truncated history
 			 | (update_vbat ? 0x41 : 0x01));
 }
 

@@ -541,10 +541,7 @@ static __devinit int wm8994_device_init(struct wm8994 *wm8994, int irq)
 		case 1:
 		case 2:
 		case 3:
-<<<<<<< HEAD
 		case 4:
-=======
->>>>>>> 7175f4b... Truncated history
 			regmap_patch = wm1811_reva_patch;
 			patch_regs = ARRAY_SIZE(wm1811_reva_patch);
 			break;

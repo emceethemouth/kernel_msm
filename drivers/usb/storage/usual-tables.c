@@ -46,7 +46,6 @@
 { USB_INTERFACE_INFO(USB_CLASS_MASS_STORAGE, useProto, useTrans), \
   .driver_info = ((useType)<<24) }
 
-<<<<<<< HEAD
 /* Define the device is matched with Vendor ID and interface descriptors */
 #define UNUSUAL_VENDOR_INTF(id_vendor, cl, sc, pr, \
 			vendorName, productName, useProtocol, useTransport, \
@@ -61,8 +60,6 @@
 	.driver_info = (flags) \
 }
 
-=======
->>>>>>> 7175f4b... Truncated history
 struct usb_device_id usb_storage_usb_ids[] = {
 #	include "unusual_devs.h"
 	{ }		/* Terminating entry */
@@ -74,10 +71,7 @@ MODULE_DEVICE_TABLE(usb, usb_storage_usb_ids);
 #undef UNUSUAL_DEV
 #undef COMPLIANT_DEV
 #undef USUAL_DEV
-<<<<<<< HEAD
 #undef UNUSUAL_VENDOR_INTF
-=======
->>>>>>> 7175f4b... Truncated history
 
 
 /*

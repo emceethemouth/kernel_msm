@@ -667,11 +667,7 @@ int jbd2_log_wait_commit(journal_t *journal, tid_t tid)
 
 int jbd2_journal_next_log_block(journal_t *journal, unsigned long long *retp)
 {
-<<<<<<< HEAD
 	unsigned long blocknr = 0;
-=======
-	unsigned long blocknr;
->>>>>>> 7175f4b... Truncated history
 
 	write_lock(&journal->j_state_lock);
 	J_ASSERT(journal->j_free > 1);
@@ -728,11 +724,7 @@ int jbd2_journal_bmap(journal_t *journal, unsigned long blocknr,
 struct journal_head *jbd2_journal_get_descriptor_buffer(journal_t *journal)
 {
 	struct buffer_head *bh;
-<<<<<<< HEAD
 	unsigned long long blocknr = 0;
-=======
-	unsigned long long blocknr;
->>>>>>> 7175f4b... Truncated history
 	int err;
 
 	err = jbd2_journal_next_log_block(journal, &blocknr);
@@ -1106,11 +1098,7 @@ journal_t * jbd2_journal_init_inode (struct inode *inode)
 	char *p;
 	int err;
 	int n;
-<<<<<<< HEAD
 	unsigned long long blocknr = 0;
-=======
-	unsigned long long blocknr;
->>>>>>> 7175f4b... Truncated history
 
 	if (!journal)
 		return NULL;
@@ -1329,14 +1317,11 @@ static void jbd2_mark_journal_empty(journal_t *journal)
 
 	BUG_ON(!mutex_is_locked(&journal->j_checkpoint_mutex));
 	read_lock(&journal->j_state_lock);
-<<<<<<< HEAD
 	/* Is it already empty? */
 	if (sb->s_start == 0) {
 		read_unlock(&journal->j_state_lock);
 		return;
 	}
-=======
->>>>>>> 7175f4b... Truncated history
 	jbd_debug(1, "JBD2: Marking journal as empty (seq %d)\n",
 		  journal->j_tail_sequence);
 
@@ -1360,11 +1345,7 @@ static void jbd2_mark_journal_empty(journal_t *journal)
  * Update a journal's errno.  Write updated superblock to disk waiting for IO
  * to complete.
  */
-<<<<<<< HEAD
 void jbd2_journal_update_sb_errno(journal_t *journal)
-=======
-static void jbd2_journal_update_sb_errno(journal_t *journal)
->>>>>>> 7175f4b... Truncated history
 {
 	journal_superblock_t *sb = journal->j_superblock;
 
@@ -1376,10 +1357,7 @@ static void jbd2_journal_update_sb_errno(journal_t *journal)
 
 	jbd2_write_superblock(journal, WRITE_SYNC);
 }
-<<<<<<< HEAD
 EXPORT_SYMBOL(jbd2_journal_update_sb_errno);
-=======
->>>>>>> 7175f4b... Truncated history
 
 /*
  * Read the superblock for a given journal, performing initial

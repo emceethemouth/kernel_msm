@@ -134,14 +134,8 @@ static const struct ieee80211_regdomain world_regdom = {
 	.reg_rules = {
 		/* IEEE 802.11b/g, channels 1..11 */
 		REG_RULE(2412-10, 2462+10, 40, 6, 20, 0),
-<<<<<<< HEAD
 		/* IEEE 802.11b/g, channels 12..13. */
 		REG_RULE(2467-10, 2472+10, 40, 6, 20,
-=======
-		/* IEEE 802.11b/g, channels 12..13. No HT40
-		 * channel fits here. */
-		REG_RULE(2467-10, 2472+10, 20, 6, 20,
->>>>>>> 7175f4b... Truncated history
 			NL80211_RRF_PASSIVE_SCAN |
 			NL80211_RRF_NO_IBSS),
 		/* IEEE 802.11 channel 14 - Only JP enables
@@ -345,12 +339,9 @@ static void reg_regdb_search(struct work_struct *work)
 	struct reg_regdb_search_request *request;
 	const struct ieee80211_regdomain *curdom, *regdom;
 	int i, r;
-<<<<<<< HEAD
 	bool set_reg = false;
 
 	mutex_lock(&cfg80211_mutex);
-=======
->>>>>>> 7175f4b... Truncated history
 
 	mutex_lock(&reg_regdb_search_mutex);
 	while (!list_empty(&reg_regdb_search_list)) {
@@ -366,13 +357,7 @@ static void reg_regdb_search(struct work_struct *work)
 				r = reg_copy_regd(&regdom, curdom);
 				if (r)
 					break;
-<<<<<<< HEAD
 				set_reg = true;
-=======
-				mutex_lock(&cfg80211_mutex);
-				set_regdom(regdom);
-				mutex_unlock(&cfg80211_mutex);
->>>>>>> 7175f4b... Truncated history
 				break;
 			}
 		}
@@ -380,14 +365,11 @@ static void reg_regdb_search(struct work_struct *work)
 		kfree(request);
 	}
 	mutex_unlock(&reg_regdb_search_mutex);
-<<<<<<< HEAD
 
 	if (set_reg)
 		set_regdom(regdom);
 
 	mutex_unlock(&cfg80211_mutex);
-=======
->>>>>>> 7175f4b... Truncated history
 }
 
 static DECLARE_WORK(reg_regdb_work, reg_regdb_search);
@@ -411,7 +393,6 @@ static void reg_regdb_query(const char *alpha2)
 
 	schedule_work(&reg_regdb_work);
 }
-<<<<<<< HEAD
 
 /* Feel free to add any other sanity checks here */
 static void reg_regdb_size_check(void)
@@ -421,9 +402,6 @@ static void reg_regdb_size_check(void)
 }
 #else
 static inline void reg_regdb_size_check(void) {}
-=======
-#else
->>>>>>> 7175f4b... Truncated history
 static inline void reg_regdb_query(const char *alpha2) {}
 #endif /* CONFIG_CFG80211_INTERNAL_REGDB */
 
@@ -884,11 +862,7 @@ static void handle_channel(struct wiphy *wiphy,
 			return;
 
 		REG_DBG_PRINT("Disabling freq %d MHz\n", chan->center_freq);
-<<<<<<< HEAD
 		chan->flags |= IEEE80211_CHAN_DISABLED;
-=======
-		chan->flags = IEEE80211_CHAN_DISABLED;
->>>>>>> 7175f4b... Truncated history
 		return;
 	}
 
@@ -922,7 +896,6 @@ static void handle_channel(struct wiphy *wiphy,
 	chan->max_antenna_gain = min(chan->orig_mag,
 		(int) MBI_TO_DBI(power_rule->max_antenna_gain));
 	chan->max_reg_power = (int) MBM_TO_DBM(power_rule->max_eirp);
-<<<<<<< HEAD
 	if (chan->orig_mpwr) {
 		/*
 		 * Devices that have their own custom regulatory domain
@@ -938,9 +911,6 @@ static void handle_channel(struct wiphy *wiphy,
 					      chan->max_reg_power);
 	} else
 		chan->max_power = chan->max_reg_power;
-=======
-	chan->max_power = min(chan->max_power, chan->max_reg_power);
->>>>>>> 7175f4b... Truncated history
 }
 
 static void handle_band(struct wiphy *wiphy,
@@ -1438,11 +1408,7 @@ static void reg_set_request_processed(void)
 	spin_unlock(&reg_requests_lock);
 
 	if (last_request->initiator == NL80211_REGDOM_SET_BY_USER)
-<<<<<<< HEAD
 		cancel_delayed_work(&reg_timeout);
-=======
-		cancel_delayed_work_sync(&reg_timeout);
->>>>>>> 7175f4b... Truncated history
 
 	if (need_more_processing)
 		schedule_work(&reg_work);
@@ -2383,11 +2349,8 @@ int __init regulatory_init(void)
 	spin_lock_init(&reg_requests_lock);
 	spin_lock_init(&reg_pending_beacons_lock);
 
-<<<<<<< HEAD
 	reg_regdb_size_check();
 
-=======
->>>>>>> 7175f4b... Truncated history
 	cfg80211_regdomain = cfg80211_world_regdom;
 
 	user_alpha2[0] = '9';

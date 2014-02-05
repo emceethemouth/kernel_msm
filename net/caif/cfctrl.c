@@ -288,16 +288,10 @@ int cfctrl_linkup_request(struct cflayer *layer,
 
 		count = cfctrl_cancel_req(&cfctrl->serv.layer,
 						user_layer);
-<<<<<<< HEAD
 		if (count != 1) {
 			pr_err("Could not remove request (%d)", count);
 			return -ENODEV;
 		}
-=======
-		if (count != 1)
-			pr_err("Could not remove request (%d)", count);
-			return -ENODEV;
->>>>>>> 7175f4b... Truncated history
 	}
 	return 0;
 }

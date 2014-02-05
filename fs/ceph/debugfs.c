@@ -201,10 +201,7 @@ int ceph_fs_debugfs_init(struct ceph_fs_client *fsc)
 	int err = -ENOMEM;
 
 	dout("ceph_fs_debugfs_init\n");
-<<<<<<< HEAD
 	BUG_ON(!fsc->client->debugfs_dir);
-=======
->>>>>>> 7175f4b... Truncated history
 	fsc->debugfs_congestion_kb =
 		debugfs_create_file("writeback_congestion_kb",
 				    0600,

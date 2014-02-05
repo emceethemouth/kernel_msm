@@ -430,11 +430,7 @@ s3c2410_dma_canload(struct s3c2410_dma_chan *chan)
  * when necessary.
 */
 
-<<<<<<< HEAD
 int s3c2410_dma_enqueue(enum dma_ch channel, void *id,
-=======
-int s3c2410_dma_enqueue(unsigned int channel, void *id,
->>>>>>> 7175f4b... Truncated history
 			dma_addr_t data, int size)
 {
 	struct s3c2410_dma_chan *chan = s3c_dma_lookup_channel(channel);

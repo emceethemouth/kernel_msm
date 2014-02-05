@@ -1511,7 +1511,6 @@ static void b43legacy_print_fw_helptext(struct b43legacy_wl *wl)
 		     "and download the correct firmware (version 3).\n");
 }
 
-<<<<<<< HEAD
 static void b43legacy_fw_cb(const struct firmware *firmware, void *context)
 {
 	struct b43legacy_wldev *dev = context;
@@ -1523,11 +1522,6 @@ static void b43legacy_fw_cb(const struct firmware *firmware, void *context)
 static int do_request_fw(struct b43legacy_wldev *dev,
 			 const char *name,
 			 const struct firmware **fw, bool async)
-=======
-static int do_request_fw(struct b43legacy_wldev *dev,
-			 const char *name,
-			 const struct firmware **fw)
->>>>>>> 7175f4b... Truncated history
 {
 	char path[sizeof(modparam_fwpostfix) + 32];
 	struct b43legacy_fw_header *hdr;
@@ -1540,7 +1534,6 @@ static int do_request_fw(struct b43legacy_wldev *dev,
 	snprintf(path, ARRAY_SIZE(path),
 		 "b43legacy%s/%s.fw",
 		 modparam_fwpostfix, name);
-<<<<<<< HEAD
 	b43legacyinfo(dev->wl, "Loading firmware %s\n", path);
 	if (async) {
 		init_completion(&dev->fw_load_complete);
@@ -1559,9 +1552,6 @@ static int do_request_fw(struct b43legacy_wldev *dev,
 	} else {
 		err = request_firmware(fw, path, dev->dev->dev);
 	}
-=======
-	err = request_firmware(fw, path, dev->dev->dev);
->>>>>>> 7175f4b... Truncated history
 	if (err) {
 		b43legacyerr(dev->wl, "Firmware file \"%s\" not found "
 		       "or load failed.\n", path);
@@ -1606,11 +1596,6 @@ static void b43legacy_request_firmware(struct work_struct *work)
 	const char *filename;
 	int err;
 
-<<<<<<< HEAD
-=======
-	/* do dummy read */
-	ssb_read32(dev->dev, SSB_TMSHIGH);
->>>>>>> 7175f4b... Truncated history
 	if (!fw->ucode) {
 		if (rev == 2)
 			filename = "ucode2";
@@ -1618,11 +1603,7 @@ static void b43legacy_request_firmware(struct work_struct *work)
 			filename = "ucode4";
 		else
 			filename = "ucode5";
-<<<<<<< HEAD
 		err = do_request_fw(dev, filename, &fw->ucode, true);
-=======
-		err = do_request_fw(dev, filename, &fw->ucode);
->>>>>>> 7175f4b... Truncated history
 		if (err)
 			goto err_load;
 	}
@@ -1631,11 +1612,7 @@ static void b43legacy_request_firmware(struct work_struct *work)
 			filename = "pcm4";
 		else
 			filename = "pcm5";
-<<<<<<< HEAD
 		err = do_request_fw(dev, filename, &fw->pcm, false);
-=======
-		err = do_request_fw(dev, filename, &fw->pcm);
->>>>>>> 7175f4b... Truncated history
 		if (err)
 			goto err_load;
 	}
@@ -1653,11 +1630,7 @@ static void b43legacy_request_firmware(struct work_struct *work)
 		default:
 			goto err_no_initvals;
 		}
-<<<<<<< HEAD
 		err = do_request_fw(dev, filename, &fw->initvals, false);
-=======
-		err = do_request_fw(dev, filename, &fw->initvals);
->>>>>>> 7175f4b... Truncated history
 		if (err)
 			goto err_load;
 	}
@@ -1677,11 +1650,7 @@ static void b43legacy_request_firmware(struct work_struct *work)
 		default:
 			goto err_no_initvals;
 		}
-<<<<<<< HEAD
 		err = do_request_fw(dev, filename, &fw->initvals_band, false);
-=======
-		err = do_request_fw(dev, filename, &fw->initvals_band);
->>>>>>> 7175f4b... Truncated history
 		if (err)
 			goto err_load;
 	}
@@ -3948,11 +3917,8 @@ static void b43legacy_remove(struct ssb_device *dev)
 	cancel_work_sync(&wl->firmware_load);
 
 	B43legacy_WARN_ON(!wl);
-<<<<<<< HEAD
 	if (!wldev->fw.ucode)
 		return;			/* NULL if fw never loaded */
-=======
->>>>>>> 7175f4b... Truncated history
 	if (wl->current_dev == wldev)
 		ieee80211_unregister_hw(wl->hw);
 

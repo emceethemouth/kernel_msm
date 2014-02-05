@@ -203,7 +203,6 @@ cifs_strtoUTF16(__le16 *to, const char *from, int len,
 	int i;
 	wchar_t wchar_to; /* needed to quiet sparse */
 
-<<<<<<< HEAD
 	/* special case for utf8 to handle no plane0 chars */
 	if (!strcmp(codepage->charset, "utf8")) {
 		/*
@@ -225,8 +224,6 @@ cifs_strtoUTF16(__le16 *to, const char *from, int len,
 		 */
 	}
 
-=======
->>>>>>> 7175f4b... Truncated history
 	for (i = 0; len && *from; i++, from += charlen, len -= charlen) {
 		charlen = codepage->char2uni(from, len, &wchar_to);
 		if (charlen < 1) {
@@ -239,10 +236,7 @@ cifs_strtoUTF16(__le16 *to, const char *from, int len,
 		put_unaligned_le16(wchar_to, &to[i]);
 	}
 
-<<<<<<< HEAD
 success:
-=======
->>>>>>> 7175f4b... Truncated history
 	put_unaligned_le16(0, &to[i]);
 	return i;
 }
@@ -356,10 +350,6 @@ cifsConvertToUTF16(__le16 *target, const char *source, int srclen,
 	}
 
 ctoUTF16_out:
-<<<<<<< HEAD
 	return j;
-=======
-	return i;
->>>>>>> 7175f4b... Truncated history
 }
 

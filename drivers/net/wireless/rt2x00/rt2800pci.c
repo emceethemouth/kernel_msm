@@ -973,10 +973,7 @@ static int rt2800pci_validate_eeprom(struct rt2x00_dev *rt2x00dev)
 static int rt2800pci_probe_hw(struct rt2x00_dev *rt2x00dev)
 {
 	int retval;
-<<<<<<< HEAD
 	u32 reg;
-=======
->>>>>>> 7175f4b... Truncated history
 
 	/*
 	 * Allocate eeprom data.
@@ -990,7 +987,6 @@ static int rt2800pci_probe_hw(struct rt2x00_dev *rt2x00dev)
 		return retval;
 
 	/*
-<<<<<<< HEAD
 	 * Enable rfkill polling by setting GPIO direction of the
 	 * rfkill switch GPIO pin correctly.
 	 */
@@ -999,8 +995,6 @@ static int rt2800pci_probe_hw(struct rt2x00_dev *rt2x00dev)
 	rt2x00pci_register_write(rt2x00dev, GPIO_CTRL_CFG, reg);
 
 	/*
-=======
->>>>>>> 7175f4b... Truncated history
 	 * Initialize hw specifications.
 	 */
 	retval = rt2800_probe_hw_mode(rt2x00dev);

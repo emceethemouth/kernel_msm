@@ -223,11 +223,7 @@ static void encode_nlm_stat(struct xdr_stream *xdr,
 {
 	__be32 *p;
 
-<<<<<<< HEAD
 	WARN_ON_ONCE(be32_to_cpu(stat) > NLM_LCK_DENIED_GRACE_PERIOD);
-=======
-	BUG_ON(be32_to_cpu(stat) > NLM_LCK_DENIED_GRACE_PERIOD);
->>>>>>> 7175f4b... Truncated history
 	p = xdr_reserve_space(xdr, 4);
 	*p = stat;
 }

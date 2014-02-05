@@ -386,16 +386,11 @@ config KPROBE_EVENT
 	  If you want to use perf tools, this option is strongly recommended.
 
 config DYNAMIC_FTRACE
-<<<<<<< HEAD
 	bool "enable/disable function tracing dynamically"
-=======
-	bool "enable/disable ftrace tracepoints dynamically"
->>>>>>> 7175f4b... Truncated history
 	depends on FUNCTION_TRACER
 	depends on HAVE_DYNAMIC_FTRACE
 	default y
 	help
-<<<<<<< HEAD
 	  This option will modify all the calls to function tracing
 	  dynamically (will patch them out of the binary image and
 	  replace them with a No-Op instruction) on boot up. During
@@ -409,24 +404,10 @@ config DYNAMIC_FTRACE
 	    available_filter_functions
 	    set_ftrace_filter
 	    set_ftrace_notrace
-=======
-          This option will modify all the calls to ftrace dynamically
-	  (will patch them out of the binary image and replace them
-	  with a No-Op instruction) as they are called. A table is
-	  created to dynamically enable them again.
->>>>>>> 7175f4b... Truncated history
 
 	  This way a CONFIG_FUNCTION_TRACER kernel is slightly larger, but
 	  otherwise has native performance as long as no tracing is active.
 
-<<<<<<< HEAD
-=======
-	  The changes to the code are done by a kernel thread that
-	  wakes up once a second and checks to see if any ftrace calls
-	  were made. If so, it runs stop_machine (stops all CPUS)
-	  and modifies the code to jump over the call to ftrace.
-
->>>>>>> 7175f4b... Truncated history
 config FUNCTION_PROFILER
 	bool "Kernel function profiler"
 	depends on FUNCTION_TRACER

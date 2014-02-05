@@ -701,11 +701,7 @@ typedef struct pglist_data {
 					     range, including holes */
 	int node_id;
 	wait_queue_head_t kswapd_wait;
-<<<<<<< HEAD
 	struct task_struct *kswapd;	/* Protected by lock_memory_hotplug() */
-=======
-	struct task_struct *kswapd;
->>>>>>> 7175f4b... Truncated history
 	int kswapd_max_order;
 	enum zone_type classzone_idx;
 } pg_data_t;

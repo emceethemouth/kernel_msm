@@ -2054,11 +2054,7 @@ static void unmap_region(sector_t lba, unsigned int len)
 		block = lba + alignment;
 		rem = do_div(block, granularity);
 
-<<<<<<< HEAD
 		if (rem == 0 && lba + granularity < end && block < map_size) {
-=======
-		if (rem == 0 && lba + granularity <= end && block < map_size) {
->>>>>>> 7175f4b... Truncated history
 			clear_bit(block, map_storep);
 			if (scsi_debug_lbprz)
 				memset(fake_storep +

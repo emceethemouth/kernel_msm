@@ -694,12 +694,7 @@ static int nfs_create_rpc_client(struct nfs_client *clp,
  */
 static void nfs_destroy_server(struct nfs_server *server)
 {
-<<<<<<< HEAD
 	if (server->nlm_host)
-=======
-	if (!(server->flags & NFS_MOUNT_LOCAL_FLOCK) ||
-			!(server->flags & NFS_MOUNT_LOCAL_FCNTL))
->>>>>>> 7175f4b... Truncated history
 		nlmclnt_done(server->nlm_host);
 }
 

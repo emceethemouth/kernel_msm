@@ -31,11 +31,7 @@ int notrace unwind_frame(struct stackframe *frame)
 	high = ALIGN(low, THREAD_SIZE);
 
 	/* check current frame pointer is within bounds */
-<<<<<<< HEAD
 	if (fp < low + 12 || fp > high - 4)
-=======
-	if (fp < (low + 12) || fp + 4 >= high)
->>>>>>> 7175f4b... Truncated history
 		return -EINVAL;
 
 	/* restore the registers from the stack frame */

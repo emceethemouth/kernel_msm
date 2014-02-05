@@ -277,14 +277,9 @@ extern void nfs_sb_active(struct super_block *sb);
 extern void nfs_sb_deactive(struct super_block *sb);
 
 /* namespace.c */
-<<<<<<< HEAD
 #define NFS_PATH_CANONICAL 1
 extern char *nfs_path(char **p, struct dentry *dentry,
 		      char *buffer, ssize_t buflen, unsigned flags);
-=======
-extern char *nfs_path(char **p, struct dentry *dentry,
-		      char *buffer, ssize_t buflen);
->>>>>>> 7175f4b... Truncated history
 extern struct vfsmount *nfs_d_automount(struct path *path);
 #ifdef CONFIG_NFS_V4
 rpc_authflavor_t nfs_find_best_sec(struct nfs4_secinfo_flavors *);
@@ -377,11 +372,7 @@ static inline char *nfs_devname(struct dentry *dentry,
 				char *buffer, ssize_t buflen)
 {
 	char *dummy;
-<<<<<<< HEAD
 	return nfs_path(&dummy, dentry, buffer, buflen, NFS_PATH_CANONICAL);
-=======
-	return nfs_path(&dummy, dentry, buffer, buflen);
->>>>>>> 7175f4b... Truncated history
 }
 
 /*

@@ -25,11 +25,7 @@ static DEFINE_MUTEX(block_class_lock);
 struct kobject *block_depr;
 
 /* for extended dynamic devt allocation, currently only one major is used */
-<<<<<<< HEAD
 #define NR_EXT_DEVT		(1 << MINORBITS)
-=======
-#define MAX_EXT_DEVT		(1 << MINORBITS)
->>>>>>> 7175f4b... Truncated history
 
 /* For extended devt allocation.  ext_devt_mutex prevents look up
  * results from going away underneath its user.
@@ -424,7 +420,6 @@ int blk_alloc_devt(struct hd_struct *part, dev_t *devt)
 	do {
 		if (!idr_pre_get(&ext_devt_idr, GFP_KERNEL))
 			return -ENOMEM;
-<<<<<<< HEAD
 		mutex_lock(&ext_devt_mutex);
 		rc = idr_get_new(&ext_devt_idr, part, &idx);
 		if (!rc && idx >= NR_EXT_DEVT) {
@@ -432,22 +427,11 @@ int blk_alloc_devt(struct hd_struct *part, dev_t *devt)
 			rc = -EBUSY;
 		}
 		mutex_unlock(&ext_devt_mutex);
-=======
-		rc = idr_get_new(&ext_devt_idr, part, &idx);
->>>>>>> 7175f4b... Truncated history
 	} while (rc == -EAGAIN);
 
 	if (rc)
 		return rc;
 
-<<<<<<< HEAD
-=======
-	if (idx > MAX_EXT_DEVT) {
-		idr_remove(&ext_devt_idr, idx);
-		return -EBUSY;
-	}
-
->>>>>>> 7175f4b... Truncated history
 	*devt = MKDEV(BLOCK_EXT_MAJOR, blk_mangle_minor(idx));
 	return 0;
 }
@@ -534,11 +518,7 @@ static void register_disk(struct gendisk *disk)
 
 	ddev->parent = disk->driverfs_dev;
 
-<<<<<<< HEAD
 	dev_set_name(ddev, "%s", disk->disk_name);
-=======
-	dev_set_name(ddev, disk->disk_name);
->>>>>>> 7175f4b... Truncated history
 
 	/* delay uevents, until we scanned partition table */
 	dev_set_uevent_suppress(ddev, 1);
@@ -665,10 +645,6 @@ void del_gendisk(struct gendisk *disk)
 	disk_part_iter_exit(&piter);
 
 	invalidate_partition(disk, 0);
-<<<<<<< HEAD
-=======
-	blk_free_devt(disk_to_dev(disk)->devt);
->>>>>>> 7175f4b... Truncated history
 	set_capacity(disk, 0);
 	disk->flags &= ~GENHD_FL_UP;
 
@@ -686,10 +662,7 @@ void del_gendisk(struct gendisk *disk)
 	if (!sysfs_deprecated)
 		sysfs_remove_link(block_depr, dev_name(disk_to_dev(disk)));
 	device_del(disk_to_dev(disk));
-<<<<<<< HEAD
 	blk_free_devt(disk_to_dev(disk)->devt);
-=======
->>>>>>> 7175f4b... Truncated history
 }
 EXPORT_SYMBOL(del_gendisk);
 

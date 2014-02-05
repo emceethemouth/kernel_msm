@@ -4,11 +4,7 @@
 
 menuconfig TIDSPBRIDGE
 	tristate "DSP Bridge driver"
-<<<<<<< HEAD
 	depends on ARCH_OMAP3 && BROKEN
-=======
-	depends on ARCH_OMAP3
->>>>>>> 7175f4b... Truncated history
 	select OMAP_MBOX_FWK
 	help
 	  DSP/BIOS Bridge is designed for platforms that contain a GPP and

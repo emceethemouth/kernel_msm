@@ -1849,11 +1849,8 @@ static int wait_for_avail(struct snd_pcm_substream *substream,
 		case SNDRV_PCM_STATE_DISCONNECTED:
 			err = -EBADFD;
 			goto _endloop;
-<<<<<<< HEAD
 		case SNDRV_PCM_STATE_PAUSED:
 			continue;
-=======
->>>>>>> 7175f4b... Truncated history
 		}
 		if (!tout) {
 			snd_printd("%s write error (DMA or IRQ trouble?)\n",

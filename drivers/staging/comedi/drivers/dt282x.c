@@ -407,14 +407,9 @@ struct dt282x_private {
 			}					\
 			udelay(5);				\
 		}						\
-<<<<<<< HEAD
 		if (_i) {					\
 			b					\
 		}						\
-=======
-		if (_i)						\
-			b					\
->>>>>>> 7175f4b... Truncated history
 	} while (0)
 
 static int dt282x_attach(struct comedi_device *dev,

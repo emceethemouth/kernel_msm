@@ -247,20 +247,12 @@ struct dip_infoframe {
 			uint16_t bottom_bar_start;
 			uint16_t left_bar_end;
 			uint16_t right_bar_start;
-<<<<<<< HEAD
 		} __attribute__ ((packed)) avi;
-=======
-		} avi;
->>>>>>> 7175f4b... Truncated history
 		struct {
 			uint8_t vn[8];
 			uint8_t pd[16];
 			uint8_t sdi;
-<<<<<<< HEAD
 		} __attribute__ ((packed)) spd;
-=======
-		} spd;
->>>>>>> 7175f4b... Truncated history
 		uint8_t payload[27];
 	} __attribute__ ((packed)) body;
 } __attribute__((packed));
@@ -296,11 +288,8 @@ struct intel_fbc_work {
 	int interval;
 };
 
-<<<<<<< HEAD
 int intel_connector_update_modes(struct drm_connector *connector,
 				struct edid *edid);
-=======
->>>>>>> 7175f4b... Truncated history
 int intel_ddc_get_modes(struct drm_connector *c, struct i2c_adapter *adapter);
 extern bool intel_ddc_probe(struct intel_encoder *intel_encoder, int ddc_bus);
 

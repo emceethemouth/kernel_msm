@@ -187,11 +187,7 @@ struct sk_buff *__skb_recv_datagram(struct sock *sk, unsigned flags,
 		skb_queue_walk(queue, skb) {
 			*peeked = skb->peeked;
 			if (flags & MSG_PEEK) {
-<<<<<<< HEAD
 				if (*off >= skb->len && skb->len) {
-=======
-				if (*off >= skb->len) {
->>>>>>> 7175f4b... Truncated history
 					*off -= skb->len;
 					continue;
 				}

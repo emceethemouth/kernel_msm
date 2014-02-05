@@ -104,11 +104,7 @@ static void zfcp_unit_release(struct device *dev)
 {
 	struct zfcp_unit *unit = container_of(dev, struct zfcp_unit, dev);
 
-<<<<<<< HEAD
 	atomic_dec(&unit->port->units);
-=======
-	put_device(&unit->port->dev);
->>>>>>> 7175f4b... Truncated history
 	kfree(unit);
 }
 
@@ -123,7 +119,6 @@ static void zfcp_unit_release(struct device *dev)
 int zfcp_unit_add(struct zfcp_port *port, u64 fcp_lun)
 {
 	struct zfcp_unit *unit;
-<<<<<<< HEAD
 	int retval = 0;
 
 	mutex_lock(&zfcp_sysfs_port_units_mutex);
@@ -132,13 +127,10 @@ int zfcp_unit_add(struct zfcp_port *port, u64 fcp_lun)
 		retval = -ENODEV;
 		goto out;
 	}
-=======
->>>>>>> 7175f4b... Truncated history
 
 	unit = zfcp_unit_find(port, fcp_lun);
 	if (unit) {
 		put_device(&unit->dev);
-<<<<<<< HEAD
 		retval = -EEXIST;
 		goto out;
 	}
@@ -148,14 +140,6 @@ int zfcp_unit_add(struct zfcp_port *port, u64 fcp_lun)
 		retval = -ENOMEM;
 		goto out;
 	}
-=======
-		return -EEXIST;
-	}
-
-	unit = kzalloc(sizeof(struct zfcp_unit), GFP_KERNEL);
-	if (!unit)
-		return -ENOMEM;
->>>>>>> 7175f4b... Truncated history
 
 	unit->port = port;
 	unit->fcp_lun = fcp_lun;
@@ -166,7 +150,6 @@ int zfcp_unit_add(struct zfcp_port *port, u64 fcp_lun)
 	if (dev_set_name(&unit->dev, "0x%016llx",
 			 (unsigned long long) fcp_lun)) {
 		kfree(unit);
-<<<<<<< HEAD
 		retval = -ENOMEM;
 		goto out;
 	}
@@ -175,45 +158,25 @@ int zfcp_unit_add(struct zfcp_port *port, u64 fcp_lun)
 		put_device(&unit->dev);
 		retval = -ENOMEM;
 		goto out;
-=======
-		return -ENOMEM;
-	}
-
-	get_device(&port->dev);
-
-	if (device_register(&unit->dev)) {
-		put_device(&unit->dev);
-		return -ENOMEM;
->>>>>>> 7175f4b... Truncated history
 	}
 
 	if (sysfs_create_group(&unit->dev.kobj, &zfcp_sysfs_unit_attrs)) {
 		device_unregister(&unit->dev);
-<<<<<<< HEAD
 		retval = -EINVAL;
 		goto out;
 	}
 
 	atomic_inc(&port->units); /* under zfcp_sysfs_port_units_mutex ! */
 
-=======
-		return -EINVAL;
-	}
-
->>>>>>> 7175f4b... Truncated history
 	write_lock_irq(&port->unit_list_lock);
 	list_add_tail(&unit->list, &port->unit_list);
 	write_unlock_irq(&port->unit_list_lock);
 
 	zfcp_unit_scsi_scan(unit);
 
-<<<<<<< HEAD
 out:
 	mutex_unlock(&zfcp_sysfs_port_units_mutex);
 	return retval;
-=======
-	return 0;
->>>>>>> 7175f4b... Truncated history
 }
 
 /**

@@ -45,10 +45,7 @@ extern spinlock_t sess_idr_lock;
 
 static int iscsi_login_init_conn(struct iscsi_conn *conn)
 {
-<<<<<<< HEAD
 	init_waitqueue_head(&conn->queues_wq);
-=======
->>>>>>> 7175f4b... Truncated history
 	INIT_LIST_HEAD(&conn->conn_list);
 	INIT_LIST_HEAD(&conn->conn_cmd_list);
 	INIT_LIST_HEAD(&conn->immed_queue_list);
@@ -799,25 +796,6 @@ int iscsi_target_setup_login_socket(
 	}
 	np->np_socket = sock;
 	/*
-<<<<<<< HEAD
-=======
-	 * The SCTP stack needs struct socket->file.
-	 */
-	if ((np->np_network_transport == ISCSI_SCTP_TCP) ||
-	    (np->np_network_transport == ISCSI_SCTP_UDP)) {
-		if (!sock->file) {
-			sock->file = kzalloc(sizeof(struct file), GFP_KERNEL);
-			if (!sock->file) {
-				pr_err("Unable to allocate struct"
-						" file for SCTP\n");
-				ret = -ENOMEM;
-				goto fail;
-			}
-			np->np_flags |= NPF_SCTP_STRUCT_FILE;
-		}
-	}
-	/*
->>>>>>> 7175f4b... Truncated history
 	 * Setup the np->np_sockaddr from the passed sockaddr setup
 	 * in iscsi_target_configfs.c code..
 	 */
@@ -876,30 +854,15 @@ int iscsi_target_setup_login_socket(
 
 fail:
 	np->np_socket = NULL;
-<<<<<<< HEAD
 	if (sock)
 		sock_release(sock);
-=======
-	if (sock) {
-		if (np->np_flags & NPF_SCTP_STRUCT_FILE) {
-			kfree(sock->file);
-			sock->file = NULL;
-		}
-
-		sock_release(sock);
-	}
->>>>>>> 7175f4b... Truncated history
 	return ret;
 }
 
 static int __iscsi_target_login_thread(struct iscsi_np *np)
 {
 	u8 buffer[ISCSI_HDR_LEN], iscsi_opcode, zero_tsih = 0;
-<<<<<<< HEAD
 	int err, ret = 0, stop;
-=======
-	int err, ret = 0, set_sctp_conn_flag, stop;
->>>>>>> 7175f4b... Truncated history
 	struct iscsi_conn *conn = NULL;
 	struct iscsi_login *login;
 	struct iscsi_portal_group *tpg = NULL;
@@ -910,10 +873,6 @@ static int __iscsi_target_login_thread(struct iscsi_np *np)
 	struct sockaddr_in6 sock_in6;
 
 	flush_signals(current);
-<<<<<<< HEAD
-=======
-	set_sctp_conn_flag = 0;
->>>>>>> 7175f4b... Truncated history
 	sock = np->np_socket;
 
 	spin_lock_bh(&np->np_thread_lock);
@@ -936,41 +895,12 @@ static int __iscsi_target_login_thread(struct iscsi_np *np)
 		spin_unlock_bh(&np->np_thread_lock);
 		goto out;
 	}
-<<<<<<< HEAD
-=======
-	/*
-	 * The SCTP stack needs struct socket->file.
-	 */
-	if ((np->np_network_transport == ISCSI_SCTP_TCP) ||
-	    (np->np_network_transport == ISCSI_SCTP_UDP)) {
-		if (!new_sock->file) {
-			new_sock->file = kzalloc(
-					sizeof(struct file), GFP_KERNEL);
-			if (!new_sock->file) {
-				pr_err("Unable to allocate struct"
-						" file for SCTP\n");
-				sock_release(new_sock);
-				/* Get another socket */
-				return 1;
-			}
-			set_sctp_conn_flag = 1;
-		}
-	}
-
->>>>>>> 7175f4b... Truncated history
 	iscsi_start_login_thread_timer(np);
 
 	conn = kzalloc(sizeof(struct iscsi_conn), GFP_KERNEL);
 	if (!conn) {
 		pr_err("Could not allocate memory for"
 			" new connection\n");
-<<<<<<< HEAD
-=======
-		if (set_sctp_conn_flag) {
-			kfree(new_sock->file);
-			new_sock->file = NULL;
-		}
->>>>>>> 7175f4b... Truncated history
 		sock_release(new_sock);
 		/* Get another socket */
 		return 1;
@@ -980,12 +910,6 @@ static int __iscsi_target_login_thread(struct iscsi_np *np)
 	conn->conn_state = TARG_CONN_STATE_FREE;
 	conn->sock = new_sock;
 
-<<<<<<< HEAD
-=======
-	if (set_sctp_conn_flag)
-		conn->conn_flags |= CONNFLAG_SCTP_STRUCT_FILE;
-
->>>>>>> 7175f4b... Truncated history
 	pr_debug("Moving to TARG_CONN_STATE_XPT_UP.\n");
 	conn->conn_state = TARG_CONN_STATE_XPT_UP;
 
@@ -1233,18 +1157,8 @@ old_sess_out:
 		iscsi_release_param_list(conn->param_list);
 		conn->param_list = NULL;
 	}
-<<<<<<< HEAD
 	if (conn->sock)
 		sock_release(conn->sock);
-=======
-	if (conn->sock) {
-		if (conn->conn_flags & CONNFLAG_SCTP_STRUCT_FILE) {
-			kfree(conn->sock->file);
-			conn->sock->file = NULL;
-		}
-		sock_release(conn->sock);
-	}
->>>>>>> 7175f4b... Truncated history
 	kfree(conn);
 
 	if (tpg) {

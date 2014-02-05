@@ -248,17 +248,13 @@ static int cypress_probe(struct usb_interface *intf,
 {
 	struct us_data *us;
 	int result;
-<<<<<<< HEAD
 	struct usb_device *device;
-=======
->>>>>>> 7175f4b... Truncated history
 
 	result = usb_stor_probe1(&us, intf, id,
 			(id - cypress_usb_ids) + cypress_unusual_dev_list);
 	if (result)
 		return result;
 
-<<<<<<< HEAD
 	/* Among CY7C68300 chips, the A revision does not support Cypress ATACB
 	 * Filter out this revision from EEPROM default descriptor values
 	 */
@@ -272,10 +268,6 @@ static int cypress_probe(struct usb_interface *intf,
 		us->protocol_name = "Transparent SCSI";
 		us->proto_handler = usb_stor_transparent_scsi_command;
 	}
-=======
-	us->protocol_name = "Transparent SCSI with Cypress ATACB";
-	us->proto_handler = cypress_atacb_passthrough;
->>>>>>> 7175f4b... Truncated history
 
 	result = usb_stor_probe2(us);
 	return result;

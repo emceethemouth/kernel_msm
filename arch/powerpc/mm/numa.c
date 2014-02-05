@@ -201,11 +201,7 @@ int __node_distance(int a, int b)
 	int distance = LOCAL_DISTANCE;
 
 	if (!form1_affinity)
-<<<<<<< HEAD
 		return ((a == b) ? LOCAL_DISTANCE : REMOTE_DISTANCE);
-=======
-		return distance;
->>>>>>> 7175f4b... Truncated history
 
 	for (i = 0; i < distance_ref_points_depth; i++) {
 		if (distance_lookup_table[a][i] == distance_lookup_table[b][i])
@@ -643,11 +639,7 @@ static void __init parse_drconf_memory(struct device_node *memory)
 	unsigned int n, rc, ranges, is_kexec_kdump = 0;
 	unsigned long lmb_size, base, size, sz;
 	int nid;
-<<<<<<< HEAD
 	struct assoc_arrays aa = { .arrays = NULL };
-=======
-	struct assoc_arrays aa;
->>>>>>> 7175f4b... Truncated history
 
 	n = of_get_drconf_memory(memory, &dm);
 	if (!n)

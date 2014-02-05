@@ -187,10 +187,6 @@ static void hsuart_power(int on)
 	}
 }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 7175f4b... Truncated history
 /**
  * @return 1 if the Host can go to sleep, 0 otherwise.
  */
@@ -534,23 +530,14 @@ static void bluesleep_stop(void)
 
 	if (test_bit(BT_ASLEEP, &flags)) {
 		clear_bit(BT_ASLEEP, &flags);
-<<<<<<< HEAD
 		spin_unlock_irqrestore(&rw_lock, irq_flags);
 		hsuart_power(1);
 	} else {
 		spin_unlock_irqrestore(&rw_lock, irq_flags);
-=======
-		hsuart_power(1);
->>>>>>> 7175f4b... Truncated history
 	}
 
 	atomic_inc(&open_count);
 
-<<<<<<< HEAD
-=======
-	spin_unlock_irqrestore(&rw_lock, irq_flags);
-
->>>>>>> 7175f4b... Truncated history
 #if BT_ENABLE_IRQ_WAKE
 	if (disable_irq_wake(bsi->host_wake_irq))
 		BT_ERR("Couldn't disable hostwake IRQ wakeup mode");

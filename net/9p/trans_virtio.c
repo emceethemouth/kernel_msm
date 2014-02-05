@@ -192,17 +192,10 @@ static int pack_sg_list(struct scatterlist *sg, int start,
 		s = rest_of_page(data);
 		if (s > count)
 			s = count;
-<<<<<<< HEAD
 		BUG_ON(index > limit);
 		sg_set_buf(&sg[index++], data, s);
 		count -= s;
 		data += s;
-=======
-		sg_set_buf(&sg[index++], data, s);
-		count -= s;
-		data += s;
-		BUG_ON(index > limit);
->>>>>>> 7175f4b... Truncated history
 	}
 
 	return index-start;

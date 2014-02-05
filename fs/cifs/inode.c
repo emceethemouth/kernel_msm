@@ -173,12 +173,8 @@ cifs_fattr_to_inode(struct inode *inode, struct cifs_fattr *fattr)
 
 	if (fattr->cf_flags & CIFS_FATTR_DFS_REFERRAL)
 		inode->i_flags |= S_AUTOMOUNT;
-<<<<<<< HEAD
 	if (inode->i_state & I_NEW)
 		cifs_set_ops(inode);
-=======
-	cifs_set_ops(inode);
->>>>>>> 7175f4b... Truncated history
 }
 
 void
@@ -553,14 +549,11 @@ cifs_all_info_to_fattr(struct cifs_fattr *fattr, FILE_ALL_INFO *info,
 			fattr->cf_mode &= ~(S_IWUGO);
 
 		fattr->cf_nlink = le32_to_cpu(info->NumberOfLinks);
-<<<<<<< HEAD
 		if (fattr->cf_nlink < 1) {
 			cFYI(1, "replacing bogus file nlink value %u\n",
 			     fattr->cf_nlink);
 			fattr->cf_nlink = 1;
 		}
-=======
->>>>>>> 7175f4b... Truncated history
 	}
 
 	fattr->cf_uid = cifs_sb->mnt_uid;

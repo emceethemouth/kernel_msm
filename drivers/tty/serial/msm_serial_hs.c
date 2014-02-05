@@ -219,10 +219,7 @@ struct msm_hs_port {
 	struct msm_bus_scale_pdata *bus_scale_table;
 	bool rx_discard_flush_issued;
 	int rx_count_callback;
-<<<<<<< HEAD
 	bool rx_bam_inprogress;
-=======
->>>>>>> 7175f4b... Truncated history
 };
 
 #define MSM_UARTDM_BURST_SIZE 16   /* DM burst size (in bytes) */
@@ -301,10 +298,7 @@ static int msm_hs_clock_vote(struct msm_hs_port *msm_uport)
 		/* Turn on core clk and iface clk */
 		rc = clk_prepare_enable(msm_uport->clk);
 		if (rc) {
-<<<<<<< HEAD
 			atomic_dec(&msm_uport->clk_count);
-=======
->>>>>>> 7175f4b... Truncated history
 			dev_err(msm_uport->uport.dev,
 				"%s: Could not turn on core clk [%d]\n",
 				__func__, rc);
@@ -315,10 +309,7 @@ static int msm_hs_clock_vote(struct msm_hs_port *msm_uport)
 			rc = clk_prepare_enable(msm_uport->pclk);
 			if (rc) {
 				clk_disable_unprepare(msm_uport->clk);
-<<<<<<< HEAD
 				atomic_dec(&msm_uport->clk_count);
-=======
->>>>>>> 7175f4b... Truncated history
 				dev_err(msm_uport->uport.dev,
 					"%s: Could not turn on pclk [%d]\n",
 					__func__, rc);
@@ -334,24 +325,7 @@ static int msm_hs_clock_vote(struct msm_hs_port *msm_uport)
 
 static void msm_hs_clock_unvote(struct msm_hs_port *msm_uport)
 {
-<<<<<<< HEAD
 	if (1 == __atomic_add_unless(&msm_uport->clk_count, -1, 0)) {
-=======
-	int rc = atomic_dec_return(&msm_uport->clk_count);
-
-	if (rc < 0) {
-		msm_hs_bus_voting(msm_uport, BUS_RESET);
-		WARN(rc, "msm_uport->clk_count < 0!");
-		dev_err(msm_uport->uport.dev,
-			"%s: Clocks count invalid  [%d]\n", __func__,
-			atomic_read(&msm_uport->clk_count));
-		/* to balance clk_state */
-		atomic_set(&msm_uport->clk_count, 0);
-		return;
-	}
-
-	if (0 == rc) {
->>>>>>> 7175f4b... Truncated history
 		msm_hs_bus_voting(msm_uport, BUS_RESET);
 		/* Turn off the core clk and iface clk*/
 		clk_disable_unprepare(msm_uport->clk);
@@ -506,16 +480,12 @@ static int msm_serial_loopback_enable_set(void *data, u64 val)
 	unsigned long flags;
 	int ret = 0;
 
-<<<<<<< HEAD
 	ret = msm_hs_clock_vote(msm_uport);
 	if (ret) {
 		printk(KERN_ERR "%s: Error could not turn on UART clk\n",
 				__func__);
 		return ret;
 	}
-=======
-	msm_hs_clock_vote(msm_uport);
->>>>>>> 7175f4b... Truncated history
 
 	if (val) {
 		spin_lock_irqsave(&uport->lock, flags);
@@ -552,16 +522,12 @@ static int msm_serial_loopback_enable_get(void *data, u64 *val)
 	unsigned long flags;
 	int ret = 0;
 
-<<<<<<< HEAD
 	ret = msm_hs_clock_vote(msm_uport);
 	if (ret) {
 		printk(KERN_ERR "%s: Error could not turn on UART clk\n",
 				__func__);
 		return ret;
 	}
-=======
-	msm_hs_clock_vote(msm_uport);
->>>>>>> 7175f4b... Truncated history
 
 	spin_lock_irqsave(&uport->lock, flags);
 	ret = msm_hs_read(&msm_uport->uport, UARTDM_MR2_ADDR);
@@ -665,12 +631,8 @@ static int msm_hs_init_clk(struct uart_port *uport)
 
 	ret = msm_hs_clock_vote(msm_uport);
 	if (ret) {
-<<<<<<< HEAD
 		printk(KERN_ERR "%s: Error could not turn on UART clk\n",
 				__func__);
-=======
-		printk(KERN_ERR "Error could not turn on UART clk\n");
->>>>>>> 7175f4b... Truncated history
 		return ret;
 	}
 
@@ -968,7 +930,6 @@ static void msm_hs_set_termios(struct uart_port *uport,
 	struct msm_hs_rx *rx = &msm_uport->rx;
 	struct sps_pipe *sps_pipe_handle = rx->prod.pipe_handle;
 
-<<<<<<< HEAD
 	ret = msm_hs_clock_vote(msm_uport);
 	if (ret) {
 		printk(KERN_ERR "%s: Error could not turn on UART clk\n",
@@ -976,8 +937,6 @@ static void msm_hs_set_termios(struct uart_port *uport,
 		return;
 	}
 
-=======
->>>>>>> 7175f4b... Truncated history
 	mutex_lock(&msm_uport->clk_mutex);
 	msm_hs_write(uport, UARTDM_IMR_ADDR, 0);
 
@@ -1089,13 +1048,10 @@ static void msm_hs_set_termios(struct uart_port *uport,
 		 */
 		mb();
 		if (is_blsp_uart(msm_uport)) {
-<<<<<<< HEAD
 			if (msm_uport->rx_bam_inprogress)
 				ret = wait_event_timeout(msm_uport->rx.wait,
 					msm_uport->rx_bam_inprogress == false,
 					RX_FLUSH_COMPLETE_TIMEOUT);
-=======
->>>>>>> 7175f4b... Truncated history
 			ret = sps_disconnect(sps_pipe_handle);
 			if (ret)
 				pr_err("%s(): sps_disconnect failed\n",
@@ -1120,11 +1076,8 @@ static void msm_hs_set_termios(struct uart_port *uport,
 	msm_hs_write(uport, UARTDM_IMR_ADDR, msm_uport->imr_reg);
 	mb();
 	mutex_unlock(&msm_uport->clk_mutex);
-<<<<<<< HEAD
 
 	msm_hs_clock_unvote(msm_uport);
-=======
->>>>>>> 7175f4b... Truncated history
 }
 
 /*
@@ -1137,7 +1090,6 @@ unsigned int msm_hs_tx_empty(struct uart_port *uport)
 	unsigned int ret = 0;
 	struct msm_hs_port *msm_uport = UARTDM_TO_MSM(uport);
 
-<<<<<<< HEAD
 	ret = msm_hs_clock_vote(msm_uport);
 	if (ret) {
 		printk(KERN_ERR "%s: Error could not turn on UART clk\n",
@@ -1145,9 +1097,6 @@ unsigned int msm_hs_tx_empty(struct uart_port *uport)
 		return ret;
 	}
 
-=======
-	msm_hs_clock_vote(msm_uport);
->>>>>>> 7175f4b... Truncated history
 	data = msm_hs_read(uport, UARTDM_SR_ADDR);
 	msm_hs_clock_unvote(msm_uport);
 
@@ -1201,12 +1150,9 @@ static void msm_hs_stop_rx_locked(struct uart_port *uport)
 	struct msm_hs_port *msm_uport = UARTDM_TO_MSM(uport);
 	unsigned int data;
 
-<<<<<<< HEAD
 	if (msm_uport->clk_state <= MSM_HS_CLK_OFF)
 		return;
 
-=======
->>>>>>> 7175f4b... Truncated history
 	/* disable dlink */
 	data = msm_hs_read(uport, UARTDM_DMEN_ADDR);
 	if (is_blsp_uart(msm_uport))
@@ -1369,19 +1315,13 @@ static void msm_hs_start_rx_locked(struct uart_port *uport)
 	msm_uport->rx.flush = FLUSH_NONE;
 
 	if (is_blsp_uart(msm_uport)) {
-<<<<<<< HEAD
 		msm_uport->rx_bam_inprogress = true;
-=======
->>>>>>> 7175f4b... Truncated history
 		sps_pipe_handle = rx->prod.pipe_handle;
 		/* Queue transfer request to SPS */
 		sps_transfer_one(sps_pipe_handle, rx->rbuffer,
 			UARTDM_RX_BUF_SIZE, msm_uport, flags);
-<<<<<<< HEAD
 		msm_uport->rx_bam_inprogress = false;
 		wake_up(&msm_uport->rx.wait);
-=======
->>>>>>> 7175f4b... Truncated history
 	} else {
 		msm_dmov_enqueue_cmd(msm_uport->dma_rx_channel,
 				&msm_uport->rx.xfer);
@@ -1551,19 +1491,13 @@ static void msm_serial_hs_rx_tlet(unsigned long tlet_ptr)
 	if (!msm_uport->rx.buffer_pending) {
 		if (is_blsp_uart(msm_uport)) {
 			msm_uport->rx.flush = FLUSH_NONE;
-<<<<<<< HEAD
 			msm_uport->rx_bam_inprogress = true;
-=======
->>>>>>> 7175f4b... Truncated history
 			sps_pipe_handle = rx->prod.pipe_handle;
 			/* Queue transfer request to SPS */
 			sps_transfer_one(sps_pipe_handle, rx->rbuffer,
 				UARTDM_RX_BUF_SIZE, msm_uport, sps_flags);
-<<<<<<< HEAD
 			msm_uport->rx_bam_inprogress = false;
 			wake_up(&msm_uport->rx.wait);
-=======
->>>>>>> 7175f4b... Truncated history
 		} else {
 			msm_hs_start_rx_locked(uport);
 		}
@@ -1592,12 +1526,9 @@ static void msm_hs_start_tx_locked(struct uart_port *uport )
 {
 	struct msm_hs_port *msm_uport = UARTDM_TO_MSM(uport);
 
-<<<<<<< HEAD
 	if (msm_uport->clk_state <= MSM_HS_CLK_OFF)
 		return;
 
-=======
->>>>>>> 7175f4b... Truncated history
 	if (msm_uport->tx.tx_ready_int_en == 0) {
 		msm_uport->tx.tx_ready_int_en = 1;
 		if (msm_uport->tx.dma_in_flight == 0)
@@ -1802,7 +1733,6 @@ void msm_hs_set_mctrl(struct uart_port *uport,
 {
 	unsigned long flags;
 	struct msm_hs_port *msm_uport = UARTDM_TO_MSM(uport);
-<<<<<<< HEAD
 	int ret;
 
 	ret = msm_hs_clock_vote(msm_uport);
@@ -1812,10 +1742,6 @@ void msm_hs_set_mctrl(struct uart_port *uport,
 		return;
 	}
 
-=======
-
-	msm_hs_clock_vote(msm_uport);
->>>>>>> 7175f4b... Truncated history
 	spin_lock_irqsave(&uport->lock, flags);
 	msm_hs_set_mctrl_locked(uport, mctrl);
 	spin_unlock_irqrestore(&uport->lock, flags);
@@ -1828,12 +1754,9 @@ static void msm_hs_enable_ms_locked(struct uart_port *uport)
 {
 	struct msm_hs_port *msm_uport = UARTDM_TO_MSM(uport);
 
-<<<<<<< HEAD
 	if (msm_uport->clk_state <= MSM_HS_CLK_OFF)
 		return;
 
-=======
->>>>>>> 7175f4b... Truncated history
 	/* Enable DELTA_CTS Interrupt */
 	msm_uport->imr_reg |= UARTDM_ISR_DELTA_CTS_BMSK;
 	msm_hs_write(uport, UARTDM_IMR_ADDR, msm_uport->imr_reg);
@@ -1858,7 +1781,6 @@ static void msm_hs_flush_buffer(struct uart_port *uport)
 static void msm_hs_break_ctl(struct uart_port *uport, int ctl)
 {
 	unsigned long flags;
-<<<<<<< HEAD
 	struct msm_hs_port *msm_uport = UARTDM_TO_MSM(uport);
 	int ret;
 
@@ -1868,18 +1790,13 @@ static void msm_hs_break_ctl(struct uart_port *uport, int ctl)
 				__func__);
 		return;
 	}
-=======
->>>>>>> 7175f4b... Truncated history
 
 	spin_lock_irqsave(&uport->lock, flags);
 	msm_hs_write(uport, UARTDM_CR_ADDR, ctl ? START_BREAK : STOP_BREAK);
 	mb();
 	spin_unlock_irqrestore(&uport->lock, flags);
-<<<<<<< HEAD
 
 	msm_hs_clock_unvote(msm_uport);
-=======
->>>>>>> 7175f4b... Truncated history
 }
 
 static void msm_hs_config_port(struct uart_port *uport, int cfg_flags)
@@ -2540,16 +2457,12 @@ static int msm_hs_startup(struct uart_port *uport)
 		disable_irq(msm_uport->wakeup.irq);
 	}
 
-<<<<<<< HEAD
 	ret = msm_hs_clock_vote(msm_uport);
 	if (ret) {
 		printk(KERN_ERR "%s(): Error could not turn on UART clk\n",
 				__func__);
 		goto free_uart_irq;
 	}
-=======
-	msm_hs_clock_vote(msm_uport);
->>>>>>> 7175f4b... Truncated history
 
 	spin_lock_irqsave(&uport->lock, flags);
 
@@ -3238,16 +3151,12 @@ static int __devinit msm_hs_probe(struct platform_device *pdev)
 		}
 	}
 
-<<<<<<< HEAD
 	ret = msm_hs_clock_vote(msm_uport);
 	if (ret) {
 		printk(KERN_ERR "%s: Error could not turn on UART clk\n",
 				__func__);
 		goto destroy_mutex;
 	}
-=======
-	msm_hs_clock_vote(msm_uport);
->>>>>>> 7175f4b... Truncated history
 
 	ret = uartdm_init_port(uport);
 	if (unlikely(ret)) {
@@ -3358,7 +3267,6 @@ static void msm_hs_shutdown(struct uart_port *uport)
 	struct msm_hs_tx *tx = &msm_uport->tx;
 	struct sps_pipe *sps_pipe_handle = tx->cons.pipe_handle;
 
-<<<<<<< HEAD
 	ret = msm_hs_clock_vote(msm_uport);
 	if (ret) {
 		printk(KERN_ERR "%s: Error could not turn on UART clk\n",
@@ -3366,9 +3274,6 @@ static void msm_hs_shutdown(struct uart_port *uport)
 		return;
 	}
 
-=======
-	msm_hs_clock_vote(msm_uport);
->>>>>>> 7175f4b... Truncated history
 	if (msm_uport->tx.dma_in_flight) {
 		if (!is_blsp_uart(msm_uport)) {
 			spin_lock_irqsave(&uport->lock, flags);

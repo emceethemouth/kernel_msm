@@ -129,7 +129,6 @@ struct fib_result_nl {
 };
 
 #ifdef CONFIG_IP_ROUTE_MULTIPATH
-<<<<<<< HEAD
 #define FIB_RES_NH(res)		((res).fi->fib_nh[(res).nh_sel])
 #else /* CONFIG_IP_ROUTE_MULTIPATH */
 #define FIB_RES_NH(res)		((res).fi->fib_nh[0])
@@ -140,20 +139,6 @@ struct fib_result_nl {
 #else
 #define FIB_TABLE_HASHSZ 2
 #endif
-=======
-
-#define FIB_RES_NH(res)		((res).fi->fib_nh[(res).nh_sel])
-
-#define FIB_TABLE_HASHSZ 2
-
-#else /* CONFIG_IP_ROUTE_MULTIPATH */
-
-#define FIB_RES_NH(res)		((res).fi->fib_nh[0])
-
-#define FIB_TABLE_HASHSZ 256
-
-#endif /* CONFIG_IP_ROUTE_MULTIPATH */
->>>>>>> 7175f4b... Truncated history
 
 extern __be32 fib_info_update_nh_saddr(struct net *net, struct fib_nh *nh);
 

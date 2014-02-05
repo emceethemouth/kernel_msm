@@ -231,11 +231,6 @@ void __sync_icache_dcache(pte_t pteval)
 	struct page *page;
 	struct address_space *mapping;
 
-<<<<<<< HEAD
-=======
-	if (!pte_present_user(pteval))
-		return;
->>>>>>> 7175f4b... Truncated history
 	if (cache_is_vipt_nonaliasing() && !pte_exec(pteval))
 		/* only flush non-aliasing VIPT caches for exec mappings */
 		return;
@@ -304,7 +299,6 @@ void flush_dcache_page(struct page *page)
 EXPORT_SYMBOL(flush_dcache_page);
 
 /*
-<<<<<<< HEAD
  * Ensure cache coherency for the kernel mapping of this page. We can
  * assume that the page is pinned via kmap.
  *
@@ -338,8 +332,6 @@ void flush_kernel_dcache_page(struct page *page)
 EXPORT_SYMBOL(flush_kernel_dcache_page);
 
 /*
-=======
->>>>>>> 7175f4b... Truncated history
  * Flush an anonymous page so that users of get_user_pages()
  * can safely access the data.  The expected sequence is:
  *

@@ -1330,10 +1330,6 @@ static int fuse_writepage_locked(struct page *page)
 
 	inc_bdi_stat(mapping->backing_dev_info, BDI_WRITEBACK);
 	inc_zone_page_state(tmp_page, NR_WRITEBACK_TEMP);
-<<<<<<< HEAD
-=======
-	end_page_writeback(page);
->>>>>>> 7175f4b... Truncated history
 
 	spin_lock(&fc->lock);
 	list_add(&req->writepages_entry, &fi->writepages);
@@ -1341,11 +1337,8 @@ static int fuse_writepage_locked(struct page *page)
 	fuse_flush_writepages(inode);
 	spin_unlock(&fc->lock);
 
-<<<<<<< HEAD
 	end_page_writeback(page);
 
-=======
->>>>>>> 7175f4b... Truncated history
 	return 0;
 
 err_free:
@@ -1742,11 +1735,7 @@ static int fuse_verify_ioctl_iov(struct iovec *iov, size_t count)
 	size_t n;
 	u32 max = FUSE_MAX_PAGES_PER_REQ << PAGE_SHIFT;
 
-<<<<<<< HEAD
 	for (n = 0; n < count; n++, iov++) {
-=======
-	for (n = 0; n < count; n++) {
->>>>>>> 7175f4b... Truncated history
 		if (iov->iov_len > (size_t) max)
 			return -ENOMEM;
 		max -= iov->iov_len;

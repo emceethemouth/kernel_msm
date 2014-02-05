@@ -466,10 +466,7 @@ void ceph_key_destroy(struct key *key) {
 	struct ceph_crypto_key *ckey = key->payload.data;
 
 	ceph_crypto_key_destroy(ckey);
-<<<<<<< HEAD
 	kfree(ckey);
-=======
->>>>>>> 7175f4b... Truncated history
 }
 
 struct key_type key_type_ceph = {

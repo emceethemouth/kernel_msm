@@ -256,11 +256,7 @@ static int chunk_io(struct pstore *ps, void *area, chunk_t chunk, int rw,
 	 */
 	INIT_WORK_ONSTACK(&req.work, do_metadata);
 	queue_work(ps->metadata_wq, &req.work);
-<<<<<<< HEAD
 	flush_workqueue(ps->metadata_wq);
-=======
-	flush_work(&req.work);
->>>>>>> 7175f4b... Truncated history
 
 	return req.result;
 }
@@ -273,7 +269,6 @@ static chunk_t area_location(struct pstore *ps, chunk_t area)
 	return NUM_SNAPSHOT_HDR_CHUNKS + ((ps->exceptions_per_area + 1) * area);
 }
 
-<<<<<<< HEAD
 static void skip_metadata(struct pstore *ps)
 {
 	uint32_t stride = ps->exceptions_per_area + 1;
@@ -282,8 +277,6 @@ static void skip_metadata(struct pstore *ps)
 		ps->next_free++;
 }
 
-=======
->>>>>>> 7175f4b... Truncated history
 /*
  * Read or write a metadata area.  Remembering to skip the first
  * chunk which holds the header.
@@ -517,11 +510,8 @@ static int read_exceptions(struct pstore *ps,
 
 	ps->current_area--;
 
-<<<<<<< HEAD
 	skip_metadata(ps);
 
-=======
->>>>>>> 7175f4b... Truncated history
 	return 0;
 }
 
@@ -636,11 +626,6 @@ static int persistent_prepare_exception(struct dm_exception_store *store,
 					struct dm_exception *e)
 {
 	struct pstore *ps = get_info(store);
-<<<<<<< HEAD
-=======
-	uint32_t stride;
-	chunk_t next_free;
->>>>>>> 7175f4b... Truncated history
 	sector_t size = get_dev_size(dm_snap_cow(store->snap)->bdev);
 
 	/* Is there enough room ? */
@@ -653,15 +638,8 @@ static int persistent_prepare_exception(struct dm_exception_store *store,
 	 * Move onto the next free pending, making sure to take
 	 * into account the location of the metadata chunks.
 	 */
-<<<<<<< HEAD
 	ps->next_free++;
 	skip_metadata(ps);
-=======
-	stride = (ps->exceptions_per_area + 1);
-	next_free = ++ps->next_free;
-	if (sector_div(next_free, stride) == 1)
-		ps->next_free++;
->>>>>>> 7175f4b... Truncated history
 
 	atomic_inc(&ps->pending_count);
 	return 0;

@@ -203,11 +203,7 @@ static struct dst_ops ip6_dst_blackhole_ops = {
 };
 
 static const u32 ip6_template_metrics[RTAX_MAX] = {
-<<<<<<< HEAD
 	[RTAX_HOPLIMIT - 1] = 0,
-=======
-	[RTAX_HOPLIMIT - 1] = 255,
->>>>>>> 7175f4b... Truncated history
 };
 
 static struct rt6_info ip6_null_entry_template = {
@@ -621,16 +617,11 @@ int rt6_route_rcv(struct net_device *dev, u8 *opt, int len,
 		prefix = &prefix_buf;
 	}
 
-<<<<<<< HEAD
 	if (rinfo->prefix_len == 0)
 		rt = rt6_get_dflt_router(gwaddr, dev);
 	else
 		rt = rt6_get_route_info(net, prefix, rinfo->prefix_len,
 					gwaddr, dev->ifindex);
-=======
-	rt = rt6_get_route_info(net, prefix, rinfo->prefix_len, gwaddr,
-				dev->ifindex);
->>>>>>> 7175f4b... Truncated history
 
 	if (rt && !lifetime) {
 		ip6_del_rt(rt);
@@ -830,11 +821,7 @@ static struct rt6_info *rt6_alloc_clone(struct rt6_info *ort,
 }
 
 static struct rt6_info *ip6_pol_route(struct net *net, struct fib6_table *table, int oif,
-<<<<<<< HEAD
 				      struct flowi6 *fl6, int flags, bool input)
-=======
-				      struct flowi6 *fl6, int flags)
->>>>>>> 7175f4b... Truncated history
 {
 	struct fib6_node *fn;
 	struct rt6_info *rt, *nrt;
@@ -842,16 +829,11 @@ static struct rt6_info *ip6_pol_route(struct net *net, struct fib6_table *table,
 	int attempts = 3;
 	int err;
 	int reachable = net->ipv6.devconf_all->forwarding ? 0 : RT6_LOOKUP_F_REACHABLE;
-<<<<<<< HEAD
 	int local = RTF_NONEXTHOP;
 
 	strict |= flags & RT6_LOOKUP_F_IFACE;
 	if (input)
 		local |= RTF_LOCAL;
-=======
-
-	strict |= flags & RT6_LOOKUP_F_IFACE;
->>>>>>> 7175f4b... Truncated history
 
 relookup:
 	read_lock_bh(&table->tb6_lock);
@@ -870,12 +852,8 @@ restart:
 	dst_hold(&rt->dst);
 	read_unlock_bh(&table->tb6_lock);
 
-<<<<<<< HEAD
 	if (!dst_get_neighbour_noref_raw(&rt->dst) &&
 	    !(rt->rt6i_flags & local))
-=======
-	if (!dst_get_neighbour_noref_raw(&rt->dst) && !(rt->rt6i_flags & RTF_NONEXTHOP))
->>>>>>> 7175f4b... Truncated history
 		nrt = rt6_alloc_cow(rt, &fl6->daddr, &fl6->saddr);
 	else if (!(rt->dst.flags & DST_HOST))
 		nrt = rt6_alloc_clone(rt, &fl6->daddr);
@@ -919,11 +897,7 @@ out2:
 static struct rt6_info *ip6_pol_route_input(struct net *net, struct fib6_table *table,
 					    struct flowi6 *fl6, int flags)
 {
-<<<<<<< HEAD
 	return ip6_pol_route(net, table, fl6->flowi6_iif, fl6, flags, true);
-=======
-	return ip6_pol_route(net, table, fl6->flowi6_iif, fl6, flags);
->>>>>>> 7175f4b... Truncated history
 }
 
 static struct dst_entry *ip6_route_input_lookup(struct net *net,
@@ -956,11 +930,7 @@ void ip6_route_input(struct sk_buff *skb)
 static struct rt6_info *ip6_pol_route_output(struct net *net, struct fib6_table *table,
 					     struct flowi6 *fl6, int flags)
 {
-<<<<<<< HEAD
 	return ip6_pol_route(net, table, fl6->flowi6_oif, fl6, flags, false);
-=======
-	return ip6_pol_route(net, table, fl6->flowi6_oif, fl6, flags);
->>>>>>> 7175f4b... Truncated history
 }
 
 struct dst_entry * ip6_route_output(struct net *net, const struct sock *sk,
@@ -1068,7 +1038,6 @@ static void ip6_link_failure(struct sk_buff *skb)
 
 	rt = (struct rt6_info *) skb_dst(skb);
 	if (rt) {
-<<<<<<< HEAD
 		if (rt->rt6i_flags & RTF_CACHE) {
 			dst_hold(&rt->dst);
 			if (ip6_del_rt(rt))
@@ -1076,12 +1045,6 @@ static void ip6_link_failure(struct sk_buff *skb)
 		} else if (rt->rt6i_node && (rt->rt6i_flags & RTF_DEFAULT)) {
 			rt->rt6i_node->fn_sernum = -1;
 		}
-=======
-		if (rt->rt6i_flags & RTF_CACHE)
-			rt6_update_expires(rt, 0);
-		else if (rt->rt6i_node && (rt->rt6i_flags & RTF_DEFAULT))
-			rt->rt6i_node->fn_sernum = -1;
->>>>>>> 7175f4b... Truncated history
 	}
 }
 
@@ -1182,11 +1145,7 @@ struct dst_entry *icmp6_dst_alloc(struct net_device *dev,
 	rt->rt6i_dst.addr = fl6->daddr;
 	rt->rt6i_dst.plen = 128;
 	rt->rt6i_idev     = idev;
-<<<<<<< HEAD
 	dst_metric_set(&rt->dst, RTAX_HOPLIMIT, 0);
-=======
-	dst_metric_set(&rt->dst, RTAX_HOPLIMIT, 255);
->>>>>>> 7175f4b... Truncated history
 
 	spin_lock_bh(&icmp6_dst_lock);
 	rt->dst.next = icmp6_dst_gc_list;
@@ -1536,7 +1495,6 @@ static int __ip6_del_rt(struct rt6_info *rt, struct nl_info *info)
 	struct fib6_table *table;
 	struct net *net = dev_net(rt->dst.dev);
 
-<<<<<<< HEAD
 	if (rt == net->ipv6.ip6_null_entry) {
 		err = -ENOENT;
 		goto out;
@@ -1549,19 +1507,6 @@ static int __ip6_del_rt(struct rt6_info *rt, struct nl_info *info)
 
 out:
 	dst_release(&rt->dst);
-=======
-	if (rt == net->ipv6.ip6_null_entry)
-		return -ENOENT;
-
-	table = rt->rt6i_table;
-	write_lock_bh(&table->tb6_lock);
-
-	err = fib6_del(rt, info);
-	dst_release(&rt->dst);
-
-	write_unlock_bh(&table->tb6_lock);
-
->>>>>>> 7175f4b... Truncated history
 	return err;
 }
 
@@ -2037,12 +1982,8 @@ void rt6_purge_dflt_routers(struct net *net)
 restart:
 	read_lock_bh(&table->tb6_lock);
 	for (rt = table->tb6_root.leaf; rt; rt = rt->dst.rt6_next) {
-<<<<<<< HEAD
 		if (rt->rt6i_flags & (RTF_DEFAULT | RTF_ADDRCONF) &&
 		    (!rt->rt6i_idev || rt->rt6i_idev->cnf.accept_ra != 2)) {
-=======
-		if (rt->rt6i_flags & (RTF_DEFAULT | RTF_ADDRCONF)) {
->>>>>>> 7175f4b... Truncated history
 			dst_hold(&rt->dst);
 			read_unlock_bh(&table->tb6_lock);
 			ip6_del_rt(rt);
@@ -2173,23 +2114,11 @@ struct rt6_info *addrconf_dst_alloc(struct inet6_dev *idev,
 {
 	struct net *net = dev_net(idev->dev);
 	struct rt6_info *rt = ip6_dst_alloc(&net->ipv6.ip6_dst_ops,
-<<<<<<< HEAD
 					    net->loopback_dev, DST_NOCOUNT);
 	int err;
 
 	if (!rt)
 		return ERR_PTR(-ENOMEM);
-=======
-					    net->loopback_dev, 0);
-	int err;
-
-	if (!rt) {
-		if (net_ratelimit())
-			pr_warning("IPv6:  Maximum number of routes reached,"
-				   " consider increasing route/max_size.\n");
-		return ERR_PTR(-ENOMEM);
-	}
->>>>>>> 7175f4b... Truncated history
 
 	in6_dev_hold(idev);
 
@@ -3032,13 +2961,6 @@ static int __net_init ip6_route_net_init(struct net *net)
 	net->ipv6.sysctl.ip6_rt_mtu_expires = 10*60*HZ;
 	net->ipv6.sysctl.ip6_rt_min_advmss = IPV6_MIN_MTU - 20 - 40;
 
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_PROC_FS
-	proc_net_fops_create(net, "ipv6_route", 0, &ipv6_route_proc_fops);
-	proc_net_fops_create(net, "rt6_stats", S_IRUGO, &rt6_stats_seq_fops);
-#endif
->>>>>>> 7175f4b... Truncated history
 	net->ipv6.ip6_rt_gc_expire = 30*HZ;
 
 	ret = 0;
@@ -3059,13 +2981,6 @@ out_ip6_dst_ops:
 
 static void __net_exit ip6_route_net_exit(struct net *net)
 {
-<<<<<<< HEAD
-=======
-#ifdef CONFIG_PROC_FS
-	proc_net_remove(net, "ipv6_route");
-	proc_net_remove(net, "rt6_stats");
-#endif
->>>>>>> 7175f4b... Truncated history
 	kfree(net->ipv6.ip6_null_entry);
 #ifdef CONFIG_IPV6_MULTIPLE_TABLES
 	kfree(net->ipv6.ip6_prohibit_entry);
@@ -3074,7 +2989,6 @@ static void __net_exit ip6_route_net_exit(struct net *net)
 	dst_entries_destroy(&net->ipv6.ip6_dst_ops);
 }
 
-<<<<<<< HEAD
 static int __net_init ip6_route_net_init_late(struct net *net)
 {
 #ifdef CONFIG_PROC_FS
@@ -3092,21 +3006,16 @@ static void __net_exit ip6_route_net_exit_late(struct net *net)
 #endif
 }
 
-=======
->>>>>>> 7175f4b... Truncated history
 static struct pernet_operations ip6_route_net_ops = {
 	.init = ip6_route_net_init,
 	.exit = ip6_route_net_exit,
 };
 
-<<<<<<< HEAD
 static struct pernet_operations ip6_route_net_late_ops = {
 	.init = ip6_route_net_init_late,
 	.exit = ip6_route_net_exit_late,
 };
 
-=======
->>>>>>> 7175f4b... Truncated history
 static struct notifier_block ip6_route_dev_notifier = {
 	.notifier_call = ip6_route_dev_notify,
 	.priority = 0,
@@ -3156,39 +3065,25 @@ int __init ip6_route_init(void)
 	if (ret)
 		goto xfrm6_init;
 
-<<<<<<< HEAD
 	ret = register_pernet_subsys(&ip6_route_net_late_ops);
 	if (ret)
 		goto fib6_rules_init;
 
-=======
->>>>>>> 7175f4b... Truncated history
 	ret = -ENOBUFS;
 	if (__rtnl_register(PF_INET6, RTM_NEWROUTE, inet6_rtm_newroute, NULL, NULL) ||
 	    __rtnl_register(PF_INET6, RTM_DELROUTE, inet6_rtm_delroute, NULL, NULL) ||
 	    __rtnl_register(PF_INET6, RTM_GETROUTE, inet6_rtm_getroute, NULL, NULL))
-<<<<<<< HEAD
 		goto out_register_late_subsys;
 
 	ret = register_netdevice_notifier(&ip6_route_dev_notifier);
 	if (ret)
 		goto out_register_late_subsys;
-=======
-		goto fib6_rules_init;
-
-	ret = register_netdevice_notifier(&ip6_route_dev_notifier);
-	if (ret)
-		goto fib6_rules_init;
->>>>>>> 7175f4b... Truncated history
 
 out:
 	return ret;
 
-<<<<<<< HEAD
 out_register_late_subsys:
 	unregister_pernet_subsys(&ip6_route_net_late_ops);
-=======
->>>>>>> 7175f4b... Truncated history
 fib6_rules_init:
 	fib6_rules_cleanup();
 xfrm6_init:
@@ -3207,10 +3102,7 @@ out_kmem_cache:
 void ip6_route_cleanup(void)
 {
 	unregister_netdevice_notifier(&ip6_route_dev_notifier);
-<<<<<<< HEAD
 	unregister_pernet_subsys(&ip6_route_net_late_ops);
-=======
->>>>>>> 7175f4b... Truncated history
 	fib6_rules_cleanup();
 	xfrm6_fini();
 	fib6_gc_cleanup();

@@ -325,11 +325,7 @@ void jbd2_journal_commit_transaction(journal_t *journal)
 	int space_left = 0;
 	int first_tag = 0;
 	int tag_flag;
-<<<<<<< HEAD
 	int i;
-=======
-	int i, to_free = 0;
->>>>>>> 7175f4b... Truncated history
 	int tag_bytes = journal_tag_bytes(journal);
 	struct buffer_head *cbh = NULL; /* For transactional checksums */
 	__u32 crc32_sum = ~0;
@@ -1048,11 +1044,7 @@ restart_loop:
 	journal->j_stats.run.rs_blocks_logged += stats.run.rs_blocks_logged;
 	spin_unlock(&journal->j_history_lock);
 
-<<<<<<< HEAD
 	commit_transaction->t_state = T_COMMIT_CALLBACK;
-=======
-	commit_transaction->t_state = T_FINISHED;
->>>>>>> 7175f4b... Truncated history
 	J_ASSERT(commit_transaction == journal->j_committing_transaction);
 	journal->j_commit_sequence = commit_transaction->t_tid;
 	journal->j_committing_transaction = NULL;
@@ -1067,7 +1059,6 @@ restart_loop:
 				journal->j_average_commit_time*3) / 4;
 	else
 		journal->j_average_commit_time = commit_time;
-<<<<<<< HEAD
 
 	write_unlock(&journal->j_state_lock);
 
@@ -1089,39 +1080,12 @@ restart_loop:
 	/* Drop all spin_locks because commit_callback may be block.
 	 * __journal_remove_checkpoint() can not destroy transaction
 	 * under us because it is not marked as T_FINISHED yet */
-=======
-	write_unlock(&journal->j_state_lock);
-
-	if (commit_transaction->t_checkpoint_list == NULL &&
-	    commit_transaction->t_checkpoint_io_list == NULL) {
-		__jbd2_journal_drop_transaction(journal, commit_transaction);
-		to_free = 1;
-	} else {
-		if (journal->j_checkpoint_transactions == NULL) {
-			journal->j_checkpoint_transactions = commit_transaction;
-			commit_transaction->t_cpnext = commit_transaction;
-			commit_transaction->t_cpprev = commit_transaction;
-		} else {
-			commit_transaction->t_cpnext =
-				journal->j_checkpoint_transactions;
-			commit_transaction->t_cpprev =
-				commit_transaction->t_cpnext->t_cpprev;
-			commit_transaction->t_cpnext->t_cpprev =
-				commit_transaction;
-			commit_transaction->t_cpprev->t_cpnext =
-				commit_transaction;
-		}
-	}
-	spin_unlock(&journal->j_list_lock);
-
->>>>>>> 7175f4b... Truncated history
 	if (journal->j_commit_callback)
 		journal->j_commit_callback(journal, commit_transaction);
 
 	trace_jbd2_end_commit(journal, commit_transaction);
 	jbd_debug(1, "JBD2: commit %d complete, head %d\n",
 		  journal->j_commit_sequence, journal->j_tail_sequence);
-<<<<<<< HEAD
 
 	write_lock(&journal->j_state_lock);
 	spin_lock(&journal->j_list_lock);
@@ -1134,10 +1098,5 @@ restart_loop:
 	}
 	spin_unlock(&journal->j_list_lock);
 	write_unlock(&journal->j_state_lock);
-=======
-	if (to_free)
-		jbd2_journal_free_transaction(commit_transaction);
-
->>>>>>> 7175f4b... Truncated history
 	wake_up(&journal->j_wait_done_commit);
 }

@@ -11,10 +11,7 @@
 #include <linux/suspend.h>
 #include <linux/export.h>
 #include <linux/smp.h>
-<<<<<<< HEAD
 #include <linux/perf_event.h>
-=======
->>>>>>> 7175f4b... Truncated history
 
 #include <asm/pgtable.h>
 #include <asm/proto.h>
@@ -231,10 +228,7 @@ static void __restore_processor_state(struct saved_context *ctxt)
 	do_fpu_end();
 	x86_platform.restore_sched_clock_state();
 	mtrr_bp_restore();
-<<<<<<< HEAD
 	perf_restore_debug_store();
-=======
->>>>>>> 7175f4b... Truncated history
 }
 
 /* Needed by apm.c */

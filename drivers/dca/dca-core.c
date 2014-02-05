@@ -420,14 +420,11 @@ void unregister_dca_provider(struct dca_provider *dca, struct device *dev)
 
 	raw_spin_lock_irqsave(&dca_lock, flags);
 
-<<<<<<< HEAD
 	if (list_empty(&dca_domains)) {
 		raw_spin_unlock_irqrestore(&dca_lock, flags);
 		return;
 	}
 
-=======
->>>>>>> 7175f4b... Truncated history
 	list_del(&dca->node);
 
 	pci_rc = dca_pci_rc_from_dev(dev);

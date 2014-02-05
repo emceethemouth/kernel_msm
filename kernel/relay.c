@@ -1235,10 +1235,7 @@ static ssize_t subbuf_splice_actor(struct file *in,
 	struct splice_pipe_desc spd = {
 		.pages = pages,
 		.nr_pages = 0,
-<<<<<<< HEAD
 		.nr_pages_max = PIPE_DEF_BUFFERS,
-=======
->>>>>>> 7175f4b... Truncated history
 		.partial = partial,
 		.flags = flags,
 		.ops = &relay_pipe_buf_ops,
@@ -1306,13 +1303,8 @@ static ssize_t subbuf_splice_actor(struct file *in,
                 ret += padding;
 
 out:
-<<<<<<< HEAD
 	splice_shrink_spd(&spd);
 	return ret;
-=======
-	splice_shrink_spd(pipe, &spd);
-        return ret;
->>>>>>> 7175f4b... Truncated history
 }
 
 static ssize_t relay_file_splice_read(struct file *in,

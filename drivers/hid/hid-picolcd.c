@@ -1424,11 +1424,7 @@ static ssize_t picolcd_operation_mode_store(struct device *dev,
 		buf += 10;
 		cnt -= 10;
 	}
-<<<<<<< HEAD
 	if (!report || report->maxfield != 1)
-=======
-	if (!report)
->>>>>>> 7175f4b... Truncated history
 		return -EINVAL;
 
 	while (cnt > 0 && (buf[cnt-1] == '\n' || buf[cnt-1] == '\r'))

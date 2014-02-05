@@ -102,7 +102,6 @@ static int __mdss_mdp_pipe_smp_mmb_is_empty(unsigned long *smp)
 	return bitmap_weight(smp, SMP_MB_CNT) == 0;
 }
 
-<<<<<<< HEAD
 u32 mdss_mdp_smp_get_size(struct mdss_mdp_pipe *pipe)
 {
 	int i, mb_cnt = 0;
@@ -114,8 +113,6 @@ u32 mdss_mdp_smp_get_size(struct mdss_mdp_pipe *pipe)
 	return mb_cnt * SMP_MB_SIZE;
 }
 
-=======
->>>>>>> 7175f4b... Truncated history
 static void mdss_mdp_smp_set_wm_levels(struct mdss_mdp_pipe *pipe, int mb_cnt)
 {
 	u32 fetch_size, val, wm[3];

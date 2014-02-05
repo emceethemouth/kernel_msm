@@ -24,11 +24,7 @@
 #include <linux/mfd/wm831x/core.h>
 #include <linux/delay.h>
 #include <linux/platform_device.h>
-<<<<<<< HEAD
 #include <linux/random.h>
-=======
-
->>>>>>> 7175f4b... Truncated history
 
 /*
  * R16416 (0x4020) - RTC Write Counter
@@ -100,7 +96,6 @@ struct wm831x_rtc {
 	unsigned int alarm_enabled:1;
 };
 
-<<<<<<< HEAD
 static void wm831x_rtc_add_randomness(struct wm831x *wm831x)
 {
 	int ret;
@@ -121,8 +116,6 @@ static void wm831x_rtc_add_randomness(struct wm831x *wm831x)
 	}
 }
 
-=======
->>>>>>> 7175f4b... Truncated history
 /*
  * Read current time and date in RTC
  */
@@ -458,11 +451,8 @@ static int wm831x_rtc_probe(struct platform_device *pdev)
 			alm_irq, ret);
 	}
 
-<<<<<<< HEAD
 	wm831x_rtc_add_randomness(wm831x);
 
-=======
->>>>>>> 7175f4b... Truncated history
 	return 0;
 
 err:

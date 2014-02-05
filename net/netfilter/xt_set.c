@@ -16,10 +16,7 @@
 
 #include <linux/netfilter/x_tables.h>
 #include <linux/netfilter/xt_set.h>
-<<<<<<< HEAD
 #include <linux/netfilter/ipset/ip_set_timeout.h>
-=======
->>>>>>> 7175f4b... Truncated history
 
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Jozsef Kadlecsik <kadlec@blackhole.kfki.hu>");
@@ -48,7 +45,6 @@ const struct ip_set_adt_opt n = {	\
 	.cmdflags = cfs,		\
 	.timeout = t,			\
 }
-<<<<<<< HEAD
 #define ADT_MOPT(n, f, d, fs, cfs, t)	\
 struct ip_set_adt_opt n = {		\
 	.family	= f,			\
@@ -57,8 +53,6 @@ struct ip_set_adt_opt n = {		\
 	.cmdflags = cfs,		\
 	.timeout = t,			\
 }
-=======
->>>>>>> 7175f4b... Truncated history
 
 /* Revision 0 interface: backward compatible with netfilter/iptables */
 
@@ -311,7 +305,6 @@ static unsigned int
 set_target_v2(struct sk_buff *skb, const struct xt_action_param *par)
 {
 	const struct xt_set_info_target_v2 *info = par->targinfo;
-<<<<<<< HEAD
 	ADT_MOPT(add_opt, par->family, info->add_set.dim,
 		 info->add_set.flags, info->flags, info->timeout);
 	ADT_OPT(del_opt, par->family, info->del_set.dim,
@@ -321,13 +314,6 @@ set_target_v2(struct sk_buff *skb, const struct xt_action_param *par)
 	if (add_opt.timeout != IPSET_NO_TIMEOUT &&
 	    add_opt.timeout > UINT_MAX/MSEC_PER_SEC)
 		add_opt.timeout = UINT_MAX/MSEC_PER_SEC;
-=======
-	ADT_OPT(add_opt, par->family, info->add_set.dim,
-		info->add_set.flags, info->flags, info->timeout);
-	ADT_OPT(del_opt, par->family, info->del_set.dim,
-		info->del_set.flags, 0, UINT_MAX);
-
->>>>>>> 7175f4b... Truncated history
 	if (info->add_set.index != IPSET_INVALID_ID)
 		ip_set_add(info->add_set.index, skb, par, &add_opt);
 	if (info->del_set.index != IPSET_INVALID_ID)

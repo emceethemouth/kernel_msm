@@ -500,17 +500,10 @@ int jbd2__journal_restart(handle_t *handle, int nblocks, gfp_t gfp_mask)
 		   &transaction->t_outstanding_credits);
 	if (atomic_dec_and_test(&transaction->t_updates))
 		wake_up(&journal->j_wait_updates);
-<<<<<<< HEAD
 	tid = transaction->t_tid;
 	spin_unlock(&transaction->t_handle_lock);
 
 	jbd_debug(2, "restarting handle %p\n", handle);
-=======
-	spin_unlock(&transaction->t_handle_lock);
-
-	jbd_debug(2, "restarting handle %p\n", handle);
-	tid = transaction->t_tid;
->>>>>>> 7175f4b... Truncated history
 	need_to_start = !tid_geq(journal->j_commit_request, tid);
 	read_unlock(&journal->j_state_lock);
 	if (need_to_start)
@@ -1054,18 +1047,12 @@ out:
 void jbd2_journal_set_triggers(struct buffer_head *bh,
 			       struct jbd2_buffer_trigger_type *type)
 {
-<<<<<<< HEAD
 	struct journal_head *jh = jbd2_journal_grab_journal_head(bh);
 
 	if (WARN_ON(!jh))
 		return;
 	jh->b_triggers = type;
 	jbd2_journal_put_journal_head(jh);
-=======
-	struct journal_head *jh = bh2jh(bh);
-
-	jh->b_triggers = type;
->>>>>>> 7175f4b... Truncated history
 }
 
 void jbd2_buffer_frozen_trigger(struct journal_head *jh, void *mapped_data,
@@ -1117,7 +1104,6 @@ int jbd2_journal_dirty_metadata(handle_t *handle, struct buffer_head *bh)
 {
 	transaction_t *transaction = handle->h_transaction;
 	journal_t *journal = transaction->t_journal;
-<<<<<<< HEAD
 	struct journal_head *jh;
 	int ret = 0;
 
@@ -1130,19 +1116,6 @@ int jbd2_journal_dirty_metadata(handle_t *handle, struct buffer_head *bh)
 	}
 	jbd_debug(5, "journal_head %p\n", jh);
 	JBUFFER_TRACE(jh, "entry");
-=======
-	struct journal_head *jh = bh2jh(bh);
-	int ret = 0;
-
-	jbd_debug(5, "journal_head %p\n", jh);
-	JBUFFER_TRACE(jh, "entry");
-	if (is_handle_aborted(handle))
-		goto out;
-	if (!buffer_jbd(bh)) {
-		ret = -EUCLEAN;
-		goto out;
-	}
->>>>>>> 7175f4b... Truncated history
 
 	jbd_lock_bh_state(bh);
 
@@ -1153,14 +1126,10 @@ int jbd2_journal_dirty_metadata(handle_t *handle, struct buffer_head *bh)
 		 * once a transaction -bzzz
 		 */
 		jh->b_modified = 1;
-<<<<<<< HEAD
 		if (handle->h_buffer_credits <= 0) {
 			ret = -ENOSPC;
 			goto out_unlock_bh;
 		}
-=======
-		J_ASSERT_JH(jh, handle->h_buffer_credits > 0);
->>>>>>> 7175f4b... Truncated history
 		handle->h_buffer_credits--;
 	}
 
@@ -1240,15 +1209,9 @@ int jbd2_journal_dirty_metadata(handle_t *handle, struct buffer_head *bh)
 	spin_unlock(&journal->j_list_lock);
 out_unlock_bh:
 	jbd_unlock_bh_state(bh);
-<<<<<<< HEAD
 	jbd2_journal_put_journal_head(jh);
 out:
 	JBUFFER_TRACE(jh, "exit");
-=======
-out:
-	JBUFFER_TRACE(jh, "exit");
-	WARN_ON(ret);	/* All errors are bugs, so dump the stack */
->>>>>>> 7175f4b... Truncated history
 	return ret;
 }
 

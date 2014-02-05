@@ -11,16 +11,12 @@
 struct tlb_batch {
 	struct mm_struct *mm;
 	unsigned long tlb_nr;
-<<<<<<< HEAD
 	unsigned long active;
-=======
->>>>>>> 7175f4b... Truncated history
 	unsigned long vaddrs[TLB_BATCH_NR];
 };
 
 extern void flush_tsb_kernel_range(unsigned long start, unsigned long end);
 extern void flush_tsb_user(struct tlb_batch *tb);
-<<<<<<< HEAD
 extern void flush_tsb_user_page(struct mm_struct *mm, unsigned long vaddr);
 
 /* TLB flush operations. */
@@ -49,21 +45,6 @@ extern void arch_leave_lazy_mmu_mode(void);
 /* Local cpu only.  */
 extern void __flush_tlb_all(void);
 extern void __flush_tlb_page(unsigned long context, unsigned long vaddr);
-=======
-
-/* TLB flush operations. */
-
-extern void flush_tlb_pending(void);
-
-#define flush_tlb_range(vma,start,end)	\
-	do { (void)(start); flush_tlb_pending(); } while (0)
-#define flush_tlb_page(vma,addr)	flush_tlb_pending()
-#define flush_tlb_mm(mm)		flush_tlb_pending()
-
-/* Local cpu only.  */
-extern void __flush_tlb_all(void);
-
->>>>>>> 7175f4b... Truncated history
 extern void __flush_tlb_kernel_range(unsigned long start, unsigned long end);
 
 #ifndef CONFIG_SMP
@@ -73,7 +54,6 @@ do {	flush_tsb_kernel_range(start,end); \
 	__flush_tlb_kernel_range(start,end); \
 } while (0)
 
-<<<<<<< HEAD
 static inline void global_flush_tlb_page(struct mm_struct *mm, unsigned long vaddr)
 {
 	__flush_tlb_page(CTX_HWBITS(mm->context), vaddr);
@@ -83,23 +63,15 @@ static inline void global_flush_tlb_page(struct mm_struct *mm, unsigned long vad
 
 extern void smp_flush_tlb_kernel_range(unsigned long start, unsigned long end);
 extern void smp_flush_tlb_page(struct mm_struct *mm, unsigned long vaddr);
-=======
-#else /* CONFIG_SMP */
-
-extern void smp_flush_tlb_kernel_range(unsigned long start, unsigned long end);
->>>>>>> 7175f4b... Truncated history
 
 #define flush_tlb_kernel_range(start, end) \
 do {	flush_tsb_kernel_range(start,end); \
 	smp_flush_tlb_kernel_range(start, end); \
 } while (0)
 
-<<<<<<< HEAD
 #define global_flush_tlb_page(mm, vaddr) \
 	smp_flush_tlb_page(mm, vaddr)
 
-=======
->>>>>>> 7175f4b... Truncated history
 #endif /* ! CONFIG_SMP */
 
 #endif /* _SPARC64_TLBFLUSH_H */

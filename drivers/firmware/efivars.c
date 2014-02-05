@@ -122,12 +122,9 @@ struct efivar_attribute {
 	ssize_t (*store)(struct efivar_entry *entry, const char *buf, size_t count);
 };
 
-<<<<<<< HEAD
 static struct efivars __efivars;
 static struct efivar_operations ops;
 
-=======
->>>>>>> 7175f4b... Truncated history
 #define PSTORE_EFI_ATTRIBUTES \
 	(EFI_VARIABLE_NON_VOLATILE | \
 	 EFI_VARIABLE_BOOTSERVICE_ACCESS | \
@@ -441,7 +438,6 @@ efivar_attr_read(struct efivar_entry *entry, char *buf)
 	if (status != EFI_SUCCESS)
 		return -EIO;
 
-<<<<<<< HEAD
 	if (var->Attributes & EFI_VARIABLE_NON_VOLATILE)
 		str += sprintf(str, "EFI_VARIABLE_NON_VOLATILE\n");
 	if (var->Attributes & EFI_VARIABLE_BOOTSERVICE_ACCESS)
@@ -459,14 +455,6 @@ efivar_attr_read(struct efivar_entry *entry, char *buf)
 			"EFI_VARIABLE_TIME_BASED_AUTHENTICATED_WRITE_ACCESS\n");
 	if (var->Attributes & EFI_VARIABLE_APPEND_WRITE)
 		str += sprintf(str, "EFI_VARIABLE_APPEND_WRITE\n");
-=======
-	if (var->Attributes & 0x1)
-		str += sprintf(str, "EFI_VARIABLE_NON_VOLATILE\n");
-	if (var->Attributes & 0x2)
-		str += sprintf(str, "EFI_VARIABLE_BOOTSERVICE_ACCESS\n");
-	if (var->Attributes & 0x4)
-		str += sprintf(str, "EFI_VARIABLE_RUNTIME_ACCESS\n");
->>>>>>> 7175f4b... Truncated history
 	return str - buf;
 }
 
@@ -957,7 +945,6 @@ static ssize_t efivar_delete(struct file *filp, struct kobject *kobj,
 	return count;
 }
 
-<<<<<<< HEAD
 static bool variable_is_present(efi_char16_t *variable_name, efi_guid_t *vendor)
 {
 	struct efivar_entry *entry, *n;
@@ -1005,8 +992,6 @@ static unsigned long var_name_strnsize(efi_char16_t *variable_name,
 	return min(len, variable_name_size);
 }
 
-=======
->>>>>>> 7175f4b... Truncated history
 /*
  * Let's not leave out systab information that snuck into
  * the efivars driver
@@ -1194,7 +1179,6 @@ void unregister_efivars(struct efivars *efivars)
 }
 EXPORT_SYMBOL_GPL(unregister_efivars);
 
-<<<<<<< HEAD
 /*
  * Print a warning when duplicate EFI variables are encountered and
  * disable the sysfs workqueue since the firmware is buggy.
@@ -1217,8 +1201,6 @@ static void dup_variable_bug(efi_char16_t *s16, efi_guid_t *vendor_guid,
 	kfree(s8);
 }
 
-=======
->>>>>>> 7175f4b... Truncated history
 int register_efivars(struct efivars *efivars,
 		     const struct efivar_operations *ops,
 		     struct kobject *parent_kobj)
@@ -1259,7 +1241,6 @@ int register_efivars(struct efivars *efivars,
 						&vendor_guid);
 		switch (status) {
 		case EFI_SUCCESS:
-<<<<<<< HEAD
 			variable_name_size = var_name_strnsize(variable_name,
 							       variable_name_size);
 
@@ -1278,8 +1259,6 @@ int register_efivars(struct efivars *efivars,
 				break;
 			}
 
-=======
->>>>>>> 7175f4b... Truncated history
 			efivar_create_sysfs_entry(efivars,
 						  variable_name_size,
 						  variable_name,
@@ -1316,12 +1295,6 @@ out:
 }
 EXPORT_SYMBOL_GPL(register_efivars);
 
-<<<<<<< HEAD
-=======
-static struct efivars __efivars;
-static struct efivar_operations ops;
-
->>>>>>> 7175f4b... Truncated history
 /*
  * For now we register the efi subsystem with the firmware subsystem
  * and the vars subsystem with the efi subsystem.  In the future, it
@@ -1338,11 +1311,7 @@ efivars_init(void)
 	printk(KERN_INFO "EFI Variables Facility v%s %s\n", EFIVARS_VERSION,
 	       EFIVARS_DATE);
 
-<<<<<<< HEAD
 	if (!efi_enabled(EFI_RUNTIME_SERVICES))
-=======
-	if (!efi_enabled)
->>>>>>> 7175f4b... Truncated history
 		return 0;
 
 	/* For now we'll register the efi directory at /sys/firmware/efi */
@@ -1380,11 +1349,7 @@ err_put:
 static void __exit
 efivars_exit(void)
 {
-<<<<<<< HEAD
 	if (efi_enabled(EFI_RUNTIME_SERVICES)) {
-=======
-	if (efi_enabled) {
->>>>>>> 7175f4b... Truncated history
 		unregister_efivars(&__efivars);
 		kobject_put(efi_kobj);
 	}

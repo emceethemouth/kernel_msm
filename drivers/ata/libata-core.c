@@ -1599,15 +1599,12 @@ unsigned ata_exec_internal_sg(struct ata_device *dev,
 	qc->tf = *tf;
 	if (cdb)
 		memcpy(qc->cdb, cdb, ATAPI_CDB_LEN);
-<<<<<<< HEAD
 
 	/* some SATA bridges need us to indicate data xfer direction */
 	if (tf->protocol == ATAPI_PROT_DMA && (dev->flags & ATA_DFLAG_DMADIR) &&
 	    dma_dir == DMA_FROM_DEVICE)
 		qc->tf.feature |= ATAPI_DMADIR;
 
-=======
->>>>>>> 7175f4b... Truncated history
 	qc->flags |= ATA_QCFLAG_RESULT_TF;
 	qc->dma_dir = dma_dir;
 	if (dma_dir != DMA_NONE) {
@@ -1982,15 +1979,12 @@ retry:
 	if (class == ATA_DEV_ATA) {
 		if (!ata_id_is_ata(id) && !ata_id_is_cfa(id))
 			goto err_out;
-<<<<<<< HEAD
 		if (ap->host->flags & ATA_HOST_IGNORE_ATA &&
 							ata_id_is_ata(id)) {
 			ata_dev_dbg(dev,
 				"host indicates ignore ATA devices, ignored\n");
 			return -ENOENT;
 		}
-=======
->>>>>>> 7175f4b... Truncated history
 	} else {
 		if (ata_id_is_ata(id))
 			goto err_out;
@@ -2420,12 +2414,9 @@ int ata_dev_configure(struct ata_device *dev)
 		dev->max_sectors = min_t(unsigned int, ATA_MAX_SECTORS_128,
 					 dev->max_sectors);
 
-<<<<<<< HEAD
 	if (dev->horkage & ATA_HORKAGE_MAX_SEC_LBA48)
 		dev->max_sectors = ATA_MAX_SECTORS_LBA48;
 
-=======
->>>>>>> 7175f4b... Truncated history
 	if (ap->ops->dev_config)
 		ap->ops->dev_config(dev);
 
@@ -2554,10 +2545,7 @@ int ata_bus_probe(struct ata_port *ap)
 		 * bus as we may be talking too fast.
 		 */
 		dev->pio_mode = XFER_PIO_0;
-<<<<<<< HEAD
 		dev->dma_mode = 0xff;
-=======
->>>>>>> 7175f4b... Truncated history
 
 		/* If the controller has a pio mode setup function
 		 * then use it to set the chipset to rights. Don't
@@ -4085,11 +4073,8 @@ static const struct ata_blacklist_entry ata_device_blacklist [] = {
 	/* Weird ATAPI devices */
 	{ "TORiSAN DVD-ROM DRD-N216", NULL,	ATA_HORKAGE_MAX_SEC_128 },
 	{ "QUANTUM DAT    DAT72-000", NULL,	ATA_HORKAGE_ATAPI_MOD16_DMA },
-<<<<<<< HEAD
 	{ "Slimtype DVD A  DS8A8SH", NULL,	ATA_HORKAGE_MAX_SEC_LBA48 },
 	{ "Slimtype DVD A  DS8A9SH", NULL,	ATA_HORKAGE_MAX_SEC_LBA48 },
-=======
->>>>>>> 7175f4b... Truncated history
 
 	/* Devices we expect to fail diagnostics */
 
@@ -4119,12 +4104,9 @@ static const struct ata_blacklist_entry ata_device_blacklist [] = {
 	{ "ST3320[68]13AS",	"SD1[5-9]",	ATA_HORKAGE_NONCQ |
 						ATA_HORKAGE_FIRMWARE_WARN },
 
-<<<<<<< HEAD
 	/* Seagate Momentus SpinPoint M8 seem to have FPMDA_AA issues */
 	{ "ST1000LM024 HN-M101MBB", "2AR10001",	ATA_HORKAGE_BROKEN_FPDMA_AA },
 
-=======
->>>>>>> 7175f4b... Truncated history
 	/* Blacklist entries taken from Silicon Image 3124/3132
 	   Windows driver .inf file - also several Linux problem reports */
 	{ "HTS541060G9SA00",    "MB3OC60D",     ATA_HORKAGE_NONCQ, },
@@ -4158,10 +4140,7 @@ static const struct ata_blacklist_entry ata_device_blacklist [] = {
 
 	/* Devices which aren't very happy with higher link speeds */
 	{ "WD My Book",			NULL,	ATA_HORKAGE_1_5_GBPS, },
-<<<<<<< HEAD
 	{ "Seagate FreeAgent GoFlex",	NULL,	ATA_HORKAGE_1_5_GBPS, },
-=======
->>>>>>> 7175f4b... Truncated history
 
 	/*
 	 * Devices which choke on SETXFER.  Applies only if both the

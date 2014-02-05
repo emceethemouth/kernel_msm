@@ -6,10 +6,7 @@
 #include <linux/dmi.h>
 #include <linux/efi.h>
 #include <linux/bootmem.h>
-<<<<<<< HEAD
 #include <linux/random.h>
-=======
->>>>>>> 7175f4b... Truncated history
 #include <asm/dmi.h>
 
 /*
@@ -19,10 +16,7 @@
  */
 static char dmi_empty_string[] = "        ";
 
-<<<<<<< HEAD
 static u16 __initdata dmi_ver;
-=======
->>>>>>> 7175f4b... Truncated history
 /*
  * Catch too early calls to dmi_check_system():
  */
@@ -119,29 +113,18 @@ static int __init dmi_walk_early(void (*decode)(const struct dmi_header *,
 
 	dmi_table(buf, dmi_len, dmi_num, decode, NULL);
 
-<<<<<<< HEAD
 	add_device_randomness(buf, dmi_len);
 
-=======
->>>>>>> 7175f4b... Truncated history
 	dmi_iounmap(buf, dmi_len);
 	return 0;
 }
 
-<<<<<<< HEAD
 static int __init dmi_checksum(const u8 *buf, u8 len)
-=======
-static int __init dmi_checksum(const u8 *buf)
->>>>>>> 7175f4b... Truncated history
 {
 	u8 sum = 0;
 	int a;
 
-<<<<<<< HEAD
 	for (a = 0; a < len; a++)
-=======
-	for (a = 0; a < 15; a++)
->>>>>>> 7175f4b... Truncated history
 		sum += buf[a];
 
 	return sum == 0;
@@ -179,15 +162,10 @@ static void __init dmi_save_uuid(const struct dmi_header *dm, int slot, int inde
 		return;
 
 	for (i = 0; i < 16 && (is_ff || is_00); i++) {
-<<<<<<< HEAD
 		if (d[i] != 0x00)
 			is_00 = 0;
 		if (d[i] != 0xFF)
 			is_ff = 0;
-=======
-		if(d[i] != 0x00) is_ff = 0;
-		if(d[i] != 0xFF) is_00 = 0;
->>>>>>> 7175f4b... Truncated history
 	}
 
 	if (is_ff || is_00)
@@ -197,7 +175,6 @@ static void __init dmi_save_uuid(const struct dmi_header *dm, int slot, int inde
 	if (!s)
 		return;
 
-<<<<<<< HEAD
 	/*
 	 * As of version 2.6 of the SMBIOS specification, the first 3 fields of
 	 * the UUID are supposed to be little-endian encoded.  The specification
@@ -207,9 +184,6 @@ static void __init dmi_save_uuid(const struct dmi_header *dm, int slot, int inde
 		sprintf(s, "%pUL", d);
 	else
 		sprintf(s, "%pUB", d);
-=======
-	sprintf(s, "%pUB", d);
->>>>>>> 7175f4b... Truncated history
 
         dmi_ident[slot] = s;
 }
@@ -441,17 +415,12 @@ static int __init dmi_present(const char __iomem *p)
 	u8 buf[15];
 
 	memcpy_fromio(buf, p, 15);
-<<<<<<< HEAD
 	if (dmi_checksum(buf, 15)) {
-=======
-	if ((memcmp(buf, "_DMI_", 5) == 0) && dmi_checksum(buf)) {
->>>>>>> 7175f4b... Truncated history
 		dmi_num = (buf[13] << 8) | buf[12];
 		dmi_len = (buf[7] << 8) | buf[6];
 		dmi_base = (buf[11] << 24) | (buf[10] << 16) |
 			(buf[9] << 8) | buf[8];
 
-<<<<<<< HEAD
 		if (dmi_walk_early(dmi_decode) == 0) {
 			if (dmi_ver)
 				pr_info("SMBIOS %d.%d present.\n",
@@ -462,23 +431,10 @@ static int __init dmi_present(const char __iomem *p)
 				pr_info("Legacy DMI %d.%d present.\n",
 				       dmi_ver >> 8, dmi_ver & 0xFF);
 			}
-=======
-		/*
-		 * DMI version 0.0 means that the real version is taken from
-		 * the SMBIOS version, which we don't know at this point.
-		 */
-		if (buf[14] != 0)
-			printk(KERN_INFO "DMI %d.%d present.\n",
-			       buf[14] >> 4, buf[14] & 0xF);
-		else
-			printk(KERN_INFO "DMI present.\n");
-		if (dmi_walk_early(dmi_decode) == 0) {
->>>>>>> 7175f4b... Truncated history
 			dmi_dump_ids();
 			return 0;
 		}
 	}
-<<<<<<< HEAD
 	dmi_ver = 0;
 	return 1;
 }
@@ -506,8 +462,6 @@ static int __init smbios_present(const char __iomem *p)
 		}
 		return memcmp(p + 16, "_DMI_", 5) || dmi_present(p + 16);
 	}
-=======
->>>>>>> 7175f4b... Truncated history
 	return 1;
 }
 
@@ -516,11 +470,7 @@ void __init dmi_scan_machine(void)
 	char __iomem *p, *q;
 	int rc;
 
-<<<<<<< HEAD
 	if (efi_enabled(EFI_CONFIG_TABLES)) {
-=======
-	if (efi_enabled) {
->>>>>>> 7175f4b... Truncated history
 		if (efi.smbios == EFI_INVALID_TABLE_ADDR)
 			goto error;
 
@@ -532,11 +482,7 @@ void __init dmi_scan_machine(void)
 		if (p == NULL)
 			goto error;
 
-<<<<<<< HEAD
 		rc = smbios_present(p);
-=======
-		rc = dmi_present(p + 0x10); /* offset of _DMI_ string */
->>>>>>> 7175f4b... Truncated history
 		dmi_iounmap(p, 32);
 		if (!rc) {
 			dmi_available = 1;
@@ -554,16 +500,12 @@ void __init dmi_scan_machine(void)
 			goto error;
 
 		for (q = p; q < p + 0x10000; q += 16) {
-<<<<<<< HEAD
 			if (memcmp(q, "_SM_", 4) == 0 && q - p <= 0xFFE0)
 				rc = smbios_present(q);
 			else if (memcmp(q, "_DMI_", 5) == 0)
 				rc = dmi_present(q);
 			else
 				continue;
-=======
-			rc = dmi_present(q);
->>>>>>> 7175f4b... Truncated history
 			if (!rc) {
 				dmi_available = 1;
 				dmi_iounmap(p, 0x10000);

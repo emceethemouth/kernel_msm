@@ -116,18 +116,12 @@ static int hpfs_write_begin(struct file *file, struct address_space *mapping,
 				hpfs_get_block,
 				&hpfs_i(mapping->host)->mmu_private);
 	if (unlikely(ret)) {
-<<<<<<< HEAD
 		loff_t isize;
 		hpfs_lock(mapping->host->i_sb);
 		isize = mapping->host->i_size;
 		if (pos + len > isize)
 			vmtruncate(mapping->host, isize);
 		hpfs_unlock(mapping->host->i_sb);
-=======
-		loff_t isize = mapping->host->i_size;
-		if (pos + len > isize)
-			vmtruncate(mapping->host, isize);
->>>>>>> 7175f4b... Truncated history
 	}
 
 	return ret;

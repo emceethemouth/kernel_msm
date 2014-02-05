@@ -11,10 +11,7 @@
  */
 
 #define pr_fmt(fmt)	KBUILD_MODNAME ": " fmt
-<<<<<<< HEAD
 #include <linux/delay.h>
-=======
->>>>>>> 7175f4b... Truncated history
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/platform_device.h>
@@ -42,13 +39,10 @@
 /* bitmap of the page sizes currently supported */
 #define MSM_IOMMU_PGSIZES	(SZ_4K | SZ_64K | SZ_1M | SZ_16M)
 
-<<<<<<< HEAD
 #define IOMMU_MSEC_STEP		10
 #define IOMMU_MSEC_TIMEOUT	5000
 
 
-=======
->>>>>>> 7175f4b... Truncated history
 static DEFINE_MUTEX(msm_iommu_lock);
 
 static int __enable_regulators(struct msm_iommu_drvdata *drvdata)
@@ -185,7 +179,6 @@ void iommu_resume(const struct msm_iommu_drvdata *iommu_drvdata)
 
 static void __sync_tlb(void __iomem *base, int ctx)
 {
-<<<<<<< HEAD
 	int i;
 
 	SET_TLBSYNC(base, ctx, 0);
@@ -198,14 +191,6 @@ static void __sync_tlb(void __iomem *base, int ctx)
 			msleep(IOMMU_MSEC_STEP);
 
 	BUG_ON(i >= IOMMU_MSEC_TIMEOUT);
-=======
-	SET_TLBSYNC(base, ctx, 0);
-
-	/* No barrier needed due to register proximity */
-	while (GET_CB_TLBSTATUS_SACTIVE(base, ctx))
-		cpu_relax();
-
->>>>>>> 7175f4b... Truncated history
 	/* No barrier needed due to read dependency */
 }
 
@@ -761,10 +746,7 @@ static phys_addr_t msm_iommu_iova_to_phys(struct iommu_domain *domain,
 	void __iomem *base;
 	phys_addr_t ret = 0;
 	int ctx;
-<<<<<<< HEAD
 	int i;
-=======
->>>>>>> 7175f4b... Truncated history
 
 	mutex_lock(&msm_iommu_lock);
 
@@ -787,7 +769,6 @@ static phys_addr_t msm_iommu_iova_to_phys(struct iommu_domain *domain,
 
 	SET_ATS1PR(base, ctx, va & CB_ATS1PR_ADDR);
 	mb();
-<<<<<<< HEAD
 	for (i = 0; i < IOMMU_MSEC_TIMEOUT; i += IOMMU_MSEC_STEP)
 		if (GET_CB_ATSR_ACTIVE(base, ctx) == 0)
 			break;
@@ -800,10 +781,6 @@ static phys_addr_t msm_iommu_iova_to_phys(struct iommu_domain *domain,
 		ret = 0;
 		goto fail;
 	}
-=======
-	while (GET_CB_ATSR_ACTIVE(base, ctx))
-		cpu_relax();
->>>>>>> 7175f4b... Truncated history
 
 	par = GET_PAR(base, ctx);
 	__disable_clocks(iommu_drvdata);

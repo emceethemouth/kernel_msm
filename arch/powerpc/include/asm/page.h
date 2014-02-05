@@ -211,7 +211,6 @@ extern long long virt_phys_offset;
 #define __va(x) ((void *)(unsigned long)((phys_addr_t)(x) + VIRT_PHYS_OFFSET))
 #define __pa(x) ((unsigned long)(x) - VIRT_PHYS_OFFSET)
 #else
-<<<<<<< HEAD
 #ifdef CONFIG_PPC64
 /*
  * gcc miscompiles (unsigned long)(&static_var) - PAGE_OFFSET
@@ -225,11 +224,6 @@ extern long long virt_phys_offset;
 #define __pa(x) ((unsigned long)(x) - PAGE_OFFSET + MEMORY_START)
 #endif
 #endif
-=======
-#define __va(x) ((void *)(unsigned long)((phys_addr_t)(x) + PAGE_OFFSET - MEMORY_START))
-#define __pa(x) ((unsigned long)(x) - PAGE_OFFSET + MEMORY_START)
-#endif
->>>>>>> 7175f4b... Truncated history
 
 /*
  * Unfortunately the PLT is in the BSS in the PPC32 ELF ABI,

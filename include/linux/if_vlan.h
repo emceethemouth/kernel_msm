@@ -82,11 +82,8 @@ static inline int is_vlan_dev(struct net_device *dev)
 }
 
 #define vlan_tx_tag_present(__skb)	((__skb)->vlan_tci & VLAN_TAG_PRESENT)
-<<<<<<< HEAD
 #define vlan_tx_nonzero_tag_present(__skb) \
 	(vlan_tx_tag_present(__skb) && ((__skb)->vlan_tci & VLAN_VID_MASK))
-=======
->>>>>>> 7175f4b... Truncated history
 #define vlan_tx_tag_get(__skb)		((__skb)->vlan_tci & ~VLAN_TAG_PRESENT)
 
 #if defined(CONFIG_VLAN_8021Q) || defined(CONFIG_VLAN_8021Q_MODULE)
@@ -96,11 +93,7 @@ extern struct net_device *__vlan_find_dev_deep(struct net_device *real_dev,
 extern struct net_device *vlan_dev_real_dev(const struct net_device *dev);
 extern u16 vlan_dev_vlan_id(const struct net_device *dev);
 
-<<<<<<< HEAD
 extern bool vlan_do_receive(struct sk_buff **skb);
-=======
-extern bool vlan_do_receive(struct sk_buff **skb, bool last_handler);
->>>>>>> 7175f4b... Truncated history
 extern struct sk_buff *vlan_untag(struct sk_buff *skb);
 
 extern int vlan_vid_add(struct net_device *dev, unsigned short vid);
@@ -129,15 +122,8 @@ static inline u16 vlan_dev_vlan_id(const struct net_device *dev)
 	return 0;
 }
 
-<<<<<<< HEAD
 static inline bool vlan_do_receive(struct sk_buff **skb)
 {
-=======
-static inline bool vlan_do_receive(struct sk_buff **skb, bool last_handler)
-{
-	if (((*skb)->vlan_tci & VLAN_VID_MASK) && last_handler)
-		(*skb)->pkt_type = PACKET_OTHERHOST;
->>>>>>> 7175f4b... Truncated history
 	return false;
 }
 
@@ -341,11 +327,7 @@ static inline void vlan_set_encap_proto(struct sk_buff *skb,
 					struct vlan_hdr *vhdr)
 {
 	__be16 proto;
-<<<<<<< HEAD
 	unsigned short *rawp;
-=======
-	unsigned char *rawp;
->>>>>>> 7175f4b... Truncated history
 
 	/*
 	 * Was a VLAN packet, grab the encapsulated protocol, which the layer
@@ -358,13 +340,8 @@ static inline void vlan_set_encap_proto(struct sk_buff *skb,
 		return;
 	}
 
-<<<<<<< HEAD
 	rawp = (unsigned short *)(vhdr + 1);
 	if (*rawp == 0xFFFF)
-=======
-	rawp = skb->data;
-	if (*(unsigned short *) rawp == 0xFFFF)
->>>>>>> 7175f4b... Truncated history
 		/*
 		 * This is a magic hack to spot IPX packets. Older Novell
 		 * breaks the protocol design and runs IPX over 802.3 without

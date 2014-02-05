@@ -1531,7 +1531,6 @@ static int mmc_blk_err_check(struct mmc_card *card,
 
 				return MMC_BLK_CMD_ERR;
 			}
-<<<<<<< HEAD
 
 			if (status & R1_ERROR) {
 				pr_err("%s: %s: general error sending status command, card status %#x\n",
@@ -1540,8 +1539,6 @@ static int mmc_blk_err_check(struct mmc_card *card,
 				gen_err = 1;
 			}
 
-=======
->>>>>>> 7175f4b... Truncated history
 			/*
 			 * Some cards mishandle the status bits,
 			 * so make sure to check both the busy
@@ -3300,7 +3297,3 @@ module_exit(mmc_blk_exit);
 
 MODULE_LICENSE("GPL");
 MODULE_DESCRIPTION("Multimedia Card (MMC) block device driver");
-<<<<<<< HEAD
-=======
-
->>>>>>> 7175f4b... Truncated history

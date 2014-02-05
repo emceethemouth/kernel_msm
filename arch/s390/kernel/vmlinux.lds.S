@@ -8,11 +8,7 @@
 
 #ifndef CONFIG_64BIT
 OUTPUT_FORMAT("elf32-s390", "elf32-s390", "elf32-s390")
-<<<<<<< HEAD
 OUTPUT_ARCH(s390:31-bit)
-=======
-OUTPUT_ARCH(s390)
->>>>>>> 7175f4b... Truncated history
 ENTRY(startup)
 jiffies = jiffies_64 + 4;
 #else

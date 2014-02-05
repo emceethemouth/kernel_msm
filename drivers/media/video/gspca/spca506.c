@@ -685,11 +685,7 @@ static const struct sd_desc sd_desc = {
 };
 
 /* -- module initialisation -- */
-<<<<<<< HEAD
 static const struct usb_device_id device_table[] = {
-=======
-static const struct usb_device_id device_table[] __devinitconst = {
->>>>>>> 7175f4b... Truncated history
 	{USB_DEVICE(0x06e1, 0xa190)},
 /*fixme: may be IntelPCCameraPro BRIDGE_SPCA505
 	{USB_DEVICE(0x0733, 0x0430)}, */

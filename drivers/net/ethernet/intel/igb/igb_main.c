@@ -951,30 +951,18 @@ static int igb_request_msix(struct igb_adapter *adapter)
 {
 	struct net_device *netdev = adapter->netdev;
 	struct e1000_hw *hw = &adapter->hw;
-<<<<<<< HEAD
 	int i, err = 0, vector = 0, free_vector = 0;
-=======
-	int i, err = 0, vector = 0;
->>>>>>> 7175f4b... Truncated history
 
 	err = request_irq(adapter->msix_entries[vector].vector,
 	                  igb_msix_other, 0, netdev->name, adapter);
 	if (err)
-<<<<<<< HEAD
 		goto err_out;
-=======
-		goto out;
-	vector++;
->>>>>>> 7175f4b... Truncated history
 
 	for (i = 0; i < adapter->num_q_vectors; i++) {
 		struct igb_q_vector *q_vector = adapter->q_vector[i];
 
-<<<<<<< HEAD
 		vector++;
 
-=======
->>>>>>> 7175f4b... Truncated history
 		q_vector->itr_register = hw->hw_addr + E1000_EITR(vector);
 
 		if (q_vector->rx.ring && q_vector->tx.ring)
@@ -993,17 +981,11 @@ static int igb_request_msix(struct igb_adapter *adapter)
 		                  igb_msix_ring, 0, q_vector->name,
 		                  q_vector);
 		if (err)
-<<<<<<< HEAD
 			goto err_free;
-=======
-			goto out;
-		vector++;
->>>>>>> 7175f4b... Truncated history
 	}
 
 	igb_configure_msix(adapter);
 	return 0;
-<<<<<<< HEAD
 
 err_free:
 	/* free already assigned IRQs */
@@ -1015,9 +997,6 @@ err_free:
 			 adapter->q_vector[i]);
 	}
 err_out:
-=======
-out:
->>>>>>> 7175f4b... Truncated history
 	return err;
 }
 
@@ -4670,7 +4649,6 @@ void igb_update_stats(struct igb_adapter *adapter,
 	bytes = 0;
 	packets = 0;
 	for (i = 0; i < adapter->num_rx_queues; i++) {
-<<<<<<< HEAD
 		u32 rqdpc = rd32(E1000_RQDPC(i));
 		struct igb_ring *ring = adapter->rx_ring[i];
 
@@ -4678,13 +4656,6 @@ void igb_update_stats(struct igb_adapter *adapter,
 			ring->rx_stats.drops += rqdpc;
 			net_stats->rx_fifo_errors += rqdpc;
 		}
-=======
-		u32 rqdpc_tmp = rd32(E1000_RQDPC(i)) & 0x0FFF;
-		struct igb_ring *ring = adapter->rx_ring[i];
-
-		ring->rx_stats.drops += rqdpc_tmp;
-		net_stats->rx_fifo_errors += rqdpc_tmp;
->>>>>>> 7175f4b... Truncated history
 
 		do {
 			start = u64_stats_fetch_begin_bh(&ring->rx_syncp);

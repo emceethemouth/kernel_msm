@@ -807,11 +807,7 @@ struct vm_area_struct *find_vma(struct mm_struct *mm, unsigned long addr)
 	struct vm_area_struct *vma;
 
 	/* check the cache first */
-<<<<<<< HEAD
 	vma = ACCESS_ONCE(mm->mmap_cache);
-=======
-	vma = mm->mmap_cache;
->>>>>>> 7175f4b... Truncated history
 	if (vma && vma->vm_start <= addr && vma->vm_end > addr)
 		return vma;
 
@@ -1860,7 +1856,6 @@ int remap_pfn_range(struct vm_area_struct *vma, unsigned long addr,
 }
 EXPORT_SYMBOL(remap_pfn_range);
 
-<<<<<<< HEAD
 int vm_iomap_memory(struct vm_area_struct *vma, phys_addr_t start, unsigned long len)
 {
 	unsigned long pfn = start >> PAGE_SHIFT;
@@ -1871,8 +1866,6 @@ int vm_iomap_memory(struct vm_area_struct *vma, phys_addr_t start, unsigned long
 }
 EXPORT_SYMBOL(vm_iomap_memory);
 
-=======
->>>>>>> 7175f4b... Truncated history
 int remap_vmalloc_range(struct vm_area_struct *vma, void *addr,
 			unsigned long pgoff)
 {

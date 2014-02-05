@@ -31,10 +31,7 @@
 #include <linux/mqueue.h>
 #include <linux/fs.h>
 #include <linux/slab.h>
-<<<<<<< HEAD
 #include <linux/rcupdate.h>
-=======
->>>>>>> 7175f4b... Truncated history
 
 #include <asm/pgtable.h>
 #include <asm/uaccess.h>
@@ -114,15 +111,10 @@ void cpu_idle(void)
 
 	/* endless idle loop with no priority at all */
 	while (1) {
-<<<<<<< HEAD
 		rcu_idle_enter();
 		while (!need_resched())
 			platform_idle();
 		rcu_idle_exit();
-=======
-		while (!need_resched())
-			platform_idle();
->>>>>>> 7175f4b... Truncated history
 		schedule_preempt_disabled();
 	}
 }

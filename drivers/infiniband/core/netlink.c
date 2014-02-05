@@ -151,10 +151,7 @@ static int ibnl_rcv_msg(struct sk_buff *skb, struct nlmsghdr *nlh)
 			{
 				struct netlink_dump_control c = {
 					.dump = client->cb_table[op].dump,
-<<<<<<< HEAD
 					.module = client->cb_table[op].module,
-=======
->>>>>>> 7175f4b... Truncated history
 				};
 				return netlink_dump_start(nls, skb, nlh, &c);
 			}

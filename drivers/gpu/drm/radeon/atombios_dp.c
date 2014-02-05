@@ -22,10 +22,7 @@
  *
  * Authors: Dave Airlie
  *          Alex Deucher
-<<<<<<< HEAD
  *          Jerome Glisse
-=======
->>>>>>> 7175f4b... Truncated history
  */
 #include "drmP.h"
 #include "radeon_drm.h"
@@ -48,7 +45,6 @@ static char *pre_emph_names[] = {
 };
 
 /***** radeon AUX functions *****/
-<<<<<<< HEAD
 
 /* Atom needs data in little endian format
  * so swap as appropriate when copying data to
@@ -84,8 +80,6 @@ void radeon_atom_copy_swap(u8 *dst, u8 *src, u8 num_bytes, bool to_le)
 #endif
 }
 
-=======
->>>>>>> 7175f4b... Truncated history
 union aux_channel_transaction {
 	PROCESS_AUX_CHANNEL_TRANSACTION_PS_ALLOCATION v1;
 	PROCESS_AUX_CHANNEL_TRANSACTION_PARAMETERS_V2 v2;
@@ -107,17 +101,10 @@ static int radeon_process_aux_ch(struct radeon_i2c_chan *chan,
 
 	base = (unsigned char *)(rdev->mode_info.atom_context->scratch + 1);
 
-<<<<<<< HEAD
 	radeon_atom_copy_swap(base, send, send_bytes, true);
 
 	args.v1.lpAuxRequest = cpu_to_le16((u16)(0 + 4));
 	args.v1.lpDataOut = cpu_to_le16((u16)(16 + 4));
-=======
-	memcpy(base, send, send_bytes);
-
-	args.v1.lpAuxRequest = 0 + 4;
-	args.v1.lpDataOut = 16 + 4;
->>>>>>> 7175f4b... Truncated history
 	args.v1.ucDataOutLen = 0;
 	args.v1.ucChannelID = chan->rec.i2c_id;
 	args.v1.ucDelay = delay / 10;
@@ -151,11 +138,7 @@ static int radeon_process_aux_ch(struct radeon_i2c_chan *chan,
 		recv_bytes = recv_size;
 
 	if (recv && recv_size)
-<<<<<<< HEAD
 		radeon_atom_copy_swap(recv, base + 16, recv_bytes, false);
-=======
-		memcpy(recv, base + 16, recv_bytes);
->>>>>>> 7175f4b... Truncated history
 
 	return recv_bytes;
 }
@@ -690,10 +673,6 @@ static bool radeon_dp_get_link_status(struct radeon_connector *radeon_connector,
 	ret = radeon_dp_aux_native_read(radeon_connector, DP_LANE0_1_STATUS,
 					link_status, DP_LINK_STATUS_SIZE, 100);
 	if (ret <= 0) {
-<<<<<<< HEAD
-=======
-		DRM_ERROR("displayport link status failed\n");
->>>>>>> 7175f4b... Truncated history
 		return false;
 	}
 
@@ -872,15 +851,10 @@ static int radeon_dp_link_train_cr(struct radeon_dp_link_train_info *dp_info)
 		else
 			mdelay(dp_info->rd_interval * 4);
 
-<<<<<<< HEAD
 		if (!radeon_dp_get_link_status(dp_info->radeon_connector, dp_info->link_status)) {
 			DRM_ERROR("displayport link status failed\n");
 			break;
 		}
-=======
-		if (!radeon_dp_get_link_status(dp_info->radeon_connector, dp_info->link_status))
-			break;
->>>>>>> 7175f4b... Truncated history
 
 		if (dp_clock_recovery_ok(dp_info->link_status, dp_info->dp_lane_count)) {
 			clock_recovery = true;
@@ -942,15 +916,10 @@ static int radeon_dp_link_train_ce(struct radeon_dp_link_train_info *dp_info)
 		else
 			mdelay(dp_info->rd_interval * 4);
 
-<<<<<<< HEAD
 		if (!radeon_dp_get_link_status(dp_info->radeon_connector, dp_info->link_status)) {
 			DRM_ERROR("displayport link status failed\n");
 			break;
 		}
-=======
-		if (!radeon_dp_get_link_status(dp_info->radeon_connector, dp_info->link_status))
-			break;
->>>>>>> 7175f4b... Truncated history
 
 		if (dp_channel_eq_ok(dp_info->link_status, dp_info->dp_lane_count)) {
 			channel_eq = true;

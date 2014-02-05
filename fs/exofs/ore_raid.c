@@ -461,25 +461,12 @@ static void _mark_read4write_pages_uptodate(struct ore_io_state *ios, int ret)
  * ios->sp2d[p][*], xor is calculated the same way. These pages are
  * allocated/freed and don't go through cache
  */
-<<<<<<< HEAD
 static int _read_4_write_first_stripe(struct ore_io_state *ios)
 {
 	struct ore_striping_info read_si;
 	struct __stripe_pages_2d *sp2d = ios->sp2d;
 	u64 offset = ios->si.first_stripe_start;
 	unsigned c, p, min_p = sp2d->pages_in_unit, max_p = -1;
-=======
-static int _read_4_write(struct ore_io_state *ios)
-{
-	struct ore_io_state *ios_read;
-	struct ore_striping_info read_si;
-	struct __stripe_pages_2d *sp2d = ios->sp2d;
-	u64 offset = ios->si.first_stripe_start;
-	u64 last_stripe_end;
-	unsigned bytes_in_stripe = ios->si.bytes_in_stripe;
-	unsigned i, c, p, min_p = sp2d->pages_in_unit, max_p = -1;
-	int ret;
->>>>>>> 7175f4b... Truncated history
 
 	if (offset == ios->offset) /* Go to start collect $200 */
 		goto read_last_stripe;
@@ -487,12 +474,9 @@ static int _read_4_write(struct ore_io_state *ios)
 	min_p = _sp2d_min_pg(sp2d);
 	max_p = _sp2d_max_pg(sp2d);
 
-<<<<<<< HEAD
 	ORE_DBGMSG("stripe_start=0x%llx ios->offset=0x%llx min_p=%d max_p=%d\n",
 		   offset, ios->offset, min_p, max_p);
 
-=======
->>>>>>> 7175f4b... Truncated history
 	for (c = 0; ; c++) {
 		ore_calc_stripe_info(ios->layout, offset, 0, &read_si);
 		read_si.obj_offset += min_p * PAGE_SIZE;
@@ -527,7 +511,6 @@ static int _read_4_write(struct ore_io_state *ios)
 	}
 
 read_last_stripe:
-<<<<<<< HEAD
 	return 0;
 }
 
@@ -540,8 +523,6 @@ static int _read_4_write_last_stripe(struct ore_io_state *ios)
 	unsigned bytes_in_stripe = ios->si.bytes_in_stripe;
 	unsigned c, p, min_p = sp2d->pages_in_unit, max_p = -1;
 
-=======
->>>>>>> 7175f4b... Truncated history
 	offset = ios->offset + ios->length;
 	if (offset % PAGE_SIZE)
 		_add_to_r4w_last_page(ios, &offset);
@@ -557,24 +538,15 @@ static int _read_4_write_last_stripe(struct ore_io_state *ios)
 	c = _dev_order(ios->layout->group_width * ios->layout->mirrors_p1,
 		       ios->layout->mirrors_p1, read_si.par_dev, read_si.dev);
 
-<<<<<<< HEAD
-=======
-	BUG_ON(ios->si.first_stripe_start + bytes_in_stripe != last_stripe_end);
-	/* unaligned IO must be within a single stripe */
-
->>>>>>> 7175f4b... Truncated history
 	if (min_p == sp2d->pages_in_unit) {
 		/* Didn't do it yet */
 		min_p = _sp2d_min_pg(sp2d);
 		max_p = _sp2d_max_pg(sp2d);
 	}
 
-<<<<<<< HEAD
 	ORE_DBGMSG("offset=0x%llx stripe_end=0x%llx min_p=%d max_p=%d\n",
 		   offset, last_stripe_end, min_p, max_p);
 
-=======
->>>>>>> 7175f4b... Truncated history
 	while (offset < last_stripe_end) {
 		struct __1_page_stripe *_1ps = &sp2d->_1p_stripes[p];
 
@@ -607,7 +579,6 @@ static int _read_4_write_last_stripe(struct ore_io_state *ios)
 	}
 
 read_it:
-<<<<<<< HEAD
 	return 0;
 }
 
@@ -617,8 +588,6 @@ static int _read_4_write_execute(struct ore_io_state *ios)
 	unsigned i;
 	int ret;
 
-=======
->>>>>>> 7175f4b... Truncated history
 	ios_read = ios->ios_read_4_write;
 	if (!ios_read)
 		return 0;
@@ -642,11 +611,8 @@ static int _read_4_write_execute(struct ore_io_state *ios)
 	}
 
 	_mark_read4write_pages_uptodate(ios_read, ret);
-<<<<<<< HEAD
 	ore_put_io_state(ios_read);
 	ios->ios_read_4_write = NULL; /* Might need a reuse at last stripe */
-=======
->>>>>>> 7175f4b... Truncated history
 	return 0;
 }
 
@@ -682,16 +648,11 @@ int _ore_add_parity_unit(struct ore_io_state *ios,
 			/* If first stripe, Read in all read4write pages
 			 * (if needed) before we calculate the first parity.
 			 */
-<<<<<<< HEAD
 			_read_4_write_first_stripe(ios);
 		}
 		if (!cur_len) /* If last stripe r4w pages of last stripe */
 			_read_4_write_last_stripe(ios);
 		_read_4_write_execute(ios);
-=======
-			_read_4_write(ios);
-		}
->>>>>>> 7175f4b... Truncated history
 
 		for (i = 0; i < num_pages; i++) {
 			pages[i] = _raid_page_alloc();
@@ -718,43 +679,14 @@ int _ore_add_parity_unit(struct ore_io_state *ios,
 
 int _ore_post_alloc_raid_stuff(struct ore_io_state *ios)
 {
-<<<<<<< HEAD
 	if (ios->parity_pages) {
 		struct ore_layout *layout = ios->layout;
 		unsigned pages_in_unit = layout->stripe_unit / PAGE_SIZE;
-=======
-	struct ore_layout *layout = ios->layout;
-
-	if (ios->parity_pages) {
-		unsigned pages_in_unit = layout->stripe_unit / PAGE_SIZE;
-		unsigned stripe_size = ios->si.bytes_in_stripe;
-		u64 last_stripe, first_stripe;
->>>>>>> 7175f4b... Truncated history
 
 		if (_sp2d_alloc(pages_in_unit, layout->group_width,
 				layout->parity, &ios->sp2d)) {
 			return -ENOMEM;
 		}
-<<<<<<< HEAD
-=======
-
-		/* Round io down to last full strip */
-		first_stripe = div_u64(ios->offset, stripe_size);
-		last_stripe = div_u64(ios->offset + ios->length, stripe_size);
-
-		/* If an IO spans more then a single stripe it must end at
-		 * a stripe boundary. The reminder at the end is pushed into the
-		 * next IO.
-		 */
-		if (last_stripe != first_stripe) {
-			ios->length = last_stripe * stripe_size - ios->offset;
-
-			BUG_ON(!ios->length);
-			ios->nr_pages = (ios->length + PAGE_SIZE - 1) /
-					PAGE_SIZE;
-			ios->si.length = ios->length; /*make it consistent */
-		}
->>>>>>> 7175f4b... Truncated history
 	}
 	return 0;
 }

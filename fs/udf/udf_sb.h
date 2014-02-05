@@ -82,11 +82,7 @@ struct udf_virtual_data {
 struct udf_bitmap {
 	__u32			s_extLength;
 	__u32			s_extPosition;
-<<<<<<< HEAD
 	int			s_nr_groups;
-=======
-	__u16			s_nr_groups;
->>>>>>> 7175f4b... Truncated history
 	struct buffer_head 	**s_block_bitmap;
 };
 

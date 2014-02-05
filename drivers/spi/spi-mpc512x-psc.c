@@ -164,11 +164,7 @@ static int mpc512x_psc_spi_transfer_rxtx(struct spi_device *spi,
 
 		for (i = count; i > 0; i--) {
 			data = tx_buf ? *tx_buf++ : 0;
-<<<<<<< HEAD
 			if (len == EOFBYTE && t->cs_change)
-=======
-			if (len == EOFBYTE)
->>>>>>> 7175f4b... Truncated history
 				setbits32(&fifo->txcmd, MPC512x_PSC_FIFO_EOF);
 			out_8(&fifo->txdata_8, data);
 			len--;

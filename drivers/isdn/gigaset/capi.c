@@ -14,10 +14,7 @@
 #include "gigaset.h"
 #include <linux/proc_fs.h>
 #include <linux/seq_file.h>
-<<<<<<< HEAD
 #include <linux/ratelimit.h>
-=======
->>>>>>> 7175f4b... Truncated history
 #include <linux/isdn/capilli.h>
 #include <linux/isdn/capicmd.h>
 #include <linux/isdn/capiutil.h>
@@ -227,20 +224,14 @@ get_appl(struct gigaset_capi_ctr *iif, u16 appl)
 static inline void dump_cmsg(enum debuglevel level, const char *tag, _cmsg *p)
 {
 #ifdef CONFIG_GIGASET_DEBUG
-<<<<<<< HEAD
 	/* dump at most 20 messages in 20 secs */
 	static DEFINE_RATELIMIT_STATE(msg_dump_ratelimit, 20 * HZ, 20);
-=======
->>>>>>> 7175f4b... Truncated history
 	_cdebbuf *cdb;
 
 	if (!(gigaset_debuglevel & level))
 		return;
-<<<<<<< HEAD
 	if (!___ratelimit(&msg_dump_ratelimit, tag))
 		return;
-=======
->>>>>>> 7175f4b... Truncated history
 
 	cdb = capi_cmsg2str(p);
 	if (cdb) {
@@ -273,11 +264,8 @@ static inline void dump_rawmsg(enum debuglevel level, const char *tag,
 		CAPIMSG_APPID(data), CAPIMSG_MSGID(data), l,
 		CAPIMSG_CONTROL(data));
 	l -= 12;
-<<<<<<< HEAD
 	if (l <= 0)
 		return;
-=======
->>>>>>> 7175f4b... Truncated history
 	dbgline = kmalloc(3 * l, GFP_ATOMIC);
 	if (!dbgline)
 		return;
@@ -1901,12 +1889,9 @@ static void do_disconnect_req(struct gigaset_capi_ctr *iif,
 
 	/* check for active logical connection */
 	if (bcs->apconnstate >= APCONN_ACTIVE) {
-<<<<<<< HEAD
 		/* clear it */
 		bcs->apconnstate = APCONN_SETUP;
 
-=======
->>>>>>> 7175f4b... Truncated history
 		/*
 		 * emit DISCONNECT_B3_IND with cause 0x3301
 		 * use separate cmsg structure, as the content of iif->acmsg
@@ -1931,10 +1916,7 @@ static void do_disconnect_req(struct gigaset_capi_ctr *iif,
 		}
 		capi_cmsg2message(b3cmsg,
 				  __skb_put(b3skb, CAPI_DISCONNECT_B3_IND_BASELEN));
-<<<<<<< HEAD
 		dump_cmsg(DEBUG_CMD, __func__, b3cmsg);
-=======
->>>>>>> 7175f4b... Truncated history
 		kfree(b3cmsg);
 		capi_ctr_handle_message(&iif->ctr, ap->id, b3skb);
 	}
@@ -2088,15 +2070,6 @@ static void do_reset_b3_req(struct gigaset_capi_ctr *iif,
 }
 
 /*
-<<<<<<< HEAD
-=======
- * dump unsupported/ignored messages at most twice per minute,
- * some apps send those very frequently
- */
-static unsigned long ignored_msg_dump_time;
-
-/*
->>>>>>> 7175f4b... Truncated history
  * unsupported CAPI message handler
  */
 static void do_unsupported(struct gigaset_capi_ctr *iif,
@@ -2105,12 +2078,7 @@ static void do_unsupported(struct gigaset_capi_ctr *iif,
 {
 	/* decode message */
 	capi_message2cmsg(&iif->acmsg, skb->data);
-<<<<<<< HEAD
 	dump_cmsg(DEBUG_CMD, __func__, &iif->acmsg);
-=======
-	if (printk_timed_ratelimit(&ignored_msg_dump_time, 30 * 1000))
-		dump_cmsg(DEBUG_CMD, __func__, &iif->acmsg);
->>>>>>> 7175f4b... Truncated history
 	send_conf(iif, ap, skb, CapiMessageNotSupportedInCurrentState);
 }
 
@@ -2121,17 +2089,9 @@ static void do_nothing(struct gigaset_capi_ctr *iif,
 		       struct gigaset_capi_appl *ap,
 		       struct sk_buff *skb)
 {
-<<<<<<< HEAD
 	/* decode message */
 	capi_message2cmsg(&iif->acmsg, skb->data);
 	dump_cmsg(DEBUG_CMD, __func__, &iif->acmsg);
-=======
-	if (printk_timed_ratelimit(&ignored_msg_dump_time, 30 * 1000)) {
-		/* decode message */
-		capi_message2cmsg(&iif->acmsg, skb->data);
-		dump_cmsg(DEBUG_CMD, __func__, &iif->acmsg);
-	}
->>>>>>> 7175f4b... Truncated history
 	dev_kfree_skb_any(skb);
 }
 

@@ -19,10 +19,7 @@
 #include <linux/init.h>
 #include <linux/capability.h>
 #include <linux/delay.h>
-<<<<<<< HEAD
 #include <linux/cpu.h>
-=======
->>>>>>> 7175f4b... Truncated history
 #include <linux/smp.h>
 #include <linux/completion.h>
 #include <linux/cpumask.h>
@@ -812,7 +809,6 @@ static void rtas_percpu_suspend_me(void *info)
 	__rtas_suspend_cpu((struct rtas_suspend_me_data *)info, 1);
 }
 
-<<<<<<< HEAD
 enum rtas_cpu_state {
 	DOWN,
 	UP,
@@ -902,8 +898,6 @@ int rtas_offline_cpus_mask(cpumask_var_t cpus)
 }
 EXPORT_SYMBOL(rtas_offline_cpus_mask);
 
-=======
->>>>>>> 7175f4b... Truncated history
 int rtas_ibm_suspend_me(struct rtas_args *args)
 {
 	long state;
@@ -911,11 +905,8 @@ int rtas_ibm_suspend_me(struct rtas_args *args)
 	unsigned long retbuf[PLPAR_HCALL_BUFSIZE];
 	struct rtas_suspend_me_data data;
 	DECLARE_COMPLETION_ONSTACK(done);
-<<<<<<< HEAD
 	cpumask_var_t offline_mask;
 	int cpuret;
-=======
->>>>>>> 7175f4b... Truncated history
 
 	if (!rtas_service_present("ibm,suspend-me"))
 		return -ENOSYS;
@@ -939,18 +930,14 @@ int rtas_ibm_suspend_me(struct rtas_args *args)
 		return 0;
 	}
 
-<<<<<<< HEAD
 	if (!alloc_cpumask_var(&offline_mask, GFP_TEMPORARY))
 		return -ENOMEM;
 
-=======
->>>>>>> 7175f4b... Truncated history
 	atomic_set(&data.working, 0);
 	atomic_set(&data.done, 0);
 	atomic_set(&data.error, 0);
 	data.token = rtas_token("ibm,suspend-me");
 	data.complete = &done;
-<<<<<<< HEAD
 
 	/* All present CPUs must be online */
 	cpumask_andnot(offline_mask, cpu_present_mask, cpu_online_mask);
@@ -961,8 +948,6 @@ int rtas_ibm_suspend_me(struct rtas_args *args)
 		goto out;
 	}
 
-=======
->>>>>>> 7175f4b... Truncated history
 	stop_topology_update();
 
 	/* Call function on all CPUs.  One of us will make the
@@ -978,7 +963,6 @@ int rtas_ibm_suspend_me(struct rtas_args *args)
 
 	start_topology_update();
 
-<<<<<<< HEAD
 	/* Take down CPUs not online prior to suspend */
 	cpuret = rtas_offline_cpus_mask(offline_mask);
 	if (cpuret)
@@ -987,8 +971,6 @@ int rtas_ibm_suspend_me(struct rtas_args *args)
 
 out:
 	free_cpumask_var(offline_mask);
-=======
->>>>>>> 7175f4b... Truncated history
 	return atomic_read(&data.error);
 }
 #else /* CONFIG_PPC_PSERIES */

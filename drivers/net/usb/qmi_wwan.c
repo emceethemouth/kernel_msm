@@ -9,10 +9,7 @@
 #include <linux/module.h>
 #include <linux/netdevice.h>
 #include <linux/ethtool.h>
-<<<<<<< HEAD
 #include <linux/etherdevice.h>
-=======
->>>>>>> 7175f4b... Truncated history
 #include <linux/mii.h>
 #include <linux/usb.h>
 #include <linux/usb/cdc.h>
@@ -178,7 +175,6 @@ err:
 	return status;
 }
 
-<<<<<<< HEAD
 /* default ethernet address used by the modem */
 static const u8 default_modem_addr[ETH_ALEN] = {0x02, 0x50, 0xf3};
 
@@ -266,8 +262,6 @@ static const struct net_device_ops qmi_wwan_netdev_ops = {
 	.ndo_validate_addr	= eth_validate_addr,
 };
 
-=======
->>>>>>> 7175f4b... Truncated history
 /* using a counter to merge subdriver requests with our own into a combined state */
 static int qmi_wwan_manage_power(struct usbnet *dev, int on)
 {
@@ -291,13 +285,10 @@ err:
 static int qmi_wwan_cdc_wdm_manage_power(struct usb_interface *intf, int on)
 {
 	struct usbnet *dev = usb_get_intfdata(intf);
-<<<<<<< HEAD
 
 	/* can be called while disconnecting */
 	if (!dev)
 		return 0;
-=======
->>>>>>> 7175f4b... Truncated history
 	return qmi_wwan_manage_power(dev, on);
 }
 
@@ -354,7 +345,6 @@ static int qmi_wwan_bind_shared(struct usbnet *dev, struct usb_interface *intf)
 	/* save subdriver struct for suspend/resume wrappers */
 	dev->data[0] = (unsigned long)subdriver;
 
-<<<<<<< HEAD
 	/* Never use the same address on both ends of the link, even
 	 * if the buggy firmware told us to.
 	 */
@@ -367,31 +357,6 @@ static int qmi_wwan_bind_shared(struct usbnet *dev, struct usb_interface *intf)
 		dev->net->dev_addr[0] &= 0xbf;	/* clear "IP" bit */
 	}
 	dev->net->netdev_ops = &qmi_wwan_netdev_ops;
-=======
-err:
-	return rv;
-}
-
-/* Gobi devices uses identical class/protocol codes for all interfaces regardless
- * of function. Some of these are CDC ACM like and have the exact same endpoints
- * we are looking for. This leaves two possible strategies for identifying the
- * correct interface:
- *   a) hardcoding interface number, or
- *   b) use the fact that the wwan interface is the only one lacking additional
- *      (CDC functional) descriptors
- *
- * Let's see if we can get away with the generic b) solution.
- */
-static int qmi_wwan_bind_gobi(struct usbnet *dev, struct usb_interface *intf)
-{
-	int rv = -EINVAL;
-
-	/* ignore any interface with additional descriptors */
-	if (intf->cur_altsetting->extralen)
-		goto err;
-
-	rv = qmi_wwan_bind_shared(dev, intf);
->>>>>>> 7175f4b... Truncated history
 err:
 	return rv;
 }
@@ -461,7 +426,6 @@ static const struct driver_info	qmi_wwan_shared = {
 	.bind		= qmi_wwan_bind_shared,
 	.unbind		= qmi_wwan_unbind_shared,
 	.manage_power	= qmi_wwan_manage_power,
-<<<<<<< HEAD
 	.rx_fixup       = qmi_wwan_rx_fixup,
 };
 
@@ -505,23 +469,6 @@ static const struct driver_info	qmi_wwan_force_int4 = {
 	.description	= "Qualcomm WWAN/QMI device",
 	.flags		= FLAG_WWAN,
 	.bind		= qmi_wwan_bind_shared,
-=======
-};
-
-static const struct driver_info	qmi_wwan_gobi = {
-	.description	= "Qualcomm Gobi wwan/QMI device",
-	.flags		= FLAG_WWAN,
-	.bind		= qmi_wwan_bind_gobi,
-	.unbind		= qmi_wwan_unbind_shared,
-	.manage_power	= qmi_wwan_manage_power,
-};
-
-/* ZTE suck at making USB descriptors */
-static const struct driver_info	qmi_wwan_force_int4 = {
-	.description	= "Qualcomm Gobi wwan/QMI device",
-	.flags		= FLAG_WWAN,
-	.bind		= qmi_wwan_bind_gobi,
->>>>>>> 7175f4b... Truncated history
 	.unbind		= qmi_wwan_unbind_shared,
 	.manage_power	= qmi_wwan_manage_power,
 	.data		= BIT(4), /* interface whitelist bitmap */
@@ -543,18 +490,13 @@ static const struct driver_info	qmi_wwan_force_int4 = {
 static const struct driver_info	qmi_wwan_sierra = {
 	.description	= "Sierra Wireless wwan/QMI device",
 	.flags		= FLAG_WWAN,
-<<<<<<< HEAD
 	.bind		= qmi_wwan_bind_shared,
-=======
-	.bind		= qmi_wwan_bind_gobi,
->>>>>>> 7175f4b... Truncated history
 	.unbind		= qmi_wwan_unbind_shared,
 	.manage_power	= qmi_wwan_manage_power,
 	.data		= BIT(8) | BIT(19), /* interface whitelist bitmap */
 };
 
 #define HUAWEI_VENDOR_ID	0x12D1
-<<<<<<< HEAD
 
 /* Gobi 1000 QMI/wwan interface number is 3 according to qcserial */
 #define QMI_GOBI1K_DEVICE(vend, prod) \
@@ -565,11 +507,6 @@ static const struct driver_info	qmi_wwan_sierra = {
 #define QMI_GOBI_DEVICE(vend, prod) \
 	USB_DEVICE(vend, prod), \
 	.driver_info = (unsigned long)&qmi_wwan_force_int0
-=======
-#define QMI_GOBI_DEVICE(vend, prod) \
-	USB_DEVICE(vend, prod), \
-	.driver_info = (unsigned long)&qmi_wwan_gobi
->>>>>>> 7175f4b... Truncated history
 
 static const struct usb_device_id products[] = {
 	{	/* Huawei E392, E398 and possibly others sharing both device id and more... */
@@ -580,7 +517,6 @@ static const struct usb_device_id products[] = {
 		.bInterfaceProtocol = 8, /* NOTE: This is the *slave* interface of the CDC Union! */
 		.driver_info        = (unsigned long)&qmi_wwan_info,
 	},
-<<<<<<< HEAD
 	{	/* Vodafone/Huawei K5005 (12d1:14c8) and similar modems */
 		.match_flags        = USB_DEVICE_ID_MATCH_VENDOR | USB_DEVICE_ID_MATCH_INT_INFO,
 		.idVendor           = HUAWEI_VENDOR_ID,
@@ -589,8 +525,6 @@ static const struct usb_device_id products[] = {
 		.bInterfaceProtocol = 56, /* NOTE: This is the *slave* interface of the CDC Union! */
 		.driver_info        = (unsigned long)&qmi_wwan_info,
 	},
-=======
->>>>>>> 7175f4b... Truncated history
 	{	/* Huawei E392, E398 and possibly others in "Windows mode"
 		 * using a combined control and data interface without any CDC
 		 * functional descriptors
@@ -611,7 +545,6 @@ static const struct usb_device_id products[] = {
 		.bInterfaceProtocol = 0xff,
 		.driver_info        = (unsigned long)&qmi_wwan_shared,
 	},
-<<<<<<< HEAD
 	{	/* Pantech UML290 - newer firmware */
 		.match_flags	    = USB_DEVICE_ID_MATCH_DEVICE | USB_DEVICE_ID_MATCH_INT_INFO,
 		.idVendor           = 0x106c,
@@ -621,8 +554,6 @@ static const struct usb_device_id products[] = {
 		.bInterfaceProtocol = 0xff,
 		.driver_info        = (unsigned long)&qmi_wwan_shared,
 	},
-=======
->>>>>>> 7175f4b... Truncated history
 	{	/* ZTE MF820D */
 		.match_flags	    = USB_DEVICE_ID_MATCH_DEVICE | USB_DEVICE_ID_MATCH_INT_INFO,
 		.idVendor           = 0x19d2,
@@ -632,7 +563,6 @@ static const struct usb_device_id products[] = {
 		.bInterfaceProtocol = 0xff,
 		.driver_info        = (unsigned long)&qmi_wwan_force_int4,
 	},
-<<<<<<< HEAD
 	{	/* ZTE MF821D */
 		.match_flags        = USB_DEVICE_ID_MATCH_DEVICE | USB_DEVICE_ID_MATCH_INT_INFO,
 		.idVendor           = 0x19d2,
@@ -651,8 +581,6 @@ static const struct usb_device_id products[] = {
 		.bInterfaceProtocol = 0xff,
 		.driver_info        = (unsigned long)&qmi_wwan_force_int1,
 	},
-=======
->>>>>>> 7175f4b... Truncated history
 	{	/* ZTE (Vodafone) K3565-Z */
 		.match_flags	    = USB_DEVICE_ID_MATCH_DEVICE | USB_DEVICE_ID_MATCH_INT_INFO,
 		.idVendor           = 0x19d2,
@@ -680,7 +608,6 @@ static const struct usb_device_id products[] = {
 		.bInterfaceProtocol = 0xff,
 		.driver_info        = (unsigned long)&qmi_wwan_force_int4,
 	},
-<<<<<<< HEAD
 	{	/* ZTE (Vodafone) K3765-Z */
 		.match_flags	    = USB_DEVICE_ID_MATCH_DEVICE | USB_DEVICE_ID_MATCH_INT_INFO,
 		.idVendor           = 0x19d2,
@@ -690,8 +617,6 @@ static const struct usb_device_id products[] = {
 		.bInterfaceProtocol = 0xff,
 		.driver_info        = (unsigned long)&qmi_wwan_force_int4,
 	},
-=======
->>>>>>> 7175f4b... Truncated history
 	{	/* ZTE (Vodafone) K4505-Z */
 		.match_flags	    = USB_DEVICE_ID_MATCH_DEVICE | USB_DEVICE_ID_MATCH_INT_INFO,
 		.idVendor           = 0x19d2,
@@ -701,7 +626,6 @@ static const struct usb_device_id products[] = {
 		.bInterfaceProtocol = 0xff,
 		.driver_info        = (unsigned long)&qmi_wwan_force_int4,
 	},
-<<<<<<< HEAD
 	{	/* ZTE (Vodafone) K5006-Z */
 		.match_flags	    = USB_DEVICE_ID_MATCH_DEVICE | USB_DEVICE_ID_MATCH_INT_INFO,
 		.idVendor           = 0x19d2,
@@ -720,8 +644,6 @@ static const struct usb_device_id products[] = {
 		.bInterfaceProtocol = 0xff,
 		.driver_info        = (unsigned long)&qmi_wwan_force_int2,
 	},
-=======
->>>>>>> 7175f4b... Truncated history
 	{	/* Sierra Wireless MC77xx in QMI mode */
 		.match_flags	    = USB_DEVICE_ID_MATCH_DEVICE | USB_DEVICE_ID_MATCH_INT_INFO,
 		.idVendor           = 0x1199,
@@ -731,7 +653,6 @@ static const struct usb_device_id products[] = {
 		.bInterfaceProtocol = 0xff,
 		.driver_info        = (unsigned long)&qmi_wwan_sierra,
 	},
-<<<<<<< HEAD
 	{	/* Sierra Wireless MC7700 */
 		.match_flags	    = USB_DEVICE_ID_MATCH_DEVICE | USB_DEVICE_ID_MATCH_INT_INFO,
 		.idVendor           = 0x0f3d,
@@ -777,22 +698,6 @@ static const struct usb_device_id products[] = {
 	{QMI_GOBI1K_DEVICE(0x05c6, 0x9009)},	/* Generic Gobi Modem device */
 
 	/* Gobi 2000 and 3000 devices */
-=======
-	{QMI_GOBI_DEVICE(0x05c6, 0x9212)},	/* Acer Gobi Modem Device */
-	{QMI_GOBI_DEVICE(0x03f0, 0x1f1d)},	/* HP un2400 Gobi Modem Device */
-	{QMI_GOBI_DEVICE(0x03f0, 0x371d)},	/* HP un2430 Mobile Broadband Module */
-	{QMI_GOBI_DEVICE(0x04da, 0x250d)},	/* Panasonic Gobi Modem device */
-	{QMI_GOBI_DEVICE(0x413c, 0x8172)},	/* Dell Gobi Modem device */
-	{QMI_GOBI_DEVICE(0x1410, 0xa001)},	/* Novatel Gobi Modem device */
-	{QMI_GOBI_DEVICE(0x0b05, 0x1776)},	/* Asus Gobi Modem device */
-	{QMI_GOBI_DEVICE(0x19d2, 0xfff3)},	/* ONDA Gobi Modem device */
-	{QMI_GOBI_DEVICE(0x05c6, 0x9001)},	/* Generic Gobi Modem device */
-	{QMI_GOBI_DEVICE(0x05c6, 0x9002)},	/* Generic Gobi Modem device */
-	{QMI_GOBI_DEVICE(0x05c6, 0x9202)},	/* Generic Gobi Modem device */
-	{QMI_GOBI_DEVICE(0x05c6, 0x9203)},	/* Generic Gobi Modem device */
-	{QMI_GOBI_DEVICE(0x05c6, 0x9222)},	/* Generic Gobi Modem device */
-	{QMI_GOBI_DEVICE(0x05c6, 0x9009)},	/* Generic Gobi Modem device */
->>>>>>> 7175f4b... Truncated history
 	{QMI_GOBI_DEVICE(0x413c, 0x8186)},	/* Dell Gobi 2000 Modem device (N0218, VU936) */
 	{QMI_GOBI_DEVICE(0x05c6, 0x920b)},	/* Generic Gobi 2000 Modem device */
 	{QMI_GOBI_DEVICE(0x05c6, 0x9225)},	/* Sony Gobi 2000 Modem device (N0279, VU730) */
@@ -802,11 +707,8 @@ static const struct usb_device_id products[] = {
 	{QMI_GOBI_DEVICE(0x05c6, 0x9265)},	/* Asus Gobi 2000 Modem device (VR305) */
 	{QMI_GOBI_DEVICE(0x05c6, 0x9235)},	/* Top Global Gobi 2000 Modem device (VR306) */
 	{QMI_GOBI_DEVICE(0x05c6, 0x9275)},	/* iRex Technologies Gobi 2000 Modem device (VR307) */
-<<<<<<< HEAD
 	{QMI_GOBI_DEVICE(0x1199, 0x68a5)},	/* Sierra Wireless Modem */
 	{QMI_GOBI_DEVICE(0x1199, 0x68a9)},	/* Sierra Wireless Modem */
-=======
->>>>>>> 7175f4b... Truncated history
 	{QMI_GOBI_DEVICE(0x1199, 0x9001)},	/* Sierra Wireless Gobi 2000 Modem device (VT773) */
 	{QMI_GOBI_DEVICE(0x1199, 0x9002)},	/* Sierra Wireless Gobi 2000 Modem device (VT773) */
 	{QMI_GOBI_DEVICE(0x1199, 0x9003)},	/* Sierra Wireless Gobi 2000 Modem device (VT773) */
@@ -821,13 +723,10 @@ static const struct usb_device_id products[] = {
 	{QMI_GOBI_DEVICE(0x16d8, 0x8002)},	/* CMDTech Gobi 2000 Modem device (VU922) */
 	{QMI_GOBI_DEVICE(0x05c6, 0x9205)},	/* Gobi 2000 Modem device */
 	{QMI_GOBI_DEVICE(0x1199, 0x9013)},	/* Sierra Wireless Gobi 3000 Modem device (MC8355) */
-<<<<<<< HEAD
 	{QMI_GOBI_DEVICE(0x1199, 0x9015)},	/* Sierra Wireless Gobi 3000 Modem device */
 	{QMI_GOBI_DEVICE(0x1199, 0x9019)},	/* Sierra Wireless Gobi 3000 Modem device */
 	{QMI_GOBI_DEVICE(0x1199, 0x901b)},	/* Sierra Wireless MC7770 */
 
-=======
->>>>>>> 7175f4b... Truncated history
 	{ }					/* END */
 };
 MODULE_DEVICE_TABLE(usb, products);

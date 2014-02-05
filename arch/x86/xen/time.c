@@ -36,14 +36,8 @@ static DEFINE_PER_CPU(struct vcpu_runstate_info, xen_runstate);
 /* snapshots of runstate info */
 static DEFINE_PER_CPU(struct vcpu_runstate_info, xen_runstate_snapshot);
 
-<<<<<<< HEAD
 /* unused ns of stolen time */
 static DEFINE_PER_CPU(u64, xen_residual_stolen);
-=======
-/* unused ns of stolen and blocked time */
-static DEFINE_PER_CPU(u64, xen_residual_stolen);
-static DEFINE_PER_CPU(u64, xen_residual_blocked);
->>>>>>> 7175f4b... Truncated history
 
 /* return an consistent snapshot of 64-bit time/counter value */
 static u64 get64(const u64 *p)
@@ -120,11 +114,7 @@ static void do_stolen_accounting(void)
 {
 	struct vcpu_runstate_info state;
 	struct vcpu_runstate_info *snap;
-<<<<<<< HEAD
 	s64 runnable, offline, stolen;
-=======
-	s64 blocked, runnable, offline, stolen;
->>>>>>> 7175f4b... Truncated history
 	cputime_t ticks;
 
 	get_runstate_snapshot(&state);
@@ -134,10 +124,6 @@ static void do_stolen_accounting(void)
 	snap = &__get_cpu_var(xen_runstate_snapshot);
 
 	/* work out how much time the VCPU has not been runn*ing*  */
-<<<<<<< HEAD
-=======
-	blocked = state.time[RUNSTATE_blocked] - snap->time[RUNSTATE_blocked];
->>>>>>> 7175f4b... Truncated history
 	runnable = state.time[RUNSTATE_runnable] - snap->time[RUNSTATE_runnable];
 	offline = state.time[RUNSTATE_offline] - snap->time[RUNSTATE_offline];
 
@@ -153,20 +139,6 @@ static void do_stolen_accounting(void)
 	ticks = iter_div_u64_rem(stolen, NS_PER_TICK, &stolen);
 	__this_cpu_write(xen_residual_stolen, stolen);
 	account_steal_ticks(ticks);
-<<<<<<< HEAD
-=======
-
-	/* Add the appropriate number of ticks of blocked time,
-	   including any left-overs from last time. */
-	blocked += __this_cpu_read(xen_residual_blocked);
-
-	if (blocked < 0)
-		blocked = 0;
-
-	ticks = iter_div_u64_rem(blocked, NS_PER_TICK, &blocked);
-	__this_cpu_write(xen_residual_blocked, blocked);
-	account_idle_ticks(ticks);
->>>>>>> 7175f4b... Truncated history
 }
 
 /* Get the TSC speed from Xen */
@@ -512,15 +484,11 @@ static void xen_hvm_setup_cpu_clockevents(void)
 {
 	int cpu = smp_processor_id();
 	xen_setup_runstate_info(cpu);
-<<<<<<< HEAD
 	/*
 	 * xen_setup_timer(cpu) - snprintf is bad in atomic context. Hence
 	 * doing it xen_hvm_cpu_notify (which gets called by smp_init during
 	 * early bootup and also during CPU hotplug events).
 	 */
-=======
-	xen_setup_timer(cpu);
->>>>>>> 7175f4b... Truncated history
 	xen_setup_cpu_clockevents();
 }
 

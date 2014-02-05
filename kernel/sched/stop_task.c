@@ -27,15 +27,10 @@ static struct task_struct *pick_next_task_stop(struct rq *rq)
 {
 	struct task_struct *stop = rq->stop;
 
-<<<<<<< HEAD
 	if (stop && stop->on_rq) {
 		stop->se.exec_start = rq->clock_task;
 		return stop;
 	}
-=======
-	if (stop && stop->on_rq)
-		return stop;
->>>>>>> 7175f4b... Truncated history
 
 	return NULL;
 }
@@ -59,7 +54,6 @@ static void yield_task_stop(struct rq *rq)
 
 static void put_prev_task_stop(struct rq *rq, struct task_struct *prev)
 {
-<<<<<<< HEAD
 	struct task_struct *curr = rq->curr;
 	u64 delta_exec;
 
@@ -75,8 +69,6 @@ static void put_prev_task_stop(struct rq *rq, struct task_struct *prev)
 
 	curr->se.exec_start = rq->clock_task;
 	cpuacct_charge(curr, delta_exec);
-=======
->>>>>>> 7175f4b... Truncated history
 }
 
 static void task_tick_stop(struct rq *rq, struct task_struct *curr, int queued)
@@ -85,12 +77,9 @@ static void task_tick_stop(struct rq *rq, struct task_struct *curr, int queued)
 
 static void set_curr_task_stop(struct rq *rq)
 {
-<<<<<<< HEAD
 	struct task_struct *stop = rq->stop;
 
 	stop->se.exec_start = rq->clock_task;
-=======
->>>>>>> 7175f4b... Truncated history
 }
 
 static void switched_to_stop(struct rq *rq, struct task_struct *p)

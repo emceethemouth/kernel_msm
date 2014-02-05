@@ -323,11 +323,7 @@ static void sp_cleanup(void)
 	fdt = files_fdtable(files);
 	for (;;) {
 		unsigned long set;
-<<<<<<< HEAD
 		i = j * BITS_PER_LONG;
-=======
-		i = j * __NFDBITS;
->>>>>>> 7175f4b... Truncated history
 		if (i >= fdt->max_fds)
 			break;
 		set = fdt->open_fds[j++];

@@ -598,7 +598,6 @@ static void __cpuinit init_amd(struct cpuinfo_x86 *c)
 		}
 	}
 
-<<<<<<< HEAD
 	/*
 	 * The way access filter has a performance penalty on some workloads.
 	 * Disable it on the affected CPUs.
@@ -627,8 +626,6 @@ static void __cpuinit init_amd(struct cpuinfo_x86 *c)
 		}
 	}
 
-=======
->>>>>>> 7175f4b... Truncated history
 	cpu_detect_cache_sizes(c);
 
 	/* Multi core CPU? */

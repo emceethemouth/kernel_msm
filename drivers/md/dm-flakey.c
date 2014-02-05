@@ -332,13 +332,8 @@ static int flakey_end_io(struct dm_target *ti, struct bio *bio,
 	return error;
 }
 
-<<<<<<< HEAD
 static void flakey_status(struct dm_target *ti, status_type_t type,
 			  char *result, unsigned int maxlen)
-=======
-static int flakey_status(struct dm_target *ti, status_type_t type,
-			 char *result, unsigned int maxlen)
->>>>>>> 7175f4b... Truncated history
 {
 	unsigned sz = 0;
 	struct flakey_c *fc = ti->private;
@@ -368,10 +363,6 @@ static int flakey_status(struct dm_target *ti, status_type_t type,
 
 		break;
 	}
-<<<<<<< HEAD
-=======
-	return 0;
->>>>>>> 7175f4b... Truncated history
 }
 
 static int flakey_ioctl(struct dm_target *ti, unsigned int cmd, unsigned long arg)

@@ -277,10 +277,6 @@ int rt2x00mac_add_interface(struct ieee80211_hw *hw,
 	else
 		rt2x00dev->intf_sta_count++;
 
-<<<<<<< HEAD
-=======
-	spin_lock_init(&intf->seqlock);
->>>>>>> 7175f4b... Truncated history
 	mutex_init(&intf->beacon_skb_mutex);
 	intf->beacon = entry;
 
@@ -775,12 +771,9 @@ void rt2x00mac_flush(struct ieee80211_hw *hw, bool drop)
 	struct rt2x00_dev *rt2x00dev = hw->priv;
 	struct data_queue *queue;
 
-<<<<<<< HEAD
 	if (!test_bit(DEVICE_STATE_PRESENT, &rt2x00dev->flags))
 		return;
 
-=======
->>>>>>> 7175f4b... Truncated history
 	tx_queue_for_each(rt2x00dev, queue)
 		rt2x00queue_flush_queue(queue, drop);
 }

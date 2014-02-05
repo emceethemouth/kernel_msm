@@ -814,12 +814,9 @@ static int sctp_send_asconf_del_ip(struct sock		*sk,
 			goto skip_mkasconf;
 		}
 
-<<<<<<< HEAD
 		if (laddr == NULL)
 			return -EINVAL;
 
-=======
->>>>>>> 7175f4b... Truncated history
 		/* We do not need RCU protection throughout this loop
 		 * because this is done under a socket lock from the
 		 * setsockopt call.
@@ -1237,7 +1234,6 @@ out_free:
 	SCTP_DEBUG_PRINTK("About to exit __sctp_connect() free asoc: %p"
 			  " kaddrs: %p err: %d\n",
 			  asoc, kaddrs, err);
-<<<<<<< HEAD
 	if (asoc) {
 		/* sctp_primitive_ASSOCIATE may have added this association
 		 * To the hash table, try to unhash it, just in case, its a noop
@@ -1246,10 +1242,6 @@ out_free:
 		sctp_unhash_established(asoc);
 		sctp_association_free(asoc);
 	}
-=======
-	if (asoc)
-		sctp_association_free(asoc);
->>>>>>> 7175f4b... Truncated history
 	return err;
 }
 
@@ -1919,13 +1911,8 @@ SCTP_STATIC int sctp_sendmsg(struct kiocb *iocb, struct sock *sk,
 
 	/* Break the message into multiple chunks of maximum size. */
 	datamsg = sctp_datamsg_from_user(asoc, sinfo, msg, msg_len);
-<<<<<<< HEAD
 	if (IS_ERR(datamsg)) {
 		err = PTR_ERR(datamsg);
-=======
-	if (!datamsg) {
-		err = -ENOMEM;
->>>>>>> 7175f4b... Truncated history
 		goto out_free;
 	}
 
@@ -1964,15 +1951,10 @@ SCTP_STATIC int sctp_sendmsg(struct kiocb *iocb, struct sock *sk,
 	goto out_unlock;
 
 out_free:
-<<<<<<< HEAD
 	if (new_asoc) {
 		sctp_unhash_established(asoc);
 		sctp_association_free(asoc);
 	}
-=======
-	if (new_asoc)
-		sctp_association_free(asoc);
->>>>>>> 7175f4b... Truncated history
 out_unlock:
 	sctp_release_sock(sk);
 
@@ -3396,11 +3378,7 @@ static int sctp_setsockopt_auth_key(struct sock *sk,
 
 	ret = sctp_auth_set_key(sctp_sk(sk)->ep, asoc, authkey);
 out:
-<<<<<<< HEAD
 	kzfree(authkey);
-=======
-	kfree(authkey);
->>>>>>> 7175f4b... Truncated history
 	return ret;
 }
 
@@ -3954,15 +3932,12 @@ SCTP_STATIC void sctp_destroy_sock(struct sock *sk)
 
 	/* Release our hold on the endpoint. */
 	sp = sctp_sk(sk);
-<<<<<<< HEAD
 	/* This could happen during socket init, thus we bail out
 	 * early, since the rest of the below is not setup either.
 	 */
 	if (sp->ep == NULL)
 		return;
 
-=======
->>>>>>> 7175f4b... Truncated history
 	if (sp->do_auto_asconf) {
 		sp->do_auto_asconf = 0;
 		list_del(&sp->auto_asconf_list);

@@ -396,12 +396,7 @@ struct rt2x00_intf {
 	 * for hardware which doesn't support hardware
 	 * sequence counting.
 	 */
-<<<<<<< HEAD
 	atomic_t seqno;
-=======
-	spinlock_t seqlock;
-	u16 seqno;
->>>>>>> 7175f4b... Truncated history
 };
 
 static inline struct rt2x00_intf* vif_to_intf(struct ieee80211_vif *vif)

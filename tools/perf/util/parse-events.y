@@ -1,8 +1,4 @@
 
-<<<<<<< HEAD
-=======
-%name-prefix "parse_events_"
->>>>>>> 7175f4b... Truncated history
 %parse-param {struct list_head *list_all}
 %parse-param {struct list_head *list_event}
 %parse-param {int *idx}

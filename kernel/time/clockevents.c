@@ -30,30 +30,16 @@ static RAW_NOTIFIER_HEAD(clockevents_chain);
 /* Protection for the above */
 static DEFINE_RAW_SPINLOCK(clockevents_lock);
 
-<<<<<<< HEAD
 static u64 cev_delta2ns(unsigned long latch, struct clock_event_device *evt,
 			bool ismax)
 {
 	u64 clc = (u64) latch << evt->shift;
 	u64 rnd;
-=======
-/**
- * clockevents_delta2ns - Convert a latch value (device ticks) to nanoseconds
- * @latch:	value to convert
- * @evt:	pointer to clock event device descriptor
- *
- * Math helper, returns latch value converted to nanoseconds (bound checked)
- */
-u64 clockevent_delta2ns(unsigned long latch, struct clock_event_device *evt)
-{
-	u64 clc = (u64) latch << evt->shift;
->>>>>>> 7175f4b... Truncated history
 
 	if (unlikely(!evt->mult)) {
 		evt->mult = 1;
 		WARN_ON(1);
 	}
-<<<<<<< HEAD
 	rnd = (u64) evt->mult - 1;
 
 	/*
@@ -102,16 +88,6 @@ u64 clockevent_delta2ns(unsigned long latch, struct clock_event_device *evt)
 u64 clockevent_delta2ns(unsigned long latch, struct clock_event_device *evt)
 {
 	return cev_delta2ns(latch, evt, false);
-=======
-
-	do_div(clc, evt->mult);
-	if (clc < 1000)
-		clc = 1000;
-	if (clc > KTIME_MAX)
-		clc = KTIME_MAX;
-
-	return clc;
->>>>>>> 7175f4b... Truncated history
 }
 EXPORT_SYMBOL_GPL(clockevent_delta2ns);
 
@@ -377,13 +353,8 @@ static void clockevents_config(struct clock_event_device *dev,
 		sec = 600;
 
 	clockevents_calc_mult_shift(dev, freq, sec);
-<<<<<<< HEAD
 	dev->min_delta_ns = cev_delta2ns(dev->min_delta_ticks, dev, false);
 	dev->max_delta_ns = cev_delta2ns(dev->max_delta_ticks, dev, true);
-=======
-	dev->min_delta_ns = clockevent_delta2ns(dev->min_delta_ticks, dev);
-	dev->max_delta_ns = clockevent_delta2ns(dev->max_delta_ticks, dev);
->>>>>>> 7175f4b... Truncated history
 }
 
 /**

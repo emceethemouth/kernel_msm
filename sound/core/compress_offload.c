@@ -102,23 +102,15 @@ static int snd_compr_open(struct inode *inode, struct file *f)
 
 	if (dirn != compr->direction) {
 		pr_err("this device doesn't support this direction\n");
-<<<<<<< HEAD
 		snd_card_unref(compr->card);
-=======
->>>>>>> 7175f4b... Truncated history
 		return -EINVAL;
 	}
 
 	data = kzalloc(sizeof(*data), GFP_KERNEL);
-<<<<<<< HEAD
 	if (!data) {
 		snd_card_unref(compr->card);
 		return -ENOMEM;
 	}
-=======
-	if (!data)
-		return -ENOMEM;
->>>>>>> 7175f4b... Truncated history
 	data->stream.ops = compr->ops;
 	data->stream.direction = dirn;
 	data->stream.private_data = compr->private_data;
@@ -126,10 +118,7 @@ static int snd_compr_open(struct inode *inode, struct file *f)
 	runtime = kzalloc(sizeof(*runtime), GFP_KERNEL);
 	if (!runtime) {
 		kfree(data);
-<<<<<<< HEAD
 		snd_card_unref(compr->card);
-=======
->>>>>>> 7175f4b... Truncated history
 		return -ENOMEM;
 	}
 	runtime->state = SNDRV_PCM_STATE_OPEN;
@@ -143,12 +132,8 @@ static int snd_compr_open(struct inode *inode, struct file *f)
 		kfree(runtime);
 		kfree(data);
 	}
-<<<<<<< HEAD
 	snd_card_unref(compr->card);
 	return 0;
-=======
-	return ret;
->>>>>>> 7175f4b... Truncated history
 }
 
 static int snd_compr_free(struct inode *inode, struct file *f)
@@ -910,12 +895,8 @@ static int snd_compress_dev_disconnect(struct snd_device *device)
 	struct snd_compr *compr;
 
 	compr = device->device_data;
-<<<<<<< HEAD
 	snd_unregister_device(SNDRV_DEVICE_TYPE_COMPRESS, compr->card,
 		compr->device);
-=======
-	snd_unregister_device(compr->direction, compr->card, compr->device);
->>>>>>> 7175f4b... Truncated history
 	return 0;
 }
 

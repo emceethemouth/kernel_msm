@@ -62,13 +62,10 @@
 
 	vibrator {
 		motor-amp = <50>;
-<<<<<<< HEAD
 		vibe-warmup-delay = <0>;
 		vibe-braking-gain = <0>;
 		vibe-braking-ms = <0>;
 		vibe-driving-ms = <0>;
-=======
->>>>>>> 7175f4b... Truncated history
 	};
 };
 

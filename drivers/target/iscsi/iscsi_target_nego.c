@@ -89,11 +89,7 @@ int extract_param(
 	if (len < 0)
 		return -1;
 
-<<<<<<< HEAD
 	if (len >= max_length) {
-=======
-	if (len > max_length) {
->>>>>>> 7175f4b... Truncated history
 		pr_err("Length of input: %d exceeds max_length:"
 			" %d\n", len, max_length);
 		return -1;

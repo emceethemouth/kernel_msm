@@ -83,10 +83,6 @@ SECTIONS
 
   _text = .;
   _stext = .;
-<<<<<<< HEAD
-=======
-  _ftext = .;
->>>>>>> 7175f4b... Truncated history
 
   .text :
   {
@@ -115,11 +111,7 @@ SECTIONS
   EXCEPTION_TABLE(16)
   /* Data section */
 
-<<<<<<< HEAD
   _sdata = .;
-=======
-  _fdata = .;
->>>>>>> 7175f4b... Truncated history
   RW_DATA_SECTION(XCHAL_ICACHE_LINESIZE, PAGE_SIZE, THREAD_SIZE)
   _edata = .;
 

@@ -358,7 +358,6 @@ bool radeon_card_posted(struct radeon_device *rdev)
 {
 	uint32_t reg;
 
-<<<<<<< HEAD
 	if (efi_enabled(EFI_BOOT) &&
 	    rdev->pdev->subsystem_vendor == PCI_VENDOR_ID_APPLE)
 		return false;
@@ -375,24 +374,6 @@ bool radeon_card_posted(struct radeon_device *rdev)
 				reg |= RREG32(EVERGREEN_CRTC_CONTROL + EVERGREEN_CRTC4_REGISTER_OFFSET) |
 					RREG32(EVERGREEN_CRTC_CONTROL + EVERGREEN_CRTC5_REGISTER_OFFSET);
 			}
-=======
-	if (efi_enabled && rdev->pdev->subsystem_vendor == PCI_VENDOR_ID_APPLE)
-		return false;
-
-	/* first check CRTCs */
-	if (ASIC_IS_DCE41(rdev)) {
-		reg = RREG32(EVERGREEN_CRTC_CONTROL + EVERGREEN_CRTC0_REGISTER_OFFSET) |
-			RREG32(EVERGREEN_CRTC_CONTROL + EVERGREEN_CRTC1_REGISTER_OFFSET);
-		if (reg & EVERGREEN_CRTC_MASTER_EN)
-			return true;
-	} else if (ASIC_IS_DCE4(rdev)) {
-		reg = RREG32(EVERGREEN_CRTC_CONTROL + EVERGREEN_CRTC0_REGISTER_OFFSET) |
-			RREG32(EVERGREEN_CRTC_CONTROL + EVERGREEN_CRTC1_REGISTER_OFFSET) |
-			RREG32(EVERGREEN_CRTC_CONTROL + EVERGREEN_CRTC2_REGISTER_OFFSET) |
-			RREG32(EVERGREEN_CRTC_CONTROL + EVERGREEN_CRTC3_REGISTER_OFFSET) |
-			RREG32(EVERGREEN_CRTC_CONTROL + EVERGREEN_CRTC4_REGISTER_OFFSET) |
-			RREG32(EVERGREEN_CRTC_CONTROL + EVERGREEN_CRTC5_REGISTER_OFFSET);
->>>>>>> 7175f4b... Truncated history
 		if (reg & EVERGREEN_CRTC_MASTER_EN)
 			return true;
 	} else if (ASIC_IS_AVIVO(rdev)) {
@@ -791,11 +772,7 @@ int radeon_device_init(struct radeon_device *rdev,
 	if (rdev->flags & RADEON_IS_AGP)
 		rdev->need_dma32 = true;
 	if ((rdev->flags & RADEON_IS_PCI) &&
-<<<<<<< HEAD
 	    (rdev->family <= CHIP_RS740))
-=======
-	    (rdev->family < CHIP_RS400))
->>>>>>> 7175f4b... Truncated history
 		rdev->need_dma32 = true;
 
 	dma_bits = rdev->need_dma32 ? 32 : 40;
@@ -858,7 +835,6 @@ int radeon_device_init(struct radeon_device *rdev,
 			return r;
 	}
 	if ((radeon_testing & 1)) {
-<<<<<<< HEAD
 		if (rdev->accel_working)
 			radeon_test_moves(rdev);
 		else
@@ -875,15 +851,6 @@ int radeon_device_init(struct radeon_device *rdev,
 			radeon_benchmark(rdev, radeon_benchmarking);
 		else
 			DRM_INFO("radeon: acceleration disabled, skipping benchmarks\n");
-=======
-		radeon_test_moves(rdev);
-	}
-	if ((radeon_testing & 2)) {
-		radeon_test_syncing(rdev);
-	}
-	if (radeon_benchmarking) {
-		radeon_benchmark(rdev, radeon_benchmarking);
->>>>>>> 7175f4b... Truncated history
 	}
 	return 0;
 }

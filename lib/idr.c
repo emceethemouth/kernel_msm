@@ -625,7 +625,6 @@ void *idr_get_next(struct idr *idp, int *nextidp)
 			return p;
 		}
 
-<<<<<<< HEAD
 		/*
 		 * Proceed to the next layer at the current level.  Unlike
 		 * idr_for_each(), @id isn't guaranteed to be aligned to
@@ -634,9 +633,6 @@ void *idr_get_next(struct idr *idp, int *nextidp)
 		 * beginning of the next layer using round_up().
 		 */
 		id = round_up(id + 1, 1 << n);
-=======
-		id += 1 << n;
->>>>>>> 7175f4b... Truncated history
 		while (n < fls(id)) {
 			n += IDR_BITS;
 			p = *--paa;

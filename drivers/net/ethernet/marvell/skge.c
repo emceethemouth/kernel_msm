@@ -4153,7 +4153,6 @@ static struct dmi_system_id skge_32bit_dma_boards[] = {
 			DMI_MATCH(DMI_BOARD_NAME, "nForce"),
 		},
 	},
-<<<<<<< HEAD
 	{
 		.ident = "ASUS P5NSLI",
 		.matches = {
@@ -4161,8 +4160,6 @@ static struct dmi_system_id skge_32bit_dma_boards[] = {
 			DMI_MATCH(DMI_BOARD_NAME, "P5NSLI")
 		},
 	},
-=======
->>>>>>> 7175f4b... Truncated history
 	{}
 };
 

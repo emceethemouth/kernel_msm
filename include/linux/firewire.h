@@ -409,10 +409,7 @@ struct fw_iso_context {
 	int type;
 	int channel;
 	int speed;
-<<<<<<< HEAD
 	bool drop_overflow_headers;
-=======
->>>>>>> 7175f4b... Truncated history
 	size_t header_size;
 	union {
 		fw_iso_callback_t sc;

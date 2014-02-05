@@ -448,10 +448,7 @@ static void ath9k_htc_tx_process(struct ath9k_htc_priv *priv,
 	struct ieee80211_conf *cur_conf = &priv->hw->conf;
 	bool txok;
 	int slot;
-<<<<<<< HEAD
 	int hdrlen, padsize;
-=======
->>>>>>> 7175f4b... Truncated history
 
 	slot = strip_drv_header(priv, skb);
 	if (slot < 0) {
@@ -508,7 +505,6 @@ send_mac80211:
 
 	ath9k_htc_tx_clear_slot(priv, slot);
 
-<<<<<<< HEAD
 	/* Remove padding before handing frame back to mac80211 */
 	hdrlen = ieee80211_get_hdrlen_from_skb(skb);
 
@@ -518,8 +514,6 @@ send_mac80211:
 		skb_pull(skb, padsize);
 	}
 
-=======
->>>>>>> 7175f4b... Truncated history
 	/* Send status to mac80211 */
 	ieee80211_tx_status(priv->hw, skb);
 }

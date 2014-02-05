@@ -157,19 +157,12 @@ int s3c_adc_start(struct s3c_adc_client *client,
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
 	spin_lock_irqsave(&adc->lock, flags);
 
 	if (client->is_ts && adc->ts_pend) {
 		spin_unlock_irqrestore(&adc->lock, flags);
 		return -EAGAIN;
 	}
-=======
-	if (client->is_ts && adc->ts_pend)
-		return -EAGAIN;
-
-	spin_lock_irqsave(&adc->lock, flags);
->>>>>>> 7175f4b... Truncated history
 
 	client->channel = channel;
 	client->nr_samples = nr_samples;

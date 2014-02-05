@@ -925,11 +925,7 @@ struct perf_event {
 	struct hw_perf_event		hw;
 
 	struct perf_event_context	*ctx;
-<<<<<<< HEAD
 	atomic_long_t			refcount;
-=======
-	struct file			*filp;
->>>>>>> 7175f4b... Truncated history
 
 	/*
 	 * These accumulate total time (in nanoseconds) that children
@@ -954,12 +950,7 @@ struct perf_event {
 	/* mmap bits */
 	struct mutex			mmap_mutex;
 	atomic_t			mmap_count;
-<<<<<<< HEAD
 
-=======
-	int				mmap_locked;
-	struct user_struct		*mmap_user;
->>>>>>> 7175f4b... Truncated history
 	struct ring_buffer		*rb;
 	struct list_head		rb_entry;
 
@@ -1072,11 +1063,7 @@ struct perf_cpu_context {
 	int				exclusive;
 	struct list_head		rotation_list;
 	int				jiffies_interval;
-<<<<<<< HEAD
 	struct pmu			*unique_pmu;
-=======
-	struct pmu			*active_pmu;
->>>>>>> 7175f4b... Truncated history
 	struct perf_cgroup		*cgrp;
 };
 
@@ -1342,15 +1329,12 @@ static inline void perf_event_disable(struct perf_event *event)		{ }
 static inline void perf_event_task_tick(void)				{ }
 #endif
 
-<<<<<<< HEAD
 #if defined(CONFIG_PERF_EVENTS) && defined(CONFIG_CPU_SUP_INTEL)
 extern void perf_restore_debug_store(void);
 #else
 static inline void perf_restore_debug_store(void)			{ }
 #endif
 
-=======
->>>>>>> 7175f4b... Truncated history
 #define perf_output_put(handle, x) perf_output_copy((handle), &(x), sizeof(x))
 
 /*

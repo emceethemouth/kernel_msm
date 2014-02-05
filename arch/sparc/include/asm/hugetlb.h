@@ -58,28 +58,20 @@ static inline pte_t huge_pte_wrprotect(pte_t pte)
 static inline void huge_ptep_set_wrprotect(struct mm_struct *mm,
 					   unsigned long addr, pte_t *ptep)
 {
-<<<<<<< HEAD
 	pte_t old_pte = *ptep;
 	set_huge_pte_at(mm, addr, ptep, pte_wrprotect(old_pte));
-=======
-	ptep_set_wrprotect(mm, addr, ptep);
->>>>>>> 7175f4b... Truncated history
 }
 
 static inline int huge_ptep_set_access_flags(struct vm_area_struct *vma,
 					     unsigned long addr, pte_t *ptep,
 					     pte_t pte, int dirty)
 {
-<<<<<<< HEAD
 	int changed = !pte_same(*ptep, pte);
 	if (changed) {
 		set_huge_pte_at(vma->vm_mm, addr, ptep, pte);
 		flush_tlb_page(vma, addr);
 	}
 	return changed;
-=======
-	return ptep_set_access_flags(vma, addr, ptep, pte, dirty);
->>>>>>> 7175f4b... Truncated history
 }
 
 static inline pte_t huge_ptep_get(pte_t *ptep)

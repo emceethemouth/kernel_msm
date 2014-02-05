@@ -57,11 +57,7 @@ int ip4_datagram_connect(struct sock *sk, struct sockaddr *uaddr, int addr_len)
 	if (IS_ERR(rt)) {
 		err = PTR_ERR(rt);
 		if (err == -ENETUNREACH)
-<<<<<<< HEAD
 			IP_INC_STATS(sock_net(sk), IPSTATS_MIB_OUTNOROUTES);
-=======
-			IP_INC_STATS_BH(sock_net(sk), IPSTATS_MIB_OUTNOROUTES);
->>>>>>> 7175f4b... Truncated history
 		goto out;
 	}
 

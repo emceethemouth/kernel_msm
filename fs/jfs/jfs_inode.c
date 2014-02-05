@@ -95,11 +95,7 @@ struct inode *ialloc(struct inode *parent, umode_t mode)
 
 	if (insert_inode_locked(inode) < 0) {
 		rc = -EINVAL;
-<<<<<<< HEAD
 		goto fail_put;
-=======
-		goto fail_unlock;
->>>>>>> 7175f4b... Truncated history
 	}
 
 	inode_init_owner(inode, parent, mode);
@@ -160,10 +156,6 @@ struct inode *ialloc(struct inode *parent, umode_t mode)
 fail_drop:
 	dquot_drop(inode);
 	inode->i_flags |= S_NOQUOTA;
-<<<<<<< HEAD
-=======
-fail_unlock:
->>>>>>> 7175f4b... Truncated history
 	clear_nlink(inode);
 	unlock_new_inode(inode);
 fail_put:

@@ -380,12 +380,8 @@ ftrace_define_fields_##call(struct ftrace_event_call *event_call)	\
 	__data_size += (len) * sizeof(type);
 
 #undef __string
-<<<<<<< HEAD
 #define __string(item, src) __dynamic_array(char, item,			\
 		    strlen((src) ? (const char *)(src) : "(null)") + 1)
-=======
-#define __string(item, src) __dynamic_array(char, item, strlen(src) + 1)
->>>>>>> 7175f4b... Truncated history
 
 #undef DECLARE_EVENT_CLASS
 #define DECLARE_EVENT_CLASS(call, proto, args, tstruct, assign, print)	\
@@ -510,11 +506,7 @@ static inline notrace int ftrace_get_offsets_##call(			\
 
 #undef __assign_str
 #define __assign_str(dst, src)						\
-<<<<<<< HEAD
 	strcpy(__get_str(dst), (src) ? (const char *)(src) : "(null)");
-=======
-	strcpy(__get_str(dst), src);
->>>>>>> 7175f4b... Truncated history
 
 #undef TP_fast_assign
 #define TP_fast_assign(args...) args

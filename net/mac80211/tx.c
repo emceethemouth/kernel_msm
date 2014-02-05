@@ -1357,11 +1357,7 @@ static int invoke_tx_handlers(struct ieee80211_tx_data *tx)
 		if (tx->skb)
 			dev_kfree_skb(tx->skb);
 		else
-<<<<<<< HEAD
 			ieee80211_purge_tx_queue(&tx->local->hw, &tx->skbs);
-=======
-			__skb_queue_purge(&tx->skbs);
->>>>>>> 7175f4b... Truncated history
 		return -1;
 	} else if (unlikely(res == TX_QUEUED)) {
 		I802_DEBUG_INC(tx->local->tx_handlers_queued);
@@ -2130,7 +2126,6 @@ netdev_tx_t ieee80211_subif_start_xmit(struct sk_buff *skb,
  */
 void ieee80211_clear_tx_pending(struct ieee80211_local *local)
 {
-<<<<<<< HEAD
 	struct sk_buff *skb;
 	int i;
 
@@ -2138,12 +2133,6 @@ void ieee80211_clear_tx_pending(struct ieee80211_local *local)
 		while ((skb = skb_dequeue(&local->pending[i])) != NULL)
 			ieee80211_free_txskb(&local->hw, skb);
 	}
-=======
-	int i;
-
-	for (i = 0; i < local->hw.queues; i++)
-		skb_queue_purge(&local->pending[i]);
->>>>>>> 7175f4b... Truncated history
 }
 
 /*

@@ -2926,11 +2926,7 @@ static void nsp32_do_bus_reset(nsp32_hw_data *data)
 	 * reset SCSI bus
 	 */
 	nsp32_write1(base, SCSI_BUS_CONTROL, BUSCTL_RST);
-<<<<<<< HEAD
 	mdelay(RESET_HOLD_TIME / 1000);
-=======
-	udelay(RESET_HOLD_TIME);
->>>>>>> 7175f4b... Truncated history
 	nsp32_write1(base, SCSI_BUS_CONTROL, 0);
 	for(i = 0; i < 5; i++) {
 		intrdat = nsp32_read2(base, IRQ_STATUS); /* dummy read */

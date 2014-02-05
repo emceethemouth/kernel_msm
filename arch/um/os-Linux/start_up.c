@@ -15,11 +15,8 @@
 #include <sys/mman.h>
 #include <sys/stat.h>
 #include <sys/wait.h>
-<<<<<<< HEAD
 #include <sys/time.h>
 #include <sys/resource.h>
-=======
->>>>>>> 7175f4b... Truncated history
 #include <asm/unistd.h>
 #include "init.h"
 #include "os.h"

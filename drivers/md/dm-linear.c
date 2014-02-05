@@ -95,13 +95,8 @@ static int linear_map(struct dm_target *ti, struct bio *bio,
 	return DM_MAPIO_REMAPPED;
 }
 
-<<<<<<< HEAD
 static void linear_status(struct dm_target *ti, status_type_t type,
 			  char *result, unsigned int maxlen)
-=======
-static int linear_status(struct dm_target *ti, status_type_t type,
-			 char *result, unsigned int maxlen)
->>>>>>> 7175f4b... Truncated history
 {
 	struct linear_c *lc = (struct linear_c *) ti->private;
 
@@ -115,10 +110,6 @@ static int linear_status(struct dm_target *ti, status_type_t type,
 				(unsigned long long)lc->start);
 		break;
 	}
-<<<<<<< HEAD
-=======
-	return 0;
->>>>>>> 7175f4b... Truncated history
 }
 
 static int linear_ioctl(struct dm_target *ti, unsigned int cmd,

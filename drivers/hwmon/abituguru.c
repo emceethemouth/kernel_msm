@@ -1410,7 +1410,6 @@ static int __devinit abituguru_probe(struct platform_device *pdev)
 	pr_info("found Abit uGuru\n");
 
 	/* Register sysfs hooks */
-<<<<<<< HEAD
 	for (i = 0; i < sysfs_attr_i; i++) {
 		res = device_create_file(&pdev->dev,
 					 &data->sysfs_attr[i].dev_attr);
@@ -1423,16 +1422,6 @@ static int __devinit abituguru_probe(struct platform_device *pdev)
 		if (res)
 			goto abituguru_probe_error;
 	}
-=======
-	for (i = 0; i < sysfs_attr_i; i++)
-		if (device_create_file(&pdev->dev,
-				&data->sysfs_attr[i].dev_attr))
-			goto abituguru_probe_error;
-	for (i = 0; i < ARRAY_SIZE(abituguru_sysfs_attr); i++)
-		if (device_create_file(&pdev->dev,
-				&abituguru_sysfs_attr[i].dev_attr))
-			goto abituguru_probe_error;
->>>>>>> 7175f4b... Truncated history
 
 	data->hwmon_dev = hwmon_device_register(&pdev->dev);
 	if (!IS_ERR(data->hwmon_dev))

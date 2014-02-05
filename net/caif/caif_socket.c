@@ -360,11 +360,6 @@ static int caif_stream_recvmsg(struct kiocb *iocb, struct socket *sock,
 	if (flags&MSG_OOB)
 		goto out;
 
-<<<<<<< HEAD
-=======
-	msg->msg_namelen = 0;
-
->>>>>>> 7175f4b... Truncated history
 	/*
 	 * Lock the socket to prevent queue disordering
 	 * while sleeps in memcpy_tomsg

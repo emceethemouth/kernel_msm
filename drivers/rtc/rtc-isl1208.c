@@ -494,10 +494,7 @@ isl1208_rtc_interrupt(int irq, void *data)
 {
 	unsigned long timeout = jiffies + msecs_to_jiffies(1000);
 	struct i2c_client *client = data;
-<<<<<<< HEAD
 	struct rtc_device *rtc = i2c_get_clientdata(client);
-=======
->>>>>>> 7175f4b... Truncated history
 	int handled = 0, sr, err;
 
 	/*
@@ -520,11 +517,8 @@ isl1208_rtc_interrupt(int irq, void *data)
 	if (sr & ISL1208_REG_SR_ALM) {
 		dev_dbg(&client->dev, "alarm!\n");
 
-<<<<<<< HEAD
 		rtc_update_irq(rtc, 1, RTC_IRQF | RTC_AF);
 
-=======
->>>>>>> 7175f4b... Truncated history
 		/* Clear the alarm */
 		sr &= ~ISL1208_REG_SR_ALM;
 		sr = i2c_smbus_write_byte_data(client, ISL1208_REG_SR, sr);

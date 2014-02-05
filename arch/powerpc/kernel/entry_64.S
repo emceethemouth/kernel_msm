@@ -373,15 +373,12 @@ _GLOBAL(ret_from_fork)
 	li	r3,0
 	b	syscall_exit
 
-<<<<<<< HEAD
 	.section	".toc","aw"
 DSCR_DEFAULT:
 	.tc dscr_default[TC],dscr_default
 
 	.section	".text"
 
-=======
->>>>>>> 7175f4b... Truncated history
 /*
  * This routine switches between two different tasks.  The process
  * state of one is saved on its kernel stack.  Then the state
@@ -521,12 +518,6 @@ END_MMU_FTR_SECTION_IFSET(MMU_FTR_1T_SEGMENT)
 	mr	r1,r8		/* start using new stack pointer */
 	std	r7,PACAKSAVE(r13)
 
-<<<<<<< HEAD
-=======
-	ld	r6,_CCR(r1)
-	mtcrf	0xFF,r6
-
->>>>>>> 7175f4b... Truncated history
 #ifdef CONFIG_ALTIVEC
 BEGIN_FTR_SECTION
 	ld	r0,THREAD_VRSAVE(r4)
@@ -535,7 +526,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_ALTIVEC)
 #endif /* CONFIG_ALTIVEC */
 #ifdef CONFIG_PPC64
 BEGIN_FTR_SECTION
-<<<<<<< HEAD
 	lwz	r6,THREAD_DSCR_INHERIT(r4)
 	ld	r7,DSCR_DEFAULT@toc(2)
 	ld	r0,THREAD_DSCR(r4)
@@ -552,16 +542,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_DSCR)
 	ld	r6,_CCR(r1)
 	mtcrf	0xFF,r6
 
-=======
-	ld	r0,THREAD_DSCR(r4)
-	cmpd	r0,r25
-	beq	1f
-	mtspr	SPRN_DSCR,r0
-1:	
-END_FTR_SECTION_IFSET(CPU_FTR_DSCR)
-#endif
-
->>>>>>> 7175f4b... Truncated history
 	/* r3-r13 are destroyed -- Cort */
 	REST_8GPRS(14, r1)
 	REST_10GPRS(22, r1)

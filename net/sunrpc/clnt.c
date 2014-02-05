@@ -236,11 +236,7 @@ static struct rpc_clnt *rpc_get_client_for_event(struct net *net, int event)
 	spin_lock(&sn->rpc_client_lock);
 	list_for_each_entry(clnt, &sn->all_clients, cl_clients) {
 		if (clnt->cl_program->pipe_dir_name == NULL)
-<<<<<<< HEAD
 			continue;
-=======
-			break;
->>>>>>> 7175f4b... Truncated history
 		if (rpc_clnt_skip_event(clnt, event))
 			continue;
 		if (atomic_inc_not_zero(&clnt->cl_count) == 0)
@@ -1292,11 +1288,8 @@ call_reserveresult(struct rpc_task *task)
 	}
 
 	switch (status) {
-<<<<<<< HEAD
 	case -ENOMEM:
 		rpc_delay(task, HZ >> 2);
-=======
->>>>>>> 7175f4b... Truncated history
 	case -EAGAIN:	/* woken up; retry */
 		task->tk_action = call_reserve;
 		return;
@@ -1345,10 +1338,7 @@ call_refreshresult(struct rpc_task *task)
 		rpc_delay(task, 3*HZ);
 	case -EAGAIN:
 		status = -EACCES;
-<<<<<<< HEAD
 	case -EKEYEXPIRED:
-=======
->>>>>>> 7175f4b... Truncated history
 		if (!task->tk_cred_retry)
 			break;
 		task->tk_cred_retry--;
@@ -1857,20 +1847,13 @@ call_timeout(struct rpc_task *task)
 		return;
 	}
 	if (RPC_IS_SOFT(task)) {
-<<<<<<< HEAD
 		if (clnt->cl_chatty) {
-=======
-		if (clnt->cl_chatty)
->>>>>>> 7175f4b... Truncated history
 			rcu_read_lock();
 			printk(KERN_NOTICE "%s: server %s not responding, timed out\n",
 				clnt->cl_protname,
 				rcu_dereference(clnt->cl_xprt)->servername);
 			rcu_read_unlock();
-<<<<<<< HEAD
 		}
-=======
->>>>>>> 7175f4b... Truncated history
 		if (task->tk_flags & RPC_TASK_TIMEOUT)
 			rpc_exit(task, -ETIMEDOUT);
 		else

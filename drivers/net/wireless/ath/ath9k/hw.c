@@ -558,11 +558,7 @@ static int __ath9k_hw_init(struct ath_hw *ah)
 
 	if (NR_CPUS > 1 && ah->config.serialize_regmode == SER_REG_MODE_AUTO) {
 		if (ah->hw_version.macVersion == AR_SREV_VERSION_5416_PCI ||
-<<<<<<< HEAD
 		    ((AR_SREV_9160(ah) || AR_SREV_9280(ah) || AR_SREV_9287(ah)) &&
-=======
-		    ((AR_SREV_9160(ah) || AR_SREV_9280(ah)) &&
->>>>>>> 7175f4b... Truncated history
 		     !ah->is_pciexpress)) {
 			ah->config.serialize_regmode =
 				SER_REG_MODE_ON;
@@ -680,10 +676,7 @@ int ath9k_hw_init(struct ath_hw *ah)
 	case AR9300_DEVID_AR9340:
 	case AR9300_DEVID_AR9580:
 	case AR9300_DEVID_AR9462:
-<<<<<<< HEAD
 	case AR9485_DEVID_AR1111:
-=======
->>>>>>> 7175f4b... Truncated history
 		break;
 	default:
 		if (common->bus_ops->ath_bus_type == ATH_USB)
@@ -728,17 +721,13 @@ static void ath9k_hw_init_qos(struct ath_hw *ah)
 
 u32 ar9003_get_pll_sqsum_dvc(struct ath_hw *ah)
 {
-<<<<<<< HEAD
 	struct ath_common *common = ath9k_hw_common(ah);
 	int i = 0;
 
-=======
->>>>>>> 7175f4b... Truncated history
 	REG_CLR_BIT(ah, PLL3, PLL3_DO_MEAS_MASK);
 	udelay(100);
 	REG_SET_BIT(ah, PLL3, PLL3_DO_MEAS_MASK);
 
-<<<<<<< HEAD
 	while ((REG_READ(ah, PLL4) & PLL4_MEAS_DONE) == 0) {
 
 		udelay(100);
@@ -751,11 +740,6 @@ u32 ar9003_get_pll_sqsum_dvc(struct ath_hw *ah)
 		i++;
 	}
 
-=======
-	while ((REG_READ(ah, PLL4) & PLL4_MEAS_DONE) == 0)
-		udelay(100);
-
->>>>>>> 7175f4b... Truncated history
 	return (REG_READ(ah, PLL3) & SQSUM_DVC_MASK) >> 3;
 }
 EXPORT_SYMBOL(ar9003_get_pll_sqsum_dvc);
@@ -1420,13 +1404,9 @@ static bool ath9k_hw_chip_reset(struct ath_hw *ah,
 			reset_type = ATH9K_RESET_POWER_ON;
 		else
 			reset_type = ATH9K_RESET_COLD;
-<<<<<<< HEAD
 	} else if (ah->chip_fullsleep || REG_READ(ah, AR_Q_TXE) ||
 		   (REG_READ(ah, AR_CR) & AR_CR_RXE))
 		reset_type = ATH9K_RESET_COLD;
-=======
-	}
->>>>>>> 7175f4b... Truncated history
 
 	if (!ath9k_hw_set_reset_reg(ah, reset_type))
 		return false;

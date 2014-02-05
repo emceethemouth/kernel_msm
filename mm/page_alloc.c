@@ -588,11 +588,7 @@ static inline void __free_one_page(struct page *page,
 		combined_idx = buddy_idx & page_idx;
 		higher_page = page + (combined_idx - page_idx);
 		buddy_idx = __find_buddy_index(combined_idx, order + 1);
-<<<<<<< HEAD
 		higher_buddy = higher_page + (buddy_idx - combined_idx);
-=======
-		higher_buddy = page + (buddy_idx - combined_idx);
->>>>>>> 7175f4b... Truncated history
 		if (page_is_buddy(higher_page, higher_buddy, order + 1)) {
 			list_add_tail(&page->lru,
 				&zone->free_area[order].free_list[migratetype]);
@@ -2005,7 +2001,6 @@ void warn_alloc_failed(gfp_t gfp_mask, int order, const char *fmt, ...)
 		return;
 
 	/*
-<<<<<<< HEAD
 	 * Walking all memory to count page types is very expensive and should
 	 * be inhibited in non-blockable contexts.
 	 */
@@ -2013,8 +2008,6 @@ void warn_alloc_failed(gfp_t gfp_mask, int order, const char *fmt, ...)
 		filter |= SHOW_MEM_FILTER_PAGE_COUNT;
 
 	/*
-=======
->>>>>>> 7175f4b... Truncated history
 	 * This documents exceptions given to allocations in certain
 	 * contexts that are allowed to allocate outside current's set
 	 * of allowed nodes.
@@ -4408,18 +4401,11 @@ static void __meminit calculate_node_totalpages(struct pglist_data *pgdat,
  * round what is now in bits to nearest long in bits, then return it in
  * bytes.
  */
-<<<<<<< HEAD
 static unsigned long __init usemap_size(unsigned long zone_start_pfn, unsigned long zonesize)
 {
 	unsigned long usemapsize;
 
 	zonesize += zone_start_pfn & (pageblock_nr_pages-1);
-=======
-static unsigned long __init usemap_size(unsigned long zonesize)
-{
-	unsigned long usemapsize;
-
->>>>>>> 7175f4b... Truncated history
 	usemapsize = roundup(zonesize, pageblock_nr_pages);
 	usemapsize = usemapsize >> pageblock_order;
 	usemapsize *= NR_PAGEBLOCK_BITS;
@@ -4429,30 +4415,19 @@ static unsigned long __init usemap_size(unsigned long zonesize)
 }
 
 static void __init setup_usemap(struct pglist_data *pgdat,
-<<<<<<< HEAD
 				struct zone *zone,
 				unsigned long zone_start_pfn,
 				unsigned long zonesize)
 {
 	unsigned long usemapsize = usemap_size(zone_start_pfn, zonesize);
-=======
-				struct zone *zone, unsigned long zonesize)
-{
-	unsigned long usemapsize = usemap_size(zonesize);
->>>>>>> 7175f4b... Truncated history
 	zone->pageblock_flags = NULL;
 	if (usemapsize)
 		zone->pageblock_flags = alloc_bootmem_node_nopanic(pgdat,
 								   usemapsize);
 }
 #else
-<<<<<<< HEAD
 static inline void setup_usemap(struct pglist_data *pgdat, struct zone *zone,
 				unsigned long zone_start_pfn, unsigned long zonesize) {}
-=======
-static inline void setup_usemap(struct pglist_data *pgdat,
-				struct zone *zone, unsigned long zonesize) {}
->>>>>>> 7175f4b... Truncated history
 #endif /* CONFIG_SPARSEMEM */
 
 #ifdef CONFIG_HUGETLB_PAGE_SIZE_VARIABLE
@@ -4580,11 +4555,7 @@ static void __paginginit free_area_init_core(struct pglist_data *pgdat,
 			continue;
 
 		set_pageblock_order(pageblock_default_order());
-<<<<<<< HEAD
 		setup_usemap(pgdat, zone, zone_start_pfn, size);
-=======
-		setup_usemap(pgdat, zone, size);
->>>>>>> 7175f4b... Truncated history
 		ret = init_currently_empty_zone(zone, zone_start_pfn,
 						size, MEMMAP_EARLY);
 		BUG_ON(ret);
@@ -6028,13 +5999,10 @@ __offline_isolated_pages(unsigned long start_pfn, unsigned long end_pfn)
 		zone->free_area[order].nr_free--;
 		__mod_zone_page_state(zone, NR_FREE_PAGES,
 				      - (1UL << order));
-<<<<<<< HEAD
 #ifdef CONFIG_HIGHMEM
 		if (PageHighMem(page))
 			totalhigh_pages -= 1 << order;
 #endif
-=======
->>>>>>> 7175f4b... Truncated history
 		for (i = 0; i < (1 << order); i++)
 			SetPageReserved((page+i));
 		pfn += (1 << order);

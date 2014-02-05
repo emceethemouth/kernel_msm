@@ -13,7 +13,6 @@
 
 static struct drm_driver driver;
 
-<<<<<<< HEAD
 /*
  * There are many DisplayLink-based graphics products, all with unique PIDs.
  * So we match on DisplayLink's VID + Vendor-Defined Interface Class (0xff)
@@ -29,10 +28,6 @@ static struct usb_device_id id_table[] = {
 			USB_DEVICE_ID_MATCH_INT_CLASS |
 			USB_DEVICE_ID_MATCH_INT_SUBCLASS |
 			USB_DEVICE_ID_MATCH_INT_PROTOCOL,},
-=======
-static struct usb_device_id id_table[] = {
-	{.idVendor = 0x17e9, .match_flags = USB_DEVICE_ID_MATCH_VENDOR,},
->>>>>>> 7175f4b... Truncated history
 	{},
 };
 MODULE_DEVICE_TABLE(usb, id_table);

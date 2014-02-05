@@ -177,11 +177,7 @@ int gen_pool_add_virt(struct gen_pool *pool, u64 virt, phys_addr_t phys,
 	struct gen_pool_chunk *chunk;
 	int nbits = size >> pool->min_alloc_order;
 	int nbytes = sizeof(struct gen_pool_chunk) +
-<<<<<<< HEAD
 				BITS_TO_LONGS(nbits) * sizeof(long);
-=======
-				(nbits + BITS_PER_BYTE - 1) / BITS_PER_BYTE;
->>>>>>> 7175f4b... Truncated history
 
 	if (nbytes <= PAGE_SIZE)
 		chunk = kmalloc_node(nbytes, __GFP_ZERO, nid);

@@ -723,7 +723,6 @@ void intel_ds_init(void)
 		}
 	}
 }
-<<<<<<< HEAD
 
 void perf_restore_debug_store(void)
 {
@@ -734,5 +733,3 @@ void perf_restore_debug_store(void)
 
 	wrmsrl(MSR_IA32_DS_AREA, (unsigned long)ds);
 }
-=======
->>>>>>> 7175f4b... Truncated history

@@ -22,24 +22,17 @@
 static u8 *udl_get_edid(struct udl_device *udl)
 {
 	u8 *block;
-<<<<<<< HEAD
 	char *rbuf;
-=======
-	char rbuf[3];
->>>>>>> 7175f4b... Truncated history
 	int ret, i;
 
 	block = kmalloc(EDID_LENGTH, GFP_KERNEL);
 	if (block == NULL)
 		return NULL;
 
-<<<<<<< HEAD
 	rbuf = kmalloc(2, GFP_KERNEL);
 	if (rbuf == NULL)
 		goto error;
 
-=======
->>>>>>> 7175f4b... Truncated history
 	for (i = 0; i < EDID_LENGTH; i++) {
 		ret = usb_control_msg(udl->ddev->usbdev,
 				      usb_rcvctrlpipe(udl->ddev->usbdev, 0), (0x02),
@@ -47,27 +40,17 @@ static u8 *udl_get_edid(struct udl_device *udl)
 				      HZ);
 		if (ret < 1) {
 			DRM_ERROR("Read EDID byte %d failed err %x\n", i, ret);
-<<<<<<< HEAD
-=======
-			i--;
->>>>>>> 7175f4b... Truncated history
 			goto error;
 		}
 		block[i] = rbuf[1];
 	}
 
-<<<<<<< HEAD
 	kfree(rbuf);
-=======
->>>>>>> 7175f4b... Truncated history
 	return block;
 
 error:
 	kfree(block);
-<<<<<<< HEAD
 	kfree(rbuf);
-=======
->>>>>>> 7175f4b... Truncated history
 	return NULL;
 }
 
@@ -78,7 +61,6 @@ static int udl_get_modes(struct drm_connector *connector)
 	int ret;
 
 	edid = (struct edid *)udl_get_edid(udl);
-<<<<<<< HEAD
 	if (!edid) {
 		drm_mode_connector_update_edid_property(connector, NULL);
 		return 0;
@@ -94,11 +76,6 @@ static int udl_get_modes(struct drm_connector *connector)
 	edid->checksum += edid->extensions;
 	edid->extensions = 0;
 
-=======
-
-	connector->display_info.raw_edid = (char *)edid;
-
->>>>>>> 7175f4b... Truncated history
 	drm_mode_connector_update_edid_property(connector, edid);
 	ret = drm_add_edid_modes(connector, edid);
 	connector->display_info.raw_edid = NULL;
@@ -109,7 +86,6 @@ static int udl_get_modes(struct drm_connector *connector)
 static int udl_mode_valid(struct drm_connector *connector,
 			  struct drm_display_mode *mode)
 {
-<<<<<<< HEAD
 	struct udl_device *udl = connector->dev->dev_private;
 	if (!udl->sku_pixel_limit)
 		return 0;
@@ -117,8 +93,6 @@ static int udl_mode_valid(struct drm_connector *connector,
 	if (mode->vdisplay * mode->hdisplay > udl->sku_pixel_limit)
 		return MODE_VIRTUAL_Y;
 
-=======
->>>>>>> 7175f4b... Truncated history
 	return 0;
 }
 

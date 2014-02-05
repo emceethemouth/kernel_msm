@@ -66,12 +66,9 @@ void show_mem(unsigned int filter)
 	printk(KERN_DEFAULT "Mem-info:\n");
 	show_free_areas(filter);
 
-<<<<<<< HEAD
 	if (filter & SHOW_MEM_FILTER_PAGE_COUNT)
 		return;
 
-=======
->>>>>>> 7175f4b... Truncated history
 	for_each_bank(i, mi) {
 		struct membank *bank = &mi->bank[i];
 		unsigned int pfn1, pfn2;

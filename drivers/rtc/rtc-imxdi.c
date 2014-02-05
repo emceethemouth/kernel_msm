@@ -392,11 +392,8 @@ static int dryice_rtc_probe(struct platform_device *pdev)
 	if (imxdi->ioaddr == NULL)
 		return -ENOMEM;
 
-<<<<<<< HEAD
 	spin_lock_init(&imxdi->irq_lock);
 
-=======
->>>>>>> 7175f4b... Truncated history
 	imxdi->irq = platform_get_irq(pdev, 0);
 	if (imxdi->irq < 0)
 		return imxdi->irq;

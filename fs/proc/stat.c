@@ -45,7 +45,6 @@ static cputime64_t get_iowait_time(int cpu)
 
 static u64 get_idle_time(int cpu)
 {
-<<<<<<< HEAD
 	u64 idle, idle_time = -1ULL;
 
 	if (cpu_online(cpu))
@@ -53,12 +52,6 @@ static u64 get_idle_time(int cpu)
 
 	if (idle_time == -1ULL)
 		/* !NO_HZ or cpu offline so we can rely on cpustat.idle */
-=======
-	u64 idle, idle_time = get_cpu_idle_time_us(cpu, NULL);
-
-	if (idle_time == -1ULL)
-		/* !NO_HZ so we can rely on cpustat.idle */
->>>>>>> 7175f4b... Truncated history
 		idle = kcpustat_cpu(cpu).cpustat[CPUTIME_IDLE];
 	else
 		idle = usecs_to_cputime64(idle_time);
@@ -68,7 +61,6 @@ static u64 get_idle_time(int cpu)
 
 static u64 get_iowait_time(int cpu)
 {
-<<<<<<< HEAD
 	u64 iowait, iowait_time = -1ULL;
 
 	if (cpu_online(cpu))
@@ -76,12 +68,6 @@ static u64 get_iowait_time(int cpu)
 
 	if (iowait_time == -1ULL)
 		/* !NO_HZ or cpu offline so we can rely on cpustat.iowait */
-=======
-	u64 iowait, iowait_time = get_cpu_iowait_time_us(cpu, NULL);
-
-	if (iowait_time == -1ULL)
-		/* !NO_HZ so we can rely on cpustat.iowait */
->>>>>>> 7175f4b... Truncated history
 		iowait = kcpustat_cpu(cpu).cpustat[CPUTIME_IOWAIT];
 	else
 		iowait = usecs_to_cputime64(iowait_time);

@@ -3735,15 +3735,9 @@ qla2x00_do_dpc(void *data)
 			    "ISP abort end.\n");
 		}
 
-<<<<<<< HEAD
 		if (test_and_clear_bit(FCPORT_UPDATE_NEEDED,
 		    &base_vha->dpc_flags)) {
 			qla2x00_update_fcports(base_vha);
-=======
-		if (test_bit(FCPORT_UPDATE_NEEDED, &base_vha->dpc_flags)) {
-			qla2x00_update_fcports(base_vha);
-			clear_bit(FCPORT_UPDATE_NEEDED, &base_vha->dpc_flags);
->>>>>>> 7175f4b... Truncated history
 		}
 
 		if (test_bit(ISP_QUIESCE_NEEDED, &base_vha->dpc_flags)) {

@@ -1970,11 +1970,7 @@ sci_io_request_frame_handler(struct isci_request *ireq,
 								      frame_index,
 								      (void **)&frame_buffer);
 
-<<<<<<< HEAD
 			sci_controller_copy_sata_response(&ireq->stp.rsp,
-=======
-			sci_controller_copy_sata_response(&ireq->stp.req,
->>>>>>> 7175f4b... Truncated history
 							       frame_header,
 							       frame_buffer);
 

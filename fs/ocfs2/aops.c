@@ -593,15 +593,9 @@ static void ocfs2_dio_end_io(struct kiocb *iocb,
 	level = ocfs2_iocb_rw_locked_level(iocb);
 	ocfs2_rw_unlock(inode, level);
 
-<<<<<<< HEAD
 	inode_dio_done(inode);
 	if (is_async)
 		aio_complete(iocb, ret, 0);
-=======
-	if (is_async)
-		aio_complete(iocb, ret, 0);
-	inode_dio_done(inode);
->>>>>>> 7175f4b... Truncated history
 }
 
 /*

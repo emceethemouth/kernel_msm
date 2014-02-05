@@ -446,11 +446,7 @@ int dev_pm_qos_add_ancestor_request(struct device *dev,
 	if (ancestor)
 		error = dev_pm_qos_add_request(ancestor, req, value);
 
-<<<<<<< HEAD
 	if (error < 0)
-=======
-	if (error)
->>>>>>> 7175f4b... Truncated history
 		req->dev = NULL;
 
 	return error;

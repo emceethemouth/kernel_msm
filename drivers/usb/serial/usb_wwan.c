@@ -41,10 +41,6 @@ static bool debug;
 
 void usb_wwan_dtr_rts(struct usb_serial_port *port, int on)
 {
-<<<<<<< HEAD
-=======
-	struct usb_serial *serial = port->serial;
->>>>>>> 7175f4b... Truncated history
 	struct usb_wwan_port_private *portdata;
 
 	struct usb_wwan_intf_private *intfdata;
@@ -57,20 +53,11 @@ void usb_wwan_dtr_rts(struct usb_serial_port *port, int on)
 		return;
 
 	portdata = usb_get_serial_port_data(port);
-<<<<<<< HEAD
 	/* FIXME: locking */
 	portdata->rts_state = on;
 	portdata->dtr_state = on;
 
 	intfdata->send_setup(port);
-=======
-	mutex_lock(&serial->disc_mutex);
-	portdata->rts_state = on;
-	portdata->dtr_state = on;
-	if (serial->dev)
-		intfdata->send_setup(port);
-	mutex_unlock(&serial->disc_mutex);
->>>>>>> 7175f4b... Truncated history
 }
 EXPORT_SYMBOL(usb_wwan_dtr_rts);
 

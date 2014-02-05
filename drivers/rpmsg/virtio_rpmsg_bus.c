@@ -188,7 +188,6 @@ static int rpmsg_uevent(struct device *dev, struct kobj_uevent_env *env)
 					rpdev->id.name);
 }
 
-<<<<<<< HEAD
 /**
  * __ept_release() - deallocate an rpmsg endpoint
  * @kref: the ept's reference count
@@ -209,8 +208,6 @@ static void __ept_release(struct kref *kref)
 	kfree(ept);
 }
 
-=======
->>>>>>> 7175f4b... Truncated history
 /* for more info, see below documentation of rpmsg_create_ept() */
 static struct rpmsg_endpoint *__rpmsg_create_ept(struct virtproc_info *vrp,
 		struct rpmsg_channel *rpdev, rpmsg_rx_cb_t cb,
@@ -229,12 +226,9 @@ static struct rpmsg_endpoint *__rpmsg_create_ept(struct virtproc_info *vrp,
 		return NULL;
 	}
 
-<<<<<<< HEAD
 	kref_init(&ept->refcount);
 	mutex_init(&ept->cb_lock);
 
-=======
->>>>>>> 7175f4b... Truncated history
 	ept->rpdev = rpdev;
 	ept->cb = cb;
 	ept->priv = priv;
@@ -267,11 +261,7 @@ rem_idr:
 	idr_remove(&vrp->endpoints, request);
 free_ept:
 	mutex_unlock(&vrp->endpoints_lock);
-<<<<<<< HEAD
 	kref_put(&ept->refcount, __ept_release);
-=======
-	kfree(ept);
->>>>>>> 7175f4b... Truncated history
 	return NULL;
 }
 
@@ -335,24 +325,17 @@ EXPORT_SYMBOL(rpmsg_create_ept);
 static void
 __rpmsg_destroy_ept(struct virtproc_info *vrp, struct rpmsg_endpoint *ept)
 {
-<<<<<<< HEAD
 	/* make sure new inbound messages can't find this ept anymore */
-=======
->>>>>>> 7175f4b... Truncated history
 	mutex_lock(&vrp->endpoints_lock);
 	idr_remove(&vrp->endpoints, ept->addr);
 	mutex_unlock(&vrp->endpoints_lock);
 
-<<<<<<< HEAD
 	/* make sure in-flight inbound messages won't invoke cb anymore */
 	mutex_lock(&ept->cb_lock);
 	ept->cb = NULL;
 	mutex_unlock(&ept->cb_lock);
 
 	kref_put(&ept->refcount, __ept_release);
-=======
-	kfree(ept);
->>>>>>> 7175f4b... Truncated history
 }
 
 /**
@@ -836,7 +819,6 @@ static void rpmsg_recv_done(struct virtqueue *rvq)
 
 	/* use the dst addr to fetch the callback of the appropriate user */
 	mutex_lock(&vrp->endpoints_lock);
-<<<<<<< HEAD
 
 	ept = idr_find(&vrp->endpoints, msg->dst);
 
@@ -859,14 +841,6 @@ static void rpmsg_recv_done(struct virtqueue *rvq)
 		/* farewell, ept, we don't need you anymore */
 		kref_put(&ept->refcount, __ept_release);
 	} else
-=======
-	ept = idr_find(&vrp->endpoints, msg->dst);
-	mutex_unlock(&vrp->endpoints_lock);
-
-	if (ept && ept->cb)
-		ept->cb(ept->rpdev, msg->data, msg->len, ept->priv, msg->src);
-	else
->>>>>>> 7175f4b... Truncated history
 		dev_warn(dev, "msg received with no recepient\n");
 
 	/* publish the real size of the buffer */
@@ -1111,11 +1085,7 @@ static int __init rpmsg_init(void)
 
 	return ret;
 }
-<<<<<<< HEAD
 subsys_initcall(rpmsg_init);
-=======
-module_init(rpmsg_init);
->>>>>>> 7175f4b... Truncated history
 
 static void __exit rpmsg_fini(void)
 {

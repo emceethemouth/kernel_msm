@@ -1108,11 +1108,7 @@ void set_task_cpu(struct task_struct *p, unsigned int new_cpu)
 	 * a task's CPU. ->pi_lock for waking tasks, rq->lock for runnable tasks.
 	 *
 	 * sched_move_task() holds both and thus holding either pins the cgroup,
-<<<<<<< HEAD
 	 * see task_group().
-=======
-	 * see set_task_rq().
->>>>>>> 7175f4b... Truncated history
 	 *
 	 * Furthermore, all task_rq users should acquire both locks, see
 	 * task_rq_lock().
@@ -1709,12 +1705,8 @@ out:
  */
 int wake_up_process(struct task_struct *p)
 {
-<<<<<<< HEAD
 	WARN_ON(task_is_stopped_or_traced(p));
 	return try_to_wake_up(p, TASK_NORMAL, 0);
-=======
-	return try_to_wake_up(p, TASK_ALL, 0);
->>>>>>> 7175f4b... Truncated history
 }
 EXPORT_SYMBOL(wake_up_process);
 
@@ -2188,7 +2180,6 @@ unsigned long this_cpu_load(void)
 }
 
 
-<<<<<<< HEAD
 /*
  * Global load-average calculations
  *
@@ -2236,13 +2227,10 @@ unsigned long this_cpu_load(void)
  *  This covers the NO_HZ=n code, for extra head-aches, see the comment below.
  */
 
-=======
->>>>>>> 7175f4b... Truncated history
 /* Variables and functions for calc_load */
 static atomic_long_t calc_load_tasks;
 static unsigned long calc_load_update;
 unsigned long avenrun[3];
-<<<<<<< HEAD
 EXPORT_SYMBOL(avenrun); /* should be removed */
 
 /**
@@ -2259,9 +2247,6 @@ void get_avenrun(unsigned long *loads, unsigned long offset, int shift)
 	loads[1] = (avenrun[1] + offset) << shift;
 	loads[2] = (avenrun[2] + offset) << shift;
 }
-=======
-EXPORT_SYMBOL(avenrun);
->>>>>>> 7175f4b... Truncated history
 
 static long calc_load_fold_active(struct rq *this_rq)
 {
@@ -2278,12 +2263,9 @@ static long calc_load_fold_active(struct rq *this_rq)
 	return delta;
 }
 
-<<<<<<< HEAD
 /*
  * a1 = a0 * e + a * (1 - e)
  */
-=======
->>>>>>> 7175f4b... Truncated history
 static unsigned long
 calc_load(unsigned long load, unsigned long exp, unsigned long active)
 {
@@ -2295,7 +2277,6 @@ calc_load(unsigned long load, unsigned long exp, unsigned long active)
 
 #ifdef CONFIG_NO_HZ
 /*
-<<<<<<< HEAD
  * Handle NO_HZ for the global load-average.
  *
  * Since the above described distributed algorithm to compute the global
@@ -2399,40 +2380,15 @@ void calc_load_exit_idle(void)
 	this_rq->calc_load_update = calc_load_update;
 	if (time_before(jiffies, this_rq->calc_load_update + 10))
 		this_rq->calc_load_update += LOAD_FREQ;
-=======
- * For NO_HZ we delay the active fold to the next LOAD_FREQ update.
- *
- * When making the ILB scale, we should try to pull this in as well.
- */
-static atomic_long_t calc_load_tasks_idle;
-
-void calc_load_account_idle(struct rq *this_rq)
-{
-	long delta;
-
-	delta = calc_load_fold_active(this_rq);
-	if (delta)
-		atomic_long_add(delta, &calc_load_tasks_idle);
->>>>>>> 7175f4b... Truncated history
 }
 
 static long calc_load_fold_idle(void)
 {
-<<<<<<< HEAD
 	int idx = calc_load_read_idx();
 	long delta = 0;
 
 	if (atomic_long_read(&calc_load_idle[idx]))
 		delta = atomic_long_xchg(&calc_load_idle[idx], 0);
-=======
-	long delta = 0;
-
-	/*
-	 * Its got a race, we don't care...
-	 */
-	if (atomic_long_read(&calc_load_tasks_idle))
-		delta = atomic_long_xchg(&calc_load_tasks_idle, 0);
->>>>>>> 7175f4b... Truncated history
 
 	return delta;
 }
@@ -2518,7 +2474,6 @@ static void calc_global_nohz(void)
 {
 	long delta, active, n;
 
-<<<<<<< HEAD
 	if (!time_before(jiffies, calc_load_update + 10)) {
 		/*
 		 * Catch-up, fold however many we are behind still
@@ -2552,68 +2507,6 @@ static inline long calc_load_fold_idle(void) { return 0; }
 static inline void calc_global_nohz(void) { }
 
 #endif /* CONFIG_NO_HZ */
-=======
-	/*
-	 * If we crossed a calc_load_update boundary, make sure to fold
-	 * any pending idle changes, the respective CPUs might have
-	 * missed the tick driven calc_load_account_active() update
-	 * due to NO_HZ.
-	 */
-	delta = calc_load_fold_idle();
-	if (delta)
-		atomic_long_add(delta, &calc_load_tasks);
-
-	/*
-	 * It could be the one fold was all it took, we done!
-	 */
-	if (time_before(jiffies, calc_load_update + 10))
-		return;
-
-	/*
-	 * Catch-up, fold however many we are behind still
-	 */
-	delta = jiffies - calc_load_update - 10;
-	n = 1 + (delta / LOAD_FREQ);
-
-	active = atomic_long_read(&calc_load_tasks);
-	active = active > 0 ? active * FIXED_1 : 0;
-
-	avenrun[0] = calc_load_n(avenrun[0], EXP_1, active, n);
-	avenrun[1] = calc_load_n(avenrun[1], EXP_5, active, n);
-	avenrun[2] = calc_load_n(avenrun[2], EXP_15, active, n);
-
-	calc_load_update += n * LOAD_FREQ;
-}
-#else
-void calc_load_account_idle(struct rq *this_rq)
-{
-}
-
-static inline long calc_load_fold_idle(void)
-{
-	return 0;
-}
-
-static void calc_global_nohz(void)
-{
-}
-#endif
-
-/**
- * get_avenrun - get the load average array
- * @loads:	pointer to dest load array
- * @offset:	offset to add
- * @shift:	shift count to shift the result left
- *
- * These values are estimates at best, so no need for locking.
- */
-void get_avenrun(unsigned long *loads, unsigned long offset, int shift)
-{
-	loads[0] = (avenrun[0] + offset) << shift;
-	loads[1] = (avenrun[1] + offset) << shift;
-	loads[2] = (avenrun[2] + offset) << shift;
-}
->>>>>>> 7175f4b... Truncated history
 
 /*
  * calc_load - update the avenrun load estimates 10 ticks after the
@@ -2621,16 +2514,11 @@ void get_avenrun(unsigned long *loads, unsigned long offset, int shift)
  */
 void calc_global_load(unsigned long ticks)
 {
-<<<<<<< HEAD
 	long active, delta;
-=======
-	long active;
->>>>>>> 7175f4b... Truncated history
 
 	if (time_before(jiffies, calc_load_update + 10))
 		return;
 
-<<<<<<< HEAD
 	/*
 	 * Fold the 'old' idle-delta to include all NO_HZ cpus.
 	 */
@@ -2638,8 +2526,6 @@ void calc_global_load(unsigned long ticks)
 	if (delta)
 		atomic_long_add(delta, &calc_load_tasks);
 
-=======
->>>>>>> 7175f4b... Truncated history
 	active = atomic_long_read(&calc_load_tasks);
 	active = active > 0 ? active * FIXED_1 : 0;
 
@@ -2650,16 +2536,7 @@ void calc_global_load(unsigned long ticks)
 	calc_load_update += LOAD_FREQ;
 
 	/*
-<<<<<<< HEAD
 	 * In case we idled for multiple LOAD_FREQ intervals, catch up in bulk.
-=======
-	 * Account one period with whatever state we found before
-	 * folding in the nohz state and ageing the entire idle period.
-	 *
-	 * This avoids loosing a sample when we go idle between 
-	 * calc_load_account_active() (10 ticks ago) and now and thus
-	 * under-accounting.
->>>>>>> 7175f4b... Truncated history
 	 */
 	calc_global_nohz();
 }
@@ -2676,10 +2553,6 @@ static void calc_load_account_active(struct rq *this_rq)
 		return;
 
 	delta  = calc_load_fold_active(this_rq);
-<<<<<<< HEAD
-=======
-	delta += calc_load_fold_idle();
->>>>>>> 7175f4b... Truncated history
 	if (delta)
 		atomic_long_add(delta, &calc_load_tasks);
 
@@ -2687,13 +2560,10 @@ static void calc_load_account_active(struct rq *this_rq)
 }
 
 /*
-<<<<<<< HEAD
  * End of global load-average stuff
  */
 
 /*
-=======
->>>>>>> 7175f4b... Truncated history
  * The exact cpuload at various idx values, calculated at every tick would be
  * load = (2^idx - 1) / 2^idx * load + 1 / 2^idx * cur_load
  *
@@ -3232,7 +3102,6 @@ void thread_group_times(struct task_struct *p, cputime_t *ut, cputime_t *st)
 # define nsecs_to_cputime(__nsecs)	nsecs_to_jiffies(__nsecs)
 #endif
 
-<<<<<<< HEAD
 static cputime_t scale_utime(cputime_t utime, cputime_t rtime, cputime_t total)
 {
 	u64 temp = (__force u64) rtime;
@@ -3247,8 +3116,6 @@ static cputime_t scale_utime(cputime_t utime, cputime_t rtime, cputime_t total)
 	return (__force cputime_t) temp;
 }
 
-=======
->>>>>>> 7175f4b... Truncated history
 void task_times(struct task_struct *p, cputime_t *ut, cputime_t *st)
 {
 	cputime_t rtime, utime = p->utime, total = utime + p->stime;
@@ -3258,19 +3125,9 @@ void task_times(struct task_struct *p, cputime_t *ut, cputime_t *st)
 	 */
 	rtime = nsecs_to_cputime(p->se.sum_exec_runtime);
 
-<<<<<<< HEAD
 	if (total)
 		utime = scale_utime(utime, rtime, total);
 	else
-=======
-	if (total) {
-		u64 temp = (__force u64) rtime;
-
-		temp *= (__force u64) utime;
-		do_div(temp, (__force u32) total);
-		utime = (__force cputime_t) temp;
-	} else
->>>>>>> 7175f4b... Truncated history
 		utime = rtime;
 
 	/*
@@ -3297,19 +3154,9 @@ void thread_group_times(struct task_struct *p, cputime_t *ut, cputime_t *st)
 	total = cputime.utime + cputime.stime;
 	rtime = nsecs_to_cputime(cputime.sum_exec_runtime);
 
-<<<<<<< HEAD
 	if (total)
 		utime = scale_utime(cputime.utime, rtime, total);
 	else
-=======
-	if (total) {
-		u64 temp = (__force u64) rtime;
-
-		temp *= (__force u64) cputime.utime;
-		do_div(temp, (__force u32) total);
-		utime = (__force cputime_t) temp;
-	} else
->>>>>>> 7175f4b... Truncated history
 		utime = rtime;
 
 	sig->prev_utime = max(sig->prev_utime, utime);
@@ -6571,16 +6418,8 @@ int sched_domain_level_max;
 
 static int __init setup_relax_domain_level(char *str)
 {
-<<<<<<< HEAD
 	if (kstrtoint(str, 0, &default_relax_domain_level))
 		pr_warn("Unable to set relax_domain_level\n");
-=======
-	unsigned long val;
-
-	val = simple_strtoul(str, NULL, 0);
-	if (val < sched_domain_level_max)
-		default_relax_domain_level = val;
->>>>>>> 7175f4b... Truncated history
 
 	return 1;
 }
@@ -6785,10 +6624,6 @@ struct sched_domain *build_sched_domain(struct sched_domain_topology_level *tl,
 	if (!sd)
 		return child;
 
-<<<<<<< HEAD
-=======
-	set_domain_attribute(sd, attr);
->>>>>>> 7175f4b... Truncated history
 	cpumask_and(sched_domain_span(sd), cpu_map, tl->mask(cpu));
 	if (child) {
 		sd->level = child->level + 1;
@@ -6796,10 +6631,7 @@ struct sched_domain *build_sched_domain(struct sched_domain_topology_level *tl,
 		child->parent = sd;
 	}
 	sd->child = child;
-<<<<<<< HEAD
 	set_domain_attribute(sd, attr);
-=======
->>>>>>> 7175f4b... Truncated history
 
 	return sd;
 }
@@ -7156,26 +6988,19 @@ int __init sched_create_sysfs_power_savings_entries(struct device *dev)
 }
 #endif /* CONFIG_SCHED_MC || CONFIG_SCHED_SMT */
 
-<<<<<<< HEAD
 static int num_cpus_frozen;	/* used to mark begin/end of suspend/resume */
 
-=======
->>>>>>> 7175f4b... Truncated history
 /*
  * Update cpusets according to cpu_active mask.  If cpusets are
  * disabled, cpuset_update_active_cpus() becomes a simple wrapper
  * around partition_sched_domains().
-<<<<<<< HEAD
  *
  * If we come here as part of a suspend/resume, don't touch cpusets because we
  * want to restore it back to its original state upon resume anyway.
-=======
->>>>>>> 7175f4b... Truncated history
  */
 static int cpuset_cpu_active(struct notifier_block *nfb, unsigned long action,
 			     void *hcpu)
 {
-<<<<<<< HEAD
 	switch (action) {
 	case CPU_ONLINE_FROZEN:
 	case CPU_DOWN_FAILED_FROZEN:
@@ -7206,22 +7031,11 @@ static int cpuset_cpu_active(struct notifier_block *nfb, unsigned long action,
 		return NOTIFY_DONE;
 	}
 	return NOTIFY_OK;
-=======
-	switch (action & ~CPU_TASKS_FROZEN) {
-	case CPU_ONLINE:
-	case CPU_DOWN_FAILED:
-		cpuset_update_active_cpus();
-		return NOTIFY_OK;
-	default:
-		return NOTIFY_DONE;
-	}
->>>>>>> 7175f4b... Truncated history
 }
 
 static int cpuset_cpu_inactive(struct notifier_block *nfb, unsigned long action,
 			       void *hcpu)
 {
-<<<<<<< HEAD
 	switch (action) {
 	case CPU_DOWN_PREPARE:
 		cpuset_update_active_cpus();
@@ -7234,15 +7048,6 @@ static int cpuset_cpu_inactive(struct notifier_block *nfb, unsigned long action,
 		return NOTIFY_DONE;
 	}
 	return NOTIFY_OK;
-=======
-	switch (action & ~CPU_TASKS_FROZEN) {
-	case CPU_DOWN_PREPARE:
-		cpuset_update_active_cpus();
-		return NOTIFY_OK;
-	default:
-		return NOTIFY_DONE;
-	}
->>>>>>> 7175f4b... Truncated history
 }
 
 void __init sched_init_smp(void)
@@ -7295,10 +7100,7 @@ int in_sched_functions(unsigned long addr)
 
 #ifdef CONFIG_CGROUP_SCHED
 struct task_group root_task_group;
-<<<<<<< HEAD
 LIST_HEAD(task_groups);
-=======
->>>>>>> 7175f4b... Truncated history
 #endif
 
 DECLARE_PER_CPU(cpumask_var_t, load_balance_tmpmask);
@@ -7719,10 +7521,7 @@ void sched_destroy_group(struct task_group *tg)
  */
 void sched_move_task(struct task_struct *tsk)
 {
-<<<<<<< HEAD
 	struct task_group *tg;
-=======
->>>>>>> 7175f4b... Truncated history
 	int on_rq, running;
 	unsigned long flags;
 	struct rq *rq;
@@ -7737,15 +7536,12 @@ void sched_move_task(struct task_struct *tsk)
 	if (unlikely(running))
 		tsk->sched_class->put_prev_task(rq, tsk);
 
-<<<<<<< HEAD
 	tg = container_of(task_subsys_state_check(tsk, cpu_cgroup_subsys_id,
 				lockdep_is_held(&tsk->sighand->siglock)),
 			  struct task_group, css);
 	tg = autogroup_task_group(tsk, tg);
 	tsk->sched_task_group = tg;
 
-=======
->>>>>>> 7175f4b... Truncated history
 #ifdef CONFIG_FAIR_GROUP_SCHED
 	if (tsk->sched_class->task_move_group)
 		tsk->sched_class->task_move_group(tsk, on_rq);
@@ -8204,16 +8000,12 @@ static int tg_set_cfs_bandwidth(struct task_group *tg, u64 period, u64 quota)
 
 	runtime_enabled = quota != RUNTIME_INF;
 	runtime_was_enabled = cfs_b->quota != RUNTIME_INF;
-<<<<<<< HEAD
 	/*
 	 * If we need to toggle cfs_bandwidth_used, off->on must occur
 	 * before making related changes, and on->off must occur afterwards
 	 */
 	if (runtime_enabled && !runtime_was_enabled)
 		cfs_bandwidth_usage_inc();
-=======
-	account_cfs_bandwidth_used(runtime_enabled, runtime_was_enabled);
->>>>>>> 7175f4b... Truncated history
 	raw_spin_lock_irq(&cfs_b->lock);
 	cfs_b->period = ns_to_ktime(period);
 	cfs_b->quota = quota;
@@ -8239,11 +8031,8 @@ static int tg_set_cfs_bandwidth(struct task_group *tg, u64 period, u64 quota)
 			unthrottle_cfs_rq(cfs_rq);
 		raw_spin_unlock_irq(&rq->lock);
 	}
-<<<<<<< HEAD
 	if (runtime_was_enabled && !runtime_enabled)
 		cfs_bandwidth_usage_dec();
-=======
->>>>>>> 7175f4b... Truncated history
 out_unlock:
 	mutex_unlock(&cfs_constraints_mutex);
 

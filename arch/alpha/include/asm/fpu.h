@@ -1,13 +1,9 @@
 #ifndef __ASM_ALPHA_FPU_H
 #define __ASM_ALPHA_FPU_H
 
-<<<<<<< HEAD
 #ifdef __KERNEL__
 #include <asm/special_insns.h>
 #endif
-=======
-#include <asm/special_insns.h>
->>>>>>> 7175f4b... Truncated history
 
 /*
  * Alpha floating-point control register defines:

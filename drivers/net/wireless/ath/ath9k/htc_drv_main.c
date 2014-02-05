@@ -139,7 +139,6 @@ static void ath9k_htc_bssid_iter(void *data, u8 *mac, struct ieee80211_vif *vif)
 	struct ath9k_vif_iter_data *iter_data = data;
 	int i;
 
-<<<<<<< HEAD
 	if (iter_data->hw_macaddr != NULL) {
 		for (i = 0; i < ETH_ALEN; i++)
 			iter_data->mask[i] &= ~(iter_data->hw_macaddr[i] ^ mac[i]);
@@ -149,31 +148,17 @@ static void ath9k_htc_bssid_iter(void *data, u8 *mac, struct ieee80211_vif *vif)
 }
 
 static void ath9k_htc_set_mac_bssid_mask(struct ath9k_htc_priv *priv,
-=======
-	for (i = 0; i < ETH_ALEN; i++)
-		iter_data->mask[i] &= ~(iter_data->hw_macaddr[i] ^ mac[i]);
-}
-
-static void ath9k_htc_set_bssid_mask(struct ath9k_htc_priv *priv,
->>>>>>> 7175f4b... Truncated history
 				     struct ieee80211_vif *vif)
 {
 	struct ath_common *common = ath9k_hw_common(priv->ah);
 	struct ath9k_vif_iter_data iter_data;
 
 	/*
-<<<<<<< HEAD
 	 * Pick the MAC address of the first interface as the new hardware
 	 * MAC address. The hardware will use it together with the BSSID mask
 	 * when matching addresses.
 	 */
 	iter_data.hw_macaddr = NULL;
-=======
-	 * Use the hardware MAC address as reference, the hardware uses it
-	 * together with the BSSID mask when matching addresses.
-	 */
-	iter_data.hw_macaddr = common->macaddr;
->>>>>>> 7175f4b... Truncated history
 	memset(&iter_data.mask, 0xff, ETH_ALEN);
 
 	if (vif)
@@ -184,13 +169,10 @@ static void ath9k_htc_set_bssid_mask(struct ath9k_htc_priv *priv,
 						   &iter_data);
 
 	memcpy(common->bssidmask, iter_data.mask, ETH_ALEN);
-<<<<<<< HEAD
 
 	if (iter_data.hw_macaddr)
 		memcpy(common->macaddr, iter_data.hw_macaddr, ETH_ALEN);
 
-=======
->>>>>>> 7175f4b... Truncated history
 	ath_hw_setbssidmask(common);
 }
 
@@ -1118,11 +1100,7 @@ static int ath9k_htc_add_interface(struct ieee80211_hw *hw,
 		goto out;
 	}
 
-<<<<<<< HEAD
 	ath9k_htc_set_mac_bssid_mask(priv, vif);
-=======
-	ath9k_htc_set_bssid_mask(priv, vif);
->>>>>>> 7175f4b... Truncated history
 
 	priv->vif_slot |= (1 << avp->index);
 	priv->nvifs++;
@@ -1185,11 +1163,7 @@ static void ath9k_htc_remove_interface(struct ieee80211_hw *hw,
 
 	ath9k_htc_set_opmode(priv);
 
-<<<<<<< HEAD
 	ath9k_htc_set_mac_bssid_mask(priv, vif);
-=======
-	ath9k_htc_set_bssid_mask(priv, vif);
->>>>>>> 7175f4b... Truncated history
 
 	/*
 	 * Stop ANI only if there are no associated station interfaces.
@@ -1531,10 +1505,7 @@ static void ath9k_htc_bss_info_changed(struct ieee80211_hw *hw,
 			priv->num_sta_assoc_vif++ : priv->num_sta_assoc_vif--;
 
 		if (priv->ah->opmode == NL80211_IFTYPE_STATION) {
-<<<<<<< HEAD
 			ath9k_htc_choose_set_bssid(priv);
-=======
->>>>>>> 7175f4b... Truncated history
 			if (bss_conf->assoc && (priv->num_sta_assoc_vif == 1))
 				ath9k_htc_start_ani(priv);
 			else if (priv->num_sta_assoc_vif == 0)
@@ -1542,20 +1513,11 @@ static void ath9k_htc_bss_info_changed(struct ieee80211_hw *hw,
 		}
 	}
 
-<<<<<<< HEAD
 	if (changed & BSS_CHANGED_IBSS) {
-=======
-	if (changed & BSS_CHANGED_BSSID) {
->>>>>>> 7175f4b... Truncated history
 		if (priv->ah->opmode == NL80211_IFTYPE_ADHOC) {
 			common->curaid = bss_conf->aid;
 			memcpy(common->curbssid, bss_conf->bssid, ETH_ALEN);
 			ath9k_htc_set_bssid(priv);
-<<<<<<< HEAD
-=======
-		} else if (priv->ah->opmode == NL80211_IFTYPE_STATION) {
-			ath9k_htc_choose_set_bssid(priv);
->>>>>>> 7175f4b... Truncated history
 		}
 	}
 

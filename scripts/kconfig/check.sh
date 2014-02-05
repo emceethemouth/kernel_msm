@@ -1,10 +1,6 @@
 #!/bin/sh
 # Needed for systems without gettext
-<<<<<<< HEAD
 $* -x c -o /dev/null - > /dev/null 2>&1 << EOF
-=======
-$* -xc -o /dev/null - > /dev/null 2>&1 << EOF
->>>>>>> 7175f4b... Truncated history
 #include <libintl.h>
 int main()
 {

@@ -315,10 +315,7 @@ static noinline int overwrite_item(struct btrfs_trans_handle *trans,
 	unsigned long src_ptr;
 	unsigned long dst_ptr;
 	int overwrite_root = 0;
-<<<<<<< HEAD
 	bool inode_item = key->type == BTRFS_INODE_ITEM_KEY;
-=======
->>>>>>> 7175f4b... Truncated history
 
 	if (root->root_key.objectid != BTRFS_TREE_LOG_OBJECTID)
 		overwrite_root = 1;
@@ -328,12 +325,9 @@ static noinline int overwrite_item(struct btrfs_trans_handle *trans,
 
 	/* look for the key in the destination tree */
 	ret = btrfs_search_slot(NULL, root, key, path, 0, 0);
-<<<<<<< HEAD
 	if (ret < 0)
 		return ret;
 
-=======
->>>>>>> 7175f4b... Truncated history
 	if (ret == 0) {
 		char *src_copy;
 		char *dst_copy;
@@ -375,7 +369,6 @@ static noinline int overwrite_item(struct btrfs_trans_handle *trans,
 			return 0;
 		}
 
-<<<<<<< HEAD
 		/*
 		 * We need to load the old nbytes into the inode so when we
 		 * replay the extents we've logged we get the right nbytes.
@@ -400,8 +393,6 @@ static noinline int overwrite_item(struct btrfs_trans_handle *trans,
 		 */
 		item = btrfs_item_ptr(eb, slot, struct btrfs_inode_item);
 		btrfs_set_inode_nbytes(eb, item, 0);
-=======
->>>>>>> 7175f4b... Truncated history
 	}
 insert:
 	btrfs_release_path(path);
@@ -523,11 +514,7 @@ static noinline int replay_one_extent(struct btrfs_trans_handle *trans,
 	u64 extent_end;
 	u64 alloc_hint;
 	u64 start = key->offset;
-<<<<<<< HEAD
 	u64 nbytes = 0;
-=======
-	u64 saved_nbytes;
->>>>>>> 7175f4b... Truncated history
 	struct btrfs_file_extent_item *item;
 	struct inode *inode = NULL;
 	unsigned long size;
@@ -537,7 +524,6 @@ static noinline int replay_one_extent(struct btrfs_trans_handle *trans,
 	found_type = btrfs_file_extent_type(eb, item);
 
 	if (found_type == BTRFS_FILE_EXTENT_REG ||
-<<<<<<< HEAD
 	    found_type == BTRFS_FILE_EXTENT_PREALLOC) {
 		nbytes = btrfs_file_extent_num_bytes(eb, item);
 		extent_end = start + nbytes;
@@ -551,12 +537,6 @@ static noinline int replay_one_extent(struct btrfs_trans_handle *trans,
 	} else if (found_type == BTRFS_FILE_EXTENT_INLINE) {
 		size = btrfs_file_extent_inline_len(eb, item);
 		nbytes = btrfs_file_extent_ram_bytes(eb, item);
-=======
-	    found_type == BTRFS_FILE_EXTENT_PREALLOC)
-		extent_end = start + btrfs_file_extent_num_bytes(eb, item);
-	else if (found_type == BTRFS_FILE_EXTENT_INLINE) {
-		size = btrfs_file_extent_inline_len(eb, item);
->>>>>>> 7175f4b... Truncated history
 		extent_end = (start + size + mask) & ~mask;
 	} else {
 		ret = 0;
@@ -605,10 +585,6 @@ static noinline int replay_one_extent(struct btrfs_trans_handle *trans,
 	}
 	btrfs_release_path(path);
 
-<<<<<<< HEAD
-=======
-	saved_nbytes = inode_get_bytes(inode);
->>>>>>> 7175f4b... Truncated history
 	/* drop any overlapping extents */
 	ret = btrfs_drop_extents(trans, inode, start, extent_end,
 				 &alloc_hint, 1);
@@ -696,11 +672,7 @@ static noinline int replay_one_extent(struct btrfs_trans_handle *trans,
 		BUG_ON(ret);
 	}
 
-<<<<<<< HEAD
 	inode_add_bytes(inode, nbytes);
-=======
-	inode_set_bytes(inode, saved_nbytes);
->>>>>>> 7175f4b... Truncated history
 	btrfs_update_inode(trans, root, inode);
 out:
 	if (inode)
@@ -754,11 +726,8 @@ static noinline int drop_one_dir_item(struct btrfs_trans_handle *trans,
 	kfree(name);
 
 	iput(inode);
-<<<<<<< HEAD
 
 	btrfs_run_delayed_items(trans, root);
-=======
->>>>>>> 7175f4b... Truncated history
 	return ret;
 }
 
@@ -964,10 +933,7 @@ again:
 				ret = btrfs_unlink_inode(trans, root, dir,
 							 inode, victim_name,
 							 victim_name_len);
-<<<<<<< HEAD
 				btrfs_run_delayed_items(trans, root);
-=======
->>>>>>> 7175f4b... Truncated history
 			}
 			kfree(victim_name);
 			ptr = (unsigned long)(victim_ref + 1) + victim_name_len;
@@ -1548,12 +1514,9 @@ again:
 			ret = btrfs_unlink_inode(trans, root, dir, inode,
 						 name, name_len);
 			BUG_ON(ret);
-<<<<<<< HEAD
 
 			btrfs_run_delayed_items(trans, root);
 
-=======
->>>>>>> 7175f4b... Truncated history
 			kfree(name);
 			iput(inode);
 

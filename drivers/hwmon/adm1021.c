@@ -332,33 +332,24 @@ static int adm1021_detect(struct i2c_client *client,
 	man_id = i2c_smbus_read_byte_data(client, ADM1021_REG_MAN_ID);
 	dev_id = i2c_smbus_read_byte_data(client, ADM1021_REG_DEV_ID);
 
-<<<<<<< HEAD
 	if (man_id < 0 || dev_id < 0)
 		return -ENODEV;
 
-=======
->>>>>>> 7175f4b... Truncated history
 	if (man_id == 0x4d && dev_id == 0x01)
 		type_name = "max1617a";
 	else if (man_id == 0x41) {
 		if ((dev_id & 0xF0) == 0x30)
 			type_name = "adm1023";
-<<<<<<< HEAD
 		else if ((dev_id & 0xF0) == 0x00)
 			type_name = "adm1021";
 		else
 			return -ENODEV;
-=======
-		else
-			type_name = "adm1021";
->>>>>>> 7175f4b... Truncated history
 	} else if (man_id == 0x49)
 		type_name = "thmc10";
 	else if (man_id == 0x23)
 		type_name = "gl523sm";
 	else if (man_id == 0x54)
 		type_name = "mc1066";
-<<<<<<< HEAD
 	else {
 		int lte, rte, lhi, rhi, llo, rlo;
 
@@ -403,15 +394,6 @@ static int adm1021_detect(struct i2c_client *client,
 			type_name = "max1617";
 		}
 	}
-=======
-	/* LM84 Mfr ID in a different place, and it has more unused bits */
-	else if (conv_rate == 0x00
-		 && (config & 0x7F) == 0x00
-		 && (status & 0xAB) == 0x00)
-		type_name = "lm84";
-	else
-		type_name = "max1617";
->>>>>>> 7175f4b... Truncated history
 
 	pr_debug("adm1021: Detected chip %s at adapter %d, address 0x%02x.\n",
 		 type_name, i2c_adapter_id(adapter), client->addr);

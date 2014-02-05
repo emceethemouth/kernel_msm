@@ -1489,7 +1489,6 @@ static int mem_cgroup_count_children(struct mem_cgroup *memcg)
 u64 mem_cgroup_get_limit(struct mem_cgroup *memcg)
 {
 	u64 limit;
-<<<<<<< HEAD
 
 	limit = res_counter_read_u64(&memcg->res, RES_LIMIT);
 
@@ -1510,19 +1509,6 @@ u64 mem_cgroup_get_limit(struct mem_cgroup *memcg)
 	}
 
 	return limit;
-=======
-	u64 memsw;
-
-	limit = res_counter_read_u64(&memcg->res, RES_LIMIT);
-	limit += total_swap_pages << PAGE_SHIFT;
-
-	memsw = res_counter_read_u64(&memcg->memsw, RES_LIMIT);
-	/*
-	 * If memsw is finite and limits the amount of swap space available
-	 * to this memcg, return that limit.
-	 */
-	return min(limit, memsw);
->>>>>>> 7175f4b... Truncated history
 }
 
 static unsigned long mem_cgroup_reclaim(struct mem_cgroup *memcg,
@@ -4363,7 +4349,6 @@ static int compare_thresholds(const void *a, const void *b)
 	const struct mem_cgroup_threshold *_a = a;
 	const struct mem_cgroup_threshold *_b = b;
 
-<<<<<<< HEAD
 	if (_a->threshold > _b->threshold)
 		return 1;
 
@@ -4371,9 +4356,6 @@ static int compare_thresholds(const void *a, const void *b)
 		return -1;
 
 	return 0;
-=======
-	return _a->threshold - _b->threshold;
->>>>>>> 7175f4b... Truncated history
 }
 
 static int mem_cgroup_oom_notify_cb(struct mem_cgroup *memcg)

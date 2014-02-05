@@ -25,10 +25,7 @@
 #include <linux/kallsyms.h>
 #include <linux/uaccess.h>
 #include <linux/ioport.h>
-<<<<<<< HEAD
 #include <linux/cred.h>
-=======
->>>>>>> 7175f4b... Truncated history
 #include <net/addrconf.h>
 
 #include <asm/page.h>		/* for PAGE_SIZE */
@@ -935,7 +932,6 @@ char *pointer(const char *fmt, char *buf, char *end, void *ptr,
 				spec.field_width = 2 * sizeof(void *);
 			return string(buf, end, "pK-error", spec);
 		}
-<<<<<<< HEAD
 
 		switch (kptr_restrict) {
 		case 0:
@@ -967,13 +963,6 @@ char *pointer(const char *fmt, char *buf, char *end, void *ptr,
 		}
 		break;
 
-=======
-		if (!((kptr_restrict == 0) ||
-		      (kptr_restrict == 1 &&
-		       has_capability_noaudit(current, CAP_SYSLOG))))
-			ptr = NULL;
-		break;
->>>>>>> 7175f4b... Truncated history
 	case 'N':
 		switch (fmt[1]) {
 		case 'F':

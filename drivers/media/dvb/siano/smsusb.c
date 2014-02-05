@@ -481,11 +481,7 @@ static int smsusb_resume(struct usb_interface *intf)
 	return 0;
 }
 
-<<<<<<< HEAD
 static const struct usb_device_id smsusb_id_table[] = {
-=======
-static const struct usb_device_id smsusb_id_table[] __devinitconst = {
->>>>>>> 7175f4b... Truncated history
 	{ USB_DEVICE(0x187f, 0x0010),
 		.driver_info = SMS1XXX_BOARD_SIANO_STELLAR },
 	{ USB_DEVICE(0x187f, 0x0100),
@@ -546,13 +542,10 @@ static const struct usb_device_id smsusb_id_table[] __devinitconst = {
 		.driver_info = SMS1XXX_BOARD_HAUPPAUGE_WINDHAM },
 	{ USB_DEVICE(0x2040, 0xc090),
 		.driver_info = SMS1XXX_BOARD_HAUPPAUGE_WINDHAM },
-<<<<<<< HEAD
 	{ USB_DEVICE(0x2040, 0xc0a0),
 		.driver_info = SMS1XXX_BOARD_HAUPPAUGE_WINDHAM },
 	{ USB_DEVICE(0x2040, 0xf5a0),
 		.driver_info = SMS1XXX_BOARD_HAUPPAUGE_WINDHAM },
-=======
->>>>>>> 7175f4b... Truncated history
 	{ } /* Terminating entry */
 	};
 

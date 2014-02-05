@@ -292,13 +292,9 @@ static int acpi_ac_add(struct acpi_device *device)
 	ac->charger.properties = ac_props;
 	ac->charger.num_properties = ARRAY_SIZE(ac_props);
 	ac->charger.get_property = get_ac_property;
-<<<<<<< HEAD
 	result = power_supply_register(&ac->device->dev, &ac->charger);
 	if (result)
 		goto end;
-=======
-	power_supply_register(&ac->device->dev, &ac->charger);
->>>>>>> 7175f4b... Truncated history
 
 	printk(KERN_INFO PREFIX "%s [%s] (%s)\n",
 	       acpi_device_name(device), acpi_device_bid(device),

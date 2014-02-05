@@ -9,12 +9,9 @@ unsigned long gcd(unsigned long a, unsigned long b)
 
 	if (a < b)
 		swap(a, b);
-<<<<<<< HEAD
 
 	if (!b)
 		return a;
-=======
->>>>>>> 7175f4b... Truncated history
 	while ((r = a % b) != 0) {
 		a = b;
 		b = r;
