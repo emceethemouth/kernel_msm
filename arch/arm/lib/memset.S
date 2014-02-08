@@ -34,15 +34,10 @@
 	mov	ip, r0
 	ands	r3, ip, #3		@ 1 unaligned?
 	bne	1b			@ 1
-
-ENTRY(memset)
-	ands	r3, r0, #3		@ 1 unaligned?
-	mov	ip, r0			@ preserve r0 as return value
-	bne	6f			@ 1
 /*
  * we know that the pointer in ip is aligned to a word boundary.
  */
-1:	orr	r1, r1, r1, lsl #8
+	orr	r1, r1, r1, lsl #8
 	orr	r1, r1, r1, lsl #16
 	mov	r3, r1
 	cmp	r2, #16
@@ -52,7 +47,6 @@ ENTRY(memset)
 
 /*
  We need 2 extra registers for this loop - use r8 and the LR
- * We need 2 extra registers for this loop - use r8 and the LR
  */
 	stmfd	sp!, {r8, lr}
 	mov	r8, r1
@@ -111,7 +105,7 @@ ENTRY(memset)
 	ldmeqfd	sp!, {r4-r8, pc}
 
 	tst	r2, #32
-	stmneia	ip!, {r1, r3-r8, lr}
+	stmneia	r0!, {r1, r3-r7, ip, lr}
 	tst	r2, #16
 	stmneia	ip!, {r4-r7}
 	ldmfd	sp!, {r4-r8, lr}
@@ -132,13 +126,4 @@ ENTRY(memset)
 	tst	r2, #1
 	strneb	r1, [ip], #1
 	mov	pc, lr
-
-6:	subs	r2, r2, #4		@ 1 do we have enough
-	blt	5b			@ 1 bytes to align with?
-	cmp	r3, #2			@ 1
-	strltb	r1, [ip], #1		@ 1
-	strleb	r1, [ip], #1		@ 1
-	strb	r1, [ip], #1		@ 1
-	add	r2, r2, r3		@ 1 (r2 = r2 - (4 - r3))
-	b	1b
 ENDPROC(memset)

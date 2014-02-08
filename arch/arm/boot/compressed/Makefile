@@ -30,6 +30,7 @@ FONTC        = $(srctree)/drivers/video/console/font_acorn_8x8.c
 AFLAGS_misc.o += -Wa,-mcpu=cortex-a15
 
 MISC = misc.o
+FONTC	= $(srctree)/drivers/video/console/font_acorn_8x8.c
 
 AFLAGS_decompress.o += -Wa,-mcpu=cortex-a15
 DECOMPRESS = decompress.o  
