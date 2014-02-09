@@ -22,9 +22,13 @@ OBJS                += sdhi-sh7372.o
 endif
 
 AFLAGS_head.o += -DTEXT_OFFSET=$(TEXT_OFFSET)
+
 AFLAGS_head.o += -Wa,-mcpu=cortex-a15
+AFLAGS_misc.o +=-Wa,-mcpu=cortex-a15
+AFLAGS_decompress.o += -Wa,-mcpu=cortex-a15
+
 HEAD        = head.o
-OBJS        += misc.o
+OBJS        += misc.o decompress.o
 FONTC        = $(srctree)/drivers/video/console/font_acorn_8x8.c
 
 AFLAGS_misc.o += -Wa,-mcpu=cortex-a15
@@ -165,9 +169,9 @@ $(obj)/lib1funcs.S: $(srctree)/arch/$(SRCARCH)/lib/lib1funcs.S
 	$(call cmd,shipped)
 
 # For __aeabi_llsl
-AFLAGS_ashldi3.o += -Wa,-mcpu=cortex-a15
 ashldi3 = $(obj)/ashldi3.o
 
+AFLAGS_ashldi3.o += -Wa,-mcpu=cortex-a15
 $(obj)/ashldi3.S: $(srctree)/arch/$(SRCARCH)/lib/ashldi3.S
 	$(call cmd,shipped)
 
@@ -197,10 +201,10 @@ $(obj)/vmlinux: $(obj)/vmlinux.lds $(obj)/$(HEAD) $(obj)/$(MISC) $(obj)/$(DECOMP
 	$(call if_changed,ld)
 	@$(check_for_bad_syms)
 
-AFLAGS_piggy.$(suffix_y).o += -Wa,-mcpu=cortex-a15
 $(obj)/piggy.$(suffix_y): $(obj)/../Image FORCE
 	$(call if_changed,$(suffix_y))
 
+AFLAGS_piggy.$(suffix_y).o += -Wa,-mcpu=cortex-a15
 $(obj)/piggy.$(suffix_y).o:  $(obj)/piggy.$(suffix_y) FORCE
 
 CFLAGS_font.o := -Dstatic=
