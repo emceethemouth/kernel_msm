@@ -352,7 +352,6 @@ CHECKFLAGS     := -D__linux__ -Dlinux -D__STDC__ -Dunix -D__unix__ \
 ### Optimizations ###
 
 MODFLAGS        = -DMODULE \
-                  -march=armv7-a \
                   -mfpu=neon-vfpv4 \
                   -mtune=cortex-a15 \
                   -O3
@@ -360,8 +359,7 @@ MODFLAGS        = -DMODULE \
 CFLAGS_MODULE   = $(MODFLAGS)
 AFLAGS_MODULE   = $(MODFLAGS)
 LDFLAGS_MODULE  = -T $(srctree)/scripts/module-common.lds
-CFLAGS_KERNEL   = -march=armv7-a \
-                  -mfpu=neon-vfpv4 \
+CFLAGS_KERNEL   = -mfpu=neon-vfpv4 \
                   -mtune=cortex-a15 \
                   -O2
 AFLAGS_KERNEL	=
