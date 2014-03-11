@@ -15,12 +15,6 @@
 	.text
 	.align	5
 
-/*
- * Preserve the contents of r0 for the return value.
- */
-	mov	ip, r0
-	ands	r3, ip, #3		@ 1 unaligned?
-	bne	1b			@ 1
 ENTRY(memset)
 	ands	r3, r0, #3		@ 1 unaligned?
 	mov	ip, r0			@ preserve r0 as return value
@@ -37,7 +31,7 @@ ENTRY(memset)
 #if ! CALGN(1)+0
 
 /*
- We need 2 extra registers for this loop - use r8 and the LR
+ * We need 2 extra registers for this loop - use r8 and the LR
  */
 	stmfd	sp!, {r8, lr}
 	mov	r8, r1
@@ -96,7 +90,7 @@ ENTRY(memset)
 	ldmeqfd	sp!, {r4-r8, pc}
 
 	tst	r2, #32
-	stmneia	r0!, {r1, r3-r7, ip, lr}
+	stmneia	ip!, {r1, r3-r8, lr}
 	tst	r2, #16
 	stmneia	ip!, {r4-r7}
 	ldmfd	sp!, {r4-r8, lr}
