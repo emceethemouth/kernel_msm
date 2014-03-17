@@ -247,7 +247,7 @@ CONFIG_SHELL := $(shell if [ -x "$$BASH" ]; then echo $$BASH; \
 HOSTCC       = $(CCACHE) gcc
 HOSTCXX      = $(CCACHE) g++
 HOSTCFLAGS   = -Wall -Wmissing-prototypes -Wstrict-prototypes -O3 -fomit-frame-pointer -fgcse-las -fipa-pta
-HOSTCXXFLAGS = -O3  -fgcse-las -fipa-pta
+HOSTCXXFLAGS = -O3 -fgcse-las -fipa-pta
 
 # Decide whether to build built-in, modular, or both.
 # Normally, just do built-in.
@@ -363,10 +363,10 @@ AFLAGS_MODULE   = $(MODFLAGS)
 LDFLAGS_MODULE  = -T $(srctree)/scripts/module-common.lds
 CFLAGS_KERNEL   = -mfpu=neon-vfpv4 \
                   -mtune=cortex-a15 \
-                  -O3 \
                   -fgcse-las \
                   -fipa-pta \
-                  -fpredictive-commoning 
+                  -fpredictive-commoning \
+		  -O3
 AFLAGS_KERNEL	=
 CFLAGS_GCOV	= -fprofile-arcs -ftest-coverage
 
